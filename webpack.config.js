@@ -18,7 +18,7 @@ const config = {
     base: __dirname,
     dist: path.join(__dirname, "public", workspace),
     cleanPaths: ["public/" + workspace],
-    contentBase: path.join(__dirname, "dist/" + workspace),
+    contentBase: "./dist/",
     htmlInput: path.join(
       __dirname,
       namespace,

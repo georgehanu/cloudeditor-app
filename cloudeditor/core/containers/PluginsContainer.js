@@ -3,6 +3,7 @@ const PropTypes = require("prop-types");
 const { componentFromProp } = require("recompose");
 const PluginsUtils = require("../utils/PluginsUtils");
 const logger = require("../utils/LoggerUtils");
+const { hot } = require("react-hot-loader");
 
 const Component = componentFromProp("component");
 
@@ -119,4 +120,4 @@ PluginsContainer.contextTypes = {
   store: PropTypes.object
 };
 
-module.exports = PluginsContainer;
+module.exports = hot(module)(PluginsContainer);
