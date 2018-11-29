@@ -14,6 +14,9 @@
     "start:dag": "webpack-dev-server --mode development --workspace designAndGo",
     "dev:dag": "webpack --mode development --workspace designAndGo",
     "build:dag": "webpack --mode production --workspace designAndGo",
+    "start:stadion": "webpack-dev-server --mode development --workspace stadion",
+    "dev:stadion": "webpack --mode development --workspace stadion",
+    "build:stadion": "webpack --mode production --workspace stadion",
     "start:client": "webpack-dev-server --mode development --workspace client",
     "dev:client": "webpack --mode development --workspace client",
     "build:client": "webpack --mode production --workspace client"

@@ -1,0 +1,190 @@
+.fupa {
+  height: calc(100% - 25px);
+  width: 100%;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #121212;
+  /*background-color: #ececec;*/
+  background-color: white;
+  padding: 5px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.fupa td {
+  padding: 5px 2px;
+}
+.fupa table {
+  margin: 0;
+  margin-bottom: 9px;
+  margin-left: 0;
+  width: 100%;
+  padding: 0;
+  border-spacing: 0;
+}
+.fupa table th,
+.fupa table th a {
+  font-weight: normal;
+  color: white;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 0 0 0 10px;
+}
+.fupa table th span {
+  font-weight: bold;
+  margin-right: 2px;
+}
+
+.fupa tr:nth-child(odd) > td {
+  background: #fff;
+}
+
+.fupa tr:nth-child(even) > td {
+  background: #f3f3f3;
+}
+
+.fupa td {
+  padding: 5px;
+  padding-right: 2px;
+  margin: 0;
+  border-bottom: 1px solid #fff;
+  background: #fff;
+  background: -moz-linear-gradient(top, #fff 0, #f0f0f0 100%);
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, #fff),
+    color-stop(100%, #f0f0f0)
+  );
+  background: -webkit-linear-gradient(top, #fff 0, #f0f0f0 100%);
+  background: -o-linear-gradient(top, #fff 0, #f0f0f0 100%);
+  background: -ms-linear-gradient(top, #fff 0, #f0f0f0 100%);
+  background: linear-gradient(to bottom, #fff 0, #f0f0f0 100%);
+}
+.fupa table .white td {
+  background: #fff;
+}
+.fupa .fusszeile {
+  height: 30px;
+  position: relative;
+  text-align: center;
+  padding: 0;
+}
+.fupa .fusszeile a {
+  background-color: #0096db;
+  color: #fff;
+  display: block;
+  font-weight: bold;
+  padding: 9px;
+  text-transform: uppercase;
+}
+.fupa .werbeblock td {
+  padding: 4px 0 4px 0;
+  margin: 4px 0 4px 0;
+}
+.fupa .contentblock {
+  border-right: 0;
+  border-left: 0;
+}
+.fupa .contentblock td {
+  padding: 0;
+  border: 0;
+}
+.fupa .contentblock .fusszeile a {
+  margin: 0 0 5px 0;
+}
+.fupa .contentblock td a {
+  display: block;
+  margin: 12px 0 12px 0;
+}
+.fupa .contentblock td a img {
+  border: 1px solid #ccc;
+}
+
+.fupa table th {
+  background-color: #002e5f;
+  color: white;
+  height: 35px;
+  line-height: 35px;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+  vertical-align: middle;
+  margin-bottom: 1px solid #fff;
+}
+
+.fupa .img-cdn-wrapper {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  overflow: hidden;
+}
+
+.fupa .img-cdn-wrapper picture,
+.fupa .img-cdn-wrapper picture > img,
+.fupa .img-cdn-wrapper img {
+  object-fit: contain;
+  height: inherit;
+  width: inherit;
+}
+
+.fupa input {
+  border-color: #d5d5d5;
+  padding: 7px 10px;
+  color: grey;
+  width: 300px;
+  outline: none;
+  border: 1px solid grey;
+}
+
+.fupa .OkButton {
+  color: grey;
+  height: 31px;
+  background-color: transparent;
+  border: 1px solid grey;
+  outline: none;
+  border-left: none;
+}
+.fupa .backButton {
+  padding-top: 10px;
+}
+.fupa .backButton button {
+  color: grey;
+  height: 31px;
+  background-color: transparent;
+  border: 1px solid grey;
+  outline: none;
+}
+
+.fupa .OkButton:hover,
+.fupa .backButton button:hover {
+  cursor: pointer;
+}
+
+.fupa .ClubSearch {
+  margin-top: 10px;
+}
+
+.fupa .ClubName {
+  height: 20px;
+  line-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: grey;
+}
+
+.fupa .ClubTeam {
+  height: 20px;
+  line-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: grey;
+}
+
+.fupa .ClubTeam select {
+  border: 1px solid grey;
+  color: grey;
+}

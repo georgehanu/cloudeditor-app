@@ -1,0 +1,6 @@
+{
+  "plugins": {
+    "mobile": ["Html5Renderer"],
+    "desktop": ["Html5Renderer", "SideBar", "Fupa"]
+  }
+}
