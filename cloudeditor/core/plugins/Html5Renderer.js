@@ -2,7 +2,6 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
-const { withI18n } = require("react-i18next");
 const { hot } = require("react-hot-loader");
 
 const { activePageSelector } = require("../stores/selectors/project");
@@ -28,10 +27,8 @@ class Html5Renderer extends React.Component {
     });
   };
   render() {
-    const { t, tReady } = this.props;
     return (
       <div className="render-container">
-        {t("title")}
         {<Renderer {...this.props.activePage} />}
       </div>
     );
@@ -46,7 +43,7 @@ const mapStateToProps = state => {
 };
 
 const Html5RendererPlugin = hot(module)(
-  withI18n()(connect(mapStateToProps)(Html5Renderer))
+  connect(mapStateToProps)(Html5Renderer)
 );
 module.exports = {
   Html5Renderer: assign(Html5RendererPlugin),

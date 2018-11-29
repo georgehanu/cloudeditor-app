@@ -110,9 +110,9 @@ PluginsContainer.defaultProps = {
   plugins: {},
   pluginsConfig: {},
   component: "div",
-  id: "plugins-container",
+  id: "pluginsContainer",
   style: {},
-  className: "plugins-container",
+  className: "pluginsContainer",
   defaultMode: "desktop"
 };
 

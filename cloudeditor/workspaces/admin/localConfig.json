@@ -2,5 +2,10 @@
   "plugins": {
     "mobile": ["Html5Renderer"],
     "desktop": ["Html5Renderer"]
+  },
+  "mainComponent": {
+    "component": "div",
+    "id": "container",
+    "className": "container"
   }
 }
