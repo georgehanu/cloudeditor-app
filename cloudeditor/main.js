@@ -1,4 +1,4 @@
-module.exports = (plugins, requires, localConfig, theme) => {
+module.exports = (plugins, requires, localConfig, i18n) => {
   const startApp = () => {
     const React = require("react");
     const ReactDOM = require("react-dom");
@@ -15,6 +15,7 @@ module.exports = (plugins, requires, localConfig, theme) => {
 
     const editorConfig = {
       store,
+      i18n,
       plugins: assign(PluginsUtils.getPlugins(plugins), { requires }),
       pluginsConfig: ConfigUtils.getConfigProp("plugins")
     };
@@ -28,7 +29,3 @@ module.exports = (plugins, requires, localConfig, theme) => {
   startApp();
   return true;
 };
-
-if (process.env.NODE_ENV === "development" && module.hot) {
-  module.hot.accept();
-}

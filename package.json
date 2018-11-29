@@ -8,7 +8,7 @@
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "precommit": "pretty-quick --staged",
-    "start:admin": "webpack-dev-server --mode development --workspace admin",
+    "start:admin": "webpack-dev-server --mode development --hot-only --workspace admin",
     "dev:admin": "webpack --mode development --workspace admin",
     "build:admin": "webpack --mode production --workspace admin",
     "start:dag": "webpack-dev-server --mode development --workspace designAndGo",

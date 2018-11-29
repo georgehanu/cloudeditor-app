@@ -149,11 +149,9 @@ const build = config => {
       )
     ],
     devServer: {
-      contentBase: paths.contentBase,
-      hot: true,
       port: config.port
     },
-    stats: "errors-only" //https://webpack.js.org/configuration/stats/
+    stats: "none" //https://webpack.js.org/configuration/stats/
   };
 };
 
