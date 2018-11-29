@@ -3,6 +3,7 @@ module.exports = (plugins, requires, localConfig, i18n) => {
     const React = require("react");
     const ReactDOM = require("react-dom");
     const assign = require("object-assign");
+    const { AppContainer } = require("react-hot-loader");
 
     const Editor = require("./core/containers/Editor");
     const ConfigUtils = require("./core/utils/ConfigUtils");
@@ -12,6 +13,8 @@ module.exports = (plugins, requires, localConfig, i18n) => {
     ConfigUtils.loadConfiguration(localConfig);
 
     const store = StandardStore({}, {}, {}, plugins);
+    const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");
+    console.log(mainComponentCfg);
 
     const editorConfig = {
       store,
@@ -21,7 +24,9 @@ module.exports = (plugins, requires, localConfig, i18n) => {
     };
 
     ReactDOM.render(
-      <Editor {...editorConfig} />,
+      <AppContainer>
+        <Editor {...editorConfig} {...mainComponentCfg} />
+      </AppContainer>,
       document.getElementById("app")
     );
   };
