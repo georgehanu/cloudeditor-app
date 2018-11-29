@@ -1,4 +1,4 @@
-import React from "react";
+const React = require("react");
 
 const BackButton = props => {
   const icon = "icon printqicon-cancel";
@@ -12,4 +12,4 @@ const BackButton = props => {
   );
 };
 
-export default BackButton;
+module.exports = BackButton;

@@ -1,6 +1,6 @@
-import React from "react";
-import "./withSpinner.css";
-import { NamespacesConsumer } from "react-i18next";
+const React = require("react");
+require("./withSpinner.css");
+const { NamespacesConsumer } = require("react-i18next");
 
 const withSpinner = WrappedComponent => props => {
   if (props.loading)
@@ -21,4 +21,4 @@ const withSpinner = WrappedComponent => props => {
   );
 };
 
-export default withSpinner;
+module.exports = withSpinner;

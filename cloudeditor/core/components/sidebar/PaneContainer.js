@@ -1,5 +1,5 @@
-import React from "react";
-import BackButton from "./BackButton";
+const React = require("react");
+const BackButton = require("./BackButton");
 
 const PaneContainer = props => {
   const className =
@@ -12,4 +12,4 @@ const PaneContainer = props => {
   );
 };
 
-export default PaneContainer;
+module.exports = PaneContainer;

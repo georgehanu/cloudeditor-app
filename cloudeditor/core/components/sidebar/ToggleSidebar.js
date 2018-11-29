@@ -1,4 +1,4 @@
-import React from "react";
+const React = require("react");
 
 const ToggleSidebar = props => {
   const icon =
@@ -13,4 +13,4 @@ const ToggleSidebar = props => {
   );
 };
 
-export default ToggleSidebar;
+module.exports = ToggleSidebar;

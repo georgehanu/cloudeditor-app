@@ -1,5 +1,5 @@
-import React from "react";
-import ReactTooltip from "react-tooltip";
+const React = require("react");
+const ReactTooltip = require("react-tooltip");
 const { NamespacesConsumer } = require("react-i18next");
 
 const uuidv4 = require("uuid/v4");
@@ -55,4 +55,4 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
   );
 };
 
-export default withTooltip;
+module.exports = withTooltip;
