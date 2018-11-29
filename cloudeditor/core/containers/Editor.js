@@ -12,7 +12,6 @@ class Editor extends React.Component {
             plugins={this.props.plugins}
             pluginsConfig={this.props.pluginsConfig}
           />
-          asdadad
         </div>
       </Provider>
     );

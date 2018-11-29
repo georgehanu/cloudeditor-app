@@ -61,7 +61,9 @@ const build = config => {
           test: /\.(sa|sc|c)ss$/,
           use: [
             MiniCssExtractPlugin.loader,
+
             "css-loader",
+            "sass-loader",
             {
               loader: "postcss-loader",
               options: {
@@ -74,9 +76,7 @@ const build = config => {
                   })
                 ]
               }
-            },
-
-            "sass-loader"
+            }
           ]
         },
         {
