@@ -67,7 +67,10 @@ const build = config => {
               options: {
                 plugins: () => [
                   prefixer({
-                    prefix: cssPrefix
+                    prefix: cssPrefix,
+                    exclude: [".cloudeditor", "body", "html"].concat(
+                      cssPrefix ? [cssPrefix] : []
+                    )
                   }),
                   autoprefixer({
                     browsers: ["last 4 versions"]

@@ -9,13 +9,11 @@ class Editor extends React.Component {
     return (
       <Provider store={this.props.store}>
         <I18nextProvider i18n={this.props.i18n}>
-          <div id="wrapper" className="toggled">
-            <PluginsContainer
-              mode="desktop"
-              plugins={this.props.plugins}
-              pluginsConfig={this.props.pluginsConfig}
-            />
-          </div>
+          <PluginsContainer
+            mode="desktop"
+            plugins={this.props.plugins}
+            pluginsConfig={this.props.pluginsConfig}
+          />
         </I18nextProvider>
       </Provider>
     );
