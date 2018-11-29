@@ -26,6 +26,7 @@ module.exports = (plugins, requires, localConfig, theme) => {
   };
 
   startApp();
+  return true;
 };
 
 if (process.env.NODE_ENV === "development" && module.hot) {
