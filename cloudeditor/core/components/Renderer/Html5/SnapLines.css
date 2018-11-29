@@ -1,0 +1,18 @@
+.page .drag_alignLines {
+  display: block;
+  position: absolute;
+  visibility: hidden;
+  z-index: 0;
+}
+
+.page .drag_alignLines.snaped {
+  visibility: visible;
+  z-index: 9999;
+}
+
+.page .drag_alignLines.drag_alignVerLines {
+  height: 100%;
+  width: 0px;
+  top: 0px;
+  border-right: 1px solid #3399ff;
+}

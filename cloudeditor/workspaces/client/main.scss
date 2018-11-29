@@ -1,0 +1,14 @@
+@font-face {
+  font-family: Arial1;
+  src: url(Arial.woff);
+}
+
+.Test {
+  border-radius: 2em;
+  transform: scale(2);
+  opacity: 0.1;
+  line-height: 2;
+  background-color: grey;
+  background-image: url("./logo.png");
+  font-family: Arial1;
+}

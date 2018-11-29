@@ -1,0 +1,26 @@
+.pageBlock {
+  position: absolute;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  display: block;
+  z-index: 2;
+  cursor: default;
+}
+
+.pageBlock {
+  position: absolute;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  display: block;
+  z-index: 2;
+  cursor: default;
+}
+
+.pageBlock .blockOrientation {
+  position: relative;
+  z-index: 1;
+}

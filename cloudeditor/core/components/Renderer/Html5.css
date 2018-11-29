@@ -1,0 +1,53 @@
+.canvas-container {
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: 500;
+  height: 90%;
+  width: 90%;
+}
+
+.page-container {
+  display: block;
+  background-color: rebeccapurple;
+  position: relative;
+  margin: 0 auto;
+}
+.zoom-container {
+  display: inline-block;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding: 0;
+  width: 100%;
+}
+.zoom-container.zoom-active {
+  overflow: auto;
+}
+.zoom-container::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.zoom-container::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+
+.zoom-container::-webkit-scrollbar:horizontal {
+  height: 11px;
+}
+
+.zoom-container::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white; /* should match background, can't be transparent */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.zoom-container::-webkit-scrollbar-track {
+  background-color: #fff;
+}

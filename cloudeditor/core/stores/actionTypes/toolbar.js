@@ -1,0 +1,5 @@
+const SET_OBJECT_FROM_TOOLBAR = "SET_OBJECT_FROM_TOOLBAR";
+
+module.exports = {
+  SET_OBJECT_FROM_TOOLBAR
+};

@@ -1,0 +1,9 @@
+.boxLine {
+  position: absolute;
+}
+.boxLine.trimbox {
+  background: red;
+}
+.boxLine.bleed {
+  background: green;
+}

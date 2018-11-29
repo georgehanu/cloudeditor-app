@@ -1,0 +1,7 @@
+/node_modules
+public/*
+yarn.lock
+yarn-error.log
+package-lock.json
+/.vscode/
+.history/*
