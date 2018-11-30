@@ -28,7 +28,7 @@ class Html5Renderer extends React.Component {
   };
   render() {
     return (
-      <div className="render-container">
+      <div className="renderContainer">
         {<Renderer {...this.props.activePage} />}
       </div>
     );
