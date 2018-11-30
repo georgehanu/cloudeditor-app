@@ -14,7 +14,6 @@ module.exports = (plugins, requires, localConfig, i18n) => {
 
     const store = StandardStore({}, {}, {}, plugins);
     const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");
-    console.log(mainComponentCfg);
 
     const editorConfig = {
       store,
