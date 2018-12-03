@@ -101,9 +101,9 @@ body {
 }
 
 .Tooltip {
-  background-color: #213246;
+  background-color: #f0eff0;
   position: relative !important;
-  color: #ffffff;
+  color: black;
   max-width: 240px !important;
 }
 
@@ -129,8 +129,8 @@ body {
 }
 
 .__react_component_tooltip.type-dark {
-  background-color: #213246 !important;
+  background-color: #f0eff0 !important;
 }
 .__react_component_tooltip::after {
-  border-top-color: #213246 !important;
+  border-top-color: #f0eff0 !important;
 }

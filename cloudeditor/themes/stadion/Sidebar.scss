@@ -48,7 +48,7 @@
   width: 250px;
   position: absolute;
   display: block;
-  background-color: #213246;
+  background-color: #f0eff0;
   height: 100%;
   -webkit-transition: width 0.2s ease;
   -moz-transition: width 0.2s ease;
@@ -67,7 +67,7 @@
   /* padding: 0; */
   width: 100%;
   height: 100%;
-  background-color: #213246;
+  background-color: #f0eff0;
 }
 
 #sidebar-wrapper-container ul li {
@@ -79,10 +79,11 @@
   width: 100%;
   height: 60px;
   cursor: pointer;
-  color: #6cbfe8;
-  background-color: #1b2939;
+  color: grey;
+  background-color: #f0eff0;
   border: none;
   outline: none;
+  padding-right: 0px;
 }
 
 #sidebar-wrapper-container .SidebarButton .icon {
@@ -145,4 +146,79 @@
 #sidebar-wrapper-container .SidebarButtonSelected,
 #sidebar-wrapper-container .SidebarButton:hover {
   color: #99d122;
+}
+
+.ToggleSidebarContainer {
+  height: 50px;
+}
+
+#sidebar-wrapper-container .PaneContainer {
+  margin-top: 50px;
+  background-color: white;
+}
+
+.ToggleSidebarContainer button {
+  margin-right: 10px;
+  float: right;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  margin-top: 20px;
+}
+.ToggleSidebarContainer button:hover {
+  cursor: pointer;
+}
+
+#sidebar-wrapper.SidebarMinimized #sidebar-wrapper-container {
+  width: 90px;
+}
+
+#sidebar-wrapper.SidebarMinimized .IconTitle {
+  display: none;
+}
+
+.BackButtonContainer button {
+  float: right;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: black;
+  margin-top: 5px;
+}
+.BackButtonContainer button:hover {
+  cursor: pointer;
+}
+
+.BackButtonContainer {
+  height: 25px;
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.RightTriangle {
+  width: 0px;
+  height: 0px;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid white;
+  float: right;
+  margin-top: 10px;
+}
+
+#sidebar-wrapper.SidebarMinimized .RightTriangle {
+  position: absolute;
+  right: 0px;
+}
+
+#sidebar-wrapper.SidebarMinimized .RightTriangle {
+  display: none;
+}
+#sidebar-wrapper.SidebarMinimized .SidebarButtonSelected .RightTriangle {
+  display: inline-block;
+}
+
+.icon {
+  color: #666666;
 }

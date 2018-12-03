@@ -188,3 +188,10 @@
   border: 1px solid grey;
   color: grey;
 }
+
+.FupaLogo {
+  background-image: url("./assets/start_fupa_logo.png");
+  width: 94px;
+  height: auto;
+  background-size: contain;
+}

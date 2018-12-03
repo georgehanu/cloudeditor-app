@@ -22,8 +22,8 @@ module.exports = {
       position: 1,
       priority: 1,
       text: "Fupa",
-      icon: "printqicon-newtext",
-      showMore: true,
+      icon: "FupaLogo",
+      showMore: false,
       tooltip: { title: "Fupa", description: "Description" }
     }
   }),
