@@ -7,7 +7,7 @@ import SliderCarousel from "../SliderCarousel/SliderCarousel";
 import {
   dagDataTitleSelector,
   dagDataDescriptionSelector
-} from "../../../stores/selectors";
+} from "../../../store/selectors";
 
 const { connect } = require("react-redux");
 

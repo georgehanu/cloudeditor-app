@@ -2,14 +2,12 @@ const React = require("react");
 const withTooltip = require("../../hoc/withTooltip");
 
 const SidebarButton = props => {
-  console.log(props, "SidebarButton222");
   let defaultClasses = ["SidebarButton"];
   if (props.selected) {
     defaultClasses.push("SidebarButtonSelected");
   }
 
   const className = defaultClasses.join(" ");
-  console.log(props, "SidebarButton");
   return (
     <button
       type="button"

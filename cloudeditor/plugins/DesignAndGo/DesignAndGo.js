@@ -97,6 +97,6 @@ const DesignAndGoPlugin = DesignAndGo;
 //module.exports = {
 export default {
   DesignAndGo: assign(DesignAndGoPlugin),
-  reducers: { designAndGo: require("./stores/reducers") },
-  epics: require("./stores/epics")
+  reducers: { designAndGo: require("./store/reducers") },
+  epics: require("./store/epics")
 };

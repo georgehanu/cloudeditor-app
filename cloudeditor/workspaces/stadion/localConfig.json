@@ -1,7 +1,7 @@
 {
   "plugins": {
     "mobile": ["Html5Renderer"],
-    "desktop": ["Html5Renderer", "SideBar", "Fupa"]
+    "desktop": ["Html5Renderer", "SideBar", "Fupa", "AddImage", "AddPdf"]
   },
   "mainComponent": {
     "component": "div",

@@ -7,9 +7,9 @@ import {
   dagErrorMessageSelector,
   dagImagePathSelector,
   dagShowUploadImageSelector
-} from "../../../stores/selectors";
+} from "../../../store/selectors";
 
-const { dagUploadImage } = require("../../../stores/actions");
+const { dagUploadImage } = require("../../../store/actions");
 const { connect } = require("react-redux");
 
 class UploadImage extends Component {

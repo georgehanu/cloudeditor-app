@@ -3,7 +3,8 @@ require("./withSpinner.css");
 const { NamespacesConsumer } = require("react-i18next");
 
 const withSpinner = WrappedComponent => props => {
-  if (props.loading)
+  if (props.loading) {
+    console.log(props);
     return (
       <NamespacesConsumer ns="hoc">
         {(t, { i18n, ready }) => (
@@ -13,6 +14,7 @@ const withSpinner = WrappedComponent => props => {
         )}
       </NamespacesConsumer>
     );
+  }
 
   return (
     <React.Fragment>

@@ -7,13 +7,12 @@ import { withNamespaces } from "react-i18next";
 import {
   dagLoadingSignInSelector,
   dagErrorMessageSignInSelector
-} from "../../../stores/selectors";
-//import { dagSignInStart } from "../../../../stores/actions/designAndGo";
+} from "../../../store/selectors";
 
 const {
   dagSigninStart,
   dagSigninClearMessage
-} = require("../../../stores/actions");
+} = require("../../../store/actions");
 
 const { connect } = require("react-redux");
 

@@ -3,7 +3,7 @@ import React from "react";
 import LeftPanel from "../LeftPanel/LeftPanel";
 import RightPanel from "../RightPanel/RightPanel";
 import SliderCarousel from "../SliderCarousel/SliderCarousel";
-import { dagSliderDataSelector } from "../../../stores/selectors";
+import { dagSliderDataSelector } from "../../../store/selectors";
 
 const { connect } = require("react-redux");
 

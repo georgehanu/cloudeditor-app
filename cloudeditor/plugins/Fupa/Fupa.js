@@ -23,7 +23,7 @@ module.exports = {
       priority: 1,
       text: "Fupa",
       icon: "FupaLogo",
-      showMore: false,
+      showMore: true,
       tooltip: { title: "Fupa", description: "Description" }
     }
   }),

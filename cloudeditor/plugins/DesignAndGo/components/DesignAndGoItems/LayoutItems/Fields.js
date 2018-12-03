@@ -5,8 +5,8 @@ import ColorButtonGroup from "./ColorButtonGroup";
 import UploadImage from "./UploadImage";
 
 import * as Types from "../../DesignAndGoConfig/types";
-import { dagDataItemsSelector } from "../../../stores/selectors";
-import { dagChangeInput } from "../../../stores/actions";
+import { dagDataItemsSelector } from "../../../store/selectors";
+import { dagChangeInput } from "../../../store/actions";
 
 const { connect } = require("react-redux");
 
