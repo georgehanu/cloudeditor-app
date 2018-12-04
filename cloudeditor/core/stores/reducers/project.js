@@ -138,6 +138,7 @@ const removeActionSelection = (state, payload) => {
 
 const config = ConfigUtils.getDefaults();
 const emptyProject = ProjectUtils.getRandomProject(config.project);
+//const emptyProject = ProjectUtils.getEmptyProject(config.project);
 
 const initialState = {
   ...emptyProject,

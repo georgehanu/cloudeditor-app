@@ -4,7 +4,10 @@ const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
 const { hot } = require("react-hot-loader");
 
-const { activePageSelector } = require("../stores/selectors/project");
+const { displayedPageSelector } = require("../stores/selectors/Html5Renderer");
+
+require("./Html5Renderer/Html5Renderer.css");
+
 class Html5Renderer extends React.Component {
   getTools = () => {
     return this.props.items.sort((a, b) => a.position - b.position);
@@ -29,7 +32,12 @@ class Html5Renderer extends React.Component {
   render() {
     return (
       <div className="renderContainer">
-        {<Renderer {...this.props.activePage} />}
+        {
+          <Renderer
+            width={this.props.activePage.width}
+            height={this.props.activePage.height}
+          />
+        }
       </div>
     );
   }
@@ -38,7 +46,7 @@ class Html5Renderer extends React.Component {
 // let's export the plugin and a set of required reducers
 const mapStateToProps = state => {
   return {
-    activePage: activePageSelector(state)
+    activePage: displayedPageSelector(state)
   };
 };
 

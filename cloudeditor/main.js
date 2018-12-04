@@ -1,9 +1,10 @@
-module.exports = (plugins, requires, localConfig, i18n) => {
+module.exports = (plugins, requires, localConfig) => {
   const startApp = () => {
     const React = require("react");
     const ReactDOM = require("react-dom");
     const assign = require("object-assign");
     const { AppContainer } = require("react-hot-loader");
+    const ReselectTools = require("reselect-tools");
 
     const Editor = require("./core/containers/Editor");
     const ConfigUtils = require("./core/utils/ConfigUtils");
@@ -15,9 +16,10 @@ module.exports = (plugins, requires, localConfig, i18n) => {
     const store = StandardStore({}, {}, {}, plugins);
     const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");
 
+    ReselectTools.getStateWith(() => store.getState());
+
     const editorConfig = {
       store,
-      i18n,
       plugins: assign(PluginsUtils.getPlugins(plugins), { requires }),
       pluginsConfig: ConfigUtils.getConfigProp("plugins")
     };

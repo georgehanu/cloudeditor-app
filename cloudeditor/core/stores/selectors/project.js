@@ -19,6 +19,68 @@ const {
 const pagesSelector = state => {
   return pathOr({}, ["project", "pages"], state);
 };
+
+const pagesOrderSelector = state => {
+  return pathOr([], ["project", "pagesOrder"], state);
+};
+
+const activePageIdSelector = state =>
+  pathOr(null, ["project", "activePage"], state);
+
+/* Start Document Config Selectors */
+const facingPagesSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "facingPages"],
+    state
+  );
+};
+const singleFirstLastPageSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "singleFirstLastPage"],
+    state
+  );
+};
+const groupSizeSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "groupSize"], state);
+};
+const predefinedGroupsSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "predefinedGroups"],
+    state
+  );
+};
+const showTrimboxSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "showTrimbox"],
+    state
+  );
+};
+/* End Document Config Selectors */
+
+/* Start Pages Config Selectors */
+const pagesDefaultConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "pages", "default"], state);
+};
+const trimboxPagesConfigSelector = state => {
+  return pathOr(
+    { top: 0, right: 0, bottom: 0, left: 0 },
+    ["project", "configs", "pages", "boxes", "trimbox"],
+    state
+  );
+};
+const bleedPagesConfigSelector = state => {
+  return pathOr(
+    { top: 0, right: 0, bottom: 0, left: 0 },
+    ["project", "configs", "pages", "boxes", "bleed"],
+    state
+  );
+};
+/* End Pages Config Selectors */
+
 const groupsSelector = state => {
   return pathOr({}, ["project", "configs", "document", "groups"], state);
 };
@@ -32,8 +94,7 @@ const useTrimboxSelector = state => {
 
 const objectsSelector = state =>
   (state && state.project && state.project.objects) || {};
-const activePageIdSelector = state =>
-  (state && state.project && state.project.activePage) || null;
+
 const selectedPageIdSelector = state =>
   (state && state.project && state.project.selectedPage) || null;
 const activeGroupIdSelector = state =>
@@ -198,14 +259,25 @@ const selectedObjectSelector = createSelector(
 );
 
 module.exports = {
-  activePageSelector,
+  pagesSelector,
+  pagesOrderSelector,
   activePageIdSelector,
+  activePageSelector,
   selectedObjectSelector,
   activeSelectionSelector,
   objectsSelector,
   selectedActionsIdsSelector,
   selectedObjectsIdsSelector,
-  pagesSelector,
   groupsSelector,
-  selectedPageIdSelector
+  selectedPageIdSelector,
+
+  facingPagesSelector,
+  singleFirstLastPageSelector,
+  groupSizeSelector,
+  predefinedGroupsSelector,
+  showTrimboxSelector,
+
+  pagesDefaultConfigSelector,
+  trimboxPagesConfigSelector,
+  bleedPagesConfigSelector
 };

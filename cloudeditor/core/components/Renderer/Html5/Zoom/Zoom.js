@@ -1,27 +1,21 @@
 const React = require("react");
+
 const PropTypes = require("prop-types");
 const randomColor = require("randomcolor");
 
 require("./Zoom.css");
-
 const Page = require("../Page/Page");
 
-const applyZoom = ({ scale, zoom, width, height, canvasRef }) => {
-  const zoomScale = scale + ((zoom * 100 - 100) / 100) * scale;
+const centerPage = ({ width, height, canvasRef }) => {
   const canvasRefBounding = canvasRef.getBoundingClientRect();
-  const widthScale = width * zoomScale;
-  const heightScale = height * zoomScale;
-  const marginTop = !(heightScale > canvasRefBounding.height)
-    ? (canvasRefBounding.height - heightScale) / 2
+  const marginTop = !(height > canvasRefBounding.height)
+    ? (canvasRefBounding.height - height) / 2
     : 0;
-  const marginLeft = !(widthScale > canvasRefBounding.width)
-    ? (canvasRefBounding.width - widthScale) / 2
+  const marginLeft = !(width > canvasRefBounding.width)
+    ? (canvasRefBounding.width - width) / 2
     : 0;
 
   return {
-    zoomScale,
-    width: widthScale,
-    height: heightScale,
     marginLeft,
     marginTop
   };
@@ -30,15 +24,15 @@ const applyZoom = ({ scale, zoom, width, height, canvasRef }) => {
 class Zoom extends React.Component {
   render() {
     const styleZoom = {
-      backgroundColor: randomColor()
+      // backgroundColor: randomColor()
     };
-    const { zoom, scale, viewOnly, width, height } = this.props;
+    const { zoom } = this.props;
     const classes = ["zoomContainer", zoom > 1 ? "zoomActive" : ""].join(" ");
-    const zoomProps = applyZoom(this.props);
+    const centeredProps = centerPage(this.props);
 
     return (
       <div style={styleZoom} className={classes}>
-        <Page {...this.props} {...zoomProps} />
+        <Page {...this.props} {...centeredProps} />
       </div>
     );
   }

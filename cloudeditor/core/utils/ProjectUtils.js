@@ -1,5 +1,5 @@
 const uuidv4 = require("uuid/v4");
-const { merge, mergeAll, pathOr } = require("ramda");
+const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
 const randomcolor = require("randomcolor");
 
 const getObjectColorTemplate = cfg => {
@@ -128,9 +128,11 @@ const getObjectsDefaults = cfg => {
 const getDocumentDefaults = cfg => {
   const defaults = merge(
     {
-      facingPages: false,
-      facingNumber: 2,
+      facingPages: true,
+      singleFirstLastPage: true,
+      groupSize: 2,
       showTrimbox: true,
+      predefinedGroups: [2, 3], //or false
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]
@@ -142,33 +144,26 @@ const getDocumentDefaults = cfg => {
 };
 
 const getPagesDefaults = cfg => {
-  const defaults = merge(
+  const defaults = mergeDeepRight(
     {
-      width: 1080,
-      height: 1080,
-      boxes: merge(
-        {
-          trimbox: merge(
-            {
-              top: 20,
-              right: 20,
-              bottom: 20,
-              left: 20
-            },
-            pathOr({}, ["boxes", "trimbox"], cfg)
-          ),
-          bleed: merge(
-            {
-              top: 10,
-              right: 10,
-              bottom: 10,
-              left: 10
-            },
-            pathOr({}, ["boxes", "bleed"], cfg)
-          )
+      defaults: {
+        width: 1080,
+        height: 1080
+      },
+      boxes: {
+        trimbox: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20
         },
-        (cfg && cfg.boxes) || {}
-      )
+        bleed: {
+          top: 10,
+          right: 10,
+          bottom: 10,
+          left: 10
+        }
+      }
     },
     cfg || {}
   );
@@ -177,25 +172,17 @@ const getPagesDefaults = cfg => {
 
 const getProjectTemplate = cfg => {
   const project = {
-    title: (cfg && cfg.title) || "Empty Project",
+    title: pathOr("Empty Project", ["title", "document"], cfg),
     pages: {},
-    groups: {},
-    pagesOrder: [],
     activePage: null,
-    activeGroup: null,
+    pagesOrder: [],
     objects: {},
     selectedObjectsIds: [],
     activeSelection: null,
     configs: {
-      document: getDocumentDefaults(
-        (cfg && cfg.defaults && cfg.defaults.document) || {}
-      ),
-      pages: getPagesDefaults(
-        (cfg && cfg.defaults && cfg.defaults.pages) || {}
-      ),
-      objects: getObjectsDefaults(
-        (cfg && cfg.defaults && cfg.defaults.objects) || {}
-      )
+      document: getDocumentDefaults(pathOr({}, ["defaults", "document"], cfg)),
+      pages: getPagesDefaults(pathOr({}, ["defaults", "pages"], cfg)),
+      objects: getObjectsDefaults(pathOr({}, ["defaults", "objects"], cfg))
     },
     colors: {},
     fonts: {}
@@ -210,16 +197,11 @@ const getProjectPageTemplate = cfg => {
   };
   return {
     id: pathOr(uuidv4(), ["id"], cfg),
+    label: pathOr("Page %no%", ["label"], cfg),
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
     objectsIds: pathOr([], ["objectsIds"], cfg),
     background: pathOr(background, ["background"], cfg)
-  };
-};
-const getProjectGroupTemplate = cfg => {
-  return {
-    id: pathOr(uuidv4(), ["id"], cfg),
-    pagesIds: pathOr([], ["pagesIds"], cfg)
   };
 };
 
@@ -295,16 +277,10 @@ const getUIPermissionsTemplate = cfg => {
 const getEmptyProject = cfg => {
   let project = getProjectTemplate(cfg);
   const emptyPage = getEmptyPage(cfg);
-  const emptyGroup = getEmptyGroup(
-    merge({ pagesIds: [emptyPage.id] }, cfg || {})
-  );
   return {
     ...project,
     pages: {
       [emptyPage.id]: emptyPage
-    },
-    groups: {
-      [emptyGroup.id]: emptyGroup
     },
     pagesOrder: [emptyPage.id],
     activePage: emptyPage.id,
@@ -445,11 +421,8 @@ const getRandomProject = cfg => {
       [text1.id]: text1,
       [text2.id]: text2
     },
-
-    pagesOrder: [page1.id, page2.id, page3.id, page4.id],
-    activePage: page1.id,
-    selectedPage: page1.id,
-    activeGroup: "group_1"
+    pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
+    activePage: page3.id
   };
 };
 
@@ -460,10 +433,6 @@ const getRandomProject = cfg => {
  */
 const getEmptyPage = cfg => {
   return getProjectPageTemplate(cfg);
-};
-
-const getEmptyGroup = cfg => {
-  return getProjectGroupTemplate(cfg);
 };
 
 const getEmptyObject = cfg => {
@@ -561,7 +530,7 @@ const getEmptyUI = cfg => {
     fonts: {},
     fontMetrics: {},
     workArea: {
-      zoom: 0.5,
+      zoom: 1,
       scale: 1,
       pageOffset: {
         x: 0,
@@ -606,7 +575,6 @@ const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
   getEmptyPage,
-  getEmptyGroup,
   getEmptyObject,
   getEmptyUI,
   getRandomUI,

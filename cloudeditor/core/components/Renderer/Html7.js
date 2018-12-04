@@ -51,11 +51,11 @@ class Html5Renderer extends React.Component {
 
   updatePageOffset() {
     const scale = updatePageOffset(this.canvas, this.props);
-    this.props.changeWorkAreaPropsHandler({ scale });
+    this.updateWorkArea(scale);
     this.setState({ componentReady: true }, () => {});
   }
 
-  updateWorkAreaBk(scale) {
+  updateWorkArea(scale) {
     const canvasContainer = this.canvas;
     const pageContainer = this.pageContainerRef.current;
 
@@ -87,6 +87,7 @@ class Html5Renderer extends React.Component {
       backgroundColor: randomColor()
     };
     const { componentReady } = this.state;
+    const { scale, zoom } = this.props;
     return (
       <Canvas
         {...this.props}
@@ -98,12 +99,21 @@ class Html5Renderer extends React.Component {
     );
   }
 }
-Html5Renderer.propTypes = {};
+Html5Renderer.propTypes = {
+  scale: PropTypes.number,
+  zoom: PropTypes.number
+};
 
-Html5Renderer.defaultProps = {};
+Html5Renderer.defaultProps = {
+  scale: 1,
+  zoom: 1
+};
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    zoom: zoomSelector(state),
+    scale: scaleSelector(state)
+  };
 };
 const mapDispatchToProps = dispatch => {
   return {

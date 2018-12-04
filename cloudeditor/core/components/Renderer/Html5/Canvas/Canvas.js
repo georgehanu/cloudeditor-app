@@ -1,6 +1,10 @@
 const React = require("react");
+const { connect } = require("react-redux");
 const PropTypes = require("prop-types");
 const randomColor = require("randomcolor");
+const {
+  scaledDisplayedPageSelector
+} = require("../../../../stores/selectors/Html5Renderer");
 
 const Zoom = require("../Zoom/Zoom");
 
@@ -14,7 +18,7 @@ class Canvas extends React.Component {
     const { componentReady, getCanvasRef, ...otherProps } = this.props;
     let zoomContainer = null;
     if (componentReady) {
-      zoomContainer = <Zoom {...otherProps} />;
+      zoomContainer = <Zoom {...otherProps} {...this.props.scaledPage} />;
     }
     return (
       <div style={style} className="canvasContainer" ref={getCanvasRef}>
@@ -41,4 +45,10 @@ Canvas.defaultProps = {
   canvasRef: null
 };
 
-module.exports = Canvas;
+const mapStateToProps = state => {
+  return {
+    scaledPage: scaledDisplayedPageSelector(state)
+  };
+};
+
+module.exports = connect(mapStateToProps)(Canvas);
