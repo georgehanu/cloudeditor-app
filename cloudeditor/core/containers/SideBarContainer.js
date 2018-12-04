@@ -41,13 +41,15 @@ class SideBarContainer extends React.Component {
 
       const iconStyle = "icon " + (tool.icon ? tool.icon : "");
       return (
-        <li key={i}>
+        <li key={i} className="SidebarButtonContainer">
           <SidebarButton
             clicked={() => this.showPlugin(i)}
             selected={i === this.state.pluginIndex ? true : false}
             tooltip={tool.tooltip}
           >
-            <div className={iconStyle} />
+            <div className="IconContainer">
+              <div className={iconStyle} />
+            </div>
             <div className="IconTitle">{tool.text}</div>
             {tool.showMore && (
               <span className="icon More printqicon-lefttriangle" />

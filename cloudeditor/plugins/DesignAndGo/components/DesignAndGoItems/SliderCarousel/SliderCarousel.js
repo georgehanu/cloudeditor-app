@@ -2,7 +2,7 @@ import React from "react";
 import { withNamespaces } from "react-i18next";
 import CustomSlider from "../ReWrite/CustomSlider";
 import UploadImage from "../LayoutItems/UploadImage";
-import { dagChangeSlider } from "../../../stores/actions";
+import { dagChangeSlider } from "../../../store/actions";
 
 const { connect } = require("react-redux");
 

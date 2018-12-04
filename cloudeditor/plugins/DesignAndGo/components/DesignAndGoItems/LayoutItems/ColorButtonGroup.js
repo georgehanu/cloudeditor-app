@@ -5,11 +5,11 @@ import ColorPicker from "./ColorPicker";
 import {
   dagColorsSelector,
   dagActiveColorButtonSelector
-} from "../../../stores/selectors";
+} from "../../../store/selectors";
 import {
   dagChangeActiveColorSchema,
   dagChangeColorPicker
-} from "../../../stores/actions";
+} from "../../../store/actions";
 
 const { connect } = require("react-redux");
 

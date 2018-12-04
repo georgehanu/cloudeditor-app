@@ -134,3 +134,48 @@ body {
 .__react_component_tooltip::after {
   border-top-color: #f0eff0 !important;
 }
+
+#sidebar-wrapper .ToggleSidebarContainer {
+  display: none;
+}
+
+#sidebar-wrapper .icon.More {
+  display: none;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLi,
+#sidebar-wrapper .UploadGalleryItem {
+  width: 120px;
+}
+
+section.dropzone {
+  height: 60px;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLiLoading {
+  text-align: -webkit-center;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLiLoading .Loader {
+  font-size: 8px;
+  margin: 0px;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLiLoading .Loader .SpinnerText {
+  left: 2px;
+  top: 35px;
+  font-size: 12px;
+}
+
+#sidebar-wrapper .UploadLabel {
+  background-color: grey;
+}
+
+#sidebar-wrapper-container .SidebarButton:hover,
+#sidebar-wrapper-container .SidebarButtonSelected {
+  color: #666666;
+}
+
+#sidebar-wrapper-container .Loader {
+  color: grey;
+}
