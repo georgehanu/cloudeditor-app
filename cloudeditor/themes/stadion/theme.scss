@@ -227,9 +227,8 @@ section.dropzone {
   flex-wrap: wrap;
 }
 
-.PageSelectorHeader,
-.PageSelectorContainer {
-  width: 100%;
+.PageSelectorHeader {
+  width: calc(100% - 105px);
 }
 
 .PageSelectorContainer {
@@ -312,7 +311,8 @@ section.dropzone {
   width: calc(100% - 105px);
 }
 
-#container.SidebarContainerExpand .PageSelectorContainer {
+#container.SidebarContainerExpand .PageSelectorContainer,
+#container.SidebarContainerExpand .PageSelectorHeader {
   width: calc(100% - 505px);
 }
 
