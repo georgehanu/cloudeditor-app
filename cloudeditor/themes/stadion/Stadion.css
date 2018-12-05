@@ -8,6 +8,21 @@
   font-smooth: always;
 }
 
+.stadion-down:before {
+  font-family: "stadion";
+  content: "\e900";
+}
+
+.stadion-up:before {
+  font-family: "stadion";
+  content: "\e903";
+}
+
+.stadion-left:before {
+  font-family: "stadion";
+  content: "\e902";
+}
+
 .fupa {
   height: calc(100% - 25px);
   width: 100%;

@@ -168,7 +168,13 @@ section.dropzone {
 }
 
 #sidebar-wrapper .UploadLabel {
-  background-color: grey;
+  background-color: #f9fafc;
+  border: 1px solid #dcdee1;
+}
+
+#sidebar-wrapper .UploadLabel .UploadMessage {
+  color: #58595b;
+  margin-left: 3px;
 }
 
 #sidebar-wrapper-container .SidebarButton:hover,
@@ -263,8 +269,8 @@ section.dropzone {
   height: 72px;
   margin-top: 10px;
   min-width: 70px;
-  max-width: 97px;
-  margin-left: 3px;
+  /*max-width: 97px;*/
+  margin-left: 0px;
   width: 70px;
 }
 .SinglePage {
@@ -394,4 +400,81 @@ section.dropzone {
   padding-top: 0px;
   height: 23px;
   border-bottom: none;
+}
+
+.PageHeaderButtonMinimize,
+.PageHeaderButtonExtend,
+.BackButtonContainer button,
+.FupaClubSearch button.OkButton {
+  background-color: #fefeff;
+  border: 1px solid #dcdee1;
+  outline: none;
+  cursor: pointer;
+  margin-top: 0px;
+}
+.FupaClubSearch input {
+  border: 1px solid #dcdee1;
+}
+
+.PageHeaderButtonsContainer .icon,
+.BackButtonContainer .icon {
+  color: #b6b6b6;
+}
+
+.BackButtonContainer .icon {
+  font-family: "stadion";
+}
+
+.BackButtonContainer .icon:before {
+  font-family: "stadion";
+  content: "\e902";
+}
+
+#container.PageSelectorExtended .SinglePageContainer {
+  width: 140px;
+  height: 160px;
+  margin-top: 10px;
+}
+
+#container.PageSelectorExtended .SinglePage {
+  width: 140px;
+  height: 140px;
+}
+.SinglePageCenter {
+  margin-left: 3px;
+}
+
+#container.PageSelectorExtended .PageSelectorContainer {
+  padding-top: 40px;
+}
+
+.PageHeaderText,
+.SinglePageText {
+  color: #58595b;
+}
+
+.FupaClubSearch {
+  text-align: -webkit-center;
+}
+
+#sidebar-wrapper-container .GalleryItemActions .icon {
+  color: white;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLi {
+  width: 100%;
+}
+#sidebar-wrapper .UploadGalleryItem {
+  width: 97%;
+}
+
+#sidebar-wrapper .UploadContainer {
+  height: calc(100% - 25px);
+}
+
+#sidebar-wrapper .UploadGallery {
+  height: calc(100% - 76px);
+}
+#sidebar-wrapper .UploadGalleryUl {
+  overflow: auto;
 }

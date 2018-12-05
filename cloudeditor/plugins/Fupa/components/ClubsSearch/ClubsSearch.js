@@ -20,7 +20,7 @@ class ClubsSearch extends React.Component {
   render() {
     const { value } = this.state;
     return (
-      <div>
+      <div className="FupaClubSearch">
         <input
           value={value}
           onChange={event => this.inputChangedHandler(event.target.value)}
@@ -30,7 +30,7 @@ class ClubsSearch extends React.Component {
           className="OkButton"
           onClick={() => this.props.searchClubs(this.state.value)}
         >
-          Go>>
+          <span className="icon printqicon-search" />
         </button>
       </div>
     );

@@ -7,14 +7,12 @@ const PageHeader = props => {
       <div className="PageHeaderButtonsContainer">
         {props.showExtend && (
           <button className="PageHeaderButtonExtend" onClick={props.extend}>
-            EX
-            <div className="icon icon-chevron-down chevron-down" />
+            <span className="icon stadion-up stadion-icon" />
           </button>
         )}
         {props.showMinimized && (
           <button className="PageHeaderButtonMinimize" onClick={props.minimize}>
-            MI
-            <div className="icon icon-chevron-down chevron-down" />
+            <span className="icon stadion-down stadion-icon" />
           </button>
         )}
       </div>

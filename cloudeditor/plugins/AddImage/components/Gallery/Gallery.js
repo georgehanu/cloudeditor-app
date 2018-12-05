@@ -1,27 +1,30 @@
 const React = require("react");
 const LoadingItem = require("./LoadingItem");
+const LazyLoad = require("react-lazy-load").default;
 
 const Gallery = props => {
   let items = props.items.map((el, index) => {
     return (
       <li className="UploadGalleryLi" key={index}>
-        <div className="UploadGalleryItem">
-          <img
-            src={el.src}
-            alt="GalleryItem"
-            className="UploadGalleryItemImage"
-          />
-          <div className="GalleryItemActions">
-            <span
-              className="Select icon printqicon-ok"
-              onClick={() => props.selectImage(el.id)}
+        <LazyLoad>
+          <div className="UploadGalleryItem">
+            <img
+              src={el.src}
+              alt="GalleryItem"
+              className="UploadGalleryItemImage"
             />
-            <span
-              className="Delete icon printqicon-delete"
-              onClick={() => props.deleteImage(el.id)}
-            />
+            <div className="GalleryItemActions">
+              <span
+                className="Select icon printqicon-ok"
+                onClick={() => props.selectImage(el.id)}
+              />
+              <span
+                className="Delete icon printqicon-delete"
+                onClick={() => props.deleteImage(el.id)}
+              />
+            </div>
           </div>
-        </div>
+        </LazyLoad>
       </li>
     );
   });
