@@ -80,10 +80,11 @@
   height: 60px;
   cursor: pointer;
   color: grey;
-  background-color: #f0eff0;
+  background-color: #f9fafc;
   border: none;
   outline: none;
   padding-right: 0px;
+  //border-right: 1px solid #dcdee1;
 }
 
 #sidebar-wrapper-container .SidebarButton .icon {
@@ -196,7 +197,7 @@
   width: 100%;
   display: block;
 }
-
+/*
 .RightTriangle {
   width: 0px;
   height: 0px;
@@ -207,7 +208,10 @@
   margin-top: 10px;
   display: none;
 }
+*/
 
+.RightTriangle {
+}
 #sidebar-wrapper.SidebarMinimized .RightTriangle {
   position: absolute;
   right: 0px;
@@ -229,13 +233,15 @@
 }
 
 #sidebar-wrapper-container .SidebarButton.SidebarButtonSelected .RightTriangle {
-  display: inline;
-  margin-top: -50px;
-  margin-right: -6px;
+  position: absolute;
+  margin-left: 68px;
+  border-left: 1px solid #cccdce;
+  right: -1px;
+  margin-top: -13px;
 }
 
 #sidebar-wrapper-container {
-  width: 150px;
+  width: 100px;
 }
 
 #sidebar-wrapper-container ul li.SidebarButtonContainer {
@@ -261,7 +267,7 @@
 }
 
 #sidebar-wrapper-container .SidebarButton .icon {
-  width: 100px;
+  width: 88px;
   height: 30px;
   display: inline-block;
   background-repeat: no-repeat;
@@ -272,4 +278,46 @@
 #sidebar-wrapper-container .SidebarButton {
   padding: 6px;
   height: 80px;
+}
+
+.RightTriangle:before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 100%;
+  width: 0;
+  height: 0;
+  border-color: transparent #cccdce transparent transparent;
+  border-style: solid;
+  border-width: 11px;
+}
+
+.RightTriangle:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 100%;
+  width: 0;
+  height: 0;
+  border-color: transparent #fff transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+}
+
+#sidebar-wrapper-container ul {
+  background-color: #f9fafc;
+  border-right: 1px solid #dcdee1;
+}
+
+#sidebar-wrapper-container .PaneContainer {
+  border-right: 1px solid #dcdee1;
+}
+
+#sidebar-wrapper-container .icon,
+#sidebar-wrapper-container .SidebarButton {
+  color: #58595b;
+}
+
+#sidebar-wrapper .SidebarButtonSelected {
+  background-color: #ebedf0;
 }

@@ -24,8 +24,10 @@ class SideBarContainer extends React.Component {
   showPlugin = pluginIndex => {
     if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
       this.setState({ showPane: false, pluginIndex: null });
+      this.props.addContainerClasses("SideBar", []);
     } else {
       this.setState({ showPane: true, pluginIndex });
+      this.props.addContainerClasses("SideBar", ["SidebarContainerExpand"]);
     }
   };
 
@@ -74,7 +76,7 @@ class SideBarContainer extends React.Component {
       " " +
       (this.state.expanded ? "SidebarExpanded" : "SidebarMinimized");
     return (
-      <div id={this.props.id} style={{ color: "blue" }} className={className}>
+      <div id={this.props.id} className={className}>
         <div id={this.props.id + "-container"} style={this.props.style}>
           <ToggleSidebar
             clicked={this.toggleSidebarExpanded}
