@@ -1,7 +1,7 @@
-import React from "react";
+const React = require("react");
 
-import * as Types from "../../DesignAndGoConfig/types";
-import Text from "./Text";
+const Types = require("../../DesignAndGoConfig/types");
+const Text = require("./Text");
 
 const Description = props => {
   const items = props.items.map((el, index) => {
@@ -12,4 +12,4 @@ const Description = props => {
   return <React.Fragment>{items}</React.Fragment>;
 };
 
-export default Description;
+module.exports = Description;

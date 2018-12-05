@@ -1,7 +1,7 @@
-import Slider from "react-slick";
+const Slider = require("react-slick").default;
 
 let Arrows = require("./Arrows");
 
 class CustomSlider extends Slider {}
 
-export default CustomSlider;
+module.exports = CustomSlider;

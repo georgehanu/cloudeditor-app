@@ -1,5 +1,5 @@
-import React from "react";
-import { withNamespaces } from "react-i18next";
+const React = require("react");
+const { withNamespaces } = require("react-i18next");
 
 const MenuHeader = props => {
   return (
@@ -17,4 +17,4 @@ const MenuHeader = props => {
   );
 };
 
-export default withNamespaces("designAndGo")(MenuHeader);
+module.exports = withNamespaces("designAndGo")(MenuHeader);

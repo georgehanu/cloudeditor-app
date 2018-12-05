@@ -1,4 +1,4 @@
-import React from "react";
+const React = require("react");
 
 const ColorButton = props => {
   const className = "ColorButton" + (props.active ? " ColorButtonActive" : "");
@@ -18,4 +18,4 @@ const ColorButton = props => {
   );
 };
 
-export default ColorButton;
+module.exports = ColorButton;

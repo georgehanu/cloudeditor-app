@@ -1,9 +1,9 @@
-import React from "react";
+const React = require("react");
 
-import LeftPanel from "../LeftPanel/LeftPanel";
-import RightPanel from "../RightPanel/RightPanel";
-import SliderCarousel from "../SliderCarousel/SliderCarousel";
-import { dagSliderDataSelector } from "../../../store/selectors";
+const LeftPanel = require("../LeftPanel/LeftPanel");
+const RightPanel = require("../RightPanel/RightPanel");
+const SliderCarousel = require("../SliderCarousel/SliderCarousel");
+const { dagSliderDataSelector } = require("../../../store/selectors");
 
 const { connect } = require("react-redux");
 
@@ -62,7 +62,7 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Layout);

@@ -1,15 +1,15 @@
-import React from "react";
+const React = require("react");
 
-import ColorButton from "./ColorButton";
-import ColorPicker from "./ColorPicker";
-import {
+const ColorButton = require("./ColorButton");
+const ColorPicker = require("./ColorPicker");
+const {
   dagColorsSelector,
   dagActiveColorButtonSelector
-} from "../../../store/selectors";
-import {
+} = require("../../../store/selectors");
+const {
   dagChangeActiveColorSchema,
   dagChangeColorPicker
-} from "../../../store/actions";
+} = require("../../../store/actions");
 
 const { connect } = require("react-redux");
 
@@ -60,7 +60,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ColorButtonGroup);

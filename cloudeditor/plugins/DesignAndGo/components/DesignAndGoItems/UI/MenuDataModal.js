@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import MenuHeader from "./MenuModalItems/MenuHeader";
-import Fields from "../LayoutItems/Fields";
-import Backdrop from "./Backdrop";
-import { withNamespaces } from "react-i18next";
+const React = require("react");
+const MenuHeader = require("./MenuModalItems/MenuHeader");
+const Fields = require("../LayoutItems/Fields");
+const Backdrop = require("./Backdrop");
+const { withNamespaces } = require("react-i18next");
 
-class MenuDataModal extends Component {
+class MenuDataModal extends React.Component {
   render() {
     return (
       <React.Fragment>
@@ -23,4 +23,4 @@ class MenuDataModal extends Component {
   }
 }
 
-export default withNamespaces("designAndGo")(MenuDataModal);
+module.exports = withNamespaces("designAndGo")(MenuDataModal);

@@ -1,5 +1,4 @@
-import React from "react";
-import { withNamespaces } from "react-i18next";
+const React = require("react");
 
 const MenuLink = props => {
   return (
@@ -16,4 +15,4 @@ const MenuLink = props => {
   );
 };
 
-export default withNamespaces("designAndGo")(MenuLink);
+module.exports = MenuLink;

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import MenuHeader from "./MenuModalItems/MenuHeader";
-import MenuLink from "./MenuModalItems/MenuLink";
+const React = require("react");
+const MenuHeader = require("./MenuModalItems/MenuHeader");
+const MenuLink = require("./MenuModalItems/MenuLink");
 
-import Backdrop from "./Backdrop";
+const Backdrop = require("./Backdrop");
 
-class MenuModal extends Component {
+class MenuModal extends React.Component {
   render() {
     const links = [
       { linkName: "Sign In", clicked: this.props.onSignInOpenHandler },
@@ -39,4 +39,4 @@ class MenuModal extends Component {
   }
 }
 
-export default MenuModal;
+module.exports = MenuModal;

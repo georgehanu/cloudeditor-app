@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import { withNamespaces } from "react-i18next";
-import Dropzone from "react-dropzone";
+const React = require("react");
+const { withNamespaces } = require("react-i18next");
+const Dropzone = require("react-dropzone").default;
 
-import {
+const {
   dagLoadingSelector,
   dagErrorMessageSelector,
   dagImagePathSelector,
   dagShowUploadImageSelector
-} from "../../../store/selectors";
+} = require("../../../store/selectors");
 
 const { dagUploadImage } = require("../../../store/actions");
 const { connect } = require("react-redux");
 
-class UploadImage extends Component {
+class UploadImage extends React.Component {
   state = { files: [] };
 
   onDrop = (acceptedFile, rejectedFile) => {
@@ -97,7 +97,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withNamespaces("designAndGo")(UploadImage));

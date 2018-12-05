@@ -1,8 +1,7 @@
-import React from "react";
-import { withNamespaces } from "react-i18next";
-import CustomSlider from "../ReWrite/CustomSlider";
-import UploadImage from "../LayoutItems/UploadImage";
-import { dagChangeSlider } from "../../../store/actions";
+const React = require("react");
+const CustomSlider = require("../ReWrite/CustomSlider");
+const UploadImage = require("../LayoutItems/UploadImage");
+const { dagChangeSlider } = require("../../../store/actions");
 
 const { connect } = require("react-redux");
 
@@ -67,7 +66,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNamespaces("designAndGo")(SliderCarousel));
+)(SliderCarousel);

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import MenuHeader from "./MenuModalItems/MenuHeader";
-import Input from "../LayoutItems/Input";
-import Backdrop from "./Backdrop";
-import { withNamespaces } from "react-i18next";
+const React = require("react");
+const MenuHeader = require("./MenuModalItems/MenuHeader");
+const Input = require("../LayoutItems/Input");
+const Backdrop = require("./Backdrop");
+const { withNamespaces } = require("react-i18next");
 
-import {
+const {
   dagLoadingSignInSelector,
   dagErrorMessageSignInSelector
-} from "../../../store/selectors";
+} = require("../../../store/selectors");
 
 const {
   dagSigninStart,
@@ -16,7 +16,7 @@ const {
 
 const { connect } = require("react-redux");
 
-class SignInModal extends Component {
+class SignInModal extends React.Component {
   state = {
     email: "",
     password: "",
@@ -140,7 +140,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withNamespaces("designAndGo")(SignInModal));

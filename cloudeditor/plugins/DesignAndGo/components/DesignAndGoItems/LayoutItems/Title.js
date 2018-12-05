@@ -1,7 +1,7 @@
-import React from "react";
+const React = require("react");
 
-import * as Utils from "../../DesignAndGoConfig/utils";
-import { withNamespaces } from "react-i18next";
+const Utils = require("../../DesignAndGoConfig/utils");
+const { withNamespaces } = require("react-i18next");
 
 const Title = props => {
   const className = Utils.MergeClassName("TitleContainer", props.className);
@@ -18,4 +18,4 @@ const Title = props => {
   );
 };
 
-export default withNamespaces("designAndGo")(Title);
+module.exports = withNamespaces("designAndGo")(Title);

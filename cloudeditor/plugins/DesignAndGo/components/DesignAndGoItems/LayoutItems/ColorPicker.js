@@ -1,5 +1,5 @@
-import React from "react";
-import { HuePicker } from "react-color";
+const React = require("react");
+const { HuePicker } = require("react-color");
 
 class ColorButton extends React.Component {
   state = {
@@ -31,8 +31,6 @@ class ColorButton extends React.Component {
       ? { backgroundColor: this.props.containerBgColor }
       : {};
 
-    console.log("aa " + this.state.showPicker);
-
     return (
       <React.Fragment>
         <div className={className} onClick={this.onColorClicked}>
@@ -51,4 +49,4 @@ class ColorButton extends React.Component {
   }
 }
 
-export default ColorButton;
+module.exports = ColorButton;

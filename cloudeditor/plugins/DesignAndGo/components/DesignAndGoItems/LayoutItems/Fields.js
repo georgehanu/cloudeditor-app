@@ -1,12 +1,12 @@
-import React from "react";
-import Input from "./Input";
-import Text from "./Text";
-import ColorButtonGroup from "./ColorButtonGroup";
-import UploadImage from "./UploadImage";
+const React = require("react");
+const Input = require("./Input");
+const Text = require("./Text");
+const ColorButtonGroup = require("./ColorButtonGroup");
+const UploadImage = require("./UploadImage");
 
-import * as Types from "../../DesignAndGoConfig/types";
-import { dagDataItemsSelector } from "../../../store/selectors";
-import { dagChangeInput } from "../../../store/actions";
+const Types = require("../../DesignAndGoConfig/types");
+const { dagDataItemsSelector } = require("../../../store/selectors");
+const { dagChangeInput } = require("../../../store/actions");
 
 const { connect } = require("react-redux");
 
@@ -41,7 +41,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Fields);

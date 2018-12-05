@@ -1,13 +1,13 @@
-import React from "react";
-import Fields from "../LayoutItems/Fields";
-import Title from "../LayoutItems/Title";
-import Description from "../LayoutItems/Description";
-import { withNamespaces } from "react-i18next";
-import SliderCarousel from "../SliderCarousel/SliderCarousel";
-import {
+const React = require("react");
+const Fields = require("../LayoutItems/Fields");
+const Title = require("../LayoutItems/Title");
+const Description = require("../LayoutItems/Description");
+const { withNamespaces } = require("react-i18next");
+const SliderCarousel = require("../SliderCarousel/SliderCarousel");
+const {
   dagDataTitleSelector,
   dagDataDescriptionSelector
-} from "../../../store/selectors";
+} = require("../../../store/selectors");
 
 const { connect } = require("react-redux");
 
@@ -62,7 +62,7 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-export default connect(
+module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withNamespaces("designAndGo")(LeftPanel));

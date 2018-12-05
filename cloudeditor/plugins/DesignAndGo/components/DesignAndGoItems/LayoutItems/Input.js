@@ -1,4 +1,4 @@
-import React from "react";
+const React = require("react");
 
 const Input = props => {
   const className = "InputLabelContainer";
@@ -22,4 +22,4 @@ const Input = props => {
   );
 };
 
-export default Input;
+module.exports = Input;

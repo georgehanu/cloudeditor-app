@@ -1,4 +1,4 @@
-import React from "react";
+const React = require("react");
 
 const Text = props => {
   let output = null;
@@ -8,4 +8,4 @@ const Text = props => {
   return <React.Fragment>{output}</React.Fragment>;
 };
 
-export default Text;
+module.exports = Text;
