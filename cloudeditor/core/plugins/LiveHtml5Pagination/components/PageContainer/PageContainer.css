@@ -1,0 +1,19 @@
+.paginationPage {
+  width: 5%;
+  height: 100%;
+  display: inline-block;
+  float: left;
+  border: 1px solid #ccc;
+  display: flex;
+  position: relative;
+}
+.paginationPage .canvasContainer {
+  width: 100%;
+  height: 100%;
+}
+.paginationPage.left {
+  margin-left: 20px;
+}
+.paginationPage.left:first-child {
+  margin-left: 0px;
+}

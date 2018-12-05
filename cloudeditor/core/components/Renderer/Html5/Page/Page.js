@@ -1,7 +1,32 @@
 const React = require("react");
 const ObjectBlock = require("../Objects/Object/Object");
+const { connect } = require("react-redux");
+const { hot } = require("react-hot-loader");
+const {
+  createSelectorWithDependencies: createSelector,
+  registerSelectors
+} = require("reselect-tools");
+
+const {
+  scaledDisplayedPageSelector
+} = require("../../../../stores/selectors/Html5Renderer");
 
 require("./Page.css");
+
+const Boxes = require("../Boxes/Boxes");
+const centerPage = ({ width, height, containerWidth, containerHeight }) => {
+  const marginTop = !(height > containerHeight)
+    ? (containerHeight - height) / 2
+    : 0;
+  const marginLeft = !(width > containerWidth)
+    ? (containerWidth - width) / 2
+    : 0;
+
+  return {
+    marginLeft,
+    marginTop
+  };
+};
 
 class Page extends React.Component {
   constructor(props) {
@@ -10,8 +35,7 @@ class Page extends React.Component {
   }
 
   renderObjects() {
-    const { objects, viewOnly } = this.props;
-    console.log("objects", objects);
+    const { innerPages, viewOnly } = this.props;
     return Object.keys(objects).map(obKey => {
       return (
         <ObjectBlock key={obKey} {...objects[obKey]} viewOnly={viewOnly} />
@@ -20,7 +44,8 @@ class Page extends React.Component {
   }
 
   render() {
-    const { width, height, marginTop, marginLeft } = this.props;
+    const { width, height } = this.props;
+    const { marginLeft, marginTop } = centerPage(this.props);
     const pageStyle = {
       width,
       height,
@@ -34,10 +59,43 @@ class Page extends React.Component {
         style={pageStyle}
         className="pageContainer page"
       >
-        {/* {this.renderObjects()} */}
+        <Boxes
+          boxes={this.props.boxes}
+          width={this.props.width}
+          height={this.props.height}
+        />
+        {/* this.renderObjects() */}
       </div>
     );
   }
 }
+const makeMapStateToProps = (state, props) => {
+  const activePage = (_, props) => {
+    return props.activePage;
+  };
 
-module.exports = Page;
+  const zoomScale = (_, props) => {
+    return props.zoomScale;
+  };
+
+  const getScaledDisplayedPageSelector = scaledDisplayedPageSelector(
+    activePage,
+    zoomScale
+  );
+
+  const getObjectList = createSelector(
+    getScaledDisplayedPageSelector,
+    scaledPage => {
+      console.log("objectList", scaledPage);
+    }
+  );
+  const mapStateToProps = (state, props) => {
+    const scaledPage = getScaledDisplayedPageSelector(state, props);
+    return {
+      ...scaledPage,
+      objectList: getObjectList(state, props)
+    };
+  };
+  return mapStateToProps;
+};
+module.exports = hot(module)(connect(makeMapStateToProps)(Page));

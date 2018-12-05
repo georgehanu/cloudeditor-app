@@ -1,52 +1,35 @@
 const React = require("react");
-
 const PropTypes = require("prop-types");
 const randomColor = require("randomcolor");
 
 require("./Zoom.css");
 const Page = require("../Page/Page");
 
-const centerPage = ({ width, height, canvasRef }) => {
-  const canvasRefBounding = canvasRef.getBoundingClientRect();
-  const marginTop = !(height > canvasRefBounding.height)
-    ? (canvasRefBounding.height - height) / 2
-    : 0;
-  const marginLeft = !(width > canvasRefBounding.width)
-    ? (canvasRefBounding.width - width) / 2
-    : 0;
-
-  return {
-    marginLeft,
-    marginTop
-  };
-};
-
 class Zoom extends React.Component {
   render() {
     const styleZoom = {
       // backgroundColor: randomColor()
     };
-    const { zoom } = this.props;
-    const classes = ["zoomContainer", zoom > 1 ? "zoomActive" : ""].join(" ");
-    const centeredProps = centerPage(this.props);
 
+    const { getContainerRef, pageReady, zoom } = this.props;
+    const classes = ["zoomContainer", zoom > 1 ? "zoomActive" : ""].join(" ");
+    let pageContainer = null;
+    if (pageReady) {
+      pageContainer = <Page {...this.props} />;
+    }
     return (
-      <div style={styleZoom} className={classes}>
-        <Page {...this.props} {...centeredProps} />
+      <div style={styleZoom} className={classes} ref={getContainerRef}>
+        {pageContainer}
       </div>
     );
   }
 }
 Zoom.propTypes = {
-  viewOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-  zoom: PropTypes.number,
-  canvasRef: PropTypes.object
+  viewOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.number])
 };
 
 Zoom.defaultProps = {
-  viewOnly: 0,
-  zoom: 1,
-  canvasRef: {}
+  viewOnly: 0
 };
 
 module.exports = Zoom;

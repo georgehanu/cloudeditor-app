@@ -52,6 +52,13 @@ const predefinedGroupsSelector = state => {
     state
   );
 };
+const includeBoxesSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "includeBoxes"],
+    state
+  );
+};
 const showTrimboxSelector = state => {
   return pathOr(
     false,
@@ -83,13 +90,6 @@ const bleedPagesConfigSelector = state => {
 
 const groupsSelector = state => {
   return pathOr({}, ["project", "configs", "document", "groups"], state);
-};
-const useTrimboxSelector = state => {
-  return pathOr(
-    false,
-    ["project", "configs", "document", "showTrimbox"],
-    state
-  );
 };
 
 const objectsSelector = state =>
@@ -199,7 +199,6 @@ const activePageSelector = createSelector(
     activeGroupIdSelector,
     groupsSelector,
     documentBoxesSelector,
-    useTrimboxSelector,
     selectedPageIdSelector
   ],
   (
@@ -275,6 +274,7 @@ module.exports = {
   singleFirstLastPageSelector,
   groupSizeSelector,
   predefinedGroupsSelector,
+  includeBoxesSelector,
   showTrimboxSelector,
 
   pagesDefaultConfigSelector,

@@ -1,7 +1,16 @@
 {
   "plugins": {
     "mobile": ["Html5Renderer"],
-    "desktop": ["Html5Renderer"]
+    "desktop": [
+      "Html5Renderer",
+      "Toolbar",
+      {
+        "name": "LiveHtml5Pagination",
+        "cfg": {
+          "className": "html5LivePaginationContainer"
+        }
+      }
+    ]
   },
   "mainComponent": {
     "component": "div",

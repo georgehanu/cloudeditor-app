@@ -3,12 +3,17 @@ const PropTypes = require("prop-types");
 const { connect } = require("react-redux");
 const { debounce } = require("underscore");
 const randomColor = require("randomcolor");
+const { hot } = require("react-hot-loader");
 
 const Canvas = require("./Html5/Canvas/Canvas");
+const { computeZoomScale } = require("../../utils/UtilUtils");
 
 const { changeWorkareaProps } = require("../../stores/actions/ui");
-
-const { zoomSelector, scaleSelector } = require("../../stores/selectors/ui");
+const {
+  displayedPageSelector,
+  activeGroupSelector
+} = require("../../stores/selectors/Html5Renderer");
+const { canvasSelector, zoomSelector } = require("../../stores/selectors/ui");
 
 require("./Html5.css");
 
@@ -33,78 +38,82 @@ updatePageOffset = (ref, { width, height }) => {
   }
 };
 
-class Html5Renderer extends React.Component {
+class Html5 extends React.Component {
   state = {
-    componentReady: false
+    zoomScale: 1,
+    pageReady: false
   };
 
   constructor(props) {
     super(props);
-    this.canvas = null;
-    this.pageContainerRef = React.createRef();
-    this.updatePageOffset = this.updatePageOffset.bind(this);
+    this.containerRef = null;
+    this.canvasRef = null;
   }
+
+  getContainerReference = ref => {
+    this.containerRef = ref;
+  };
+  getCanvasReference = ref => {
+    this.canvasRef = ref;
+  };
+
+  updateContainerDimensions = () => {
+    if (this.containerRef) {
+      const parent = {
+        width: this.containerRef.offsetWidth,
+        height: this.containerRef.offsetHeight
+      };
+      const child = {
+        width: this.props.activePage.width,
+        height: this.props.activePage.height
+      };
+      this.setState({
+        zoomScale: computeZoomScale(this.props.zoom, parent, child),
+        pageReady: true
+      });
+
+      this.props.changeWorkAreaPropsHandler({
+        canvas: {
+          workingWidth: parent.width,
+          workingHeight: parent.height
+        }
+      });
+    }
+  };
 
   getCanvasReference = ref => {
     this.canvas = ref;
   };
 
-  updatePageOffset() {
-    const scale = updatePageOffset(this.canvas, this.props);
-    this.props.changeWorkAreaPropsHandler({ scale });
-    this.setState({ componentReady: true }, () => {});
-  }
-
-  updateWorkAreaBk(scale) {
-    const canvasContainer = this.canvas;
-    const pageContainer = this.pageContainerRef.current;
-
-    if (!canvasContainer || !pageContainer) return false;
-    const pageContainerBounding = pageContainer.getBoundingClientRect();
-    const canvasContainerParent = canvasContainer.parentElement.getBoundingClientRect();
-    const workArea = {
-      scale,
-      pageOffset: {
-        x: pageContainerBounding.x - canvasContainerParent.x,
-        y: pageContainerBounding.y - canvasContainerParent.y
-      }
-    };
-
-    this.props.changeWorkAreaPropsHandler(workArea);
-  }
-
   componentDidMount() {
-    this.updatePageOffset();
-    window.addEventListener("resize", debounce(this.updatePageOffset));
+    this.updateContainerDimensions();
+    //window.addEventListener("resize", debounce(this.updateContainerDimensions));
+    window.addEventListener("resize", this.updateContainerDimensions);
   }
-  componentDidUpdate() {
-    console.log("canvasContainerRef", this.canvas);
-    console.log("pageRefContent", this.pageContainerRef.current);
-  }
+  componentDidUpdate() {}
 
   render() {
     const style = {
       backgroundColor: randomColor()
     };
-    const { componentReady } = this.state;
+    const { pageReady } = this.state;
     return (
       <Canvas
-        {...this.props}
-        componentReady={componentReady}
-        getPageRef={this.pageContainerRef}
         getCanvasRef={this.getCanvasReference}
-        canvasRef={this.canvas}
+        getContainerRef={this.getContainerReference}
+        activePage={this.props.activePage}
+        zoomScale={this.state.zoomScale}
+        containerWidth={this.props.canvasDimm.workingWidth}
+        containerHeight={this.props.canvasDimm.workingHeight}
+        pageReady={pageReady}
       />
     );
   }
 }
-Html5Renderer.propTypes = {};
+Html5.propTypes = {};
 
-Html5Renderer.defaultProps = {};
+Html5.defaultProps = {};
 
-const mapStateToProps = state => {
-  return {};
-};
 const mapDispatchToProps = dispatch => {
   return {
     changeWorkAreaPropsHandler: payload =>
@@ -112,7 +121,22 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-module.exports = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Html5Renderer);
+const makeMapStateToProps = (state, props) => {
+  const getDisplayedPageSelector = displayedPageSelector(activeGroupSelector);
+
+  const mapStateToProps = (state, props) => {
+    return {
+      activePage: getDisplayedPageSelector(state, props),
+      canvasDimm: canvasSelector(state, props),
+      zoom: zoomSelector(state)
+    };
+  };
+  return mapStateToProps;
+};
+
+module.exports = hot(module)(
+  connect(
+    makeMapStateToProps,
+    mapDispatchToProps
+  )(Html5)
+);

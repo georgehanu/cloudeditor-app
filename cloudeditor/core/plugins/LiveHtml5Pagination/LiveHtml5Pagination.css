@@ -1,0 +1,9 @@
+.html5LivePaginationContainer {
+  position: absolute;
+  bottom: 0px;
+  height: 20%;
+  left: 160px;
+  z-index: 500;
+  background: red;
+  width: 90%;
+}

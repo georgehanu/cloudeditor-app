@@ -131,6 +131,7 @@ const getDocumentDefaults = cfg => {
       facingPages: true,
       singleFirstLastPage: true,
       groupSize: 2,
+      includeBoxes: false,
       showTrimbox: true,
       predefinedGroups: [2, 3], //or false
       groups: {
@@ -369,7 +370,47 @@ const getRandomProject = cfg => {
     width: 200,
     height: 200,
     left: 100,
-    top: 100,
+    top: 200,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text3 = getEmptyObject({
+    type: "textflow",
+    width: 200,
+    height: 200,
+    left: 300,
+    top: 300,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text4 = getEmptyObject({
+    type: "textflow",
+    width: 220,
+    height: 200,
+    left: 400,
+    top: 400,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text5 = getEmptyObject({
+    type: "textflow",
+    width: 210,
+    height: 200,
+    left: 500,
+    top: 500,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text7 = getEmptyObject({
+    type: "textflow",
+    width: 210,
+    height: 200,
+    left: 700,
+    top: 70,
     text: "Enter text number 2 here",
     fontFamily: "Dax",
     fill: "red"
@@ -393,19 +434,19 @@ const getRandomProject = cfg => {
   page2 = {
     ...page2,
     id: "page_2",
-    objectsIds: []
+    objectsIds: [text3.id, text4.id]
   };
 
   page3 = {
     ...page3,
     id: "page_3",
-    objectsIds: []
+    objectsIds: [text5.id, text6.id]
   };
 
   page4 = {
     ...page4,
     id: "page_4",
-    objectsIds: [text1.id]
+    objectsIds: [text7.id]
   };
 
   return {

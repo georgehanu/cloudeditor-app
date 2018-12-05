@@ -1,10 +1,6 @@
 const React = require("react");
-const { connect } = require("react-redux");
 const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
-const { hot } = require("react-hot-loader");
-
-const { displayedPageSelector } = require("../stores/selectors/Html5Renderer");
 
 require("./Html5Renderer/Html5Renderer.css");
 
@@ -30,31 +26,12 @@ class Html5Renderer extends React.Component {
     });
   };
   render() {
-    return (
-      <div className="renderContainer">
-        {
-          <Renderer
-            width={this.props.activePage.width}
-            height={this.props.activePage.height}
-          />
-        }
-      </div>
-    );
+    return <div className="renderContainer">{<Renderer />}</div>;
   }
 }
 
-// let's export the plugin and a set of required reducers
-const mapStateToProps = state => {
-  return {
-    activePage: displayedPageSelector(state)
-  };
-};
-
-const Html5RendererPlugin = hot(module)(
-  connect(mapStateToProps)(Html5Renderer)
-);
 module.exports = {
-  Html5Renderer: assign(Html5RendererPlugin),
+  Html5Renderer: assign(Html5Renderer),
   reducers: {},
   epics: {}
 };
