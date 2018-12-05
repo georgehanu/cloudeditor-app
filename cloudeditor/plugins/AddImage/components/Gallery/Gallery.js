@@ -2,7 +2,6 @@ const React = require("react");
 const LoadingItem = require("./LoadingItem");
 
 const Gallery = props => {
-  console.log(props, "Gale");
   let items = props.items.map((el, index) => {
     return (
       <li className="UploadGalleryLi" key={index}>

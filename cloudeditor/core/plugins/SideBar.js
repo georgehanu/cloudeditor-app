@@ -21,6 +21,7 @@ class SideBar extends React.Component {
         id={this.props.id}
         tools={this.getTools()}
         className={expanded ? "expanded" : ""}
+        addContainerClasses={this.props.addContainerClasses}
       />
     );
   }
