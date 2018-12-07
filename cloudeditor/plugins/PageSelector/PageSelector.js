@@ -1,6 +1,6 @@
 const React = require("react");
 const { PagesContainer } = require("./components/PagesContainer");
-const { PageHeader } = require("./components/PageHeader");
+const PageHeader = require("./components/PageHeader");
 const { hot } = require("react-hot-loader");
 
 class PageSelector extends React.Component {

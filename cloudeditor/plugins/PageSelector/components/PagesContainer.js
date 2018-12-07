@@ -1,12 +1,13 @@
 const React = require("react");
-const SinglePageContainer = require("./SinglePageContainer");
+const SinglePage = require("./SinglePage");
 const { DragDropContextProvider } = require("react-dnd");
 const HTML5Backend = require("react-dnd-html5-backend");
 const randomColor = require("randomcolor");
 
 class PagesContainer extends React.Component {
   state = {
-    pages: []
+    pages: [],
+    hoverId: null
   };
   componentDidMount() {
     let newPages = [];
@@ -14,13 +15,15 @@ class PagesContainer extends React.Component {
       pageType: "Center",
       text: "Front",
       id: 0,
-      bgColor: randomColor()
+      bgColor: randomColor(),
+      draggable: false
     });
     newPages.push({
       pageType: "Left",
       text: "",
       id: 1,
-      bgColor: randomColor()
+      bgColor: randomColor(),
+      draggable: false
     });
     newPages.push({
       pageType: "Right",
@@ -60,6 +63,12 @@ class PagesContainer extends React.Component {
     newPages[fromIndex] = this.state.pages[toIndex];
     newPages[toIndex] = this.state.pages[fromIndex];
     this.setState({ pages: newPages });
+
+    this.highlightHoverPage(null);
+  };
+
+  highlightHoverPage = hoverId => {
+    this.setState({ hoverId });
   };
 
   render() {
@@ -74,13 +83,16 @@ class PagesContainer extends React.Component {
       }
 
       return (
-        <SinglePageContainer
+        <SinglePage
           key={index}
           pageType={pageType}
           text={text}
           id={el.id}
           switchPages={this.switchPages}
           bgColor={el.bgColor}
+          draggable={el.draggable}
+          hover={this.state.hoverId === el.id}
+          highlightHoverPage={this.highlightHoverPage}
         />
       );
     });

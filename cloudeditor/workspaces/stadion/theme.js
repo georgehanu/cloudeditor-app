@@ -4,6 +4,7 @@ const theme = require("../../themes/stadion/theme.scss");
 const editor_icons = require("../../themes/stadion/editor_icons.css");
 const addImage = require("../../themes/stadion/addImage.scss");
 const addPdf = require("../../themes/stadion/addPdf.scss");
+const pageSelector = require("../../themes/stadion/pageSelector.scss");
 
 module.exports = {
   stadion,
@@ -11,5 +12,6 @@ module.exports = {
   theme,
   editor_icons,
   addImage,
-  addPdf
+  addPdf,
+  pageSelector
 };

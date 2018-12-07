@@ -200,14 +200,6 @@ section.dropzone {
   margin-left: 100px;
 }
 
-.PageSelector {
-  left: 100px;
-  height: 150px;
-  width: 100%;
-  display: inline-flex;
-  position: relative;
-}
-
 #container.SidebarContainerExpand .render-container {
   flex-grow: 1000;
   width: calc(100% - 500px);
@@ -229,95 +221,6 @@ section.dropzone {
 
 .PageSelectorHeader {
   width: calc(100% - 105px);
-}
-
-.PageSelectorContainer {
-  height: 100%;
-}
-
-.PageSelectorHeader {
-  height: 25px;
-  background-color: #f9fafc;
-  border-bottom: 1px solid #dcdee1;
-  line-height: 25px;
-  border-radius: 0;
-  /*font-family: "Avenir LT W01 85 Heavy";*/
-
-  line-height: 18px;
-  margin: 5px 0 2px 0;
-  border-right: 2px solid #dcdee1;
-  padding: 4px 10px 0 10px;
-  font-size: 12px;
-  text-align: -webkit-center;
-}
-
-.PageSelector {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #dcdee1;
-  border-top: 1px solid #dcdee1;
-  box-sizing: border-box;
-  z-index: 1000;
-  background-color: white;
-  border-left: 1px solid #dcdee1;
-}
-
-.SinglePageContainer {
-  display: inline-block;
-  position: relative;
-  height: 72px;
-  margin-top: 10px;
-  min-width: 70px;
-  /*max-width: 97px;*/
-  margin-left: 0px;
-  width: 70px;
-}
-.SinglePage {
-  width: 70px;
-  height: 70px;
-  display: block;
-  box-shadow: 0 0 0 2px #dcdee1;
-  box-sizing: border-box;
-  background-color: pink;
-}
-
-.SinglePageRight,
-.SinglePageCenter {
-  margin-right: 10px;
-}
-.SinglePageLeft {
-  margin-left: 10px;
-}
-
-.SinglePageRight .SinglePageText {
-  text-align: right;
-}
-
-.SinglePageCenter .SinglePageText {
-  text-align: center;
-}
-
-.SinglePageText {
-  line-height: 11px;
-  color: #666;
-  display: inline-block;
-  position: absolute;
-  width: 100%;
-  font-size: 11px;
-  padding: 4px 0 0 0;
-}
-
-.PageSelectorContainer {
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  margin-left: 5px;
-  width: calc(100% - 105px);
-}
-
-#container.SidebarContainerExpand .PageSelectorContainer,
-#container.SidebarContainerExpand .PageSelectorHeader {
-  width: calc(100% - 505px);
 }
 
 ::-webkit-scrollbar {
@@ -344,70 +247,6 @@ section.dropzone {
     inset 1px 1px 0 rgba(0, 0, 0, 0.05);
 }
 
-.PageHeaderText {
-  position: absolute;
-}
-
-.PageHeaderButtonExtend,
-.PageHeaderButtonMinimize {
-  width: 30px;
-  height: 16px;
-  position: absolute;
-  top: 18px;
-  margin-left: 5px;
-}
-
-.PageHeaderButtonExtend {
-  margin-left: -25px;
-}
-
-#container.PageSelectorExtended .PageSelector {
-  height: 300px;
-}
-
-#container.PageSelectorMinimized .PageSelector {
-  height: 25px;
-}
-
-#container.PageSelectorExtended .render-container {
-  height: calc(100% - 300px);
-}
-
-#container.PageSelectorMinimized .render-container {
-  height: calc(100% - 25px);
-}
-
-.SinglePage {
-  cursor: pointer;
-}
-
-.SinglePage:active {
-  background-color: red;
-}
-
-#container.PageSelectorMinimized .PageHeaderButtonExtend {
-  margin-left: -10px;
-  top: 8px;
-  font-size: 11px;
-}
-
-#container.PageSelectorExtended .PageHeaderButtonMinimize {
-  margin-left: -10px;
-}
-
-#container.PageSelectorMinimized .PageSelectorContainer {
-  display: none;
-}
-
-#container.PageSelectorMinimized .PageSelectorHeader {
-  margin: 0px;
-  padding-top: 0px;
-  height: 23px;
-  border-bottom: none;
-}
-
-.PageHeaderButtonMinimize,
-.PageHeaderButtonExtend,
 .BackButtonContainer button,
 .FupaClubSearch button.OkButton {
   background-color: #fefeff;
@@ -420,7 +259,6 @@ section.dropzone {
   border: 1px solid #dcdee1;
 }
 
-.PageHeaderButtonsContainer .icon,
 .BackButtonContainer .icon {
   color: #b6b6b6;
 }
@@ -432,29 +270,6 @@ section.dropzone {
 .BackButtonContainer .icon:before {
   font-family: "stadion";
   content: "\e902";
-}
-
-#container.PageSelectorExtended .SinglePageContainer {
-  width: 140px;
-  height: 160px;
-  margin-top: 10px;
-}
-
-#container.PageSelectorExtended .SinglePage {
-  width: 140px;
-  height: 140px;
-}
-.SinglePageCenter {
-  margin-left: 3px;
-}
-
-#container.PageSelectorExtended .PageSelectorContainer {
-  padding-top: 40px;
-}
-
-.PageHeaderText,
-.SinglePageText {
-  color: #58595b;
 }
 
 .FupaClubSearch {
@@ -500,17 +315,4 @@ section.dropzone {
 
 .FupaClubSearch {
   width: 385px;
-}
-
-.PageSelectorContainer ul {
-  list-style-type: disc;
-  margin-block-start: 0em;
-  margin-block-end: 0em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  padding-inline-start: 0px;
-}
-
-body > .SinglePageContainer {
-  background-color: blue;
 }

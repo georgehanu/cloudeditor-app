@@ -1,9 +1,10 @@
 const React = require("react");
+const { withNamespaces } = require("react-i18next");
 
 const PageHeader = props => {
   return (
     <div className="PageSelectorHeader">
-      <div className="PageHeaderText">PAGES</div>
+      <div className="PageHeaderText">{props.t("PAGES")}</div>
       <div className="PageHeaderButtonsContainer">
         {props.showExtend && (
           <button className="PageHeaderButtonExtend" onClick={props.extend}>
@@ -16,8 +17,13 @@ const PageHeader = props => {
           </button>
         )}
       </div>
+      <div className="PageAddPagesContainer">
+        <button className="PageHeaderButtonAddPages">
+          {props.t("Add pages")}
+        </button>
+      </div>
     </div>
   );
 };
 
-module.exports = { PageHeader };
+module.exports = withNamespaces("pageSelector")(PageHeader);
