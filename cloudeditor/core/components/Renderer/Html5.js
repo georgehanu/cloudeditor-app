@@ -4,14 +4,17 @@ const { connect } = require("react-redux");
 const { debounce } = require("underscore");
 const randomColor = require("randomcolor");
 const { hot } = require("react-hot-loader");
+const { forEach } = require("ramda");
 
 const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
 
 const { changeWorkareaProps } = require("../../stores/actions/ui");
+const { removeSelection } = require("../../stores/actions/project");
 const {
   displayedPageSelector,
-  activeGroupSelector
+  activeGroupSelector,
+  getSelectedObjectsLengthSelector
 } = require("../../stores/selectors/Html5Renderer");
 const { canvasSelector, zoomSelector } = require("../../stores/selectors/ui");
 
@@ -57,6 +60,27 @@ class Html5 extends React.Component {
     this.canvasRef = ref;
   };
 
+  blurAction = event => {
+    const { selectedLength } = this.props;
+    if (!selectedLength) return false;
+    let isBlur = true;
+    const target = event.target;
+    const { blurSelectors } = this.props;
+    forEach(blurselector => {
+      const elements = document.getElementsByClassName(blurselector);
+      forEach(element => {
+        if (element == target) {
+          isBlur = false;
+        }
+        if (element.contains(target)) {
+          isBlur = false;
+        }
+      }, elements);
+    }, blurSelectors);
+    if (isBlur) {
+      this.props.onRemoveActiveBlockHandler({});
+    }
+  };
   updateContainerDimensions = () => {
     if (this.containerRef) {
       const parent = {
@@ -89,6 +113,7 @@ class Html5 extends React.Component {
     this.updateContainerDimensions();
     //window.addEventListener("resize", debounce(this.updateContainerDimensions));
     window.addEventListener("resize", this.updateContainerDimensions);
+    document.addEventListener("click", this.blurAction);
   }
   componentDidUpdate() {}
 
@@ -117,7 +142,8 @@ Html5.defaultProps = {};
 const mapDispatchToProps = dispatch => {
   return {
     changeWorkAreaPropsHandler: payload =>
-      dispatch(changeWorkareaProps(payload))
+      dispatch(changeWorkareaProps(payload)),
+    onRemoveActiveBlockHandler: payload => dispatch(removeSelection(payload))
   };
 };
 
@@ -128,7 +154,8 @@ const makeMapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
       canvasDimm: canvasSelector(state, props),
-      zoom: zoomSelector(state)
+      zoom: zoomSelector(state),
+      selectedLength: getSelectedObjectsLengthSelector(state)
     };
   };
   return mapStateToProps;

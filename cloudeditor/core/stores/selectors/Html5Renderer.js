@@ -285,16 +285,22 @@ const displayedObjectSelector = blockSelector => {
     }
   );
 };
-const displayedMergedObjectSelector = displayedObjectSelector => {
+const displayedMergedObjectSelector = (
+  displayedObjectSelector,
+  getActivePropSelector
+) => {
   return createSelector(
     displayedObjectSelector,
     objectsDefaultConfigSelector,
-    (object, defaults) => {
-      console.log(defaults, "defaults");
+    getActivePropSelector,
+    (object, defaults, active) => {
       return mergeAll([
         defaults.generalCfg,
         defaults[object.type + "Cfg"],
-        object
+        object,
+        {
+          active
+        }
       ]);
     }
   );
@@ -329,8 +335,15 @@ const scaledDisplayedObjectSelector = (
     }
   );
 };
-const selectedObjectsIdSelector = state =>
-  pathOr([], ["project", "activePage"], state);
+const selectedObjectsIdsSelector = state =>
+  pathOr([], ["project", "selectedObjectsIds"], state);
+const getSelectedObjectsLengthSelector = createSelector(
+  selectedObjectsIdsSelector,
+  selectedIds => {
+    return selectedIds.length;
+  }
+);
+
 registerSelectors({
   totalPages,
   groupsSelector,
@@ -340,7 +353,8 @@ registerSelectors({
   displayedObjectSelector,
   scaledDisplayedObjectSelector,
   displayedMergedObjectSelector,
-  selectedObjectsIdSelector
+  selectedObjectsIdsSelector,
+  getSelectedObjectsLengthSelector
 });
 
 module.exports = {
@@ -352,5 +366,6 @@ module.exports = {
   displayedObjectSelector,
   scaledDisplayedObjectSelector,
   displayedMergedObjectSelector,
-  selectedObjectsIdSelector
+  selectedObjectsIdsSelector,
+  getSelectedObjectsLengthSelector
 };

@@ -1,0 +1,5 @@
+.printqBox {
+  background: rgb(251, 251, 253);
+  box-shadow: 1px 1.732px 5px 0 rgba(0, 0, 0, 0.043);
+  border: 1px solid #c7c7c7;
+}

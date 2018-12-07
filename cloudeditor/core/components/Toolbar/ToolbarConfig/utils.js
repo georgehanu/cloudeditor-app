@@ -261,19 +261,11 @@ const CreatePayload = (activeitem, itemPayload) => {
   return { id: activeitem.id, props: attrs };
 };
 
-const calculateToolBarPosition = (activeItem, workArea) => {
-  let scale = workArea.scale;
-  const zoom = workArea.zoom;
+const calculateToolBarPosition = targetPosition => {
   // scale = scale + ((zoom * 100 - 100) / 100) * scale;
   return {
-    top:
-      (activeItem.offsetTop + activeItem.top) * scale +
-      workArea.pageOffset.y -
-      15,
-    left:
-      (activeItem.offsetLeft + activeItem.left) * scale +
-      (activeItem.width * scale) / 2 +
-      workArea.pageOffset.x
+    top: targetPosition.top - 15,
+    left: targetPosition.left + targetPosition.width / 2
   };
 };
 module.exports = {

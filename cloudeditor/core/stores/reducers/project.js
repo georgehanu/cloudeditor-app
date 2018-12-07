@@ -107,7 +107,7 @@ const addObjectToPage = (state, action) => {
 };
 
 const addObjectIdToSelected = (state, payload) => {
-  return { ...state, selectedObjectsIds: [payload] };
+  return { ...state, selectedObjectsIds: [payload.id] };
 };
 const addObjectIdActionSelected = (state, payload) => {
   return { ...state, selectedActionObjectsIds: [payload] };

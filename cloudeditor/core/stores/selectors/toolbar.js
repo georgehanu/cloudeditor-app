@@ -93,6 +93,11 @@ const uiViewportTransformSelector = createSelector(
     return ui.workArea.viewportTransform;
   }
 );
+/*Start Toolbar base selectors*/
+const targetPositionSelector = state => {
+  return state.toolbar.targetPosition;
+};
+/*End Toolbar base selectors*/
 
 module.exports = {
   selectedObjectToolbarSelector,
@@ -103,5 +108,6 @@ module.exports = {
   uiFullHeightSelector,
   uiFullWidthSelector,
   uiZoomSelector,
-  uiViewportTransformSelector
+  uiViewportTransformSelector,
+  targetPositionSelector
 };

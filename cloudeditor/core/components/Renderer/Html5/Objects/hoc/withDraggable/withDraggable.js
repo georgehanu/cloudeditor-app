@@ -70,6 +70,7 @@ const withDraggable = WrappedComponent => {
         <WrappedComponent
           ref={this.forwardedRef}
           getReference={this.getReference}
+          handleDraggableUi={handleUI}
           {...rest}
         />
       );

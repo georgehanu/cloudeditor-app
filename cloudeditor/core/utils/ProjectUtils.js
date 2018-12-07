@@ -289,7 +289,7 @@ const getEmptyProject = cfg => {
   };
 };
 
-const getRandomProject = cfg => {
+const getRandomProject1 = cfg => {
   const defaultImages = [
     "http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
     "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350",
@@ -471,6 +471,34 @@ const getRandomProject = cfg => {
     pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
     activePage: page3.id
   };
+};
+
+const getRandomProject = cfg => {
+  let project = getEmptyProject();
+  let i;
+  for (i = 0; i < 220; i++) {
+    let page = getEmptyPage();
+    let j;
+    for (j = 0; j < 5; j++) {
+      let object = getEmptyObject({
+        type: "textflow",
+        width: 100 + Math.random() * 500,
+        height: 100 + Math.random() * 500,
+        left: Math.random() * 1000,
+        top: Math.random() * 1000,
+        text: "Enter text here",
+        fontFamily: "Dax",
+        fontSize: 5 + Math.random() * 50,
+        fill: "red"
+      });
+      page.objectsIds.push(object.id);
+      project.objects[object.id] = object;
+    }
+    project.pages[page.id] = page;
+    project.pagesOrder.push(page.id);
+    project.activePage = page.id;
+  }
+  return project;
 };
 
 /**

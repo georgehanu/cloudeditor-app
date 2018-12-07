@@ -3,7 +3,8 @@ const PropTypes = require("prop-types");
 const randomColor = require("randomcolor");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
-const { pick, values } = require("ramda");
+const { includes } = require("ramda");
+const $ = require("jquery");
 
 const withDraggable = require("../hoc/withDraggable/withDraggable");
 const withResizable = require("../hoc/withResizable/withResizable");
@@ -17,11 +18,13 @@ const {
 const {
   displayedObjectSelector,
   displayedMergedObjectSelector,
-  scaledDisplayedObjectSelector
+  scaledDisplayedObjectSelector,
+  selectedObjectsIdsSelector
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
+const Draggable = require("./Draggable");
 
 const {
   updateObjectProps,
@@ -32,16 +35,30 @@ class ObjectBlock extends React.Component {
   constructor(props) {
     super(props);
     this.editable = null;
+    this.el = null;
+    this.$el = null;
   }
 
   getEditableReference = ref => {
     this.editable = ref;
   };
   onClickBlockHandler = event => {
+    event.preventDefault();
     const { id, viewOnly } = this.props;
     if (viewOnly) return false;
-    this.props.onSetActiveBlockHandler(id);
+    this.props.handleDraggableUi(this.$el, false);
+    const boundingObject = this.el.getBoundingClientRect();
+    const { width, height, left, top } = boundingObject;
+    const activeElement = { id, boundingRect: { left, top, width, height } };
+    this.props.onSetActiveBlockHandler(activeElement);
   };
+
+  getReference = ref => {
+    this.el = ref;
+    this.$el = $(this.el);
+    this.props.getReference(ref);
+  };
+
   render() {
     const {
       width,
@@ -77,10 +94,8 @@ class ObjectBlock extends React.Component {
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}
-        ref={this.props.getReference}
-      >
-        test
-      </div>
+        ref={this.getReference}
+      />
     );
   }
 }
@@ -111,12 +126,19 @@ const makeMapStateToProps = (state, props) => {
       return objects[blockId];
     }
   );
-
+  const getActivePropSelector = createSelector(
+    getBlockId,
+    selectedObjectsIdsSelector,
+    (cBlockId, selectedIds) => {
+      return includes(cBlockId, selectedIds);
+    }
+  );
   const getDisplayedBlockSelector = displayedObjectSelector(
     activeBlockSelector
   );
   const getDisplayedMergedBlockSelector = displayedMergedObjectSelector(
-    getDisplayedBlockSelector
+    getDisplayedBlockSelector,
+    getActivePropSelector
   );
   const getScaledDisplayedBlockSelector = scaledDisplayedObjectSelector(
     getDisplayedMergedBlockSelector,
@@ -126,9 +148,7 @@ const makeMapStateToProps = (state, props) => {
   const mapStateToProps = (state, props) => {
     const displayedBlock = getDisplayedBlockSelector(state, props);
     const scaledBlock = getScaledDisplayedBlockSelector(state, props);
-    return {
-      ...scaledBlock
-    };
+    return { ...scaledBlock };
   };
   return mapStateToProps;
 };

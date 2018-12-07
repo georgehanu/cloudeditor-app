@@ -3,9 +3,9 @@ const { connect } = require("react-redux");
 
 const randomColor = require("randomcolor");
 const assign = require("object-assign");
-/* require("../themes/default/Toolbar/styles/editor_icons.css");
-require("../themes/default/Toolbar/styles/otp.css");
-require("../themes/default/Toolbar/styles/default.css");  */
+require("../../themes/default/Toolbar/styles/editor_icons.css");
+require("../../themes/default/Toolbar/styles/otp.css");
+require("../../themes/default/Toolbar/styles/default.css");
 
 const ToolbarArea = require("../../core/components/Toolbar/ToolbarItems/ToolbarArea/ToolbarArea");
 const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/SettingsWnd/SettingsWnd");
@@ -17,7 +17,8 @@ const {
   selectedObjectToolbarSelector,
   selectedObjectLayerSelector,
   selectedPageDimmensionsSelector,
-  uiPageOffsetSelector
+  uiPageOffsetSelector,
+  targetPositionSelector
 } = require("../stores/selectors/Toolbar");
 const Types = require("../../core/components/Toolbar/ToolbarConfig/types");
 const Utils = require("../../core/components/Toolbar/ToolbarConfig/utils");
@@ -185,11 +186,8 @@ class Toolbar extends React.Component {
       attributes = Utils.LoadTextAdditionalInfo(activeItem);
     }
     if (toolbarData === null) return null;
-
-    let containerStyle = Utils.calculateToolBarPosition(
-      activeItem,
-      uiPageOffset
-    );
+    const { targetPosition } = this.props;
+    let containerStyle = Utils.calculateToolBarPosition(targetPosition);
     const topAreaGroups = Utils.filterBasedOnLocation(
       toolbarData.groups,
       Types.Position.TOP
@@ -266,7 +264,8 @@ const mapStateToProps = state => {
     activeToolbar: selectedObjectToolbarSelector(state),
     activeLayer: selectedObjectLayerSelector(state),
     pageDimmensions: selectedPageDimmensionsSelector(state),
-    uiPageOffset: uiPageOffsetSelector(state)
+    uiPageOffset: uiPageOffsetSelector(state),
+    targetPosition: targetPositionSelector(state)
   };
 };
 
@@ -282,6 +281,11 @@ const ToolbarPlugin = connect(
 )(Toolbar);
 
 module.exports = {
-  Toolbar: assign(ToolbarPlugin),
+  Toolbar: assign(ToolbarPlugin, {
+    Html5Renderer: {
+      blurSelectors: ["ToolbarContainer", "pageBlock"]
+    }
+  }),
+  reducers: { toolbar: require("../stores/reducers/Toolbar") },
   epics: require("../stores/epics/Toolbar")
 };

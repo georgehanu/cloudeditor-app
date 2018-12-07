@@ -1,6 +1,7 @@
 const React = require("react");
 const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
+const { flatten } = require("ramda");
 
 require("./Html5Renderer/Html5Renderer.css");
 
@@ -25,8 +26,23 @@ class Html5Renderer extends React.Component {
       return <Tool {...toolCfg} items={tool.items || []} key={i.toString()} />;
     });
   };
+
+  getBlurSelectors() {
+    const tools = this.getTools();
+    return flatten(
+      tools.map((tool, i) => {
+        return tool.blurSelectors;
+      })
+    );
+  }
+
   render() {
-    return <div className="renderContainer">{<Renderer />}</div>;
+    const blurSelectors = this.getBlurSelectors();
+    return (
+      <div className="renderContainer">
+        {<Renderer blurSelectors={blurSelectors} />}
+      </div>
+    );
   }
 }
 

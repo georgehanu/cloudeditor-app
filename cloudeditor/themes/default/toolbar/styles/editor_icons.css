@@ -1,0 +1,489 @@
+@font-face {
+  font-family: "printqIcons";
+  src: url("assets/printq_fonts/printqIcons.eot?ljxq50");
+  src: url("assets/printq_fonts/printqIcons.eot?ljxq50#iefix")
+      format("embedded-opentype"),
+    url("assets/printq_fonts/printqIcons.ttf?ljxq50") format("truetype"),
+    url("assets/printq_fonts/printqIcons.woff?ljxq50") format("woff"),
+    url("assets/printq_fonts/printqIcons.svg?ljxq50#printqIcons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}
+
+.icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "printqIcons" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-smooth: always;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.printqicon-border-width1:before {
+  content: "\e964";
+}
+.printqicon-border-width:before {
+  content: "\e96f";
+}
+.printqicon-border-color:before {
+  content: "\e970";
+}
+.printqicon-border_style:before {
+  content: "\e96c";
+}
+.printqicon-minus:before {
+  content: "\e96d";
+}
+.printqicon-paintcan:before {
+  content: "\e96e";
+}
+.printqicon-cloud-loadproject:before {
+  content: "\e96a";
+}
+.printqicon-cloud-saveproject:before {
+  content: "\e96b";
+}
+.printqicon-table2:before {
+  content: "\e971";
+}
+.printqicon-rotate_handler:before {
+  content: "\e968";
+}
+.printqicon-search:before {
+  content: "\e969";
+}
+.printqicon-zoom_in:before {
+  content: "\e966";
+}
+.printqicon-zoom_out:before {
+  content: "\e967";
+}
+.printqicon-cloud_image:before {
+  content: "\e965";
+}
+.printqicon-minus_icon:before {
+  content: "\e95b";
+}
+.printqicon-plus_icon:before {
+  content: "\e95c";
+}
+.printqicon-facebook:before {
+  content: "\e95d";
+}
+.printqicon-fotolia.path1:before {
+  content: "\e95e";
+}
+.printqicon-fotolia.path2:after {
+  content: "\e95f";
+}
+.printqicon-instagram:before {
+  content: "\e960";
+}
+.printqicon-layers_empty:before {
+  content: "\e961";
+}
+.printqicon-layers_fill:before {
+  content: "\e962";
+}
+.printqicon-move_cursor:before {
+  content: "\e963";
+}
+.printqicon-lefttriangle:before {
+  content: "\e959";
+}
+
+.printqicon-righttriangle:before {
+  content: "\e95a";
+}
+
+.printqicon-selectdown:before {
+  content: "\e957";
+}
+
+.printqicon-selectup:before {
+  content: "\e958";
+}
+
+.printqicon-duplicate:before {
+  content: "\e915";
+}
+
+.printqicon-addnewpage:before {
+  content: "\e900";
+}
+
+.printqicon-addtocart:before {
+  content: "\e901";
+}
+
+.printqicon-backarrow:before {
+  content: "\e902";
+}
+
+.printqicon-background:before {
+  content: "\e903";
+}
+
+.printqicon-background_block:before {
+  content: "\e904";
+}
+
+.printqicon-badsmiley:before {
+  content: "\e905";
+}
+
+.printqicon-blockoptions:before {
+  content: "\e906";
+}
+
+.printqicon-bold:before {
+  content: "\e907";
+}
+
+.printqicon-bottom_valign:before {
+  content: "\e908";
+}
+
+.printqicon-bringforward:before {
+  content: "\e909";
+}
+
+.printqicon-bringtofront:before {
+  content: "\e90a";
+}
+
+.printqicon-cancel:before {
+  content: "\e90b";
+}
+
+.printqicon-center_align:before {
+  content: "\e90c";
+}
+
+.printqicon-crop:before {
+  content: "\e90d";
+}
+
+.printqicon-defaultphotoalbum:before {
+  content: "\e90e";
+}
+
+.printqicon-delete:before {
+  content: "\e90f";
+}
+
+.printqicon-deletepage:before {
+  content: "\e910";
+}
+
+.printqicon-download:before {
+  content: "\e911";
+}
+
+.printqicon-drawing_cricles .path1:before {
+  content: "\e912";
+  color: rgb(22, 99, 141);
+}
+
+.printqicon-drawing_cricles .path2:before {
+  content: "\e913";
+  margin-left: -1em;
+  color: rgba(22, 99, 141, 0.3);
+}
+
+.printqicon-drawings:before {
+  content: "\e914";
+}
+.printqicon-duplicate:before {
+  content: "\e915";
+}
+.printqicon-edit:before {
+  content: "\e916";
+}
+
+.printqicon-effects:before {
+  content: "\e917";
+}
+
+.printqicon-facedetection:before {
+  content: "\e918";
+}
+
+.printqicon-font:before {
+  content: "\e919";
+}
+
+.printqicon-fontsize:before {
+  content: "\e91a";
+}
+
+.printqicon-fontsize2:before {
+  content: "\e91b";
+}
+
+.printqicon-goodsmiley:before {
+  content: "\e91c";
+}
+
+.printqicon-grid:before {
+  content: "\e91d";
+}
+
+.printqicon-help:before {
+  content: "\e91e";
+}
+
+.printqicon-italic:before {
+  content: "\e91f";
+}
+
+.printqicon-justify_align:before {
+  content: "\e920";
+}
+
+.printqicon-layers:before {
+  content: "\e921";
+}
+
+.printqicon-layouts:before {
+  content: "\e922";
+}
+
+.printqicon-left_align:before {
+  content: "\e923";
+}
+
+.printqicon-load:before {
+  content: "\e924";
+}
+
+.printqicon-login:before {
+  content: "\e925";
+}
+
+.printqicon-logout:before {
+  content: "\e926";
+}
+
+.printqicon-maximizemenu:before {
+  content: "\e927";
+}
+
+.printqicon-middle_valign:before {
+  content: "\e928";
+}
+
+.printqicon-more:before {
+  content: "\e929";
+}
+
+.printqicon-movable:before {
+  content: "\e92a";
+}
+
+.printqicon-myphotoalbum:before {
+  content: "\e92b";
+}
+
+.printqicon-newimage:before {
+  content: "\e92c";
+}
+
+.printqicon-newtext-1:before {
+  content: "\e92d";
+}
+
+.printqicon-newtext:before {
+  content: "\e92e";
+}
+
+.printqicon-newtable:before {
+  content: "\e92f";
+}
+
+.printqicon-nextarrow:before {
+  content: "\e930";
+}
+
+.printqicon-normalsmiley:before {
+  content: "\e931";
+}
+
+.printqicon-ok:before {
+  content: "\e932";
+}
+
+.printqicon-opacity:before {
+  content: "\e933";
+}
+
+.printqicon-pages:before {
+  content: "\e934";
+}
+
+.printqicon-preview:before {
+  content: "\e935";
+}
+
+.printqicon-radiustext:before {
+  content: "\e936";
+}
+
+.printqicon-redo:after {
+  content: "\e937";
+}
+
+.printqicon-reset_page:before {
+  content: "\e938";
+}
+
+.printqicon-resizable:before {
+  content: "\e939";
+}
+
+.printqicon-reverse_text:before {
+  content: "\e93a";
+}
+
+.printqicon-right_align:before {
+  content: "\e93b";
+}
+
+.printqicon-rotatable:before {
+  content: "\e93c";
+}
+
+.printqicon-save_project:before {
+  content: "\e93d";
+}
+
+.printqicon-select_box:before {
+  content: "\e93e";
+}
+
+.printqicon-select_color .path1:before {
+  content: "\e93f";
+  color: rgb(21, 98, 140);
+}
+
+.printqicon-select_color .path2:before {
+  content: "\e940";
+  margin-left: -1.0009765625em;
+  color: rgba(21, 98, 140, 0.3);
+}
+
+.printqicon-sendbackward:before {
+  content: "\e941";
+}
+
+.printqicon-sendtoback:before {
+  content: "\e942";
+}
+
+.printqicon-settings:before {
+  content: "\e943";
+}
+
+.printqicon-shapes.path1:after {
+  content: "\e944";
+}
+
+.printqicon-shapes.path2:before {
+  content: "\e945";
+  position: absolute;
+  opacity: 0.4;
+}
+
+.printqicon-slider:before {
+  content: "\e946";
+}
+
+.printqicon-snap:before {
+  content: "\e947";
+}
+
+.printqicon-spacing:before {
+  content: "\e948";
+}
+
+.printqicon-spacing-1:before {
+  content: "\e949";
+}
+
+.printqicon-square .path1:before {
+  content: "\e94a";
+  color: rgb(21, 98, 140);
+}
+
+.printqicon-square .path2:before {
+  content: "\e94b";
+  margin-left: -1em;
+  color: rgba(21, 98, 140, 0.3);
+}
+
+.printqicon-switcher_off:before {
+  content: "\e94c";
+}
+
+.printqicon-switcher_on:before {
+  content: "\e94d";
+}
+
+.printqicon-table_columns:before {
+  content: "\e94e";
+}
+
+.printqicon-tablerows:before {
+  content: "\e94f";
+}
+
+.printqicon-themes_layouts:before {
+  content: "\e950";
+}
+
+.printqicon-top_valign:before {
+  content: "\e951";
+}
+
+.printqicon-transline:before {
+  content: "\e952";
+}
+
+.printqicon-underline:before {
+  content: "\e953";
+}
+
+.printqicon-undo:before {
+  content: "\e954";
+}
+
+.printqicon-upload:before {
+  content: "\e955";
+}
+
+.printqicon-upperline:before {
+  content: "\e956";
+}
+.printqicon-bin:before {
+  content: "\e964";
+}
+.printqicon-camera:before {
+  content: "\e972";
+}
+.printqicon-brightness-contrast:before {
+  content: "\e9d6";
+}
+.printqicon-user-tie:before {
+  content: "\e976";
+}
