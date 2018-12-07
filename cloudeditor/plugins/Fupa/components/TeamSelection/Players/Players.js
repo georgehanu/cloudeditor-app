@@ -14,8 +14,8 @@ const showColumnsPlayers = [
   "YELLOW_CARD",
   "YELLOW_RED_CARD",
   "RED_CARD",
-  //"SUB_IN",
-  //"SUB_OUT",
+  "SUB_IN",
+  "SUB_OUT",
   "MINUTES"
 ];
 
@@ -61,13 +61,17 @@ const Players = props => {
       {show("PLAYED") && <td>{props.t("Player_Game_Played")}</td>}
       {show("GOALS") && <td>{props.t("Player_Goals_Scored")}</td>}
       {show("?") && <td>{props.t("Player_?")}</td>}
-      {show("PENALTIES") && <td>{props.t("Player_Penalties")}</td>}
+      {show("PENALTIES") && (
+        <td style={{ textAlign: "right" }}>{props.t("Player_Penalties")}</td>
+      )}
       {show("YELLOW_CARD") && <td>{props.t("Player_Yellow")}</td>}
       {show("YELLOW_RED_CARD") && <td>{props.t("Player_YellowRed")}</td>}
       {show("RED_CARD") && <td>{props.t("Player_Red")}</td>}
       {show("SUB_IN") && <td>{props.t("Player_SubsIn")}</td>}
       {show("SUB_OUT") && <td>{props.t("Player_SubsOut")}</td>}
-      {show("MINUTES") && <td>{props.t("Player_Minutes")}</td>}
+      {show("MINUTES") && (
+        <td style={{ textAlign: "right" }}>{props.t("Player_Minutes")}</td>
+      )}
     </tr>
   );
   const matches = props.players.map((el, index) => {
@@ -103,10 +107,18 @@ const Players = props => {
             {formatNumber(el.statistics.matchesPlayed)}
           </td>
         )}
-        {show("GOALS") && <td>{formatNumber(el.statistics.goals)}</td>}
-        {show("?") && <td>{formatNumber(el.statistics.scores)}</td>}
+        {show("GOALS") && (
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.goals)}
+          </td>
+        )}
+        {show("?") && (
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.scores)}
+          </td>
+        )}
         {show("PENALTIES") && (
-          <td>
+          <td style={{ textAlign: "right" }}>
             {formatPenalty(
               el.statistics.penaltySpots,
               el.statistics.penaltySpotsNoGoal
@@ -114,17 +126,29 @@ const Players = props => {
           </td>
         )}
         {show("YELLOW_CARD") && (
-          <td>{formatNumber(el.statistics.yellowCards)}</td>
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.yellowCards)}
+          </td>
         )}
         {show("YELLOW_RED_CARD") && (
-          <td>{formatNumber(el.statistics.yellowRedCards)}</td>
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.yellowRedCards)}
+          </td>
         )}
         {show("YELLOW_RED_CARD") && (
-          <td>{formatNumber(el.statistics.redCards)}</td>
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.redCards)}
+          </td>
         )}
-        {show("SUB_IN") && <td>{formatNumber(el.statistics.substitutesIn)}</td>}
+        {show("SUB_IN") && (
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.substitutesIn)}
+          </td>
+        )}
         {show("SUB_OUT") && (
-          <td>{formatNumber(el.statistics.substitutesOut)}</td>
+          <td style={{ textAlign: "right" }}>
+            {formatNumber(el.statistics.substitutesOut)}
+          </td>
         )}
         {show("MINUTES") && (
           <td style={{ textAlign: "right" }}>

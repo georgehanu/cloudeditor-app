@@ -278,11 +278,15 @@ section.dropzone {
   display: block;
   box-shadow: 0 0 0 2px #dcdee1;
   box-sizing: border-box;
+  background-color: pink;
 }
 
 .SinglePageRight,
 .SinglePageCenter {
-  margin-right: 20px;
+  margin-right: 10px;
+}
+.SinglePageLeft {
+  margin-left: 10px;
 }
 
 .SinglePageRight .SinglePageText {
@@ -478,4 +482,35 @@ section.dropzone {
 }
 #sidebar-wrapper .UploadGalleryUl {
   overflow: auto;
+}
+
+#container,
+#sidebar-wrapper .PaneContainer,
+#sidebar-wrapper .fupa {
+  background-color: #f9fafc;
+}
+
+#sidebar-wrapper .fupa .Container {
+  padding-top: 15px;
+}
+
+.PaneContainer .UploadGallery .UploadGalleryLi {
+  margin-left: 8px;
+}
+
+.FupaClubSearch {
+  width: 385px;
+}
+
+.PageSelectorContainer ul {
+  list-style-type: disc;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+}
+
+body > .SinglePageContainer {
+  background-color: blue;
 }

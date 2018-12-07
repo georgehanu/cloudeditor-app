@@ -24,7 +24,7 @@ module.exports = {
       text: "Fupa",
       icon: "FupaLogo",
       showMore: true,
-      tooltip: { title: "Fupa", description: "Description" }
+      tooltip: { title: "Fupa", description: "Fupa.net" }
     }
   }),
   reducers: { fupa: require("./store/reducers") },

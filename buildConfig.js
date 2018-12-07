@@ -70,9 +70,13 @@ const build = config => {
                 plugins: () => [
                   prefixer({
                     prefix: cssPrefix,
-                    exclude: [".cloudeditor", "body", "html"].concat(
-                      cssPrefix ? [cssPrefix] : []
-                    )
+                    exclude: [
+                      ".cloudeditor",
+                      "body",
+                      "html",
+                      "body > .SinglePageContainer",
+                      ".SinglePage"
+                    ].concat(cssPrefix ? [cssPrefix] : [])
                   }),
                   autoprefixer({
                     browsers: ["last 4 versions"]
@@ -139,7 +143,7 @@ const build = config => {
           },
           {
             from: "./" + namespace + "/plugins/*/locales/*/*.json",
-            to: "./locales/[5]/[3].[ext]",
+            to: "./locales/[5]/[name].[ext]",
             toType: "template",
             test: /^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/
             /**
