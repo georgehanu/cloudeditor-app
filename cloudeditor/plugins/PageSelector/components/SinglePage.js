@@ -1,18 +1,52 @@
 const React = require("react");
+const { DragSource, DropTarget } = require("react-dnd");
+
+const PAGES = "PAGES";
+
+const PageSource = {
+  beginDrag(props) {
+    return {
+      type: PAGES,
+      id: props.id
+    };
+  }
+};
+
+const PageTarget = {
+  drop(props, monitor, component) {
+    props.switchPages(monitor.getItem().id, props.id);
+  }
+  /*
+  canDrop(props, monitor) {
+    if (monitor.getItem().type == PAGES) {
+      return true;
+    }
+    return false;
+  }*/
+};
+
+function collectDrag(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  };
+}
+
+function collectDrop(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  };
+}
 
 const SinglePage = props => {
-  const className =
-    "SinglePageContainer " +
-    (props.pageType === undefined ? "" : "SinglePage" + props.pageType);
-
-  //  class="SinglePageRight" pageType="center" />
-
-  return (
-    <div className={className}>
-      <div className="SinglePage" />
-      <div className="SinglePageText">{props.text}</div>
-    </div>
+  return props.connectDropTarget(
+    props.connectDragSource(
+      <div className="SinglePage" style={{ backgroundColor: props.bgColor }} />
+    )
   );
 };
 
-module.exports = { SinglePage };
+module.exports = DropTarget(PAGES, PageTarget, collectDrop)(
+  DragSource(PAGES, PageSource, collectDrag)(SinglePage)
+);
