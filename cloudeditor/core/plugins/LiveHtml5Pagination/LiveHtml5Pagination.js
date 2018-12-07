@@ -8,6 +8,7 @@ const randomColor = require("randomcolor");
 require("./LiveHtml5Pagination.css");
 
 const PageContainer = require("./components/PageContainer/PageContainer");
+const { changeRandomPage } = require("../../stores/actions/project");
 
 const { groupsSelector } = require("../../stores/selectors/Html5Renderer");
 
@@ -46,7 +47,12 @@ class LiveHtml5Pagination extends React.Component {
       });
     });
 
-    return <div className={className}>{groupContainer}</div>;
+    return (
+      <div className={className}>
+        {groupContainer}{" "}
+        <button onClick={this.props.onClickHandler}>change something</button>
+      </div>
+    );
   }
 }
 
@@ -65,9 +71,16 @@ const mapStateToProps = state => {
     groups: groupsSelector(state)
   };
 };
-
+const mapDispatchToProps = dispatch => {
+  return {
+    onClickHandler: () => dispatch(changeRandomPage())
+  };
+};
 const LiveHtml5PaginationPlugin = hot(module)(
-  connect(mapStateToProps)(LiveHtml5Pagination)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(LiveHtml5Pagination)
 );
 module.exports = {
   LiveHtml5Pagination: assign(LiveHtml5PaginationPlugin),

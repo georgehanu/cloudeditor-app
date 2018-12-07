@@ -8,7 +8,7 @@ const Page = require("../Page/Page");
 class Zoom extends React.Component {
   render() {
     const styleZoom = {
-      // backgroundColor: randomColor()
+      backgroundColor: randomColor()
     };
 
     const { getContainerRef, pageReady, zoom } = this.props;

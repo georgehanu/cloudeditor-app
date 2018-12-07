@@ -5,7 +5,7 @@ const randomColor = require("randomcolor");
 const assign = require("object-assign");
 /* require("../themes/default/Toolbar/styles/editor_icons.css");
 require("../themes/default/Toolbar/styles/otp.css");
-require("../themes/default/Toolbar/styles/default.css"); */
+require("../themes/default/Toolbar/styles/default.css");  */
 
 const ToolbarArea = require("../../core/components/Toolbar/ToolbarItems/ToolbarArea/ToolbarArea");
 const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/SettingsWnd/SettingsWnd");
@@ -151,9 +151,7 @@ class Toolbar extends React.Component {
   }
 
   render() {
-    console.log("Toolbar");
     console.log(this.props);
-    console.log("Toolbar End");
     let toolbarData = null;
     if (this.props.activeToolbar === null) {
       return null;

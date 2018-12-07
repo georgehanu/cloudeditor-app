@@ -2,7 +2,7 @@ const React = require("react");
 
 const Group = require("../Group/Group");
 
-constUtils = require("../../ToolbarConfig/utils");
+const Utils = require("../../ToolbarConfig/utils");
 
 const ToolbarArea = props => {
   const className = Utils.MergeClassName("ToolbarArea", props.className);

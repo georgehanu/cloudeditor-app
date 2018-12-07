@@ -131,7 +131,7 @@ const getDocumentDefaults = cfg => {
       facingPages: true,
       singleFirstLastPage: true,
       groupSize: 2,
-      includeBoxes: false,
+      includeBoxes: true,
       showTrimbox: true,
       predefinedGroups: [2, 3], //or false
       groups: {
@@ -396,10 +396,12 @@ const getRandomProject = cfg => {
     fill: "red"
   });
   let text5 = getEmptyObject({
+    id: "14adb525-49bc-4da4-b497-922a6aebbb3a",
     type: "textflow",
     width: 210,
     height: 200,
     left: 500,
+    angle: 45,
     top: 500,
     text: "Enter text number 2 here",
     fontFamily: "Dax",
@@ -458,9 +460,13 @@ const getRandomProject = cfg => {
       [page4.id]: page4
     },
     objects: {
-      [img1.id]: img1,
       [text1.id]: text1,
-      [text2.id]: text2
+      [text2.id]: text2,
+      [text3.id]: text3,
+      [text4.id]: text4,
+      [text5.id]: text5,
+      [text6.id]: text6,
+      [text7.id]: text7
     },
     pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
     activePage: page3.id
@@ -478,12 +484,12 @@ const getEmptyPage = cfg => {
 
 const getEmptyObject = cfg => {
   let object = {
-    id: uuidv4(),
+    id: cfg.id || uuidv4(),
     type: cfg.type || false,
-    width: cfg.width || 500,
-    height: cfg.height || 500,
-    left: cfg.left,
-    top: cfg.top,
+    width: parseFloat(cfg.width.toFixed(2)) || 500,
+    height: parseFloat(cfg.height.toFixed(2)) || 500,
+    left: parseFloat(cfg.left.toFixed(2)),
+    top: parseFloat(cfg.top.toFixed(2)),
     editable: cfg.editable || 1,
     value: cfg.value || "default value",
     resizable: cfg.resizable || 1,
@@ -493,7 +499,10 @@ const getEmptyObject = cfg => {
     ispSnap: cfg.ispSnap || 1,
     orientation: cfg.orientation || "north",
     rotate: cfg.rotate || 0,
-    angle: 0
+    angle: cfg.angle || 0,
+    dragging: 0,
+    rotating: 0,
+    resizing: 0
   };
 
   if (cfg && cfg.type) {

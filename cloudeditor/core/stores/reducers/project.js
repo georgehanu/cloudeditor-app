@@ -22,7 +22,8 @@ const {
   UPDATE_CROP_PARAMS,
   DELETE_OBJ,
   CHANGE_PAGE,
-  CHANGE_GROUPS
+  CHANGE_GROUPS,
+  CHANGE_RANDOM_PAGE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -51,6 +52,18 @@ const changePage = (state, payload) => {
     ...state,
     selectedPage: payload.page_id,
     activeGroup: payload.group_id
+  };
+};
+const changeRandomPage = (state, payload) => {
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      "14adb525-49bc-4da4-b497-922a6aebbb3a": {
+        ...state.objects["14adb525-49bc-4da4-b497-922a6aebbb3a"],
+        width: 500 + Math.random() * 500
+      }
+    }
   };
 };
 const changeGroups = (state, payload) => {
@@ -168,6 +181,9 @@ module.exports = handleActions(
   {
     [CHANGE_PROJECT_TITLE]: (state, action) => {
       return changeProjectTitle(state, action.payload);
+    },
+    [CHANGE_RANDOM_PAGE]: (state, action) => {
+      return changeRandomPage(state, action.payload);
     },
     [CHANGE_GROUPS]: (state, action) => {
       return changeGroups(state, action.payload);

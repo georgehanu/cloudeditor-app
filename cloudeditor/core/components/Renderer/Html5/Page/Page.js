@@ -2,11 +2,15 @@ const React = require("react");
 const ObjectBlock = require("../Objects/Object/Object");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
+const { randomColor } = require("randomColor");
 const {
-  createSelectorWithDependencies: createSelector,
+  /*  createSelectorWithDependencies: createSelector, */
   registerSelectors
 } = require("reselect-tools");
-
+const {
+  createDeepEqualSelector: createSelector
+} = require("../../../../rewrites/reselect/createSelector");
+const { forEachObjIndexed } = require("ramda");
 const {
   scaledDisplayedPageSelector
 } = require("../../../../stores/selectors/Html5Renderer");
@@ -35,10 +39,16 @@ class Page extends React.Component {
   }
 
   renderObjects() {
-    const { innerPages, viewOnly } = this.props;
+    const { objectsOffsetList: objects, viewOnly, zoomScale } = this.props;
     return Object.keys(objects).map(obKey => {
       return (
-        <ObjectBlock key={obKey} {...objects[obKey]} viewOnly={viewOnly} />
+        <ObjectBlock
+          key={obKey}
+          id={obKey}
+          zoomScale={zoomScale}
+          {...objects[obKey]}
+          viewOnly={viewOnly}
+        />
       );
     });
   }
@@ -50,7 +60,8 @@ class Page extends React.Component {
       width,
       height,
       marginLeft,
-      marginTop
+      marginTop,
+      backgroundColor: randomColor()
     };
 
     return (
@@ -64,7 +75,7 @@ class Page extends React.Component {
           width={this.props.width}
           height={this.props.height}
         />
-        {/* this.renderObjects() */}
+        {this.renderObjects()}
       </div>
     );
   }
@@ -83,17 +94,26 @@ const makeMapStateToProps = (state, props) => {
     zoomScale
   );
 
-  const getObjectList = createSelector(
+  const getObjectsOffsetsList = createSelector(
     getScaledDisplayedPageSelector,
     scaledPage => {
-      console.log("objectList", scaledPage);
+      let objectsOffset = {};
+      forEachObjIndexed((innerPage, pKey) => {
+        innerPage.objectsIds.map(oKey => {
+          objectsOffset[oKey] = {
+            offsetTop: scaledPage.offset.top + innerPage.offset.top,
+            offsetLeft: scaledPage.offset.left + innerPage.offset.left
+          };
+        });
+      }, scaledPage.innerPages);
+      return objectsOffset;
     }
   );
   const mapStateToProps = (state, props) => {
     const scaledPage = getScaledDisplayedPageSelector(state, props);
     return {
       ...scaledPage,
-      objectList: getObjectList(state, props)
+      objectsOffsetList: getObjectsOffsetsList(state, props)
     };
   };
   return mapStateToProps;

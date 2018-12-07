@@ -36,8 +36,9 @@ require("webpack-jquery-ui/draggable");
 
       for (i = inst.snapElements.length - 1; i >= 0; i--) {
         if (o.snapMode == "customPrintq") {
-          if (inst.snapElements[i].width == 1) inst.snapElements[i].width = 0;
-          if (inst.snapElements[i].height == 1) inst.snapElements[i].height = 0;
+          if (inst.snapElements[i].width == 10) inst.snapElements[i].width = 0;
+          if (inst.snapElements[i].height == 10)
+            inst.snapElements[i].height = 0;
         }
         l = inst.snapElements[i].left - inst.margins.left;
         r = l + inst.snapElements[i].width;

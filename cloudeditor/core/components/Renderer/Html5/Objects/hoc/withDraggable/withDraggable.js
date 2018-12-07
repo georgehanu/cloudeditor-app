@@ -3,6 +3,7 @@ const PropTypes = require("prop-types");
 const $ = require("jquery");
 
 const handleUI = require("./draggable");
+const { addSnapElements, removeSnapClass } = require("../hocUtils/hocUtils");
 
 const withDraggable = WrappedComponent => {
   const WithDraggable = class extends React.Component {
@@ -12,10 +13,30 @@ const withDraggable = WrappedComponent => {
       this.$el = null; //jquery Element
       this.enableUI = false;
     }
-
-    onDragStartHandler = (event, ui) => {};
-    onDragHandler = (event, ui) => {};
-    onDragStopHandler = (event, ui) => {};
+    changePropsOnDragHandler = (ui, dragging) => {
+      const { offsetLeft, offsetTop, zoomScale, id } = this.props;
+      this.props.onUpdatePropsHandler({
+        id,
+        props: {
+          top: (ui.position.top - offsetTop) / zoomScale,
+          left: (ui.position.left - offsetLeft) / zoomScale,
+          dragging
+        }
+      });
+    };
+    onDragStartHandler = (event, ui) => {
+      const draggable = $(event.target).data("ui-draggable");
+      ui = addSnapElements(event, ui, draggable.snapElements, draggable);
+    };
+    onDragHandler = (event, ui) => {
+      const draggable = $(event.target).data("ui-draggable");
+      ui = addSnapElements(event, ui, draggable.snapElements, draggable);
+      this.changePropsOnDragHandler(ui, 1);
+    };
+    onDragStopHandler = (event, ui) => {
+      this.changePropsOnDragHandler(ui, 0);
+      removeSnapClass();
+    };
 
     componentDidMount() {
       this.updateUI();

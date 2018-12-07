@@ -20,4 +20,5 @@ const Button = props => {
     </button>
   );
 };
-module.exports = withTooltip(Button, "toolbar");
+//module.exports = withTooltip(Button, "toolbar");
+module.exports = Button;

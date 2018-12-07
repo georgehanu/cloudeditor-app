@@ -6,10 +6,12 @@ const { connect } = require("react-redux");
 const randomColor = require("randomcolor");
 
 const {
-  createSelectorWithDependencies: createSelector,
+  /*  createSelectorWithDependencies: createSelector, */
   registerSelectors
 } = require("reselect-tools");
-
+const {
+  createDeepEqualSelector: createSelector
+} = require("../../../../rewrites/reselect/createSelector");
 const {
   displayedPageSelector,
   scaledDisplayedPageSelector
@@ -18,7 +20,7 @@ const { computeZoomScale } = require("../../../../utils/UtilUtils");
 require("./PageContainer.css");
 const Canvas = require("../../../../components/Renderer/Html5/Canvas/Canvas");
 
-class PageContainer extends React.Component {
+class PageContainer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.containerRef = null;
@@ -59,6 +61,9 @@ class PageContainer extends React.Component {
     this.updateContainerDimensions();
     window.addEventListener("resize", debounce(this.updateContainerDimensions));
   }
+  componentDidUpdate() {
+    this.updateContainerDimensions();
+  }
   render() {
     console.log("testactivepage", this.props.activePage);
     const { classes, page_id, mode } = this.props;
@@ -70,6 +75,7 @@ class PageContainer extends React.Component {
           getCanvasRef={this.getCanvasReference}
           getContainerRef={this.getContainerReference}
           activePage={this.props.activePage}
+          viewOnly={1}
           zoomScale={this.state.zoomScale}
           containerWidth={containerWidth}
           containerHeight={containerHeight}
@@ -87,7 +93,6 @@ const makeMapStateToProps = (state, props) => {
   const pageSelector = createSelector(
     activePage,
     page_id => {
-      console.log("selectot pageSelector", page_id);
       return [page_id];
     }
   );

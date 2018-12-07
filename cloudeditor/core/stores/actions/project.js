@@ -11,7 +11,8 @@ const {
   CHANGE_PAGE,
   CHANGE_GROUPS,
   UPDATE_CROP_PARAMS,
-  ON_TEXT_CHANGE
+  ON_TEXT_CHANGE,
+  CHANGE_RANDOM_PAGE
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -28,7 +29,8 @@ const {
   changePage,
   updateCropParams,
   changeGroups,
-  onTextChange
+  onTextChange,
+  changeRandomPage
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT,
@@ -42,7 +44,8 @@ const {
   CHANGE_PAGE,
   UPDATE_CROP_PARAMS,
   CHANGE_GROUPS,
-  ON_TEXT_CHANGE
+  ON_TEXT_CHANGE,
+  CHANGE_RANDOM_PAGE
 );
 
 module.exports = {
@@ -58,5 +61,6 @@ module.exports = {
   changePage,
   updateCropParams,
   changeGroups,
-  onTextChange
+  onTextChange,
+  changeRandomPage
 };

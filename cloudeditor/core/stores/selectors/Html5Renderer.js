@@ -1,7 +1,7 @@
+const { registerSelectors } = require("reselect-tools");
 const {
-  createSelectorWithDependencies: createSelector,
-  registerSelectors
-} = require("reselect-tools");
+  createDeepEqualSelector: createSelector
+} = require("../../rewrites/reselect/createSelector");
 
 const {
   head,
@@ -21,6 +21,9 @@ const {
   set,
   view,
   concat,
+  equals,
+  mergeAll,
+  forEachObjIndexed,
   clone
 } = require("ramda");
 
@@ -35,7 +38,8 @@ const {
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
-  includeBoxesSelector
+  includeBoxesSelector,
+  objectsDefaultConfigSelector
 } = require("./project");
 
 const {
@@ -130,6 +134,8 @@ const displayedPageSelector = groupSelector => {
     (group, pages, config, trimbox, bleed, includeBoxes) => {
       const innerPages = {};
       //initial offset of pages
+      var x = { y: 1, x: 3 };
+
       const offset = { left: 0, top: 0 };
       console.log("selectot html5", group);
       forEach(page => {
@@ -154,52 +160,45 @@ const displayedPageSelector = groupSelector => {
         pluck("bleed"),
         pluck("boxes")
       )(innerPages);
-      const boxes = {
-        trimbox: {
-          top: compose(
-            apply(Math.max),
-            values,
-            pluck("top")
-          )(trimBoxes),
-          right: compose(
-            last,
-            values,
-            pluck("right")
-          )(trimBoxes),
-          bottom: compose(
-            apply(Math.max),
-            values,
-            pluck("bottom")
-          )(trimBoxes),
-          left: compose(
-            head,
-            values,
-            pluck("top")
-          )(trimBoxes)
-        },
-        bleed: {
-          top: compose(
-            apply(Math.max),
-            values,
-            pluck("top")
-          )(bleedBoxes),
-          right: compose(
-            last,
-            values,
-            pluck("top")
-          )(bleedBoxes),
-          bottom: compose(
-            apply(Math.max),
-            values,
-            pluck("top")
-          )(bleedBoxes),
-          left: compose(
-            head,
-            values,
-            pluck("top")
-          )(bleedBoxes)
-        }
+      let boxes = {};
+      const defaultBox = {
+        left: 0,
+        top: 0,
+        bottom: 0,
+        right: 0
       };
+
+      var pagesBoxes = pluck("boxes", innerPages);
+      forEachObjIndexed((pageBoxes, pKey) => {
+        Object.keys(pageBoxes).map(bKey => {
+          boxes[bKey] = defaultBox;
+          if (includeBoxes) {
+            const box = compose(pluck(bKey))(pagesBoxes);
+            boxes[bKey] = {
+              top: compose(
+                apply(Math.max),
+                values,
+                pluck("top")
+              )(box),
+              right: compose(
+                last,
+                values,
+                pluck("right")
+              )(box),
+              bottom: compose(
+                apply(Math.max),
+                values,
+                pluck("bottom")
+              )(box),
+              left: compose(
+                head,
+                values,
+                pluck("top")
+              )(box)
+            };
+          }
+        });
+      }, pagesBoxes);
 
       return {
         width: addProps(
@@ -215,13 +214,17 @@ const displayedPageSelector = groupSelector => {
             ? getMaxProp(boxes, "top") + getMaxProp(boxes, "bottom")
             : 0),
         boxes: boxes,
+        offset: {
+          left: includeBoxes ? getMaxProp(boxes, "left") : 0,
+          top: includeBoxes ? getMaxProp(boxes, "top") : 0
+        },
         innerPages
       };
     }
   );
 };
 
-const applyZoomScaleToPage = (page, zoomScale, paths) => {
+const applyZoomScaleToTarget = (page, zoomScale, paths) => {
   let scaledPage = clone(page);
 
   forEach(path => {
@@ -248,6 +251,8 @@ const scaledDisplayedPageSelector = (
       const defaultPaths = [
         ["width"],
         ["height"],
+        ["offset", "top"],
+        ["offset", "left"],
         ["boxes", "trimbox", "top"],
         ["boxes", "trimbox", "right"],
         ["boxes", "trimbox", "bottom"],
@@ -258,13 +263,13 @@ const scaledDisplayedPageSelector = (
         ["boxes", "bleed", "left"]
       ];
 
-      scaledPage = applyZoomScaleToPage(scaledPage, zoomScale, defaultPaths);
+      scaledPage = applyZoomScaleToTarget(scaledPage, zoomScale, defaultPaths);
 
       forEach(pageKey => {
-        scaledPage.innerPages[pageKey] = applyZoomScaleToPage(
+        scaledPage.innerPages[pageKey] = applyZoomScaleToTarget(
           scaledPage.innerPages[pageKey],
           zoomScale,
-          concat(defaultPaths, [["offset", "top"], ["offset", "left"]])
+          defaultPaths
         );
       }, Object.keys(page.innerPages));
 
@@ -272,12 +277,70 @@ const scaledDisplayedPageSelector = (
     }
   );
 };
+const displayedObjectSelector = blockSelector => {
+  return createSelector(
+    blockSelector,
+    block => {
+      return block;
+    }
+  );
+};
+const displayedMergedObjectSelector = displayedObjectSelector => {
+  return createSelector(
+    displayedObjectSelector,
+    objectsDefaultConfigSelector,
+    (object, defaults) => {
+      console.log(defaults, "defaults");
+      return mergeAll([
+        defaults.generalCfg,
+        defaults[object.type + "Cfg"],
+        object
+      ]);
+    }
+  );
+};
+
+const scaledDisplayedObjectSelector = (
+  displayedBlockSelector,
+  zoomScaleSelector
+) => {
+  return createSelector(
+    displayedBlockSelector,
+    zoomScaleSelector,
+    (block, zoomScale) => {
+      let scaledBlock = clone(block);
+      if (zoomScale === 1) return scaledBlock;
+
+      const defaultPaths = [
+        ["width"],
+        ["height"],
+        ["top"],
+        ["left"],
+        ["fontSize"]
+      ];
+
+      scaledBlock = applyZoomScaleToTarget(
+        scaledBlock,
+        zoomScale,
+        defaultPaths
+      );
+
+      return scaledBlock;
+    }
+  );
+};
+const selectedObjectsIdSelector = state =>
+  pathOr([], ["project", "activePage"], state);
 registerSelectors({
   totalPages,
   groupsSelector,
   activeGroupSelector,
   displayedPageSelector,
-  scaledDisplayedPageSelector
+  scaledDisplayedPageSelector,
+  displayedObjectSelector,
+  scaledDisplayedObjectSelector,
+  displayedMergedObjectSelector,
+  selectedObjectsIdSelector
 });
 
 module.exports = {
@@ -285,5 +348,9 @@ module.exports = {
   groupsSelector,
   activeGroupSelector,
   displayedPageSelector,
-  scaledDisplayedPageSelector
+  scaledDisplayedPageSelector,
+  displayedObjectSelector,
+  scaledDisplayedObjectSelector,
+  displayedMergedObjectSelector,
+  selectedObjectsIdSelector
 };

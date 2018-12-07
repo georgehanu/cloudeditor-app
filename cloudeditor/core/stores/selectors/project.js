@@ -1,7 +1,9 @@
-const {
+/* const {
   createSelectorWithDependencies: createSelector
-} = require("reselect-tools");
-
+} = require("reselect-tools"); */
+const {
+  createDeepEqualSelector: createSelector
+} = require("../../rewrites/reselect/createSelector");
 const {
   pick,
   merge,
@@ -87,6 +89,11 @@ const bleedPagesConfigSelector = state => {
   );
 };
 /* End Pages Config Selectors */
+/* Start Objects Config Selectors */
+const objectsDefaultConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "objects"], state);
+};
+/* End Objects Config Selectors */
 
 const groupsSelector = state => {
   return pathOr({}, ["project", "configs", "document", "groups"], state);
@@ -276,8 +283,8 @@ module.exports = {
   predefinedGroupsSelector,
   includeBoxesSelector,
   showTrimboxSelector,
-
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
-  bleedPagesConfigSelector
+  bleedPagesConfigSelector,
+  objectsDefaultConfigSelector
 };

@@ -1,15 +1,16 @@
 const React = require("react");
-
+const Line = require("./Line");
 require("./Box.css");
 const box = props => {
-  const { top, bottom, left, right, width, height, borderWidth } = props;
-  const classes = [props.type, "boxLine"].join(" ");
+  const { top, bottom, left, right, width, height, borderWidth, type } = props;
+  const classes = [type, "boxLine"].join(" ");
   const topStyle = {
     top,
     width: width - (left + right) - borderWidth,
     height: 1,
     left: left + borderWidth
   };
+
   const leftStyle = {
     top: top,
     width: 1,
@@ -30,10 +31,10 @@ const box = props => {
   };
   return (
     <React.Fragment>
-      <div style={topStyle} className={classes + " top"} />
-      <div style={leftStyle} className={classes + " left"} />
-      <div style={rightStyle} className={classes + " right"} />
-      <div style={bottomStyle} className={classes + " bottom"} />
+      <Line {...topStyle} classes={classes + " top"} />
+      <Line {...leftStyle} classes={classes + " left"} />
+      <Line {...rightStyle} classes={classes + " right"} />
+      <Line {...bottomStyle} classes={classes + " bottom"} />
     </React.Fragment>
   );
 };

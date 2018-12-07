@@ -2,7 +2,7 @@ const React = require("react");
 
 const Utils = require("../../ToolbarConfig/utils");
 const Types = require("../../ToolbarConfig/types");
-const { Config } = require("../../ToolbarConfig/config");
+const Config = require("../../ToolbarConfig/config");
 
 const Button = require("../Button/Button");
 const Poptext = require("../Poptext/Poptext");
