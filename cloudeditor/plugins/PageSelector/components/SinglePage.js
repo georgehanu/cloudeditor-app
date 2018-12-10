@@ -6,6 +6,7 @@ const PAGES = "PAGES";
 const PageSource = {
   beginDrag(props) {
     props.highlightHoverPage(null);
+    props.selectPage(props.id);
     return {
       type: PAGES,
       id: props.id,
@@ -59,6 +60,7 @@ const SinglePage = props => {
     "SinglePageContainer " +
     (props.pageType === undefined ? "" : "SinglePage" + props.pageType);
   className += props.hover ? " SinglePageHover" : "";
+  className += props.selected ? " SinglePageSelected" : "";
 
   return props.connectDropTarget(
     props.connectDragSource(
@@ -66,6 +68,7 @@ const SinglePage = props => {
         <div
           className="SinglePage"
           style={{ backgroundColor: props.bgColor }}
+          onClick={() => props.selectPage(props.id, props.addNewPage)}
         />
         <div className="SinglePageText">{props.text}</div>
       </div>

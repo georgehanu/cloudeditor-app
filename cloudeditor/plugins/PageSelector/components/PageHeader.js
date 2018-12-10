@@ -18,7 +18,10 @@ const PageHeader = props => {
         )}
       </div>
       <div className="PageAddPagesContainer">
-        <button className="PageHeaderButtonAddPages">
+        <button
+          className="PageHeaderButtonAddPages"
+          onClick={props.showAddPages}
+        >
           {props.t("Add pages")}
         </button>
       </div>

@@ -51,15 +51,16 @@
   width: 70px;
   height: 70px;
   display: block;
-  box-shadow: 0 0 0 2px #dcdee1;
+  //box-shadow: 0 0 0 2px #dcdee1;
+  border: 2px solid #dcdee1;
+
   box-sizing: border-box;
-  background-color: pink;
 }
 
 .SinglePageRight,
 .SinglePageCenter {
   margin-right: 10px;
-  margin-left: 4px;
+  margin-left: 0px;
 }
 .SinglePageLeft {
   margin-left: 10px;
@@ -205,7 +206,7 @@
 }
 
 .SinglePageContainer.SinglePageHover .SinglePage {
-  box-shadow: 0 0 0 2px red;
+  border: 2px solid orange;
 }
 
 .PageAddPagesContainer {
@@ -218,4 +219,146 @@
 .PageHeaderButtonAddPages {
   border: none;
   color: #58595b;
+}
+
+.SinglePageContainer.SinglePageSelected .SinglePage {
+  border: 2px solid red;
+}
+
+.SinglePageContainer.SinglePageSelected .SinglePageText {
+  color: red;
+}
+
+.PageSelectorBackdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  opacity: 0.7;
+  background: #fff;
+}
+
+.AddPagesModal {
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  width: 600px;
+  height: 330px;
+  position: fixed;
+  z-index: 101;
+  left: calc(50% - 300px);
+  top: 20%;
+  background-color: white;
+  color: #58595b;
+}
+
+.AddPagesHeader {
+  padding: 15px;
+  height: 15px;
+  border-bottom: 1px solid #dcdee1;
+  font-size: 20px;
+  color: #58595b;
+}
+
+.AddPagesModal .CloseMenu {
+  position: absolute;
+  right: 32px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.AddPagesModal .CloseMenu:hover {
+  opacity: 1;
+}
+.AddPagesModal .CloseMenu:before,
+.AddPagesModal .CloseMenu:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.AddPagesModal .CloseMenu:before {
+  transform: rotate(45deg);
+}
+.AddPagesModal .CloseMenu:after {
+  transform: rotate(-45deg);
+}
+
+.AddPagesFooter {
+  margin-top: 0;
+  padding-top: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: #f9fafc;
+  border-top: 1px solid #dcdee1;
+  text-align: right;
+  height: 36px;
+}
+
+.AddPagesFooter button {
+  display: inline-block;
+  padding: 0 20px;
+  font-weight: 400;
+  font-size: 12px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: 0;
+  line-height: 36px;
+  text-decoration: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  border: 0;
+  color: #fff;
+  background-color: #f05323;
+}
+
+.AddPagesBody {
+  height: 200px;
+  margin-top: 15px;
+  padding-left: 15px;
+}
+
+.AddPagesNumber {
+  padding-left: 20px;
+}
+.AddPagesNumberInput {
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  border: 1px solid #666;
+  border-radius: 1px;
+  outline: 0;
+  display: inline-block;
+  width: 54px;
+  height: 24px;
+  padding: 3px 0px;
+  font-size: 14px;
+  line-height: 1;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  text-align: right;
+  margin: 0px 10px;
+}
+
+.AddPagesLocationRow {
+  height: 32px;
+  padding-left: 15px;
+}
+
+.AddPagesLocation {
+  padding-top: 15px;
+}
+
+.AddPagesLocationRow span,
+.AddPagesLocationRow input {
+  vertical-align: middle;
 }
