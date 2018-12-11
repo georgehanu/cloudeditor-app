@@ -52,6 +52,7 @@ class ColorSelectorWnd extends React.Component {
     const index = sortedElements.findIndex(el => {
       return el.type === activeTab;
     });
+
     let data =
       "data" in sortedElements[index] ? sortedElements[index].data : [];
 
@@ -67,6 +68,7 @@ class ColorSelectorWnd extends React.Component {
         selectColor={this.props.ToolbarHandler}
         handler={this.props.handler}
         type={activeTab}
+        activeTab={activeTab}
       />
     );
     if (sortedElements[index].baseType === Types.COLOR_TAB_WIDTH_CHOOSER) {
@@ -77,6 +79,7 @@ class ColorSelectorWnd extends React.Component {
           selectWidth={this.props.ToolbarHandler}
           handler={this.props.handler}
           type={activeTab}
+          activeTab={activeTab}
         />
       );
     }
@@ -95,5 +98,4 @@ class ColorSelectorWnd extends React.Component {
     );
   }
 }
-
 module.exports = ColorSelectorWnd;

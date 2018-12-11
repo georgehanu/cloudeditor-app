@@ -1,29 +1,48 @@
 const React = require("react");
+const { connect } = require("react-redux");
+const {
+  colorTabSelector,
+  getActiveBlockColors
+} = require("./../../../../../stores/selectors/ui");
 
 const ColorTab = props => {
-  let colors = props.data.map((el, index) => {
+  let colors = props.colors.map((color, index) => {
     return (
       <li
-        key={index}
-        style={{ backgroundColor: el }}
+        key={color.id}
+        style={{ backgroundColor: color.htmlRGB }}
         className="ColorSquare"
-        onClick={() =>
+        onClick={() => {
+          const {
+            htmlRGB,
+            RGB,
+            CMYK,
+            separation,
+            separationColorSpace,
+            separationColor
+          } = color;
           props.selectColor({
             mainHandler: true,
-            payloadMainHandler: { type: props.type, value: el }
-          })
-        }
+            payloadMainHandler: {
+              type: props.type,
+              value: {
+                htmlRGB,
+                RGB,
+                CMYK,
+                separation,
+                separationColorSpace,
+                separationColor
+              }
+            }
+          });
+        }}
       >
-        {index === props.selectedIndex && (
+        {props.activeColors[props.activeTab] === color.htmlRGB && (
           <b className="icon printqicon-ok SelectedColor" />
         )}
       </li>
     );
   });
-  {
-    /*colors.length > 0 && colors.push(<li key={colors.length} className="ColorSquare AddColor">+</li>)*/
-  }
-
   return (
     <div className="ColorTabColorContainer">
       <ul className="">{colors}</ul>
@@ -31,4 +50,13 @@ const ColorTab = props => {
   );
 };
 
-module.exports = ColorTab;
+const mapStateToProps = (state, props) => {
+  return {
+    colors: colorTabSelector(state, props),
+    activeColors: getActiveBlockColors(state, props)
+  };
+};
+module.exports = connect(
+  mapStateToProps,
+  null
+)(ColorTab);

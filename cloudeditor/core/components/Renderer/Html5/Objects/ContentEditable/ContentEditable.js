@@ -25,22 +25,26 @@ const propTypes = {
   sanitise: PropTypes.bool,
   caretPosition: PropTypes.oneOf(["start", "end"]),
   tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]), // The element to make contenteditable. Takes an element string ('div', 'span', 'h1') or a styled component
+  active: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]), // The element to make contenteditable. Takes an element string ('div', 'span', 'h1') or a styled component
   innerRef: PropTypes.func,
   onBlur: PropTypes.func,
   onKeyDown: PropTypes.func,
   onPaste: PropTypes.func,
   onChange: PropTypes.func,
+  id: PropTypes.string,
   styled: PropTypes.bool // If element is a styled component (uses innerRef instead of ref)
 };
 
 const defaultProps = {
   content: "",
   editable: true,
+  active: true,
+  id: "",
   focus: false,
   maxLength: Infinity,
   multiLine: false,
   sanitise: true,
-  caretPosition: null,
+  caretPosition: "end",
   tagName: "div",
   innerRef: () => {},
   onBlur: () => {},
@@ -59,9 +63,17 @@ class ContentEditable extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.active) {
+      this.setFocus();
+      this.setCaret();
+    }
+  }
   componentDidMount() {
-    this.setFocus();
-    this.setCaret();
+    if (this.props.active) {
+      this.setFocus();
+      this.setCaret();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,10 +87,10 @@ class ContentEditable extends React.Component {
     return !isEqual(pick(nextProps, propKeys), pick(this.props, propKeys));
   }
 
-  componentDidUpdate() {
+  /* componentDidUpdate() {
     this.setFocus();
     this.setCaret();
-  }
+  } */
 
   setFocus = () => {
     if (this.props.focus && this._element) {
@@ -88,7 +100,6 @@ class ContentEditable extends React.Component {
 
   setCaret = () => {
     const { caretPosition } = this.props;
-
     if (caretPosition && this._element) {
       const { value } = this.state;
       const offset = value.length && caretPosition === "end" ? 1 : 0;
@@ -153,6 +164,7 @@ class ContentEditable extends React.Component {
   };
 
   _onBlur = ev => {
+    return;
     const { sanitise } = this.props;
     const rawValue = this._element.innerText;
     const value = sanitise ? this.sanitiseValue(rawValue) : rawValue;
@@ -213,24 +225,14 @@ class ContentEditable extends React.Component {
     return (
       <Element
         {...omit(props, Object.keys(propTypes))}
-        {...(styled
-          ? {
-              innerRef: c => {
-                this._element = c;
-                props.innerRef(c);
-              }
-            }
-          : {
-              ref: c => {
-                this._element = c;
-                props.innerRef(c);
-              }
-            })}
+        ref={c => {
+          this._element = c;
+          props.innerRef(this._element);
+        }}
         style={{ whiteSpace: "pre-wrap", ...props.style }}
         contentEditable={editable}
-        key={Date()}
+        key={props.id}
         dangerouslySetInnerHTML={{ __html: this.state.value }}
-        onBlur={this._onBlur}
         onInput={this._onChange}
         onKeyDown={this._onKeyDown}
         onKeyUp={this._onKeyUp}

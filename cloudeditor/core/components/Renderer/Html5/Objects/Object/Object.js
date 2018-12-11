@@ -25,6 +25,7 @@ const {
 const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
 const Draggable = require("./Draggable");
+const TextBlock = require("../Text/Text");
 
 const {
   updateObjectProps,
@@ -38,7 +39,12 @@ class ObjectBlock extends React.Component {
     this.el = null;
     this.$el = null;
   }
-
+  componentDidUpdate() {
+    if (this.editable) {
+      this.editable.setFocus();
+      this.editable.setCaret();
+    }
+  }
   getEditableReference = ref => {
     this.editable = ref;
   };
@@ -58,7 +64,34 @@ class ObjectBlock extends React.Component {
     this.$el = $(this.el);
     this.props.getReference(ref);
   };
-
+  renderText = () => {
+    const props = { ...this.props };
+    const { viewOnly, editable } = props;
+    const contentEditable = !viewOnly && editable;
+    const textProps = {
+      id: props.id,
+      active: props.active,
+      width: props.width,
+      maxWidth: props.width,
+      fontFamily: props.fontFamily,
+      fontSize: props.fontSize,
+      textAlign: props.textAlign,
+      vAlign: props.vAlign,
+      underline: props.underline,
+      bold: props.bold,
+      italic: props.italic,
+      type: props.type,
+      value: props.value,
+      fillColor: props.fillColor.htmlRGB,
+      bgColor: props.bgColor.htmlRGB,
+      borderColor: props.borderColor.htmlRGB,
+      onUpdateProps: props.onUpdateProps,
+      onTextChange: props.onTextChange,
+      editableRef: this.getEditableReference,
+      contentEditable
+    };
+    return <TextBlock {...textProps} />;
+  };
   render() {
     const {
       width,
@@ -71,6 +104,9 @@ class ObjectBlock extends React.Component {
       editable,
       offsetLeft,
       offsetTop,
+      bgColor,
+      borderColor,
+      borderWidth,
       type
     } = this.props;
 
@@ -82,20 +118,44 @@ class ObjectBlock extends React.Component {
     ].join(" ");
 
     const style = {
-      width: width,
-      height: height,
+      width,
+      height,
       left: left + offsetLeft,
       top: top + offsetTop,
       transform: "rotate(" + angle + "deg)",
-      backgroundColor: randomColor()
+      backgroundColor: bgColor.htmlRGB
     };
+    const styleBorderColor = {
+      width: width + parseFloat(borderWidth),
+      height: height + parseFloat(borderWidth),
+      borderColor: borderColor.htmlRGB,
+      borderWidth: parseFloat(borderWidth),
+      top: (-1 * parseFloat(borderWidth)) / 2,
+      left: (-1 * parseFloat(borderWidth)) / 2
+    };
+    let element = null;
+    switch (type) {
+      case "textflow":
+      case "textline":
+        element = this.renderText();
+        break;
+      case "image":
+        break;
+      default:
+        break;
+    }
+
     return (
       <div
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}
         ref={this.getReference}
-      />
+      >
+        <div className={"north"}>{element}</div>
+        <div className={"blockBorder"} style={styleBorderColor} />
+        <u style={{ width, height }} />
+      </div>
     );
   }
 }

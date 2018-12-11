@@ -99,8 +99,17 @@ const groupsSelector = state => {
   return pathOr({}, ["project", "configs", "document", "groups"], state);
 };
 
-const objectsSelector = state =>
-  (state && state.project && state.project.objects) || {};
+const objectsSelectorSelector = state => {
+  console.log("1234");
+  return (state && state.project && state.project.objects) || {};
+};
+
+const objectsSelector = createSelector(
+  objectsSelectorSelector,
+  objects => {
+    return objects;
+  }
+);
 
 const selectedPageIdSelector = state =>
   (state && state.project && state.project.selectedPage) || null;

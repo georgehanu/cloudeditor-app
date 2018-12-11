@@ -1,7 +1,7 @@
 const React = require("react");
 
 const Utils = require("../../ToolbarConfig/utils");
-const { Config } = require("../../ToolbarConfig/config");
+const Config = require("../../ToolbarConfig/config");
 const Types = require("../../ToolbarConfig/types");
 
 const SliderWnd = require("../Slider/SliderWnd/SliderWnd");

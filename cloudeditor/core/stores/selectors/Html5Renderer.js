@@ -260,7 +260,8 @@ const scaledDisplayedPageSelector = (
         ["boxes", "bleed", "top"],
         ["boxes", "bleed", "right"],
         ["boxes", "bleed", "bottom"],
-        ["boxes", "bleed", "left"]
+        ["boxes", "bleed", "left"],
+        ["borderWidth"]
       ];
 
       scaledPage = applyZoomScaleToTarget(scaledPage, zoomScale, defaultPaths);
@@ -322,7 +323,8 @@ const scaledDisplayedObjectSelector = (
         ["height"],
         ["top"],
         ["left"],
-        ["fontSize"]
+        ["fontSize"],
+        ["borderWidth"]
       ];
 
       scaledBlock = applyZoomScaleToTarget(

@@ -84,7 +84,7 @@ const changeGroups = (state, payload) => {
 
 const addObjectToPage = (state, action) => {
   const { object } = action;
-  const pageId = state.selectedPage;
+  const pageId = state.activePage;
   const page = {
     ...state.pages[state],
     objectsIds: state.pages[pageId].objectsIds.concat(object.id)

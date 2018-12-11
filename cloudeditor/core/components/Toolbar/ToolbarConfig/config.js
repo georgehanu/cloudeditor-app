@@ -84,7 +84,7 @@ const Config = {
         className: "icon printqicon-top_valign"
       },
       {
-        value: "center_valign",
+        value: "middle_valign",
         label: "",
         className: "icon printqicon-middle_valign"
       },

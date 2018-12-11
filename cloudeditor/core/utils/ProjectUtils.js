@@ -6,7 +6,6 @@ const getObjectColorTemplate = cfg => {
   return merge(
     {
       colorSpace: "DeviceRGB",
-      transparent: 1,
       htmlRGB: null,
       RGB: null,
       CMYK: null,
@@ -94,6 +93,8 @@ const getObjectsDefaults = cfg => {
       charSpacing: 0,
       circleText: 0,
       fillColor: getObjectColorTemplate((text && text.fillColor) || {}),
+      bgColor: getObjectColorTemplate((text && text.bgColor) || {}),
+      borderColor: getObjectColorTemplate((text && text.borderColor) || {}),
       deviationX: 0,
       deviationY: 0,
       fontId: 1,
@@ -210,16 +211,17 @@ const getColorTemplate = cfg => {
   return merge(
     {
       id: uuidv4(),
-      label: null, //label of the color
-      htmlRGB: null, //html value of the color
-      RGB: null, //pdflib RGB value
-      CMYK: null, //pdflib CMYK value
-      separation: null, // pdflib Separation color value
-      separationColorSpace: null, //fallback for separation color
-      separationColor: null //fallback for separation color
+      label: null,
+      htmlRGB: null,
+      RGB: null,
+      CMYK: null,
+      separation: null,
+      separationColorSpace: null,
+      separationColor: null,
+      type: ["COLOR_TAB_FG", "COLOR_TAB_BG", "COLOR_TAB_BORDER_COLOR"]
     },
     cfg || {}
-  );
+  ); //label of the color //html value of the color //pdflib RGB value //pdflib CMYK value // pdflib Separation color value //fallback for separation color //fallback for separation color
 };
 
 const getFontTemplate = cfg => {
@@ -289,7 +291,7 @@ const getEmptyProject = cfg => {
   };
 };
 
-const getRandomProject1 = cfg => {
+const getRandomProject = cfg => {
   const defaultImages = [
     "http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
     "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350",
@@ -346,12 +348,13 @@ const getRandomProject1 = cfg => {
     src: defaultImages[4]
   });
   let text6 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
+    type: "textflow",
+    width: 123,
+    height: 343,
+    left: 34,
     orientation: "north",
-    top: Math.random() * 500,
+    fontFamily: "Dax",
+    top: 120,
     value: "this is a default value for text"
   });
   let text1 = getEmptyObject({
@@ -473,13 +476,13 @@ const getRandomProject1 = cfg => {
   };
 };
 
-const getRandomProject = cfg => {
+const getRandomProject2 = cfg => {
   let project = getEmptyProject();
   let i;
-  for (i = 0; i < 220; i++) {
+  for (i = 0; i < 50; i++) {
     let page = getEmptyPage();
     let j;
-    for (j = 0; j < 5; j++) {
+    for (j = 0; j < 10; j++) {
       let object = getEmptyObject({
         type: "textflow",
         width: 100 + Math.random() * 500,
@@ -526,6 +529,7 @@ const getEmptyObject = cfg => {
     rotateAngle: cfg.rotateAngle || 0,
     ispSnap: cfg.ispSnap || 1,
     orientation: cfg.orientation || "north",
+    fontFamily: cfg.fontFamily || "Arial",
     rotate: cfg.rotate || 0,
     angle: cfg.angle || 0,
     dragging: 0,
@@ -592,21 +596,30 @@ const getEmptyObject = cfg => {
           bold: cfg.bold || false,
           underline: cfg.underline || false,
           italic: cfg.italic || false,
-          fontFamily: cfg.fontFamily || false
+          fontFamily: cfg.fontFamily || false,
+          fillColor: getObjectColorTemplate((cfg && cfg.fillColor) || {}),
+          bgColor: getObjectColorTemplate((cfg && cfg.bgColor) || {}),
+          borderColor: getObjectColorTemplate((cfg && cfg.borderColor) || {})
         };
         break;
-      default:
-        return { ...object };
+        sdefault: return { ...object };
         break;
     }
   }
 };
 
 const getEmptyUI = cfg => {
+  const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });
+  const color2 = getEmptyColor({ id: 2, label: "red", htmlRGB: "#f00" });
+  const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
+  const font2 = getEmptyFont({ label: "Arial", id: 2 });
   return {
-    colors: {},
     fonts: {},
     fontMetrics: {},
+    colors: {
+      [color1.id]: color1,
+      [color2.id]: color2
+    },
     workArea: {
       zoom: 1,
       scale: 1,
