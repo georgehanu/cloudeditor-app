@@ -1,8 +1,11 @@
 const React = require("react");
-const { number } = require("prop-types");
 const { debounce } = require("underscore");
 const { connect } = require("react-redux");
 const uuidv4 = require("uuid/v4");
+const { map, concat } = require("ramda");
+
+const { computeZoomScale } = require("../../../utils/UtilUtils");
+
 const {
   Image,
   IText,
@@ -13,12 +16,24 @@ const {
   Line,
   BleedBox,
   TrimBox
-} = require("../../../packages/core/react-fabric");
-const ImageLoad = require("../../../packages/core/react-fabric/components/Helpers/ImageLoad");
-const GraphicsLoad = require("../../../packages/core/react-fabric/components/Helpers/GraphicsLoad");
-const { fabric } = require("../../../rewrites/fabric/fabric");
-const { map, concat } = require("ramda");
-const ProjectUtils = require("../../../utils/ProjectUtils");
+} = require("../components/index");
+
+const ImageLoad = require("../components/Helpers/ImageLoad");
+const TextLoad = require("../components/Helpers/TextLoad");
+const GraphicsLoad = require("../components/Helpers/GraphicsLoad");
+
+const { activePageSelector } = require("../../../stores/selectors/project");
+
+const {
+  addObjectIdToSelected,
+  removeSelection,
+  updateObjectProps
+} = require("../../../stores/actions/project");
+
+const {
+  updateSelectionObjectsCoords
+} = require("../../../stores/actions/project");
+
 const projectActions = require("../../../stores/actions/project");
 const uiActions = require("../../../stores/actions/ui");
 const rendererActions = require("../../../stores/actions/renderer");
@@ -53,7 +68,7 @@ const updatePageOffset = (props, editorContainer) => {
   return result;
 };
 
-class FabricjsRenderer extends React.PureComponent {
+class FabricRenderer extends React.Component {
   state = {
     editorContainer: null,
     isReadyComponent: false,
@@ -146,6 +161,11 @@ class FabricjsRenderer extends React.PureComponent {
     this.updatePageOffset();
     window.addEventListener("resize", debounce(this.updatePageOffset));
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.activePage.id !== this.props.activePage.id) {
+      this.updatePageOffset();
+    }
+  }
 
   /**
    * Remove event listener
@@ -153,9 +173,7 @@ class FabricjsRenderer extends React.PureComponent {
   componentWillUnmount() {
     window.removeEventListener("resize", this.updatePageOffset);
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   return false;
-  // }
+
   onBeforeOverlayHandler = params => {
     if (params.canvas.interactive) {
       var lowPoint = fabric.util.transformPoint(
@@ -200,8 +218,16 @@ class FabricjsRenderer extends React.PureComponent {
             objectProps: map(obj => {
               return {
                 id: obj.id,
-                left: (obj.left - this.state.canvasOffsetX) / this.state.scale,
-                top: (obj.top - this.state.canvasOffsetY) / this.state.scale
+                left:
+                  (obj.left -
+                    this.state.canvasOffsetX -
+                    obj.offsetLeft * this.state.scale) /
+                  this.state.scale,
+                top:
+                  (obj.top -
+                    this.state.canvasOffsetY -
+                    obj.offsetTop * this.state.scale) /
+                  this.state.scale
               };
             }, args.selected)
           };
@@ -219,8 +245,16 @@ class FabricjsRenderer extends React.PureComponent {
         objectProps: map(obj => {
           return {
             id: obj.id,
-            left: (obj.left - this.state.canvasOffsetX) / this.state.scale,
-            top: (obj.top - this.state.canvasOffsetY) / this.state.scale,
+            left:
+              (obj.left -
+                this.state.canvasOffsetX -
+                obj.offsetLeft * this.state.scale) /
+              this.state.scale,
+            top:
+              (obj.top -
+                this.state.canvasOffsetY -
+                obj.offsetTop * this.state.scale) /
+              this.state.scale,
             angle: obj.angle
           };
         }, args.deselected)
@@ -241,9 +275,15 @@ class FabricjsRenderer extends React.PureComponent {
       } else {
         let objProps = args.target.getMainProps();
         objProps.left =
-          (objProps.left - this.state.canvasOffsetX) / this.state.scale;
+          (objProps.left -
+            this.state.canvasOffsetX -
+            objProps.offsetLeft * this.state.scale) /
+          this.state.scale; //;
         objProps.top =
-          (objProps.top - this.state.canvasOffsetY) / this.state.scale;
+          (objProps.top -
+            this.state.canvasOffsetY -
+            objProps.offsetTop * this.state.scale) /
+          this.state.scale; // ;
         objProps.width =
           (objProps.width / this.state.scale) * args.target.scaleX;
         objProps.height =
@@ -263,26 +303,7 @@ class FabricjsRenderer extends React.PureComponent {
       updateObjectProps: this.props.updateObjectProps
     };
   };
-  getTools = () => {
-    return this.props.items.sort((a, b) => a.position - b.position);
-  };
-  getTool = tool => {
-    return tool.plugin;
-  };
-  getToolConfig = tool => {
-    if (tool.tool) {
-      return {};
-    }
-    return this.props.toolCfg || {};
-  };
-  renderTools = () => {
-    const tools = this.getTools();
-    return tools.map((tool, i) => {
-      const Tool = this.getTool(tool);
-      const toolCfg = this.getToolConfig(tool);
-      return <Tool {...toolCfg} items={tool.items || []} key={i.toString()} />;
-    });
-  };
+
   drawElements(objects, needOffset) {
     let elements = Object.keys(objects).map(obKey => {
       const object = { ...objects[obKey] };
@@ -295,8 +316,14 @@ class FabricjsRenderer extends React.PureComponent {
       object.left = object.left * this.state.scale;
       object.top = object.top * this.state.scale;
       if (needOffset) {
-        object.left += this.state.canvasOffsetX;
-        object.top += this.state.canvasOffsetY;
+        object.left =
+          object.left +
+          this.state.canvasOffsetX +
+          object.offsetLeft * this.state.scale;
+        object.top =
+          object.top +
+          this.state.canvasOffsetY +
+          object.offsetTop * this.state.scale;
       }
 
       switch (object.type) {
@@ -312,10 +339,12 @@ class FabricjsRenderer extends React.PureComponent {
           return <IText key={object.id} {...object} />;
         case "textbox":
           return (
-            <Textbox
+            <TextLoad
               key={object.id}
+              canvasScale={this.state.scale}
               {...object}
               designerCallbacks={this.designerCallbacks}
+              fontSize={object.fontSize * this.state.scale}
             />
           );
         case "group":
@@ -335,8 +364,9 @@ class FabricjsRenderer extends React.PureComponent {
   }
 
   drawHelperLines() {
-    const { bleedLines: bleedLines } = this.props;
-    const { trimboxLines: trimboxLines } = this.props;
+    //return null;
+    const { bleedLines } = this.props;
+    const { trimboxLines } = this.props;
 
     const helpers = map(idx => {
       const object = { ...idx };
@@ -365,12 +395,15 @@ class FabricjsRenderer extends React.PureComponent {
     }, concat(bleedLines, trimboxLines));
     return helpers;
   }
+
   render() {
     const { activePage: page } = this.props;
     const { objects } = page;
     let elements = this.drawElements(objects, 1);
-    let helperElements = this.drawHelperLines();
-
+    let helperElements = null;
+    if (!this.props.viewOnly) {
+      helperElements = this.drawHelperLines();
+    }
     let isReadyComponent = this.state.isReadyComponent;
 
     return (
@@ -396,15 +429,27 @@ class FabricjsRenderer extends React.PureComponent {
               {helperElements}
             </Fabric>
           )}
-          {this.renderTools()}
         </div>
       </div>
     );
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    activePage: activePageSelector(state),
+    trimboxLines: trimboxLinesSelector(state),
+    bleedLines: bleedLinesSelector(state)
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
+    addObjectToSelectedHandler: id => dispatch(addObjectIdToSelected(id)),
+    removeSelection: args => dispatch(removeSelection(args)),
+    updateObjectProps: args => dispatch(updateObjectProps(args)),
+    updateSelectionObjectsCoordsHandler: props =>
+      dispatch(updateSelectionObjectsCoords(props)),
     updateCropParams: (id, props) =>
       dispatch(
         projectActions.updateCropParams({
@@ -424,15 +469,8 @@ const mapDispatchToProps = dispatch => {
       )
   };
 };
-const mapStateToProps = state => {
-  return {
-    trimboxLines: trimboxLinesSelector(state),
-    bleedLines: bleedLinesSelector(state)
-  };
-};
 
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
-)(FabricjsRenderer);
-//module.exports = FabricjsRenderer;
+)(FabricRenderer);

@@ -1,0 +1,11 @@
+{
+  "plugins": {
+    "mobile": ["FabricRenderer"],
+    "desktop": ["Html5Renderer", "FabricRenderer"]
+  },
+  "mainComponent": {
+    "component": "div",
+    "id": "container",
+    "className": "container"
+  }
+}

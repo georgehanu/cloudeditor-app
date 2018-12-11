@@ -14,7 +14,11 @@
     "build:admin": "webpack --mode production --workspace admin",
     "start:client": "webpack-dev-server --mode development --workspace client",
     "dev:client": "webpack --mode development --workspace client",
-    "build:client": "webpack --mode production --workspace client"
+    "build:client": "webpack --mode production --workspace client",
+    "hot:designer": "webpack-dev-server --mode development --hot-only --workspace designer",
+    "start:designer": "webpack-dev-server --mode development --hot --workspace designer",
+    "dev:designer": "webpack --mode development --workspace designer",
+    "build:designer": "webpack --mode production --workspace designer"
   },
   "keywords": [],
   "author": "",
@@ -103,6 +107,7 @@
     "rxjs": "^6.3.3",
     "underscore": "^1.9.1",
     "uuid": "^3.3.2",
+    "webfontloader": "^1.6.28",
     "webpack-jquery-ui": "^2.0.1"
   }
 }

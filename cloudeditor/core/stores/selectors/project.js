@@ -22,6 +22,9 @@ const pagesSelector = state => {
   return pathOr({}, ["project", "pages"], state);
 };
 
+const useTrimboxSelector = state =>
+  pathOr(false, ["project", "configs", "document", "showTrimbox"], state);
+
 const pagesOrderSelector = state => {
   return pathOr([], ["project", "pagesOrder"], state);
 };
@@ -206,6 +209,7 @@ const activePageSelector = createSelector(
     activeGroupIdSelector,
     groupsSelector,
     documentBoxesSelector,
+    useTrimboxSelector,
     selectedPageIdSelector
   ],
   (
@@ -251,6 +255,7 @@ const activePageSelector = createSelector(
     return activePage;
   }
 );
+
 const selectedObjectSelector = createSelector(
   [objectsSelector, selectedObjectsIdsSelector],
   (objects, selectedObjectsIds) => {
@@ -263,6 +268,15 @@ const selectedObjectSelector = createSelector(
     return activeObjects;
   }
 );
+
+const uiSelector = state => (state && state.ui) || {};
+const uiScaleSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea.scale;
+  }
+);
+const variablesSelector = state => (state && state.variables) || [];
 
 module.exports = {
   pagesSelector,
@@ -286,5 +300,8 @@ module.exports = {
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
-  objectsDefaultConfigSelector
+  objectsDefaultConfigSelector,
+
+  uiScaleSelector,
+  variablesSelector
 };

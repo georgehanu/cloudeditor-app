@@ -177,6 +177,8 @@ const getProjectTemplate = cfg => {
     pages: {},
     activePage: null,
     pagesOrder: [],
+    selectedPage: null, // designer
+    activeGroup: null, // designer
     objects: {},
     selectedObjectsIds: [],
     activeSelection: null,
@@ -345,14 +347,17 @@ const getRandomProject = cfg => {
     top: Math.random() * 500,
     src: defaultImages[4]
   });
+
   let text6 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
-    orientation: "north",
-    top: Math.random() * 500,
-    value: "this is a default value for text"
+    type: "textbox",
+    width: 450,
+    height: 70,
+    left: 0,
+    top: 0,
+    text: "Enter text here asd sadd",
+    fontFamily: "Roboto",
+    fontSize: 50,
+    fill: "red"
   });
   let text1 = getEmptyObject({
     type: "textflow",
@@ -361,8 +366,22 @@ const getRandomProject = cfg => {
     left: 0,
     top: 0,
     text: "Enter text here",
-    fontFamily: "Dax",
+    fontFamily: "Roboto",
     fontSize: 50,
+    fill: "red"
+  });
+
+  let text9 = getEmptyObject({
+    type: "textbox",
+    width: 400,
+    height: 400,
+    left: 100,
+    top: 100,
+    fontSize: 14,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    text: "asdsad ad",
     fill: "red"
   });
   let text2 = getEmptyObject({
@@ -372,7 +391,7 @@ const getRandomProject = cfg => {
     left: 100,
     top: 200,
     text: "Enter text number 2 here",
-    fontFamily: "Dax",
+    fontFamily: "Roboto",
     fill: "red"
   });
   let text3 = getEmptyObject({
@@ -382,7 +401,7 @@ const getRandomProject = cfg => {
     left: 300,
     top: 300,
     text: "Enter text number 2 here",
-    fontFamily: "Dax",
+    fontFamily: "Roboto",
     fill: "red"
   });
   let text4 = getEmptyObject({
@@ -392,7 +411,7 @@ const getRandomProject = cfg => {
     left: 400,
     top: 400,
     text: "Enter text number 2 here",
-    fontFamily: "Dax",
+    fontFamily: "Roboto",
     fill: "red"
   });
   let text5 = getEmptyObject({
@@ -404,7 +423,7 @@ const getRandomProject = cfg => {
     angle: 45,
     top: 500,
     text: "Enter text number 2 here",
-    fontFamily: "Dax",
+    fontFamily: "Roboto",
     fill: "red"
   });
   let text7 = getEmptyObject({
@@ -414,7 +433,7 @@ const getRandomProject = cfg => {
     left: 700,
     top: 70,
     text: "Enter text number 2 here",
-    fontFamily: "Dax",
+    fontFamily: "Roboto",
     fill: "red"
   });
 
@@ -442,7 +461,7 @@ const getRandomProject = cfg => {
   page3 = {
     ...page3,
     id: "page_3",
-    objectsIds: [text5.id, text6.id]
+    objectsIds: [img1.id, text5.id, text6.id, text9.id]
   };
 
   page4 = {
@@ -466,10 +485,14 @@ const getRandomProject = cfg => {
       [text4.id]: text4,
       [text5.id]: text5,
       [text6.id]: text6,
-      [text7.id]: text7
+      [text7.id]: text7,
+      [text9.id]: text9,
+      [img1.id]: img1
     },
     pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
-    activePage: page3.id
+    activePage: page3.id,
+    selectedPage: page3.id, // designer
+    activeGroup: "group_3" //designer
   };
 };
 
@@ -531,15 +554,7 @@ const getEmptyObject = cfg => {
             cfg.src ||
             "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg"
         };
-      case "textbox":
-        return {
-          ...object,
-          type: "textbox",
-          width: cfg.width || 0,
-          height: cfg.height || 0,
-          fontSize: cfg.fontSize || 20,
-          text: cfg.text || "Lorem Ipsum"
-        };
+
       case "activeSelection":
         return { ...object, type: cfg.type, left: cfg.left, top: cfg.top };
       case "group":
@@ -555,16 +570,18 @@ const getEmptyObject = cfg => {
         break;
       case "text":
       case "textflow":
+      case "textbox":
         return {
           ...object,
-          font: cfg.font || "Arial",
+          font: cfg.font || "Roboto",
           textAlign: cfg.textAlign || "left",
           vAlign: cfg.vAlign || "top",
           fontSize: cfg.fontSize || 12,
           bold: cfg.bold || false,
           underline: cfg.underline || false,
           italic: cfg.italic || false,
-          fontFamily: cfg.fontFamily || false
+          fontFamily: cfg.fontFamily || false,
+          text: "adasdsad asd sad "
         };
         break;
       default:
@@ -621,12 +638,25 @@ const getRandomUI = cfg => {
   };
 };
 
+const getEmptyVariables = cfg => {
+  return [
+    {
+      name: "FullName",
+      display_name: "Full Name",
+      prefix: "",
+      sufix: "",
+      value: "Marius Turcu"
+    }
+  ];
+};
+
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
   getEmptyPage,
   getEmptyObject,
   getEmptyUI,
+  getEmptyVariables,
   getRandomUI,
   getEmptyColor,
   getEmptyFont

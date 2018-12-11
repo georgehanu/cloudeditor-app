@@ -17,27 +17,6 @@ const { canvasSelector, zoomSelector } = require("../../stores/selectors/ui");
 
 require("./Html5.css");
 
-updatePageOffset = (ref, { width, height }) => {
-  const refContainer = ref;
-  if (refContainer) {
-    const child = {
-        width: width,
-        height: height
-      },
-      parent = {
-        width: refContainer.offsetWidth,
-        height: refContainer.offsetHeight
-      };
-
-    let scale = Math.min(
-      parent.width / child.width,
-      parent.height / child.height
-    );
-
-    return scale;
-  }
-};
-
 class Html5 extends React.Component {
   state = {
     zoomScale: 1,
