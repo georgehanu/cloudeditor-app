@@ -39,7 +39,9 @@ const checkUI = $el => {
   if ($el.length) return $el.data("ui-draggable") === undefined ? false : true;
   return false;
 };
-
+const destroyUi = $el => {
+  if (checkUI($el)) $el.draggable("destroy");
+};
 const destroyUi = $el => {
   if (checkUI($el)) $el.draggable("destroy");
 };

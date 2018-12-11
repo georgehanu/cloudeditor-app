@@ -139,7 +139,7 @@ const build = config => {
           },
           {
             from: "./" + namespace + "/plugins/*/locales/*/*.json",
-            to: "./locales/[5]/[3].[ext]",
+            to: "./locales/[5]/[name].[ext]",
             toType: "template",
             test: /^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/
             /**

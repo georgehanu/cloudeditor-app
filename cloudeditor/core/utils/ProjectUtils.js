@@ -200,6 +200,9 @@ const getProjectPageTemplate = cfg => {
   return {
     id: pathOr(uuidv4(), ["id"], cfg),
     label: pathOr("Page %no%", ["label"], cfg),
+    countInPagination: pathOr(true, ["countInPagination"], cfg),
+    lockPosition: pathOr(true, ["lockPosition"], cfg),
+    selectable: pathOr(true, ["selectable"], cfg),
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
     objectsIds: pathOr([], ["objectsIds"], cfg),
@@ -614,6 +617,7 @@ const getEmptyUI = cfg => {
   const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
   const font2 = getEmptyFont({ label: "Arial", id: 2 });
   return {
+    rerenderId: null,
     fonts: {},
     fontMetrics: {},
     colors: {

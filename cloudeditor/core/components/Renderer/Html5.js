@@ -16,7 +16,11 @@ const {
   activeGroupSelector,
   getSelectedObjectsLengthSelector
 } = require("../../stores/selectors/Html5Renderer");
-const { canvasSelector, zoomSelector } = require("../../stores/selectors/ui");
+const {
+  canvasSelector,
+  zoomSelector,
+  rerenderIdSelector
+} = require("../../stores/selectors/ui");
 
 require("./Html5.css");
 
@@ -113,6 +117,7 @@ class Html5 extends React.Component {
     this.updateContainerDimensions();
     //window.addEventListener("resize", debounce(this.updateContainerDimensions));
     window.addEventListener("resize", this.updateContainerDimensions);
+    window.addEventListener("resizePage", this.updateContainerDimensions);
     document.addEventListener("click", this.blurAction);
   }
   componentDidUpdate() {}
@@ -131,6 +136,7 @@ class Html5 extends React.Component {
         containerWidth={this.props.canvasDimm.workingWidth}
         containerHeight={this.props.canvasDimm.workingHeight}
         pageReady={pageReady}
+        rerenderId={this.props.rerenderId}
       />
     );
   }
@@ -155,7 +161,8 @@ const makeMapStateToProps = (state, props) => {
       activePage: getDisplayedPageSelector(state, props),
       canvasDimm: canvasSelector(state, props),
       zoom: zoomSelector(state),
-      selectedLength: getSelectedObjectsLengthSelector(state)
+      selectedLength: getSelectedObjectsLengthSelector(state),
+      rerenderId: rerenderIdSelector(state)
     };
   };
   return mapStateToProps;

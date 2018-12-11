@@ -88,6 +88,8 @@
     "randomcolor": "^0.5.3",
     "re-reselect": "^2.2.0",
     "react": "^16.6.3",
+    "react-dnd": "2.6.0",
+    "react-dnd-html5-backend": "2.6.0",
     "react-dom": "^16.6.3",
     "react-i18next": "^8.3.8",
     "react-reconciler": "^0.17.2",

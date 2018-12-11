@@ -2,7 +2,7 @@ const React = require("react");
 const PropTypes = require("prop-types");
 const $ = require("jquery");
 
-const handleUI = require("./draggable");
+const { handleDraggable: handleUI, destroyUi } = require("./draggable");
 const { addSnapElements, removeSnapClass } = require("../hocUtils/hocUtils");
 
 const withDraggable = WrappedComponent => {
@@ -44,6 +44,9 @@ const withDraggable = WrappedComponent => {
 
     componentDidUpdate() {
       this.updateUI();
+    }
+    componentWillUnmount() {
+      destroyUi(this.$el);
     }
 
     updateUI = () => {

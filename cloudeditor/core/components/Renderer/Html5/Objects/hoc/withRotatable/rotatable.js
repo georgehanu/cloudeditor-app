@@ -42,6 +42,9 @@ const checkUI = $el => {
   if ($el.length) return $el.data("ui-rotatable");
   return false;
 };
+const destroyUi = $el => {
+  if (checkUI($el)) $el.rotatable("destroy");
+};
 
 const handleRotatable = (
   $el,
@@ -61,4 +64,4 @@ const handleRotatable = (
   }
 };
 
-module.exports = handleRotatable;
+module.exports = { handleRotatable, destroyUi };

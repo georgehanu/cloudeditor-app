@@ -4,7 +4,7 @@ const $ = require("jquery");
 
 require("../../../../../../rewrites/rotatable");
 require("../../../../../../rewrites/resizable");
-const handleUI = require("./resizable");
+const { handleResizable: handleUI, destroyUi } = require("./resizable");
 const { addSnapElements, removeSnapClass } = require("../hocUtils/hocUtils");
 
 const withResizable = WrappedComponent => {
@@ -45,6 +45,9 @@ const withResizable = WrappedComponent => {
 
     componentDidUpdate() {
       this.updateUI();
+    }
+    componentWillUnmount() {
+      destroyUi(this.$el);
     }
     updateUI = () => {
       this.enableUI =

@@ -23,7 +23,8 @@ const {
   DELETE_OBJ,
   CHANGE_PAGE,
   CHANGE_GROUPS,
-  CHANGE_RANDOM_PAGE
+  CHANGE_RANDOM_PAGE,
+  CHANGE_PAGES_ORDER
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -38,6 +39,10 @@ const changeProjectTitle = (state, action) => {
   };
 };
 
+const changePagesOrder = (state, action) => {
+  return { ...state, pagesOrder: action.pages, activePage: action.page_id };
+};
+
 const addObject = (state, action) => {
   return {
     ...state,
@@ -50,8 +55,7 @@ const addObject = (state, action) => {
 const changePage = (state, payload) => {
   return {
     ...state,
-    selectedPage: payload.page_id,
-    activeGroup: payload.group_id
+    activePage: payload.page_id
   };
 };
 const changeRandomPage = (state, payload) => {
@@ -181,6 +185,9 @@ module.exports = handleActions(
   {
     [CHANGE_PROJECT_TITLE]: (state, action) => {
       return changeProjectTitle(state, action.payload);
+    },
+    [CHANGE_PAGES_ORDER]: (state, action) => {
+      return changePagesOrder(state, action.payload);
     },
     [CHANGE_RANDOM_PAGE]: (state, action) => {
       return changeRandomPage(state, action.payload);

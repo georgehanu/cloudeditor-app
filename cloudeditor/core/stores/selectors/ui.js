@@ -55,6 +55,7 @@ const colorTabSelector = createCachedSelector(
     }, colors);
   }
 )((state, props) => props.activeTab);
+const rerenderIdSelector = state => pathOr("null"["rerenderId"], state);
 
 module.exports = {
   zoomSelector,
@@ -62,5 +63,6 @@ module.exports = {
   canvasSelector,
   colorsSelector,
   colorTabSelector,
-  getActiveBlockColors
+  getActiveBlockColors,
+  rerenderIdSelector
 };

@@ -133,11 +133,11 @@ const displayedPageSelector = groupSelector => {
     includeBoxesSelector,
     (group, pages, config, trimbox, bleed, includeBoxes) => {
       const innerPages = {};
-      //initial offset of pages
-      var x = { y: 1, x: 3 };
 
       const offset = { left: 0, top: 0 };
-      console.log("selectot html5", group);
+      let label = "";
+      let selectable = true;
+      let lockPosition = true;
       forEach(page => {
         innerPages[page] = merge(pages[page], config);
         innerPages[page]["boxes"] = {
@@ -149,6 +149,9 @@ const displayedPageSelector = groupSelector => {
         };
         innerPages[page]["offset"] = { ...offset };
         offset["left"] += innerPages[page]["width"];
+        label = innerPages[page]["label"];
+        lockPosition = innerPages[page]["lockPosition"];
+        selectable = innerPages[page]["selectable"];
       }, group);
 
       const trimBoxes = compose(
@@ -214,6 +217,9 @@ const displayedPageSelector = groupSelector => {
             ? getMaxProp(boxes, "top") + getMaxProp(boxes, "bottom")
             : 0),
         boxes: boxes,
+        lockPosition: lockPosition,
+        label: label,
+        selectable: selectable,
         offset: {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
@@ -223,7 +229,26 @@ const displayedPageSelector = groupSelector => {
     }
   );
 };
-
+const displayedPageNumberSelector = pageIdSelector => {
+  return createSelector(
+    pageIdSelector,
+    pagesOrderSelector,
+    pagesSelector,
+    (pageIdSelector, pageOrder, pages) => {
+      let pageNumber = 1;
+      let found = false;
+      forEach(el => {
+        if (el === pageIdSelector) {
+          found = true;
+        }
+        if (el != pageIdSelector && !found && pages[el]["countInPagination"]) {
+          pageNumber++;
+        }
+      }, pageOrder);
+      return pageNumber;
+    }
+  );
+};
 const applyZoomScaleToTarget = (page, zoomScale, paths) => {
   let scaledPage = clone(page);
 
@@ -244,7 +269,6 @@ const scaledDisplayedPageSelector = (
     displayedPageSelector,
     zoomScaleSelector,
     (page, zoomScale) => {
-      console.log("selectot scale", zoomScale);
       let scaledPage = clone(page);
       if (zoomScale === 1) return scaledPage;
 
@@ -369,5 +393,6 @@ module.exports = {
   scaledDisplayedObjectSelector,
   displayedMergedObjectSelector,
   selectedObjectsIdsSelector,
-  getSelectedObjectsLengthSelector
+  getSelectedObjectsLengthSelector,
+  displayedPageNumberSelector
 };

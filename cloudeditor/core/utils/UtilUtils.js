@@ -55,7 +55,10 @@ const addProps = (target, prop, initial) => {
 const applyMax = (initial, after) => {
   return Math.max(initial, after);
 };
-
+const rerenderPage = () => {
+  var event = new Event("resizePage");
+  window.dispatchEvent(event);
+};
 module.exports = {
   updateObject,
   computeZoomScale,
@@ -63,5 +66,6 @@ module.exports = {
   getHeadProp,
   getLastProp,
   applyMax,
-  addProps
+  addProps,
+  rerenderPage
 };

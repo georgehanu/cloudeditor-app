@@ -8,6 +8,9 @@ const { hot } = require("react-hot-loader");
 const Component = componentFromProp("component");
 
 class PluginsContainer extends React.Component {
+  state = {
+    additionalClasses: []
+  };
   getPluginDescriptor = plugin => {
     return PluginsUtils.getPluginDescriptor(
       this.getStore,
@@ -15,6 +18,18 @@ class PluginsContainer extends React.Component {
       this.props.pluginsConfig[this.props.mode],
       plugin
     );
+  };
+  addContainerClasses = (pluginName, newClassesArray) => {
+    let newClasses = [...this.state.additionalClasses];
+    let index = newClasses.findIndex((el, index) => {
+      return el.pluginName === pluginName;
+    });
+    if (index === -1) {
+      newClasses.push({ pluginName, pluginClasses: newClassesArray });
+    } else {
+      newClasses[index] = { pluginName, pluginClasses: newClassesArray };
+    }
+    this.setState({ additionalClasses: newClasses });
   };
 
   renderPlugins = plugins => {
@@ -39,6 +54,7 @@ class PluginsContainer extends React.Component {
           {...Plugin.cfg}
           pluginCfg={Plugin.cfg}
           items={Plugin.items}
+          addContainerClasses={this.addContainerClasses}
         />
       ));
   };
@@ -64,11 +80,16 @@ class PluginsContainer extends React.Component {
         }),
         {}
       );
+      let newClasses = [];
+      for (let plugin in this.state.additionalClasses) {
+        newClasses.push(...this.state.additionalClasses[plugin].pluginClasses);
+      }
 
+      const classes = [this.props.className, ...newClasses].join(" ");
       return (
         <Component
           id={this.props.id}
-          className={this.props.className}
+          className={classes}
           style={this.props.style}
           component={this.props.component}
           {...containerProps}

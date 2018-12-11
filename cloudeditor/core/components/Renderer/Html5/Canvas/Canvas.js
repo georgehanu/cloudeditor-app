@@ -10,12 +10,9 @@ require("./Canvas.css");
 
 class Canvas extends React.Component {
   render() {
-    const style = {
-      backgroundColor: randomColor()
-    };
     const { getCanvasRef, ...otherProps } = this.props;
     return (
-      <div style={style} className="canvasContainer" ref={getCanvasRef}>
+      <div className="canvasContainer" ref={getCanvasRef}>
         <Zoom {...otherProps} />
       </div>
     );

@@ -1,7 +1,7 @@
 const React = require("react");
 const PropTypes = require("prop-types");
 const $ = require("jquery");
-const handleUI = require("./rotatable");
+const { handleRotatable: handleUI, destroyUi } = require("./rotatable");
 require("../../../../../../rewrites/rotatable");
 
 const withRotatable = WrappedComponent => {
@@ -48,7 +48,9 @@ const withRotatable = WrappedComponent => {
       this.el = ref;
       this.props.getReference(ref);
     };
-
+    componentWillUnmount() {
+      destroyUi(this.$el);
+    }
     render() {
       const { forwardedRef, getReference, ...rest } = this.props;
       return (

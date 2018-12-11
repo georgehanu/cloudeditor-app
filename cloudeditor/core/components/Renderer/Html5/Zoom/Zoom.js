@@ -7,10 +7,6 @@ const Page = require("../Page/Page");
 
 class Zoom extends React.Component {
   render() {
-    const styleZoom = {
-      backgroundColor: randomColor()
-    };
-
     const { getContainerRef, pageReady, zoom } = this.props;
     const classes = ["zoomContainer", zoom > 1 ? "zoomActive" : ""].join(" ");
     let pageContainer = null;
@@ -18,7 +14,7 @@ class Zoom extends React.Component {
       pageContainer = <Page {...this.props} />;
     }
     return (
-      <div style={styleZoom} className={classes} ref={getContainerRef}>
+      <div className={classes} ref={getContainerRef}>
         {pageContainer}
       </div>
     );

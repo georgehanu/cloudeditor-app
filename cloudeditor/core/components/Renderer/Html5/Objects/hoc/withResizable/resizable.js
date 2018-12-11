@@ -7,7 +7,7 @@ require("./resizable.css");
 const createResizable = ($el, onStart, onResize, onResizeStop) => {
   if ($el.length) {
     $el.resizable({
-      handles: "n,s,e,w,ne,nw,se,sw",
+      handles: "all",
       snap: ".drag_alignLines",
       start: (event, ui) => {
         if (is(Function, onStart)) onStart(event, ui);
@@ -16,9 +16,6 @@ const createResizable = ($el, onStart, onResize, onResizeStop) => {
         if (is(Function, onResize)) onResize(event, ui);
       },
       stop: (event, ui) => {
-        $(event.originalEvent.target).one("click", function(e) {
-          e.stopImmediatePropagation();
-        });
         if (is(Function, onResizeStop)) onResizeStop(event, ui);
       },
       snapped: (event, ui) => {
@@ -37,10 +34,12 @@ const enableResizable = ($el, onResizeStart, onResize, onResizeStop) => {
 };
 
 const checkUI = $el => {
-  if ($el.length) return $el.data("ui-resizable");
+  if ($el.length) return $el.data("ui-resizable") === undefined ? false : true;
   return false;
 };
-
+const destroyUi = $el => {
+  if (checkUI($el)) $el.resizable("destroy");
+};
 const handleResizable = (
   $el,
   status,
@@ -57,4 +56,4 @@ const handleResizable = (
   }
 };
 
-module.exports = handleResizable;
+module.exports = { handleResizable, destroyUi };
