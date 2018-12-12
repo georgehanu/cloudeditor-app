@@ -1,17 +1,17 @@
 const PropTypes = require("prop-types");
-const StaticCanvas = require("../components/StaticCanvas");
-const Canvas = require("../components/Canvas");
-const Image = require("../components/Image");
-const Text = require("../components/Text");
-const IText = require("../components/IText");
-const Textbox = require("../components/Textbox");
-const activeSelection = require("../components/activeSelection");
-const Group = require("../components/Group");
-const Graphics = require("../components/Graphics");
-const Line = require("../components/Line");
-const Rect = require("../components/Rect");
-const TrimBox = require("../components/Helpers/TrimBox");
-const BleedBox = require("../components/Helpers/BleedBox");
+const StaticCanvas = require("../fabric/StaticCanvas");
+const Canvas = require("../fabric/Canvas");
+const Image = require("../fabric/Image");
+const Text = require("../fabric/Text");
+const IText = require("../fabric/IText");
+const Textbox = require("../fabric/Textbox");
+const activeSelection = require("../fabric/activeSelection");
+const Group = require("../fabric/Group");
+const Graphics = require("../fabric/Graphics");
+const Line = require("../fabric/Line");
+const Rect = require("../fabric/Rect");
+const TrimBox = require("../fabric/TrimBox");
+const BleedBox = require("../fabric/BleedBox");
 
 // Creates an element with an element type, props and a root instance
 

@@ -3,7 +3,7 @@ const { connect } = require("react-redux");
 const { fabric } = require("../../../../rewrites/fabric/fabric");
 
 const { variablesSelector } = require("../../../../stores/selectors/project");
-const { Textbox } = require("../index");
+const { Textbox } = require("../../fabric/index");
 
 const {
   pushLoadedFont,

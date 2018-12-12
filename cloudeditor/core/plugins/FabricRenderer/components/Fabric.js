@@ -55,11 +55,7 @@ class Fabric extends React.Component {
 
   render() {
     const props = this.props;
-    return (
-      <React.Fragment>
-        <canvas ref={this.canvasRef} />
-      </React.Fragment>
-    );
+    return <canvas ref={this.canvasRef} />;
   }
 }
 const mapDispatchToProps = dispatch => {

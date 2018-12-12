@@ -437,37 +437,43 @@ const getRandomProject = cfg => {
     fill: "red"
   });
 
+  const answers = require("../../workspaces/designer/answers.svg");
+
   let graphics = getEmptyObject({
     type: "graphics",
     width: Math.random() * 500,
     height: 400,
     left: 150,
     top: 200,
-    src: "http://localhost:8080/alfa006_top.svg"
+    src: answers
   });
 
   page1 = {
     ...page1,
     id: "page_1",
-    objectsIds: [text1.id, text2.id]
+    //objectsIds: [text1.id, text2.id]
+    objectsIds: []
   };
 
   page2 = {
     ...page2,
     id: "page_2",
-    objectsIds: [text3.id, text4.id]
+    //objectsIds: [text3.id, text4.id]
+    objectsIds: []
   };
 
   page3 = {
     ...page3,
     id: "page_3",
-    objectsIds: [img1.id, text5.id, text6.id, text9.id]
+    //objectsIds: [img1.id, text5.id, text6.id, text9.id]
+    objectsIds: [img1.id]
   };
 
   page4 = {
     ...page4,
     id: "page_4",
-    objectsIds: [text7.id]
+    //objectsIds: [text7.id]
+    objectsIds: [text9.id, graphics.id]
   };
 
   return {
@@ -479,15 +485,16 @@ const getRandomProject = cfg => {
       [page4.id]: page4
     },
     objects: {
-      [text1.id]: text1,
-      [text2.id]: text2,
-      [text3.id]: text3,
-      [text4.id]: text4,
-      [text5.id]: text5,
-      [text6.id]: text6,
-      [text7.id]: text7,
+      // [text1.id]: text1,
+      // [text2.id]: text2,
+      // [text3.id]: text3,
+      // [text4.id]: text4,
+      // [text5.id]: text5,
+      // [text6.id]: text6,
+      // [text7.id]: text7,
       [text9.id]: text9,
-      [img1.id]: img1
+      [img1.id]: img1,
+      [graphics.id]: graphics
     },
     pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
     activePage: page3.id,

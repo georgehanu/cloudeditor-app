@@ -1,8 +1,8 @@
-const { fabric } = require("../../../../rewrites/fabric/fabric");
+const { fabric } = require("../../../rewrites/fabric/fabric");
 
-const { trimBoxTypes, trimBoxDefaults } = require("../types/trimbox");
+const { trimBoxTypes, trimBoxDefaults } = require("./types/trimbox");
 
-const Rect = require("../Rect");
+const Rect = require("./Rect");
 
 class TrimBox extends Rect {
   constructor(props) {

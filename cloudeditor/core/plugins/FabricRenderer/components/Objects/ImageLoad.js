@@ -1,16 +1,7 @@
 const React = require("react");
 
-const { Image } = require("../index");
-var imgCache = {
-  brokenImage: document.createElement("img")
-};
-
-var brokenImage = imgCache.brokenImage;
-brokenImage.src = "aaaasdaaa.jpg";
-brokenImage.onload = function() {
-  console.log("preloaded broken image");
-  this.brokenImage = true;
-};
+const { Image } = require("../../fabric/index");
+var imgCache = {};
 
 class ImageLoad extends React.Component {
   constructor(...args) {

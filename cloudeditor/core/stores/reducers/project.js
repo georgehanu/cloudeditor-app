@@ -151,11 +151,11 @@ const removeActionSelection = (state, payload) => {
 
 const config = ConfigUtils.getDefaults();
 const emptyProject = ProjectUtils.getRandomProject(config.project);
+
 //const emptyProject = ProjectUtils.getEmptyProject(config.project);
 
 const initialState = {
-  ...emptyProject,
-  ui: ProjectUtils.getEmptyUI()
+  ...emptyProject
 };
 
 const swap = (index1, index2, list) => {

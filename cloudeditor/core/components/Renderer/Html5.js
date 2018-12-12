@@ -26,14 +26,10 @@ class Html5 extends React.Component {
   constructor(props) {
     super(props);
     this.containerRef = null;
-    this.canvasRef = null;
   }
 
   getContainerReference = ref => {
     this.containerRef = ref;
-  };
-  getCanvasReference = ref => {
-    this.canvasRef = ref;
   };
 
   updateContainerDimensions = () => {
@@ -60,10 +56,6 @@ class Html5 extends React.Component {
     }
   };
 
-  getCanvasReference = ref => {
-    this.canvas = ref;
-  };
-
   componentDidMount() {
     this.updateContainerDimensions();
     //window.addEventListener("resize", debounce(this.updateContainerDimensions));
@@ -78,7 +70,6 @@ class Html5 extends React.Component {
     const { pageReady } = this.state;
     return (
       <Canvas
-        getCanvasRef={this.getCanvasReference}
         getContainerRef={this.getContainerReference}
         activePage={this.props.activePage}
         zoomScale={this.state.zoomScale}

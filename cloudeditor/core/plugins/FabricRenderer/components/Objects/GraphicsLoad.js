@@ -1,7 +1,7 @@
 const React = require("react");
 const { forEach } = require("ramda");
 const { fabric } = require("../../../../rewrites/fabric/fabric");
-const { Graphics } = require("../index");
+const { Graphics } = require("../../fabric/index");
 class GraphicsLoad extends React.Component {
   constructor(...args) {
     super(...args);

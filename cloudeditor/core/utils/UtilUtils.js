@@ -15,11 +15,12 @@ const updateObject = (oldObject, updatedProperties) => {
   };
 };
 
+const computeScale = function(parent, child) {
+  return Math.min(parent.width / child.width, parent.height / child.height);
+};
+
 const computeZoomScale = function(zoom, parent, child) {
-  const scale = Math.min(
-    parent.width / child.width,
-    parent.height / child.height
-  );
+  const scale = computeScale(parent, child);
 
   const zoomScale = scale + ((zoom * 100 - 100) / 100) * scale;
   return zoomScale;
@@ -58,6 +59,7 @@ const applyMax = (initial, after) => {
 
 module.exports = {
   updateObject,
+  computeScale,
   computeZoomScale,
   getMaxProp,
   getHeadProp,

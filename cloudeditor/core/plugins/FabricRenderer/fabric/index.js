@@ -1,5 +1,5 @@
 const assign = require("object-assign");
-const Fabric = require("./Fabric");
+const Fabric = require("../components/Fabric");
 
 FABRIC_NODES = [
   "Image",

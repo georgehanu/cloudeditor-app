@@ -1,6 +1,6 @@
-const { bleedBoxTypes, bleedBoxDefaults } = require("../types/bleedbox");
+const { bleedBoxTypes, bleedBoxDefaults } = require("./types/bleedbox");
 
-const Rect = require("../Rect");
+const Rect = require("./Rect");
 
 class BleedBox extends Rect {
   constructor(props) {

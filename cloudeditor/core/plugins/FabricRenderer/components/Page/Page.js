@@ -1,52 +1,48 @@
 const React = require("react");
-const ObjectBlock = require("../Objects/Object/Object");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
-const { randomColor } = require("randomColor");
-const {
-  /*  createSelectorWithDependencies: createSelector, */
-  registerSelectors
-} = require("reselect-tools");
+const { forEachObjIndexed } = require("ramda");
+
 const {
   createDeepEqualSelector: createSelector
 } = require("../../../../rewrites/reselect/createSelector");
-const { forEachObjIndexed } = require("ramda");
+
 const {
   scaledDisplayedPageSelector
 } = require("../../../../stores/selectors/Html5Renderer");
 
-require("./Page.css");
+const { Fabric } = require("../../fabric/index");
 
 const Boxes = require("../Boxes/Boxes");
+const ObjectBlock = require("../Objects/Object");
+
 const centerPage = ({ width, height, containerWidth, containerHeight }) => {
-  const marginTop = !(height > containerHeight)
-    ? (containerHeight - height) / 2
-    : 0;
-  const marginLeft = !(width > containerWidth)
+  const pageOffsetX = !(width > containerWidth)
     ? (containerWidth - width) / 2
     : 0;
 
+  const pageOffsetY = !(height > containerHeight)
+    ? (containerHeight - height) / 2
+    : 0;
+
   return {
-    marginLeft,
-    marginTop
+    pageOffsetX,
+    pageOffsetY
   };
 };
 
 class Page extends React.Component {
-  constructor(props) {
-    super(props);
-    this.pageContainerRef = React.createRef();
-  }
-
-  renderObjects() {
-    const { objectsOffsetList: objects, viewOnly, zoomScale } = this.props;
+  renderObjects(objects, pageOffsetX, pageOffsetY, needOffset) {
+    const { scale, viewOnly } = this.props;
     return Object.keys(objects).map(obKey => {
       return (
         <ObjectBlock
           key={obKey}
           id={obKey}
-          zoomScale={zoomScale}
           {...objects[obKey]}
+          pageOffsetX={pageOffsetX}
+          pageOffsetY={pageOffsetY}
+          scale={scale}
           viewOnly={viewOnly}
         />
       );
@@ -54,29 +50,41 @@ class Page extends React.Component {
   }
 
   render() {
-    const { width, height } = this.props;
-    const { marginLeft, marginTop } = centerPage(this.props);
-    const pageStyle = {
+    const {
+      containerWidth,
+      containerHeight,
+      scale,
       width,
       height,
-      marginLeft,
-      marginTop,
-      backgroundColor: randomColor()
-    };
+      objectsOffsetList: objects
+    } = this.props;
+
+    const { pageOffsetX, pageOffsetY } = centerPage(this.props);
+
+    const elements = this.renderObjects(objects, pageOffsetX, pageOffsetY, 1);
 
     return (
-      <div
-        ref={this.props.getPageRef}
-        style={pageStyle}
-        className="pageContainer page"
+      <Fabric
+        width={containerWidth}
+        height={containerHeight}
+        canvasOffsetX={pageOffsetX}
+        canvasOffsetY={pageOffsetY}
+        canvasScale={scale}
+        canvasWorkingWidth={width}
+        canvasWorkingHeight={height}
+        events={[]}
+        canvasReadyHandler={() => {}}
       >
-        {this.renderObjects()}
+        {elements}
         <Boxes
           boxes={this.props.boxes}
+          offsetX={pageOffsetX}
+          offsetY={pageOffsetY}
           width={this.props.width}
           height={this.props.height}
+          scale={scale}
         />
-      </div>
+      </Fabric>
     );
   }
 }
@@ -85,13 +93,13 @@ const makeMapStateToProps = (state, props) => {
     return props.activePage;
   };
 
-  const zoomScale = (_, props) => {
-    return props.zoomScale;
+  const scale = (_, props) => {
+    return props.scale;
   };
 
   const getScaledDisplayedPageSelector = scaledDisplayedPageSelector(
     activePage,
-    zoomScale
+    scale
   );
 
   const getObjectsOffsetsList = createSelector(
