@@ -1,5 +1,6 @@
 const React = require("react");
 const ObjectBlock = require("./Object/Object");
+const Tinymce = require("./Tinymce/Tinymce");
 
 const objects = props => (
   <React.Fragment>
@@ -21,6 +22,11 @@ const objects = props => (
       }
 
       const scale = props.scale;
+
+      if (props.items[obKey].type === "tinymce") {
+        return <Tinymce key={obKey} />;
+      }
+
       return (
         <ObjectBlock
           key={obKey}

@@ -529,6 +529,16 @@ const getEmptyObject = cfg => {
           fontFamily: cfg.fontFamily || false
         };
         break;
+
+      case "tinymce":
+        return {
+          ...object,
+          width: cfg.width || 300,
+          height: cfg.height || 300,
+          left: cfg.left || 100,
+          top: cfg.top || 100
+        };
+
       default:
         return { ...object };
         break;

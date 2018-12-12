@@ -105,6 +105,7 @@
     "react-resizable-rotatable-draggable": "^0.1.8-dev.1",
     "react-side-effect": "^1.1.5",
     "react-slick": "^0.23.2",
+    "react-tinymce": "^0.7.0",
     "react-tooltip": "^3.9.0",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
