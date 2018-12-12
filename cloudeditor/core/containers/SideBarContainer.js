@@ -44,7 +44,7 @@ class SideBarContainer extends React.Component {
       const iconStyle = "icon " + (tool.icon ? tool.icon : "");
       return (
         <li key={i} className="SidebarButtonContainer">
-          {tool.handleAction === true ? (
+          {tool.embedButtonPlugin === true ? (
             <Tool {...toolCfg} items={tool.items || []} />
           ) : (
             <React.Fragment>

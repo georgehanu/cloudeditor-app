@@ -4,8 +4,9 @@ const theme = require("../../themes/stadion/theme.scss");
 const editor_icons = require("../../themes/stadion/editor_icons.css");
 const addImage = require("../../themes/stadion/addImage.scss");
 const addPdf = require("../../themes/stadion/addPdf.scss");
-const pageSelector = require("../../themes/stadion/pageSelector.scss");
-const layouts = require("../../themes/stadion/layouts.scss");
+const pageSelector = require("../../plugins/PageSelector/PageSelector.scss");
+const layouts = require("../../plugins/Layouts/Layouts.scss");
+const zoom = require("../../plugins/Zoom/Zoom.scss");
 
 module.exports = {
   stadion,
@@ -15,5 +16,6 @@ module.exports = {
   addImage,
   addPdf,
   pageSelector,
-  layouts
+  layouts,
+  zoom
 };

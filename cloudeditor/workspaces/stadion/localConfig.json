@@ -9,8 +9,7 @@
       "AddPdf",
       "PageSelector",
       "Layouts",
-      "ZoomIn",
-      "ZoomOut"
+      "Zoom"
     ]
   },
   "Layout": {

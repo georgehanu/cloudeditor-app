@@ -5,8 +5,7 @@ const AddImage = require("../../plugins/AddImage/AddImage");
 const AddPdf = require("../../plugins/AddPdf/AddPdf");
 const PageSelector = require("../../plugins/PageSelector/PageSelector");
 const Layouts = require("../../plugins/Layouts/Layouts");
-const ZoomIn = require("../../plugins/Zoom/ZoomIn");
-const ZoomOut = require("../../plugins/Zoom/ZoomOut");
+const Zoom = require("../../plugins/Zoom/Zoom");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -16,8 +15,7 @@ const plugins = {
   AddPdf: AddPdf,
   PageSelector,
   Layouts,
-  ZoomIn,
-  ZoomOut
+  Zoom
 };
 
 const requires = {};

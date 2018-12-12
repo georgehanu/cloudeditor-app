@@ -104,6 +104,7 @@ class PageSelector extends React.Component {
     } else {
       this.setState({ selectedId });
 
+      /* scroll the pages so that the first one is the one selected */
       const element = document
         .getElementById(selectedId)
         .getBoundingClientRect();
@@ -114,8 +115,13 @@ class PageSelector extends React.Component {
       });
       if (index !== -1) {
         // we need to skip the first 2 elements, which are not included in the pages
-        container.scrollLeft =
-          (2 + index) * (element.width + 10) + (index % 2 === 0 ? 2 : 12);
+        // element.width + padding
+        const padding = 10;
+        let value =
+          (2 + index) * (element.width + padding) +
+          (index % 2 === 0 ? 2 : 2 + padding);
+        console.log(value);
+        container.scrollLeft = value;
       }
     }
   };
