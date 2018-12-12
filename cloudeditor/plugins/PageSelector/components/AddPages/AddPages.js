@@ -3,10 +3,7 @@ const Backdrop = require("./Backdrop");
 const AddPagesHeader = require("./AddPagesHeader");
 const AddPagesBody = require("./AddPagesBody");
 const AddPagesFooter = require("./AddPagesFooter");
-
-const AFTER = "AFTER";
-const BEFORE = "BEFORE";
-const END = "END";
+const { AFTER, BEFORE, END } = require("../utils");
 
 class AddPages extends React.Component {
   state = {

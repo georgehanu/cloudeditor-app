@@ -32,7 +32,9 @@ const PagesContainer = props => {
 
   return (
     <DragDropContextProvider backend={HTML5Backend}>
-      <div className="PageSelectorContainer">{items}</div>
+      <div className="PageSelectorContainer" id={props.id}>
+        {items}
+      </div>
     </DragDropContextProvider>
   );
 };

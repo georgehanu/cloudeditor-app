@@ -4,11 +4,13 @@
     "desktop": [
       "SideBar",
       "Html5Renderer",
-
       "Fupa",
       "AddImage",
       "AddPdf",
-      "PageSelector"
+      "PageSelector",
+      "Layouts",
+      "ZoomIn",
+      "ZoomOut"
     ]
   },
   "Layout": {

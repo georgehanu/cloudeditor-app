@@ -44,26 +44,32 @@ class SideBarContainer extends React.Component {
       const iconStyle = "icon " + (tool.icon ? tool.icon : "");
       return (
         <li key={i} className="SidebarButtonContainer">
-          <SidebarButton
-            clicked={() => this.showPlugin(i)}
-            selected={i === this.state.pluginIndex ? true : false}
-            tooltip={tool.tooltip}
-          >
-            <div className="IconContainer">
-              <div className={iconStyle} />
-            </div>
-            <div className="IconTitle">{tool.text}</div>
-            {tool.showMore && (
-              <span className="icon More printqicon-lefttriangle" />
-            )}
-            <div className="RightTriangle" />
-          </SidebarButton>
-          <PaneContainer
-            visible={i === this.state.pluginIndex ? true : false}
-            clicked={() => this.showPlugin(i)}
-          >
+          {tool.handleAction === true ? (
             <Tool {...toolCfg} items={tool.items || []} />
-          </PaneContainer>
+          ) : (
+            <React.Fragment>
+              <SidebarButton
+                clicked={() => this.showPlugin(i)}
+                selected={i === this.state.pluginIndex ? true : false}
+                tooltip={tool.tooltip}
+              >
+                <div className="IconContainer">
+                  <div className={iconStyle} />
+                </div>
+                <div className="IconTitle">{tool.text}</div>
+                {tool.showMore && (
+                  <span className="icon More printqicon-lefttriangle" />
+                )}
+                <div className="RightTriangle" />
+              </SidebarButton>
+              <PaneContainer
+                visible={i === this.state.pluginIndex ? true : false}
+                clicked={() => this.showPlugin(i)}
+              >
+                <Tool {...toolCfg} items={tool.items || []} />
+              </PaneContainer>
+            </React.Fragment>
+          )}
         </li>
       );
     });

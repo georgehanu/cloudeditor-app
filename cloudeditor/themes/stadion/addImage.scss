@@ -50,6 +50,7 @@
   width: 100%;
   height: 100%;
   border: none;
+  cursor: pointer;
 }
 
 .UploadGallery .UploadGalleryLi {
@@ -100,6 +101,7 @@
   overflow: hidden;
   width: 131px;
   height: 82px;
+  border: 1px solid transparent;
 }
 
 .GalleryItemActions .Select {
@@ -151,4 +153,8 @@
 }
 .UploadGalleryLi:hover .GalleryItemActions .Delete {
   right: 13px;
+}
+
+.UploadGalleryItem.UploadGalleryItemSelected {
+  border: 1px solid red;
 }

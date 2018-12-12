@@ -11,7 +11,9 @@ const AddPagesBody = props => {
           checked={props.checkboxesSelected === el.value}
           onChange={() => props.onCheckboxChanged(el.value)}
         />
-        <span>{el.label}</span>
+        <span onClick={() => props.onCheckboxChanged(el.value)}>
+          {el.label}
+        </span>
       </div>
     );
   });

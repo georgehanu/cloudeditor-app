@@ -4,9 +4,11 @@ const PageHeader = require("./components/PageHeader");
 const { hot } = require("react-hot-loader");
 const randomColor = require("randomcolor");
 const AddPages = require("./components/AddPages/AddPages");
+const { AFTER, BEFORE, END } = require("./components/utils");
 
 class PageSelector extends React.Component {
   state = {
+    activePage: 10,
     size: "Normal",
     showAddPages: false,
     nrPagesToInsert: 1,
@@ -63,7 +65,6 @@ class PageSelector extends React.Component {
     }
 
     this.setState({ pages: newPages });
-    this.setState({ nrPagesToInsert: 1 });
   }
 
   highlightHoverPage = hoverId => {
@@ -72,28 +73,26 @@ class PageSelector extends React.Component {
 
   insertNewPages(nrOfPages, location) {
     let newPages = [...this.state.pages];
-    let addExtraPage = this.state.pages.length % 2 ? true : false;
-
-    if (location === undefined) {
+    if (location === END) {
       // add end of the pages
 
       for (let i = 0; i < nrOfPages; i++) {
         newPages.push({
-          text: this.state.pages.length + i,
           id: this.state.pages.length + i,
           bgColor: randomColor(),
           draggable: true
         });
       }
-      /*
-            if (addExtraPage) {
-              newPages.push({
-                text: "",
-                id: newPages.length + 1,
-                bgColor: "white",
-                draggable: false
-              })
-            }*/
+    } else if (location === BEFORE) {
+      newPages = this.state.pages.slice(0, nrOfPages);
+      for (let i = 0; i < nrOfPages; i++) {
+        newPages.push({
+          id: this.state.pages.length + i,
+          bgColor: randomColor(),
+          draggable: true
+        });
+      }
+      newPages = newPages.concat(this.state.pages.slice(nrOfPages));
     }
 
     this.setState({ pages: newPages });
@@ -101,9 +100,23 @@ class PageSelector extends React.Component {
 
   selectPage = (selectedId, addNewpage) => {
     if (addNewpage === true) {
-      this.insertNewPages(1);
+      this.insertNewPages(1, END);
     } else {
       this.setState({ selectedId });
+
+      const element = document
+        .getElementById(selectedId)
+        .getBoundingClientRect();
+      const container = document.getElementById("PagesContainer");
+
+      const index = this.state.pages.findIndex(el => {
+        return el.id === selectedId;
+      });
+      if (index !== -1) {
+        // we need to skip the first 2 elements, which are not included in the pages
+        container.scrollLeft =
+          (2 + index) * (element.width + 10) + (index % 2 === 0 ? 2 : 12);
+      }
     }
   };
 
@@ -150,7 +163,7 @@ class PageSelector extends React.Component {
   };
 
   hideAddPages = () => {
-    this.setState({ showAddPages: false });
+    this.setState({ showAddPages: false, nrPagesToInsert: 1 });
   };
 
   changePagesToInsert = event => {
@@ -159,8 +172,7 @@ class PageSelector extends React.Component {
   };
 
   addPages = () => {
-    console.log(this.state.location);
-    console.log(this.state.nrPagesToInsert);
+    this.insertNewPages(this.state.nrPagesToInsert, this.state.location);
   };
 
   onCheckboxChanged = value => {
@@ -182,6 +194,7 @@ class PageSelector extends React.Component {
             nrPagesToInsert={this.state.nrPagesToInsert}
             addPages={this.addPages}
             onCheckboxChanged={this.onCheckboxChanged}
+            page={this.state.activePage}
           />
         )}
         <PageHeader
@@ -193,6 +206,7 @@ class PageSelector extends React.Component {
           showAddPages={this.showAddPages}
         />
         <PagesContainer
+          id="PagesContainer"
           items={items}
           hoverId={this.state.hoverId}
           selectedId={this.state.selectedId}

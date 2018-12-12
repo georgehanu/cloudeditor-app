@@ -64,7 +64,7 @@ const SinglePage = props => {
 
   return props.connectDropTarget(
     props.connectDragSource(
-      <div className={className}>
+      <div className={className} id={props.id}>
         <div
           className="SinglePage"
           style={{ backgroundColor: props.bgColor }}

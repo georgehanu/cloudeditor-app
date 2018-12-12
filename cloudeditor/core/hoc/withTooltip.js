@@ -7,6 +7,8 @@ const uuidv4 = require("uuid/v4");
 const withTooltip = (WrappedComponent, nameSpace) => props => {
   let tooltipData = {};
   let elementId = null;
+  let className = "Tooltip ";
+  let position = "bottom";
 
   if (props.tooltip && props.tooltip !== undefined) {
     // we need tooltip data but this requires to bind it to the elementId - create it if it does not exist
@@ -24,6 +26,10 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
         "data-for": elementId
       };
     }
+    if (props.tooltip.imageSrc) {
+      className += " TooltipImage";
+      position = "right";
+    }
   }
 
   return (
@@ -32,14 +38,20 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
         <React.Fragment>
           <WrappedComponent {...props} tooltipData={tooltipData} />
           {props.tooltip && props.tooltip !== undefined && (
-            <ReactTooltip id={elementId} place="bottom">
-              <div className="Tooltip">
+            <ReactTooltip id={elementId} place={position}>
+              <div className={className}>
                 {props.tooltip.title ? (
                   <React.Fragment>
                     <p className="TooltipTitle">{t(props.tooltip.title)}</p>
                     <p className="TooltipDesc">
                       {t(props.tooltip.description)}
                     </p>
+                  </React.Fragment>
+                ) : props.tooltip.imageSrc ? (
+                  <React.Fragment>
+                    <div>
+                      <img src={props.tooltip.imageSrc} />
+                    </div>
                   </React.Fragment>
                 ) : (
                   <React.Fragment>

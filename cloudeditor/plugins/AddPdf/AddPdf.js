@@ -13,8 +13,7 @@ const {
 } = require("./store/selectors");
 const { uploadPdfStart, removePdfFromGallery } = require("./store/actions");
 
-const Gallery = require("../AddImage/components/Gallery/Gallery");
-
+const Gallery = require("../../core/components/Gallery/Gallery");
 class AddPdf extends React.Component {
   deleteImageHandler = id => {
     if (id === undefined) return;
@@ -66,7 +65,7 @@ module.exports = {
     disablePluginIf:
       "{store().getState().project.title==='Empty Project!!@!!@!@'}",
     SideBar: {
-      position: 5,
+      position: 3,
       priority: 1,
       text: "Pdf",
       icon: "printqicon-layouts",

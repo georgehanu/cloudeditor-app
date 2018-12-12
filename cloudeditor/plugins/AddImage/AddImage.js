@@ -10,7 +10,7 @@ const {
 } = require("./store/selectors");
 const { uploadImageStart, removeImageFromGallery } = require("./store/actions");
 
-const Gallery = require("./components/Gallery/Gallery");
+const Gallery = require("../../core/components/Gallery/Gallery");
 
 class AddImage extends React.Component {
   deleteImageHandler = id => {
