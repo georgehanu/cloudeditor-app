@@ -36,7 +36,7 @@ class StaticCanvas {
       if (this.propsToSkip[key]) {
         continue;
       }
-      if (key == "events" && oldProps[key].length) {
+      if (key === "events" && oldProps[key].length) {
         forEach(event => {
           let isInCurrent = false;
           if (
@@ -65,7 +65,7 @@ class StaticCanvas {
       if (this.propsToSkip[key]) {
         continue;
       }
-      if (key == "events" && props[key].length) {
+      if (key === "events" && props[key].length) {
         const oldEvents = oldProps && oldProps.events ? oldProps.events : [];
         forEach(event => {
           if (typeof find(propEq("id", event.id))(oldEvents) === "undefined") {

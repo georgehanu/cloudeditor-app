@@ -30,30 +30,45 @@ class ObjectBlock extends React.Component {
       block,
       offsetLeft,
       offsetTop,
-      pageOffsetX,
-      pageOffsetY
+      designerCallbacks,
+      scale
     } = this.props;
 
     const { type, left, top, id } = block;
 
     let blockProps = {
       ...block,
-      left: left + offsetLeft + pageOffsetX,
-      top: top + offsetTop + pageOffsetY
+      left: left + offsetLeft,
+      top: top + offsetTop,
+      scale: scale,
+      offsetLeft: offsetLeft,
+      offsetTop: offsetTop
     };
 
     switch (type) {
       case "image":
         return (
-          <ImageLoad key={id} {...blockProps} designerCallbacks={() => {}} />
+          <ImageLoad
+            key={id}
+            {...blockProps}
+            designerCallbacks={designerCallbacks}
+          />
         );
       case "textbox":
         return (
-          <TextLoad key={id} {...blockProps} designerCallbacks={() => {}} />
+          <TextLoad
+            key={id}
+            {...blockProps}
+            designerCallbacks={designerCallbacks}
+          />
         );
       case "graphics":
         return (
-          <GraphicsLoad key={id} {...blockProps} designerCallbacks={() => {}} />
+          <GraphicsLoad
+            key={id}
+            {...blockProps}
+            ddesignerCallbacks={designerCallbacks}
+          />
         );
       default:
         component = null;

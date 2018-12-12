@@ -54,7 +54,6 @@ class Fabric extends React.Component {
   }
 
   render() {
-    const props = this.props;
     return <canvas ref={this.canvasRef} />;
   }
 }

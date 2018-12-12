@@ -14,6 +14,7 @@ const {
 const { Fabric } = require("../../fabric/index");
 
 const Boxes = require("../Boxes/Boxes");
+const Objects = require("../Objects/Objects");
 const ObjectBlock = require("../Objects/Object");
 
 const centerPage = ({ width, height, containerWidth, containerHeight }) => {
@@ -32,23 +33,6 @@ const centerPage = ({ width, height, containerWidth, containerHeight }) => {
 };
 
 class Page extends React.Component {
-  renderObjects(objects, pageOffsetX, pageOffsetY, needOffset) {
-    const { scale, viewOnly } = this.props;
-    return Object.keys(objects).map(obKey => {
-      return (
-        <ObjectBlock
-          key={obKey}
-          id={obKey}
-          {...objects[obKey]}
-          pageOffsetX={pageOffsetX}
-          pageOffsetY={pageOffsetY}
-          scale={scale}
-          viewOnly={viewOnly}
-        />
-      );
-    });
-  }
-
   render() {
     const {
       containerWidth,
@@ -56,35 +40,44 @@ class Page extends React.Component {
       scale,
       width,
       height,
-      objectsOffsetList: objects
+      objectsOffsetList: objects,
+      viewOnly,
+      events
     } = this.props;
 
     const { pageOffsetX, pageOffsetY } = centerPage(this.props);
 
-    const elements = this.renderObjects(objects, pageOffsetX, pageOffsetY, 1);
-
     return (
-      <Fabric
-        width={containerWidth}
-        height={containerHeight}
-        canvasOffsetX={pageOffsetX}
-        canvasOffsetY={pageOffsetY}
-        canvasScale={scale}
-        canvasWorkingWidth={width}
-        canvasWorkingHeight={height}
-        events={[]}
-        canvasReadyHandler={() => {}}
-      >
-        {elements}
-        <Boxes
-          boxes={this.props.boxes}
-          offsetX={pageOffsetX}
-          offsetY={pageOffsetY}
-          width={this.props.width}
-          height={this.props.height}
-          scale={scale}
-        />
-      </Fabric>
+      <React.Fragment>
+        <Fabric
+          width={containerWidth}
+          height={containerHeight}
+          canvasOffsetX={pageOffsetX}
+          canvasOffsetY={pageOffsetY}
+          canvasScale={scale}
+          canvasWorkingWidth={width}
+          canvasWorkingHeight={height}
+          events={events}
+          canvasReadyHandler={() => {}}
+        >
+          <Objects
+            objects={objects}
+            pageOffsetX={pageOffsetX}
+            pageOffsetY={pageOffsetY}
+            scale={scale}
+            viewOnly={viewOnly}
+            designerCallbacks={this.props.designerCallbacks}
+          />
+          <Boxes
+            boxes={this.props.boxes}
+            offsetX={pageOffsetX}
+            offsetY={pageOffsetY}
+            width={this.props.width}
+            height={this.props.height}
+            scale={scale}
+          />
+        </Fabric>
+      </React.Fragment>
     );
   }
 }

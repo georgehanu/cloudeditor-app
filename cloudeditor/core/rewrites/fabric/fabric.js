@@ -513,7 +513,8 @@ fabric.Object.prototype.getMainProps = function() {
     cropW: this.cropW,
     cropH: this.cropH,
     offsetLeft: this.offsetLeft,
-    offsetTop: this.offsetTop
+    offsetTop: this.offsetTop,
+    scale: this.scale
   };
 };
 fabric.Image.prototype.initialize = (function(initialize) {
