@@ -1,0 +1,4 @@
+.mce-statusbar.mce-container,
+.mce-toolbar-grp.mce-container {
+  display: none;
+}

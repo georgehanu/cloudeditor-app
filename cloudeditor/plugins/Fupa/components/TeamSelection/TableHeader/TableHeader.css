@@ -14,3 +14,24 @@
 .PreviewContainer button:hover {
   cursor: pointer;
 }
+
+.HeaderContainer {
+  background-color: #002e5f;
+  color: white;
+  height: 35px;
+  line-height: 35px;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: normal;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 0px;
+  width: 100%;
+}
+
+.HeaderContainer span {
+  padding-left: 10px;
+}

@@ -3,6 +3,7 @@ const { withNamespaces } = require("react-i18next");
 require("./Matches.css");
 const withProduction = require("../../../hoc/withProduction");
 const withSpinner = require("../../../../../core/hoc/withSpinner");
+const Colors = require("../Utils/Colors");
 
 const scoreCard = {
   color: "#212121",
@@ -30,7 +31,8 @@ const fupaTdBase = {
   paddingRight: "2px",
   margin: "0",
   borderBottom: "1px solid #fff",
-  textAlign: "right"
+  textAlign: "center",
+  border: "none"
 };
 
 const Matches = props => {
@@ -95,7 +97,8 @@ const Matches = props => {
       );
     }
 
-    let tdBackground = index % 2 === 0 ? {} : { backgroundColor: "white" };
+    let tdBackground =
+      index % 2 === 0 ? { ...Colors.evenRow } : { ...Colors.oddRow };
     let fupaTd = { ...tdBackground, ...fupaTdBase };
 
     return (
@@ -106,15 +109,15 @@ const Matches = props => {
         >
           {matchDay}
         </td>
-        <td>
+        <td style={{ ...fupaTd }}>
           {weekDate}, {kickoffDateStr}
         </td>
-        <td>{location}</td>
-        <td align="left" style={{ fontWeight: "bold" }}>
+        <td style={{ ...fupaTd }}>{location}</td>
+        <td align="left" style={{ ...fupaTd, fontWeight: "bold" }}>
           {oponentTeam.name.middle}
         </td>
-        <td>&nbsp;</td>
-        <td style={{ paddingRight: "0px" }}>
+        <td style={{ ...fupaTd }}>&nbsp;</td>
+        <td style={{ ...fupaTd, paddingRight: "0px" }}>
           <div
             style={{
               ...scoreCard,

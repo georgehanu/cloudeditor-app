@@ -24,7 +24,9 @@ const objects = props => (
       const scale = props.scale;
 
       if (props.items[obKey].type === "tinymce") {
-        return <Tinymce key={obKey} />;
+        return (
+          <Tinymce key={obKey} tableContent={props.items[obKey].tableContent} />
+        );
       }
 
       return (

@@ -1,8 +1,26 @@
-.Tooltip.TooltipImage img {
+.TooltipImage .Tooltip img {
   height: auto;
   width: 300px;
 }
 
-.LayoutsContainer .UploadGallery {
-  margin-top: 100px;
+.__react_component_tooltip.type-dark.TooltipImage {
+  background-color: transparent !important;
+}
+
+.TooltipImage .Tooltip {
+  max-width: 300px !important;
+}
+
+.__react_component_tooltip.type-dark.TooltipImage.place-bottom .Tooltip {
+  left: 160px;
+  top: -50px;
+}
+
+.__react_component_tooltip.type-dark.TooltipImage.place-right .Tooltip {
+  left: -3px;
+}
+
+.__react_component_tooltip.type-dark.TooltipImage:before,
+.__react_component_tooltip.type-dark.TooltipImage:after {
+  display: none;
 }

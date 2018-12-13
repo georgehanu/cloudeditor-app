@@ -4,17 +4,13 @@ const withDraggable = require("../hoc/withDraggable/withDraggable");
 const withResizable = require("../hoc/withResizable/withResizable");
 const withRotatable = require("../hoc/withRotatable/withRotatable");
 const { compose } = require("redux");
+require("./Tinymce.css");
 
 class Tinymce extends React.Component {
-  state = {
-    tableContent:
-      "<table><tr style='display:none'><td>NAME</td><td>AGE</td></tr><tr><td>A</td><td>B</td></tr><tr><td>C</td><td>D</td></tr></tbody></table>"
-  };
   render() {
     return (
       <TinyMCE
-        //content={this.props.tableContent}
-        content={this.state.tableContent}
+        content={this.props.tableContent}
         config={{
           plugins: "table",
           toolbar: "table",
