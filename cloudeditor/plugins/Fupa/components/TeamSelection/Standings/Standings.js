@@ -33,17 +33,39 @@ const fupaImageWrapperPicture = {
 const Standings = props => {
   const header = (
     <tr>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Index")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_UpDown")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Logo")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Team")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Played")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Wins")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Draws")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Loses")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Goals")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Goals_Diff")}</td>
-      <td style={{ ...fupaTdBase }}>{props.t("Standings_Points")}</td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Index")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_UpDown")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Logo")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Team")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Played")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Wins")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Draws")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Loses")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Goals")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Goals_Diff")}
+      </td>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+        {props.t("Standings_Points")}
+      </td>
     </tr>
   );
 

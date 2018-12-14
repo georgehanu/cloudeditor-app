@@ -8,6 +8,7 @@ require("./Tinymce.css");
 
 class Tinymce extends React.Component {
   render() {
+    const height = this.props.height;
     return (
       <TinyMCE
         content={this.props.tableContent}
@@ -15,12 +16,12 @@ class Tinymce extends React.Component {
           plugins: "table",
           toolbar: "table",
           menubar: false,
-          autoresize_max_height: 500,
-          height: 200,
-          custom_buttons3: "row_props"
+          //autoresize_max_height: 500,
+          height: height,
           //theme_advanced_buttons3_add: "row_props",
           //menubar: "table",
           //content_css: 'css',
+          body_class: "TinymceContainer"
         }}
         //onChange={this.props.handleEditorChange}
       />

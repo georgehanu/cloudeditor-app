@@ -33,7 +33,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
       const tableContent = document.getElementById(this.state.tabelId)
         .innerHTML;
       props.addObjectToPage(
-        { ...emptyTable, tableContent: tableContent },
+        { ...emptyTable, tableContent: tableContent, id: uuidv4() },
         props.activePage
       );
     };
