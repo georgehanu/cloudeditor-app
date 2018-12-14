@@ -6,9 +6,8 @@ const withSpinner = require("../../../../../core/hoc/withSpinner");
 const Colors = require("../Utils/Colors");
 
 const fupaTdBase = {
-  padding: "4px 2px",
+  padding: "4px 0px",
   margin: "0",
-  //borderBottom: "1px solid #fff",
   borderBottom: "none",
   textAlign: "center",
   fontSize: "12px",
@@ -97,27 +96,19 @@ const Standings = props => {
     return (
       <tr key={index}>
         <td
-          width="20"
+          width="24px"
           style={{
             ...fupaTd,
-            paddingLeft: "2px",
             fontWeight: "bold",
             ...mark
           }}
         >
           {el.rank}.
         </td>
-        <td
-          width="12"
-          style={{ ...fupaTd, textAlign: "left", paddingLeft: "0px" }}
-          title="-1"
-        >
+        <td width="14px" style={{ ...fupaTd, textAlign: "left" }} title="-1">
           <div style={{ color: "#bfbfbf" }} />
         </td>
-        <td
-          width="25"
-          style={{ ...fupaTd, textAlign: "right", padding: "1px 2px" }}
-        >
+        <td width="30px" style={{ ...fupaTd, padding: "1px 2px" }}>
           <div>
             <a href={el.linkUrl}>
               <div
@@ -137,20 +128,35 @@ const Standings = props => {
           </div>
         </td>
 
-        <td style={{ ...fupaTd, textAlign: "left", paddingLeft: "4px" }}>
+        <td
+          width="162px"
+          style={{ ...fupaTd, textAlign: "left", paddingLeft: "4px" }}
+        >
           <a href={el.linkUrl}>{el.team.name.full}</a>{" "}
         </td>
 
-        <td style={{ ...fupaTd }}>{el.matches}</td>
+        <td width="18px" style={{ ...fupaTd }}>
+          {el.matches}
+        </td>
 
-        <td style={{ ...fupaTd }}>{el.wins}</td>
-        <td style={{ ...fupaTd }}>{el.draws}</td>
-        <td style={{ ...fupaTd }}>{el.defeats}</td>
-        <td style={{ ...fupaTd }}>{el.ownGoals + ":" + el.againstGoals}</td>
+        <td width="18px" style={{ ...fupaTd }}>
+          {el.wins}
+        </td>
+        <td width="18px" style={{ ...fupaTd }}>
+          {el.draws}
+        </td>
+        <td width="18px" style={{ ...fupaTd }}>
+          {el.defeats}
+        </td>
+        <td width="40px" style={{ ...fupaTd }}>
+          {el.ownGoals + ":" + el.againstGoals}
+        </td>
 
-        <td style={{ ...fupaTd }}>{el.goalDifference}</td>
+        <td width="18px" style={{ ...fupaTd }}>
+          {el.goalDifference}
+        </td>
 
-        <td style={{ ...fupaTd, width: "25px", paddingLeft: "2px" }}>
+        <td width="20px" style={{ ...fupaTd }}>
           <strong>{el.points}</strong>
         </td>
       </tr>

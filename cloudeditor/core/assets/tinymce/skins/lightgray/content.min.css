@@ -214,3 +214,27 @@ th[data-mce-selected] {
 .ephox-snooker-resizer-bar.ephox-snooker-resizer-bar-dragging {
   opacity: 0.2;
 }
+
+/* Custom */
+.ephox-snooker-resizer-rows.ephox-snooker-resizer-bar,
+.mce-resizehandle {
+  display: none;
+}
+
+.mce-content-body {
+  margin: 0px;
+}
+
+.mce-item-table {
+  border: none;
+}
+
+#tinymce > p {
+  display: none;
+}
+
+body,
+th,
+td {
+  font-family: "Arial";
+}

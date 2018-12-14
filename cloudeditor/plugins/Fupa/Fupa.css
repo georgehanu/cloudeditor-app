@@ -16,7 +16,6 @@
 }
 .fupa table {
   margin: 0;
-  margin-bottom: 9px;
   margin-left: 0;
   width: 100%;
   padding: 0;
@@ -187,4 +186,8 @@
 .fupa .ClubTeam select {
   border: 1px solid grey;
   color: grey;
+}
+
+.ContainerTable {
+  margin-bottom: 9px;
 }

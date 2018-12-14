@@ -10,16 +10,11 @@ const { addObjectToPage } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
-  type: "tinymce",
-  width: 200,
-  height: 200,
-  left: 100,
-  top: 100
+  type: "tinymce"
 });
 
 const tableStyle = {
-  marginBottom: "9px",
-  width: "100%",
+  width: "calc(100% - 4px)",
   borderSpacing: "0",
   color: "black"
 };
@@ -32,8 +27,18 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
     handleClick = () => {
       const tableContent = document.getElementById(this.state.tabelId)
         .innerHTML;
+      const tableDimensions = document
+        .getElementById(this.state.tabelId)
+        .getBoundingClientRect();
+
       props.addObjectToPage(
-        { ...emptyTable, tableContent: tableContent, id: uuidv4() },
+        {
+          ...emptyTable,
+          tableContent: tableContent,
+          id: uuidv4(),
+          width: tableDimensions.width + 4,
+          height: tableDimensions.height
+        },
         props.activePage
       );
     };
@@ -44,7 +49,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
           <div className={TableName}>
             <div>
               <ToggleTable TableName={TableName}>
-                <div id={this.state.tabelId}>
+                <div id={this.state.tabelId} className="ContainerTable">
                   <table style={{ ...tableStyle }}>
                     <tbody>
                       <WrappedComponent {...props} />

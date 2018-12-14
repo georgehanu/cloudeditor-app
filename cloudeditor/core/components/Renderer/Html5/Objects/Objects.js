@@ -29,6 +29,7 @@ const objects = props => (
             key={obKey}
             tableContent={props.items[obKey].tableContent}
             height={height}
+            width={width}
           />
         );
       }

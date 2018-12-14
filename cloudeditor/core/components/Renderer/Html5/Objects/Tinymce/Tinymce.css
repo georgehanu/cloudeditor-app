@@ -9,3 +9,11 @@
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 11px;
 }
+
+.mce-tinymce.mce-container.mce-panel {
+  border: none;
+}
+
+.mce-edit-area.mce-container.mce-panel {
+  border: none;
+}
