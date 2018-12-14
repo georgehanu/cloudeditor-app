@@ -6,8 +6,13 @@ const {
   last,
   apply,
   add,
-  reduce
+  reduce,
+  forEach,
+  lensPath,
+  set,
+  view
 } = require("ramda");
+
 const updateObject = (oldObject, updatedProperties) => {
   return {
     ...oldObject,
@@ -57,6 +62,18 @@ const applyMax = (initial, after) => {
   return Math.max(initial, after);
 };
 
+const applyZoomScaleToTarget = (target, scale, paths) => {
+  let scaledTarget = target;
+
+  forEach(path => {
+    const lens = lensPath(path);
+    const value = view(lens, scaledTarget);
+    scaledTarget = set(lens, value * scale, scaledTarget);
+  })(paths);
+
+  return scaledTarget;
+};
+
 module.exports = {
   updateObject,
   computeScale,
@@ -65,5 +82,6 @@ module.exports = {
   getHeadProp,
   getLastProp,
   applyMax,
-  addProps
+  addProps,
+  applyZoomScaleToTarget
 };

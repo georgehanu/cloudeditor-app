@@ -1,0 +1,25 @@
+{
+  "plugins": {
+    "mobile": ["Html5Renderer"],
+    "desktop": [
+      "SideBar",
+      "Html5Renderer",
+      "Fupa",
+      "AddImage",
+      "AddPdf",
+      "PageSelector",
+      "Layouts",
+      "Zoom"
+    ]
+  },
+  "Layout": {
+    "SideBar": {},
+    "Body": {}
+  },
+
+  "mainComponent": {
+    "component": "div",
+    "id": "container",
+    "className": "container"
+  }
+}

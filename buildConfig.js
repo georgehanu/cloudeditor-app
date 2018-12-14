@@ -61,7 +61,9 @@ const build = config => {
           test: /\.(sa|sc|c)ss$/,
           use: [
             MiniCssExtractPlugin.loader,
+
             "css-loader",
+            "sass-loader",
             {
               loader: "postcss-loader",
               options: {
@@ -77,9 +79,7 @@ const build = config => {
                   })
                 ]
               }
-            },
-
-            "sass-loader"
+            }
           ]
         },
         {
@@ -139,7 +139,7 @@ const build = config => {
           },
           {
             from: "./" + namespace + "/plugins/*/locales/*/*.json",
-            to: "./locales/[5]/[3].[ext]",
+            to: "./locales/[5]/[name].[ext]",
             toType: "template",
             test: /^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/
             /**

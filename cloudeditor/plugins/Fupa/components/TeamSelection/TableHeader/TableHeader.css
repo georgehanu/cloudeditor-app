@@ -1,0 +1,16 @@
+.PreviewContainer {
+  float: right;
+  margin-right: 10px;
+}
+
+.PreviewContainer button {
+  border: none;
+  color: white;
+  background-color: transparent;
+  outline: none;
+  width: 80px;
+}
+
+.PreviewContainer button:hover {
+  cursor: pointer;
+}

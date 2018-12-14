@@ -1,0 +1,318 @@
+body {
+  overflow-x: hidden;
+  margin-bottom: 0px !important;
+}
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+}
+.canvas-container {
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.render-container {
+  width: 100%;
+  height: 100%;
+  background-color: burlywood;
+}
+#root,
+#wrapper,
+#plugins-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+}
+#wrapper {
+  padding-left: 0;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  box-sizing: border-box;
+}
+
+#wrapper.toggled {
+  padding-left: 250px;
+}
+
+#sidebar-wrapper {
+  z-index: 1000;
+  position: fixed;
+  left: 250px;
+  width: 0;
+  height: 100%;
+  margin-left: -250px;
+  /*overflow-y: auto; MIKI needed to show pane from sidebar*/
+  background: #000;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  width: 250px;
+}
+
+#page-content-wrapper {
+  width: 100%;
+  position: absolute;
+  padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+}
+
+@media (min-width: 768px) {
+  #wrapper {
+    padding-left: 0;
+  }
+  #wrapper.toggled {
+    padding-left: 250px;
+  }
+  #sidebar-wrapper {
+    width: 0;
+  }
+  #wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+  }
+  #page-content-wrapper {
+    padding: 20px;
+    position: relative;
+  }
+  #wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+.Tooltip {
+  background-color: #f0eff0;
+  position: relative !important;
+  color: black;
+  max-width: 240px !important;
+}
+
+.TooltipTitle {
+  margin: 0;
+  margin: 10px;
+  font-size: 16px;
+}
+
+.TooltipDesc {
+  margin: 0;
+  padding: 0px 10px 10px 10px;
+  font-size: 14px;
+  color: #6cbfe8;
+  width: 100%;
+}
+
+.__react_component_tooltip {
+  padding: 0px !important;
+}
+.__react_component_tooltip.place-top {
+  margin-top: 0px !important;
+}
+
+.__react_component_tooltip.type-dark {
+  background-color: #f0eff0 !important;
+}
+.__react_component_tooltip::after {
+  border-top-color: #f0eff0 !important;
+}
+
+#sidebar-wrapper .ToggleSidebarContainer {
+  display: none;
+}
+
+#sidebar-wrapper .icon.More {
+  display: none;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLi,
+#sidebar-wrapper .UploadGalleryItem {
+  width: 120px;
+}
+
+section.dropzone {
+  height: 60px;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLiLoading {
+  text-align: -webkit-center;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLiLoading .Loader {
+  font-size: 8px;
+  margin: 0px;
+}
+
+#sidebar-wrapper .UploadGallery .UploadGalleryLiLoading .Loader .SpinnerText {
+  left: 2px;
+  top: 35px;
+  font-size: 12px;
+}
+
+#sidebar-wrapper .UploadLabel {
+  background-color: #f9fafc;
+  border: 1px solid #dcdee1;
+}
+
+#sidebar-wrapper .UploadLabel .UploadMessage {
+  color: #58595b;
+  margin-left: 3px;
+}
+
+#sidebar-wrapper-container .SidebarButton:hover,
+#sidebar-wrapper-container .SidebarButtonSelected {
+  color: #666666;
+}
+
+#sidebar-wrapper-container .Loader {
+  color: grey;
+}
+
+.cloudeditor,
+#container.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.render-container {
+  flex-grow: 1000;
+  width: calc(100% - 100px);
+  height: calc(100% - 150px);
+  margin-left: 100px;
+}
+
+#container.SidebarContainerExpand .render-container {
+  flex-grow: 1000;
+  width: calc(100% - 500px);
+  margin-left: 500px;
+}
+
+#container.SidebarContainerExpand .PageSelector {
+  left: 500px;
+}
+
+.canvas-container {
+  position: relative;
+}
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.PageSelectorHeader {
+  width: calc(100% - 105px);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0;
+  height: 0;
+  display: none;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  height: 4px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  -webkit-border-radius: 7px;
+  background-color: rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: inset -1px -1px 0 rgba(0, 0, 0, 0.05),
+    inset 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.BackButtonContainer button,
+.FupaClubSearch button.OkButton {
+  background-color: #fefeff;
+  border: 1px solid #dcdee1;
+  outline: none;
+  cursor: pointer;
+  margin-top: 0px;
+}
+.FupaClubSearch input {
+  border: 1px solid #dcdee1;
+}
+
+.BackButtonContainer .icon {
+  color: #b6b6b6;
+}
+
+.BackButtonContainer .icon {
+  font-family: "stadion";
+}
+
+.BackButtonContainer .icon:before {
+  font-family: "stadion";
+  content: "\e902";
+}
+
+.FupaClubSearch {
+  text-align: -webkit-center;
+}
+
+#sidebar-wrapper-container .GalleryItemActions .icon {
+  color: white;
+}
+/* [[[ Test picture one line */
+/*
+#sidebar-wrapper .UploadGallery .UploadGalleryLi {
+  width: 100%;
+}
+#sidebar-wrapper .UploadGalleryItem {
+  width: 97%;
+}
+/* ]]] */
+#sidebar-wrapper .UploadContainer {
+  height: calc(100% - 25px);
+}
+
+#sidebar-wrapper .UploadGallery {
+  height: calc(100% - 76px);
+}
+#sidebar-wrapper .UploadGalleryUl {
+  overflow: auto;
+}
+
+#container,
+#sidebar-wrapper .PaneContainer,
+#sidebar-wrapper .fupa {
+  background-color: #f9fafc;
+}
+
+#sidebar-wrapper .fupa .Container {
+  padding-top: 15px;
+}
+
+.PaneContainer .UploadGallery .UploadGalleryLi {
+  margin-left: 8px;
+}
+
+.FupaClubSearch {
+  width: 385px;
+}
