@@ -1,3 +1,10 @@
+const { pathOr, pathEq, filter } = require("ramda");
+const createCachedSelector = require("re-reselect").default;
+
+const {
+  variablesVariableSelector
+} = require("../../../core/stores/selectors/variables");
+
 const dagLoadingSelector = state =>
   (state && state.designAndGo && state.designAndGo.loading) || false;
 
@@ -62,6 +69,19 @@ const dagDataDescriptionSelector = state =>
     state.designAndGo.data.description) ||
   [];
 
+const getVariablesByFilter = createCachedSelector(
+  state => pathOr({}, ["variables", "variables"], state),
+  (state, filterStr) => filterStr,
+  (variables, filterStr) => {
+    console.log("getVariablesByFilter", filterStr);
+    const filteredVar = filter(
+      pathEq(["general", "displayFilter"], filterStr),
+      variables
+    );
+    return filteredVar;
+  }
+)((state, filterStr) => `variableFilter${filterStr}`);
+
 module.exports = {
   dagLoadingSelector,
   dagErrorMessageSelector,
@@ -76,5 +96,6 @@ module.exports = {
   dagDataTitleSelector,
   dagDataDescriptionSelector,
   dagLoadingSignInSelector,
-  dagErrorMessageSignInSelector
+  dagErrorMessageSignInSelector,
+  getVariablesByFilter
 };

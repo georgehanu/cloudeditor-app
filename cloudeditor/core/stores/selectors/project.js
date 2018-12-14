@@ -102,8 +102,15 @@ const groupsSelector = state => {
   return pathOr({}, ["project", "configs", "document", "groups"], state);
 };
 
-const objectsSelector = state =>
-  (state && state.project && state.project.objects) || {};
+const objectsSelector = state => {
+  console.log("objectsSelector");
+  return (state && state.project && state.project.objects) || {};
+};
+
+const getObjectByIdSelector = (state, obId) => {
+  console.log("getObjectByIdSelector", obId);
+  return pathOr({}, ["project", "objects", obId], state);
+};
 
 const selectedPageIdSelector = state =>
   (state && state.project && state.project.selectedPage) || null;
@@ -303,5 +310,7 @@ module.exports = {
   objectsDefaultConfigSelector,
 
   uiScaleSelector,
-  variablesSelector
+  variablesSelector,
+
+  getObjectByIdSelector
 };

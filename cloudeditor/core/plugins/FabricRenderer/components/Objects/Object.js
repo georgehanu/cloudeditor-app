@@ -1,7 +1,7 @@
 const React = require("react");
 const PropTypes = require("prop-types");
 const { connect } = require("react-redux");
-const { pick, values } = require("ramda");
+const { pick, values, mergeAll, clone, forEachObjIndexed } = require("ramda");
 
 const {
   createDeepEqualSelector: createSelector
@@ -10,31 +10,73 @@ const {
 const {
   displayedObjectSelector,
   displayedMergedObjectSelector,
-  scaledDisplayedObjectSelector
+  scaledDisplayedObjectSelector,
+  scaledDisplayedObjectCachedSelector
 } = require("../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../stores/selectors/project");
+const {
+  variablesVariableSelector
+} = require("../../../../stores/selectors/variables");
 
 const {
   updateObjectProps,
   addObjectIdToSelected
 } = require("../../../../stores/actions/project");
 
+const { applyZoomScaleToTarget } = require("../../../../utils/UtilUtils");
+
 const ImageLoad = require("./ImageLoad");
 const TextLoad = require("./TextLoad");
 const GraphicsLoad = require("./GraphicsLoad");
 
-class ObjectBlock extends React.Component {
+class ObjectBlock extends React.PureComponent {
   render() {
     const {
-      block,
       offsetLeft,
       offsetTop,
       designerCallbacks,
-      scale
+      scale,
+      object,
+      configs,
+      variables
     } = this.props;
 
+    const newBlock = mergeAll([
+      configs.generalCfg,
+      configs[object.realType + "Cfg"],
+      object
+    ]);
+
+    let block = clone(newBlock);
+    if (scale !== 1) {
+      const defaultPaths = [
+        ["width"],
+        ["height"],
+        ["top"],
+        ["left"],
+        ["fontSize"]
+      ];
+
+      block = applyZoomScaleToTarget(block, scale, defaultPaths);
+    }
+
+    console.log("scaledBlockscaledBlock", block);
+
     const { type, left, top, id } = block;
+
+    let text = block.text || {};
+
+    forEachObjIndexed((variable, key) => {
+      text = text.replace("[%]" + key + "[/%]", variable.value);
+    }, variables);
+
+    // variables.forEach((variable, index) => {
+    //   Block.text = Block.text.replace(
+    //     "[%]" + variable + "[/%]",
+    //     variable.value
+    //   );
+    // });
 
     let blockProps = {
       ...block,
@@ -59,6 +101,7 @@ class ObjectBlock extends React.Component {
           <TextLoad
             key={id}
             {...blockProps}
+            text={text}
             designerCallbacks={designerCallbacks}
           />
         );
@@ -92,51 +135,41 @@ ObjectBlock.defaultProps = {
   scale: 1,
   editable: 1
 };
-const makeMapStateToProps = (state, props) => {
-  const scale = (_, props) => {
-    return props.scale;
-  };
-  const getBlockId = (_, props) => {
-    return props.id;
-  };
 
-  const activeBlockSelector = createSelector(
-    objectsSelector,
-    getBlockId,
-    (objects, blockId) => {
-      return objects[blockId];
-    }
+const mapStateToProps = (state, props) => {
+  const scaledBlock = scaledDisplayedObjectCachedSelector(
+    state,
+    props.id,
+    props.scale
   );
 
-  const getDisplayedBlockSelector = displayedObjectSelector(
-    activeBlockSelector
-  );
-  const getDisplayedMergedBlockSelector = displayedMergedObjectSelector(
-    getDisplayedBlockSelector
-  );
-  const getScaledDisplayedBlockSelector = scaledDisplayedObjectSelector(
-    getDisplayedMergedBlockSelector,
-    scale
+  const variables = scaledBlock["variables"];
+
+  console.log(
+    "mapStateToPropsforvar",
+    variables,
+    scaledBlock["scaledBlock"].text
   );
 
-  const mapStateToProps = (state, props) => {
-    const displayedBlock = getDisplayedBlockSelector(state, props);
-    const scaledBlock = getScaledDisplayedBlockSelector(state, props);
-    return {
-      block: scaledBlock
-    };
-  };
-  return mapStateToProps;
-};
-const mapDispatchToProps = dispatch => {
+  let Block = scaledBlock["scaledBlock"];
+  if (variables.length) {
+    Block = { ...Block };
+    variables.forEach(variable => {
+      const varDef = variablesVariableSelector(state, variable);
+      //const varDef = { value: 1 };
+      Block.text = Block.text.replace("[%]" + variable + "[/%]", varDef.value);
+    });
+  }
+
+  console.log("scaledBlockscaledBlock", scaledBlock);
   return {
-    onSetActiveBlockHandler: payload =>
-      dispatch(addObjectIdToSelected(payload)),
-    onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload))
+    block: Block
   };
 };
 
-module.exports = connect(
-  makeMapStateToProps,
-  null
-)(ObjectBlock);
+// module.exports = connect(
+//   mapStateToProps,
+//   null
+// )(ObjectBlock);
+
+module.exports = ObjectBlock;

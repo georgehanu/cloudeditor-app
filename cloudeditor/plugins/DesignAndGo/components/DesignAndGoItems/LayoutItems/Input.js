@@ -2,7 +2,7 @@ const React = require("react");
 
 const Input = props => {
   const className = "InputLabelContainer";
-  const maxLenght = props.maxLenght ? props.maxLenght : 25;
+  const maxLength = props.maxLength ? props.maxLength : 100;
   const inputType = props.type ? props.type : "text";
   return (
     <div className={props.class}>
@@ -11,7 +11,7 @@ const Input = props => {
         <div className="InputLabelContent">
           <input
             type={inputType}
-            maxLength={maxLenght}
+            maxLength={maxLength}
             value={props.text}
             onChange={props.onInputChange}
             name={props.name}

@@ -5,7 +5,8 @@ const { forEach } = require("ramda");
 var WebFont = require("webfontloader");
 fabric.util.object.extend(fabric.StaticCanvas.prototype, {
   snap: 10,
-  canvasScale: 1,
+  // canvasScale: 1,
+  scale: 1,
   canvasContainer: "",
   canvasOffsetX: 0,
   canvasOffsetY: 0,
@@ -15,11 +16,17 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, {
   setCanvasOffsetX: function(offsetX) {
     this.canvasOffsetX = offsetX;
   },
-  setCanvasScale: function(canvasScale) {
-    this.canvasScale = canvasScale;
+  // setCanvasScale: function(canvasScale) {
+  //   this.canvasScale = canvasScale;
+  // },
+  // getCanvasScale: function() {
+  //   return this.canvasScale;
+  // },
+  setScale: function(scale) {
+    this.scale = scale;
   },
-  getCanvasScale: function() {
-    return this.canvasScale;
+  getScale: function() {
+    return this.scale;
   },
   getCanvasOffsetX: function() {
     return this.canvasOffsetX;
@@ -587,7 +594,7 @@ fabric.Textbox.prototype.getMainProps = function() {
   });
 };
 fabric.Textbox.prototype.getFontSizePdf = function() {
-  return this.fontSize / this.canvasScale;
+  return this.fontSize / this.scale;
 };
 fabric.Object.prototype.render = (function(_render) {
   return function(ctx) {
@@ -718,14 +725,12 @@ fabric.Textbox.prototype.initDimensions = function() {
   var unit = 1;
   if (textWidth > this.width) {
     this.fontSize -= unit;
-    this.fontSize =
-      Math.round(this.fontSize / this.canvasScale) * this.canvasScale;
+    this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
 
     this.initDimensions();
   } else if (textHeight > this.height) {
     this.fontSize -= unit;
-    this.fontSize =
-      Math.round(this.fontSize / this.canvasScale) * this.canvasScale;
+    this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
     this.initDimensions();
   }
 };
@@ -766,22 +771,27 @@ fabric.Textbox.prototype.initialize = (function(_initialize) {
     ) {
       this.designerCallbacks.updateObjectProps({
         id: this.id,
-        props: { fontSize: this.getFontSizePdf(), text: this.text }
+        //props: { fontSize: this.getFontSizePdf(), text: this.text }
+        props: { fontSize: this.getFontSizePdf() }
       });
     }
   };
 })(fabric.Textbox.prototype.initialize);
 fabric.util.object.extend(fabric.Textbox.prototype, {
-  vAlign: "top" //center,bottom
+  vAlign: "top" //center||middle,bottom
 });
 fabric.Textbox.prototype._getTopOffset = function() {
   switch (this.vAlign) {
     case "top":
       return -this.height / 2;
+    case "middle":
+      return -this.calcTextHeight() / 2;
     case "center":
       return -this.calcTextHeight() / 2;
     case "bottom":
       return this.height / 2 - this.calcTextHeight();
+    default:
+      return -this.height / 2;
   }
 };
 fabric.util.object.extend(fabric.util, {
@@ -867,6 +877,9 @@ fabric.IText.prototype.getSelectionStartFromPointer = function(e) {
   switch (this.vAlign) {
     case "top":
       height = 0;
+      break;
+    case "middle":
+      height = (this.height - this.calcTextHeight()) / 2;
       break;
     case "center":
       height = (this.height - this.calcTextHeight()) / 2;

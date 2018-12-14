@@ -1,6 +1,26 @@
 {
   "plugins": {
-    "mobile": ["Html5Renderer"],
-    "desktop": ["Html5Renderer", "DesignAndGo"]
+    "desktop": ["FabricRenderer", "DesignAndGo"]
+  },
+  "mainComponent": {
+    "component": "div",
+    "id": "container",
+    "className": "container"
+  },
+  "project": {
+    "configs": {
+      "document": {
+        "facingPages": false,
+        "singleFirstLastPage": false,
+        "groupSize": 1,
+        "includeBoxes": true,
+        "showTrimbox": true,
+        "predefinedGroups": false
+      }
+    },
+    "defaultPage": {
+      "width": 500,
+      "height": 600
+    }
   }
 }

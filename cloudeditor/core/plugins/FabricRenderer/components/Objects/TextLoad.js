@@ -48,13 +48,4 @@ class TextLoad extends React.Component {
     return render;
   }
 }
-const mapStateToProps = state => {
-  return {
-    variables: variablesSelector(state)
-  };
-};
-
-module.exports = connect(
-  mapStateToProps,
-  null
-)(TextLoad);
+module.exports = TextLoad;

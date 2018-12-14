@@ -3,6 +3,9 @@ const {
   createDeepEqualSelector: createSelector
 } = require("../../rewrites/reselect/createSelector");
 
+const createCachedSelector = require("re-reselect").default;
+const { extractVariablesFromString } = require("../../utils/VariableUtils");
+
 const {
   head,
   any,
@@ -39,7 +42,9 @@ const {
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
   includeBoxesSelector,
-  objectsDefaultConfigSelector
+  objectsDefaultConfigSelector,
+  getObjectByIdSelector,
+  objectsSelector
 } = require("./project");
 
 const {
@@ -293,7 +298,7 @@ const displayedMergedObjectSelector = displayedObjectSelector => {
       console.log(defaults, "defaults");
       return mergeAll([
         defaults.generalCfg,
-        defaults[object.type + "Cfg"],
+        defaults[object.realType + "Cfg"],
         object
       ]);
     }
@@ -331,6 +336,58 @@ const scaledDisplayedObjectSelector = (
 };
 const selectedObjectsIdSelector = state =>
   pathOr([], ["project", "activePage"], state);
+
+const cachedObjectsSelector = createSelector(
+  objectsSelector,
+  objects => {
+    console.log("objectsSelector");
+    return objects;
+  }
+);
+
+const displayedMergedObjectCachedSelector = createCachedSelector(
+  getObjectByIdSelector,
+  objectsDefaultConfigSelector,
+  (object, defaults) => {
+    console.log("displayedMergedObjectCachedSelector", object.id);
+    return mergeAll([
+      defaults.generalCfg,
+      defaults[object.realType + "Cfg"],
+      object
+    ]);
+  }
+)((state, blockId) => `displayedMerged${blockId}`);
+
+const scaledDisplayedObjectCachedSelector = createCachedSelector(
+  displayedMergedObjectCachedSelector,
+  (state, blockId, scale) => scale,
+  (block, zoomScale) => {
+    let scaledBlock = clone(block);
+    if (zoomScale === 1) return scaledBlock;
+
+    const defaultPaths = [
+      ["width"],
+      ["height"],
+      ["top"],
+      ["left"],
+      ["fontSize"]
+    ];
+
+    scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
+    console.log("scaledDisplayedObjectCachedSelector", zoomScale);
+
+    //const variables = [];
+    const variables = extractVariablesFromString(scaledBlock.text);
+
+    console.log("blockVariables", scaledBlock);
+
+    return {
+      scaledBlock,
+      variables
+    };
+  }
+)((state, blockId, scale) => `scaledDisplayedMerged${blockId}${scale}`);
+
 registerSelectors({
   totalPages,
   groupsSelector,
@@ -340,7 +397,9 @@ registerSelectors({
   displayedObjectSelector,
   scaledDisplayedObjectSelector,
   displayedMergedObjectSelector,
-  selectedObjectsIdSelector
+  selectedObjectsIdSelector,
+
+  scaledDisplayedObjectCachedSelector
 });
 
 module.exports = {
@@ -352,5 +411,7 @@ module.exports = {
   displayedObjectSelector,
   scaledDisplayedObjectSelector,
   displayedMergedObjectSelector,
-  selectedObjectsIdSelector
+  selectedObjectsIdSelector,
+
+  scaledDisplayedObjectCachedSelector
 };

@@ -19,7 +19,7 @@ const getObjectColorTemplate = cfg => {
 };
 
 const getObjectsDefaults = cfg => {
-  const { general, image, text, pdf, qr, ...custom } = cfg || {};
+  const { general, image, graphics, text, pdf, qr, ...custom } = cfg || {};
   const generalCfg = merge(
     {
       editable: 1, //user can edit a block
@@ -71,6 +71,27 @@ const getObjectsDefaults = cfg => {
     },
     image || {}
   );
+  const graphicsCfg = merge(
+    {
+      type: "graphics",
+      realType: "graphics",
+      alternateZoom: 0,
+      backgroundBlock: 0,
+      borderWidth: 0,
+      contrast: 0,
+      luminosite: 0,
+      flipHorizontal: 0,
+      flipVertical: 0,
+      flipBoth: 0,
+      greyscale: 0,
+      invert: 0,
+      leftSlider: 0,
+      localImages: 0,
+      selectBox: 0,
+      src: null
+    },
+    graphics || {}
+  );
   const pdfCfg = mergeAll([
     image,
     {
@@ -89,6 +110,8 @@ const getObjectsDefaults = cfg => {
 
   const textCfg = merge(
     {
+      type: "text",
+      realType: "text",
       alignment: "center",
       bold: 0,
       charSpacing: 0,
@@ -104,7 +127,6 @@ const getObjectsDefaults = cfg => {
       maxLength: 0,
       prefix: "",
       sufix: "",
-      type: "text",
       underline: 0,
       vAlignment: "middle",
       wordSpacing: "normal",
@@ -118,6 +140,7 @@ const getObjectsDefaults = cfg => {
   return {
     generalCfg,
     imageCfg,
+    graphicsCfg,
     pdfCfg,
     qrCfg,
     textCfg,
@@ -183,9 +206,9 @@ const getProjectTemplate = cfg => {
     selectedObjectsIds: [],
     activeSelection: null,
     configs: {
-      document: getDocumentDefaults(pathOr({}, ["defaults", "document"], cfg)),
-      pages: getPagesDefaults(pathOr({}, ["defaults", "pages"], cfg)),
-      objects: getObjectsDefaults(pathOr({}, ["defaults", "objects"], cfg))
+      document: getDocumentDefaults(pathOr({}, ["configs", "document"], cfg)),
+      pages: getPagesDefaults(pathOr({}, ["configs", "pages"], cfg)),
+      objects: getObjectsDefaults(pathOr({}, ["configs", "objects"], cfg))
     },
     colors: {},
     fonts: {}
@@ -580,7 +603,6 @@ const getEmptyObject = cfg => {
       case "textbox":
         return {
           ...object,
-          font: cfg.font || "Roboto",
           textAlign: cfg.textAlign || "left",
           vAlign: cfg.vAlign || "top",
           fontSize: cfg.fontSize || 12,
@@ -588,7 +610,7 @@ const getEmptyObject = cfg => {
           underline: cfg.underline || false,
           italic: cfg.italic || false,
           fontFamily: cfg.fontFamily || false,
-          text: "adasdsad asd sad "
+          text: cfg.text || ""
         };
         break;
       default:
@@ -657,6 +679,236 @@ const getEmptyVariables = cfg => {
   ];
 };
 
+const getDGProject = cfg => {
+  let project = getProjectTemplate(cfg);
+  let page1 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
+  let page2 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
+  let page3 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
+  let page4 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
+
+  const page_1_bg = require("../../workspaces/designAndGo/svg/page1.svg");
+  const page_2_blue_bg = require("../../workspaces/designAndGo/svg/page_2_blue.svg");
+  const page_2_gold_bg = require("../../workspaces/designAndGo/svg/page_2_gold.svg");
+
+  let bg1 = getEmptyObject({
+    type: "graphics",
+    width: 500,
+    height: 733,
+    left: 0,
+    top: 0,
+    src: page_1_bg
+  });
+  let bg2 = getEmptyObject({
+    type: "graphics",
+    width: 500,
+    height: 663,
+    left: 0,
+    top: 0,
+    src: page_2_blue_bg
+  });
+
+  let page1JamName = getEmptyObject({
+    type: "textbox",
+    width: 300,
+    height: 50,
+    left: 100,
+    top: 230,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]jarName[/%]",
+    text: "[%]jarName[/%]"
+  });
+
+  let page1JamType = getEmptyObject({
+    type: "textbox",
+    width: 300,
+    height: 50,
+    left: 100,
+    top: 300,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "Mixed Berry Jam"
+  });
+
+  let page1TagLine1 = getEmptyObject({
+    type: "textbox",
+    width: 400,
+    height: 50,
+    left: 50,
+    top: 400,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "Homemade in Aotearoa",
+    text: "Homemade in Aotearoa"
+  });
+
+  let page1TagLine2 = getEmptyObject({
+    type: "textbox",
+    width: 400,
+    height: 50,
+    left: 50,
+    top: 460,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "by Sarah Crompton",
+    text: "by Sarah Crompton"
+  });
+
+  let page1BatchDate = getEmptyObject({
+    type: "textbox",
+    width: 200,
+    height: 30,
+    left: 150,
+    top: 520,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "Dec 2018",
+    text: "Dec 2018"
+  });
+
+  let page2JamName = getEmptyObject({
+    type: "textbox",
+    width: 200,
+    height: 50,
+    left: 150,
+    top: 170,
+    fontSize: 50,
+    defaultFontSize: 50,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]jarName[/%]",
+    text: "[%]jarName[/%]"
+  });
+
+  let page2JamType = getEmptyObject({
+    type: "textbox",
+    width: 270,
+    height: 50,
+    left: 115,
+    top: 230,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "[%]jarType[/%]",
+    text: "[%]jarType[/%]"
+  });
+
+  let page2TagLine1 = getEmptyObject({
+    type: "textbox",
+    width: 300,
+    height: 50,
+    left: 100,
+    top: 320,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "[%]tagLine1[/%]",
+    text: "[%]tagLine1[/%]"
+  });
+
+  let page2TagLine2 = getEmptyObject({
+    type: "textbox",
+    width: 300,
+    height: 50,
+    left: 100,
+    top: 380,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "[%]tagLine2[/%]",
+    text: "[%]tagLine2[/%]"
+  });
+
+  let page2BatchDate = getEmptyObject({
+    type: "textbox",
+    width: 100,
+    height: 30,
+    left: 200,
+    top: 440,
+    fontSize: 12,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    value: "[%]batchDate[/%]",
+    text: "[%]batchDate[/%]"
+  });
+
+  page1 = {
+    ...page1,
+    id: "page_1",
+    height: 733,
+    objectsIds: [
+      ...page1.objectsIds,
+      bg1.id,
+      page1JamName.id,
+      page1JamType.id,
+      page1TagLine1.id,
+      page1TagLine2.id,
+      page1BatchDate.id
+    ]
+  };
+
+  page2 = {
+    ...page2,
+    id: "page_2",
+    height: 663,
+    objectsIds: [
+      ...page2.objectsIds,
+      bg2.id,
+      page2JamName.id,
+      page2JamType.id,
+      page2TagLine1.id,
+      page2TagLine2.id,
+      page2BatchDate.id
+    ]
+  };
+
+  return {
+    ...project,
+    pages: {
+      [page1.id]: page1,
+      [page2.id]: page2,
+      [page3.id]: page3,
+      [page4.id]: page4
+    },
+    objects: {
+      [bg1.id]: bg1,
+      [bg2.id]: bg2,
+      [page1JamName.id]: page1JamName,
+      [page1JamType.id]: page1JamType,
+      [page1TagLine1.id]: page1TagLine1,
+      [page1TagLine2.id]: page1TagLine2,
+      [page1BatchDate.id]: page1BatchDate,
+      [page2JamName.id]: page2JamName,
+      [page2JamType.id]: page2JamType,
+      [page2TagLine1.id]: page2TagLine1,
+      [page2TagLine2.id]: page2TagLine2,
+      [page2BatchDate.id]: page2BatchDate
+    },
+    pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id, page4.id],
+    activePage: page2.id,
+    selectedPage: page2.id // designer
+  };
+};
+
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
@@ -666,7 +918,8 @@ const ProjectUtils = {
   getEmptyVariables,
   getRandomUI,
   getEmptyColor,
-  getEmptyFont
+  getEmptyFont,
+  getDGProject
 };
 
 module.exports = ProjectUtils;

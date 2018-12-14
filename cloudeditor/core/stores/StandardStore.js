@@ -15,7 +15,8 @@ module.exports = (
   const rootReducer = combineReducers(plugins, {
     ...appReducers,
     project: require("../stores/reducers/project"),
-    ui: require("../stores/reducers/ui")
+    ui: require("../stores/reducers/ui"),
+    variables: require("../stores/reducers/variables")
   });
 
   const rootEpic = combineEpics(plugins, { ...appEpics, ...standardEpics });

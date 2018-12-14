@@ -8,30 +8,28 @@ const Text = require("./Text");
 class Textbox extends Text {
   _initInstance() {
     this.setMapValueStateToFabric({
-      bold: {
-        true: "bold",
-        false: ""
-      },
-      italic: {
-        true: "italic",
-        false: ""
-      },
-      underline: {
-        true: true,
-        false: false
-      }
+      // bold: {
+      //   true: "bold",
+      //   false: ""
+      // },
+      // italic: {
+      //   true: "italic",
+      //   false: ""
+      // },
+      // underline: {
+      //   true: true,
+      //   false: false
+      // }
     });
     this.setMapKeysStateToFabric({
-      bold: "fontWeight",
-      italic: "fontStyle",
-      underline: "underline"
+      // bold: "fontWeight",
+      // italic: "fontStyle",
+      // underline: "underline"
     });
 
     let props = { ...this.props };
     delete props.variables;
     delete props.dispatch;
-
-    props.text = this.checkForVariables(this.props.variables, props.text);
 
     props = this._mapStatePropsToFabric(props);
     this.instance = new fabric.Textbox(props.text, props);
@@ -63,7 +61,7 @@ class Textbox extends Text {
           this.instance.designerCallbacks.updateObjectProps({
             id: this.instance.id,
             props: {
-              fontSize: this.instance.fontSize / this.instance.canvasScale,
+              fontSize: this.instance.fontSize / this.instance.scale,
               text: this.instance.text
             }
           });
