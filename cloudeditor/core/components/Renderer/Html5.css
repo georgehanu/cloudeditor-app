@@ -1,8 +1,12 @@
 .canvasContainer {
   display: flex;
   overflow: hidden;
-  height: 90%;
-  width: 90%;
+  height: 100%;
+  width: 100%;
   align-items: center;
   justify-content: center;
+  padding-left: 120px;
+  padding-top: 80px;
+  padding-bottom: 170px;
+  padding-right: 10px;
 }

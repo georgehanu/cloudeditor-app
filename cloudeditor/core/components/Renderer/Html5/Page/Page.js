@@ -3,17 +3,22 @@ const ObjectBlock = require("../Objects/Object/Object");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { randomColor } = require("randomColor");
-const {
-  /*  createSelectorWithDependencies: createSelector, */
-  registerSelectors
-} = require("reselect-tools");
+const { DropTarget } = require("react-dnd");
+const ReactDOM = require("react-dom");
+const { forEachObjIndexed } = require("ramda");
+
+const type = ["image", "text"];
+
 const {
   createDeepEqualSelector: createSelector
 } = require("../../../../rewrites/reselect/createSelector");
-const { forEachObjIndexed } = require("ramda");
 const {
   scaledDisplayedPageSelector
 } = require("../../../../stores/selectors/Html5Renderer");
+const { addObject } = require("../../../../stores/actions/project");
+const {
+  activePageIdSelector
+} = require("../../../../stores/selectors/project");
 
 require("./Page.css");
 
@@ -29,6 +34,48 @@ const centerPage = ({ width, height, containerWidth, containerHeight }) => {
   return {
     marginLeft,
     marginTop
+  };
+};
+
+const PageTarget = {
+  drop(props, monitor, component) {
+    const object = { ...monitor.getItem() };
+    const componentBounding = ReactDOM.findDOMNode(
+      component
+    ).getBoundingClientRect();
+    const activePageId = props.activePageId;
+    innerPage = props.activePage.innerPages[activePageId];
+    let aspectRatio = innerPage.height / innerPage.width;
+    width = innerPage.width / 6;
+    switch (object.type) {
+      case "image":
+        aspectRatio = object.imageHeight / object.imageWidth;
+        break;
+      default:
+        break;
+    }
+    object.width = width;
+    object.height = width * aspectRatio;
+    const position = monitor.getSourceClientOffset();
+
+    object.left = (-1 * (componentBounding.x - position.x)) / props.zoomScale;
+    object.top = (-1 * (componentBounding.y - position.y)) / props.zoomScale;
+    props.onAddObjectHandler(object);
+  },
+  canDrop(props, monitor) {
+    if (!props.viewOnly) {
+      return true;
+    }
+    return false;
+  },
+  hover(props, monitor) {}
+};
+
+collectDrop = (connect, monitor) => {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    clientOffset: monitor.getClientOffset()
   };
 };
 
@@ -52,9 +99,11 @@ class Page extends React.Component {
       );
     });
   }
-
+  getPageRef = () => {
+    return this.ref;
+  };
   render() {
-    const { width, height } = this.props;
+    const { width, height, viewOnly } = this.props;
     const { marginLeft, marginTop } = centerPage(this.props);
     const pageStyle = {
       width,
@@ -63,18 +112,24 @@ class Page extends React.Component {
       marginTop,
       backgroundColor: randomColor()
     };
-
-    return (
-      <div
-        ref={this.props.getPageRef}
-        style={pageStyle}
-        className="pageContainer page"
-      >
+    let boxes = null;
+    if (!viewOnly) {
+      boxes = (
         <Boxes
           boxes={this.props.boxes}
           width={this.props.width}
           height={this.props.height}
         />
+      );
+    }
+
+    return this.props.connectDropTarget(
+      <div
+        ref={this.props.getPageRef}
+        style={pageStyle}
+        className="pageContainer page"
+      >
+        {boxes}
         {this.renderObjects()}
       </div>
     );
@@ -109,13 +164,23 @@ const makeMapStateToProps = (state, props) => {
       return objectsOffset;
     }
   );
+
   const mapStateToProps = (state, props) => {
     const scaledPage = getScaledDisplayedPageSelector(state, props);
     return {
       ...scaledPage,
+      activePageId: activePageIdSelector(state),
       objectsOffsetList: getObjectsOffsetsList(state, props)
     };
   };
   return mapStateToProps;
 };
-module.exports = hot(module)(connect(makeMapStateToProps)(Page));
+const mapDispatchToProps = dispatch => {
+  return { onAddObjectHandler: payload => dispatch(addObject(payload)) };
+};
+module.exports = hot(module)(
+  connect(
+    makeMapStateToProps,
+    mapDispatchToProps
+  )(DropTarget(type, PageTarget, collectDrop)(Page))
+);

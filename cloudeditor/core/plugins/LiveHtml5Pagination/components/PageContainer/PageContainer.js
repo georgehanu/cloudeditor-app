@@ -15,8 +15,7 @@ const {
 } = require("../../../../rewrites/reselect/createSelector");
 const {
   displayedPageSelector,
-  scaledDisplayedPageSelector,
-  displayedPageNumberSelector
+  displayedPageLabelsSelector
 } = require("../../../../stores/selectors/Html5Renderer");
 const { computeZoomScale } = require("../../../../utils/UtilUtils");
 require("./PageContainer.css");
@@ -26,7 +25,6 @@ const { changePage } = require("../../../../stores/actions/project");
 const PageSource = {
   beginDrag(props) {
     props.highlightHoverPage(null);
-    props.selectPage(props.page_id);
     return {
       type: PAGES,
       page_id: props.page_id,
@@ -100,8 +98,10 @@ class PageContainer extends React.PureComponent {
   };
   updateContainerDimensions = () => {
     if (this.containerRef) {
+      const activePageRaport =
+        this.props.activePage.height / this.props.activePage.width;
       const parent = {
-        width: this.containerRef.offsetWidth,
+        width: this.containerRef.offsetHeight * activePageRaport,
         height: this.containerRef.offsetHeight
       };
       const child = {
@@ -124,16 +124,26 @@ class PageContainer extends React.PureComponent {
     this.updateContainerDimensions();
   }
   clickHandler = () => {
-    const { page_id } = this.props;
-    this.props.onChangePage({ page_id });
+    if (this.props.activePage.selectable) {
+      const { page_id } = this.props;
+      this.props.onChangePage({ page_id });
+    }
   };
   render() {
-    const { classes, page_id, mode } = this.props;
-    if (mode === "hide") return null;
+    const { classes, mode } = this.props;
+    // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
+    let style = {};
+    if (this.containerRef) {
+      const activePageRaport =
+        this.props.activePage.height / this.props.activePage.width;
+      const width = this.containerRef.offsetHeight * activePageRaport + 2;
+      style = { width, minWidth: width };
+    }
+
     return this.props.connectDropTarget(
       this.props.connectDragSource(
-        <div className={classes} onClick={this.clickHandler}>
+        <div className={classes} style={style} onClick={this.clickHandler}>
           <Canvas
             getCanvasRef={this.getCanvasReference}
             getContainerRef={this.getContainerReference}
@@ -145,7 +155,7 @@ class PageContainer extends React.PureComponent {
             pageReady={pageReady}
           />
           <div className="singlePageText">
-            {this.props.activePage.label.replace("%no%", this.props.pageNumber)}
+            {this.props.pageLabels.longLabel}
           </div>
         </div>
       )
@@ -164,14 +174,14 @@ const makeMapStateToProps = (state, props) => {
     }
   );
   const getDisplayedPageSelector = displayedPageSelector(pageSelector);
-  const getDisplayedPageNumberSelector = displayedPageNumberSelector(
+  const getDisplayedPageLabelsSelector = displayedPageLabelsSelector(
     activePage
   );
 
   const mapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
-      pageNumber: getDisplayedPageNumberSelector(state, props)
+      pageLabels: getDisplayedPageLabelsSelector(state, props)
     };
   };
   return mapStateToProps;

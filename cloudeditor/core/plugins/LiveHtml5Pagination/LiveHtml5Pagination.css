@@ -14,6 +14,7 @@
   position: absolute;
   bottom: 0px;
   padding-left: 100px;
+  z-index: 501;
 }
 
 .html5LivePaginationContainer {
@@ -48,16 +49,6 @@
   width: 100%;
 }
 
-.singlePageContainer {
-  display: inline-block;
-  position: relative;
-  height: 72px;
-  padding-top: 10px;
-  min-width: 70px;
-  /*max-width: 97px;*/
-  margin-left: 0px;
-  width: 70px;
-}
 .singlePage {
   width: 70px;
   height: 70px;
@@ -93,9 +84,11 @@
   padding: 4px 0 0 0;
   height: auto;
   bottom: 0px;
-  padding: 5px;
-  height: 26px;
-  padding: 9px;
+  height: 20px;
+  bottom: -18px;
+}
+.paginationPage {
+  height: 100px;
 }
 
 .html5LivePaginationContainer {
@@ -105,6 +98,7 @@
   width: 100%;
   flex-wrap: nowrap;
   display: flex;
+  padding: 5px 0px;
 }
 
 .pageHeaderText {
@@ -130,14 +124,6 @@
 
 #container.pageSelectorMinimized .pageSelectorContainer {
   height: 25px;
-}
-
-#container.pageSelectorExtended .renderContainer {
-  height: calc(100% - 300px);
-}
-
-#container.pageSelectorMinimized .renderContainer {
-  height: calc(100% - 25px);
 }
 
 #container.pageSelectorMinimized .pageHeaderButtonExtend {
@@ -176,9 +162,7 @@
 }
 
 #container.pageSelectorExtended .singlePageContainer {
-  width: 200px;
-  padding-top: 10px;
-  min-width: 200px;
+  height: 235px;
 }
 
 .singlePageCenter {
@@ -220,154 +204,18 @@
 }
 
 .singlePageContainer.singlePageSelected {
-  border: 1px solid red;
-}
-
-.singlePageContainer.singlePageSelected {
   color: red;
 }
 
-.pageSelectorBackdrop {
-  width: 100%;
+.paginationPage .zoomContainer {
   height: 100%;
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  opacity: 0.7;
-  background: #fff;
-}
-
-.addPagesModal {
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  width: 600px;
-  height: 330px;
-  position: fixed;
-  z-index: 101;
-  left: calc(50% - 300px);
-  top: 20%;
-  background-color: white;
-  color: #58595b;
-}
-
-.addPagesHeader {
-  padding: 15px;
-  height: 15px;
-  border-bottom: 1px solid #dcdee1;
-  font-size: 20px;
-  color: #58595b;
-}
-
-.addPagesModal .closeMenu {
-  position: absolute;
-  right: 32px;
-  top: 10px;
-  width: 32px;
-  height: 32px;
-  opacity: 0.3;
-}
-.addPagesModal .closeMenu:hover {
-  opacity: 1;
-}
-.addPagesModal .closeMenu:before,
-.addPagesModal .closeMenu:after {
-  position: absolute;
-  left: 15px;
-  content: " ";
-  height: 33px;
-  width: 2px;
-  background-color: #333;
-}
-.addPagesModal .closeMenu:before {
-  transform: rotate(45deg);
-}
-.addPagesModal .closeMenu:after {
-  transform: rotate(-45deg);
-}
-
-.addPagesFooter {
-  margin-top: 0;
-  padding-top: 16px;
-  padding-right: 16px;
-  padding-bottom: 16px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  background-color: #f9fafc;
-  border-top: 1px solid #dcdee1;
-  text-align: right;
-  height: 36px;
-}
-
-.addPagesFooter button {
-  display: inline-block;
-  padding: 0 20px;
-  font-weight: 400;
-  font-size: 12px;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  outline: 0;
-  line-height: 36px;
-  text-decoration: none;
-  border-radius: 4px;
-  text-transform: uppercase;
-  border: 0;
-  color: #fff;
-  background-color: #f05323;
-}
-
-.addPagesBody {
-  height: 200px;
-  margin-top: 15px;
-  padding-left: 15px;
-}
-
-.addPagesNumber {
-  padding-left: 20px;
-}
-.addPagesNumberInput {
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-  border: 1px solid #666;
-  border-radius: 1px;
-  outline: 0;
-  display: inline-block;
-  width: 54px;
-  height: 24px;
-  padding: 3px 0px;
-  font-size: 14px;
-  line-height: 1;
-  color: #555;
-  background-color: #fff;
-  background-image: none;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  text-align: right;
-  margin: 0px 10px;
-}
-
-.addPagesLocationRow {
-  height: 32px;
-  padding-left: 15px;
-}
-
-.addPagesLocation {
-  padding-top: 15px;
-}
-
-.addPagesLocationRow span,
-.addPagesLocationRow input {
-  vertical-align: middle;
+  width: 100%;
 }
 .paginationPage .canvasContainer {
-  height: 90px;
-}
-.paginationPage .canvasContainer {
-  height: 90px;
+  height: 100%;
 }
 .pageSelectorExtended .paginationPage .canvasContainer {
-  height: 178px;
+  height: 100%;
 }
 @font-face {
   font-family: "stadion";

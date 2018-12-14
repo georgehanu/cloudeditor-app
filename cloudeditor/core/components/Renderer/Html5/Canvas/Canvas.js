@@ -3,6 +3,8 @@ const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const PropTypes = require("prop-types");
 const randomColor = require("randomcolor");
+const { DragDropContextProvider } = require("react-dnd");
+const HTML5Backend = require("react-dnd-html5-backend");
 
 const Zoom = require("../Zoom/Zoom");
 

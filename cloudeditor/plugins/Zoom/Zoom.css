@@ -1,0 +1,17 @@
+.zoomValue {
+  display: inline-block;
+  line-height: 25px;
+  margin-left: 12px;
+}
+.zoomMiddle {
+  height: 25px;
+}
+
+.zoomMiddle .icon {
+  width: 25px;
+  display: inline-block;
+  line-height: 25px;
+  text-align: -webkit-center;
+  cursor: pointer;
+  margin-left: 6px;
+}

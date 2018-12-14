@@ -122,7 +122,6 @@ const activeGroupSelector = createSelector(
     return flatten(result);
   }
 );
-
 const displayedPageSelector = groupSelector => {
   return createSelector(
     groupSelector,
@@ -136,6 +135,7 @@ const displayedPageSelector = groupSelector => {
 
       const offset = { left: 0, top: 0 };
       let label = "";
+      let shortLabel = "";
       let selectable = true;
       let lockPosition = true;
       forEach(page => {
@@ -150,6 +150,7 @@ const displayedPageSelector = groupSelector => {
         innerPages[page]["offset"] = { ...offset };
         offset["left"] += innerPages[page]["width"];
         label = innerPages[page]["label"];
+        shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
         selectable = innerPages[page]["selectable"];
       }, group);
@@ -229,7 +230,7 @@ const displayedPageSelector = groupSelector => {
     }
   );
 };
-const displayedPageNumberSelector = pageIdSelector => {
+const displayedPageLabelsSelector = pageIdSelector => {
   return createSelector(
     pageIdSelector,
     pagesOrderSelector,
@@ -237,6 +238,7 @@ const displayedPageNumberSelector = pageIdSelector => {
     (pageIdSelector, pageOrder, pages) => {
       let pageNumber = 1;
       let found = false;
+      const page = pages[pageIdSelector];
       forEach(el => {
         if (el === pageIdSelector) {
           found = true;
@@ -245,10 +247,14 @@ const displayedPageNumberSelector = pageIdSelector => {
           pageNumber++;
         }
       }, pageOrder);
-      return pageNumber;
+      return {
+        longLabel: page["label"].replace("%no%", pageNumber),
+        shortLabel: page["shortLabel"].replace("%no%", pageNumber)
+      };
     }
   );
 };
+
 const applyZoomScaleToTarget = (page, zoomScale, paths) => {
   let scaledPage = clone(page);
 
@@ -380,7 +386,8 @@ registerSelectors({
   scaledDisplayedObjectSelector,
   displayedMergedObjectSelector,
   selectedObjectsIdsSelector,
-  getSelectedObjectsLengthSelector
+  getSelectedObjectsLengthSelector,
+  displayedPageLabelsSelector
 });
 
 module.exports = {
@@ -394,5 +401,5 @@ module.exports = {
   displayedMergedObjectSelector,
   selectedObjectsIdsSelector,
   getSelectedObjectsLengthSelector,
-  displayedPageNumberSelector
+  displayedPageLabelsSelector
 };

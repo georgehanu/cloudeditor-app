@@ -1,6 +1,5 @@
 const {
   CHANGE_PROJECT_TITLE,
-  ADD_OBJECT,
   ADD_OBJECT_TO_PAGE,
   ADD_OBJECT_ID_TO_SELECTED,
   ADD_OBJECT_ID_ACTION_SELECTED,
@@ -13,13 +12,14 @@ const {
   UPDATE_CROP_PARAMS,
   ON_TEXT_CHANGE,
   CHANGE_RANDOM_PAGE,
-  CHANGE_PAGES_ORDER
+  CHANGE_PAGES_ORDER,
+  ADD_PAGES,
+  ADD_OBJECT
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
 const {
   changeProjectTitle,
-  addObject,
   addObjectToPage,
   addObjectIdToSelected,
   addObjectIdActionSelected,
@@ -32,10 +32,11 @@ const {
   changeGroups,
   onTextChange,
   changeRandomPage,
-  changePagesOrder
+  changePagesOrder,
+  addPages,
+  addObject
 } = createActions(
   CHANGE_PROJECT_TITLE,
-  ADD_OBJECT,
   ADD_OBJECT_TO_PAGE,
   ADD_OBJECT_ID_TO_SELECTED,
   ADD_OBJECT_ID_ACTION_SELECTED,
@@ -48,7 +49,9 @@ const {
   CHANGE_GROUPS,
   ON_TEXT_CHANGE,
   CHANGE_RANDOM_PAGE,
-  CHANGE_PAGES_ORDER
+  CHANGE_PAGES_ORDER,
+  ADD_PAGES,
+  ADD_OBJECT
 );
 
 module.exports = {
@@ -66,5 +69,7 @@ module.exports = {
   changeGroups,
   onTextChange,
   changeRandomPage,
-  changePagesOrder
+  changePagesOrder,
+  addPages,
+  addObject
 };

@@ -9,7 +9,11 @@
         "cfg": {
           "className": "html5LivePaginationContainer"
         }
-      }
+      },
+      "SideBar",
+      "AddImage",
+      "AddPdf",
+      "Zoom"
     ]
   },
   "mainComponent": {

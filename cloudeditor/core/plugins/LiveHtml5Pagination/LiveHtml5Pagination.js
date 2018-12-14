@@ -3,32 +3,38 @@ const assign = require("object-assign");
 const { hot } = require("react-hot-loader");
 const { connect } = require("react-redux");
 const PropTypes = require("prop-types");
-const randomColor = require("randomcolor");
-const { DragDropContextProvider } = require("react-dnd");
-const HTML5Backend = require("react-dnd-html5-backend");
 const PageHeader = require("./components/PageHeader/PageHeader");
 const { clone } = require("ramda");
-const uuidv4 = require("uuid/v4");
 
 require("./LiveHtml5Pagination.css");
 
 const PageContainer = require("./components/PageContainer/PageContainer");
 const {
   changeRandomPage,
-  changePagesOrder
+  changePagesOrder,
+  addPages
 } = require("../../stores/actions/project");
 
 const { groupsSelector } = require("../../stores/selectors/Html5Renderer");
 const {
   pagesOrderSelector,
-  activePageIdSelector
+  activePageIdSelector,
+  groupSizeSelector
 } = require("../../stores/selectors/project");
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
+const AddPages = require("./components/AddPages/AddPages");
+
 class LiveHtml5Pagination extends React.Component {
-  state = {
-    size: "minimized",
-    hoverId: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      size: "minimized",
+      hoverId: null,
+      showAddPages: false,
+      nrPagesToInsert: props.groupSize,
+      location: "after"
+    };
+  }
   renderGroups() {
     const groups = this.props.groups;
     groups.map({});
@@ -37,13 +43,6 @@ class LiveHtml5Pagination extends React.Component {
     this.setState({ hoverId });
   };
 
-  selectPage = (selectedId, addNewpage) => {
-    /* if (addNewpage === true) {
-      this.insertNewPages(1);
-    } else {
-      this.setState({ selectedId });
-    } */
-  };
   componentDidMount() {
     this.minimize();
   }
@@ -60,7 +59,10 @@ class LiveHtml5Pagination extends React.Component {
     });
     newPages[fromIndex] = this.props.pagesOrder[toIndex];
     newPages[toIndex] = this.props.pagesOrder[fromIndex];
-    this.props.onChangePagesOrder({ pages: newPages, page_id: from });
+    this.props.onChangePagesOrderHandler({
+      pages: newPages,
+      page_id: from
+    });
   };
   minimize = () => {
     if (this.state.size === "normal") {
@@ -87,6 +89,23 @@ class LiveHtml5Pagination extends React.Component {
         rerenderPage();
       });
     }
+  };
+  showAddPages = () => {
+    this.setState({ showAddPages: true });
+  };
+  hideAddPages = () => {
+    this.setState({ showAddPages: false });
+  };
+  onCheckboxChanged = value => {
+    this.setState({ location: value });
+  };
+  addPages = () => {
+    const { nrPagesToInsert, location } = this.state;
+    this.props.onAddPagesHandler({ nrPagesToInsert, location });
+    this.setState({ showAddPages: false });
+  };
+  changePagesToInsert = event => {
+    this.setState({ nrPagesToInsert: event.target.value });
   };
   render() {
     const { groups, className, mode } = this.props;
@@ -122,7 +141,6 @@ class LiveHtml5Pagination extends React.Component {
             selectedId={page}
             mode={this.state.size}
             switchPages={this.switchPages}
-            selectPage={this.selectPage}
             highlightHoverPage={this.highlightHoverPage}
           >
             {page}
@@ -132,7 +150,18 @@ class LiveHtml5Pagination extends React.Component {
     });
 
     return (
-      <DragDropContextProvider backend={HTML5Backend}>
+      <React.Fragment>
+        {this.state.showAddPages && (
+          <AddPages
+            show={true}
+            hideAddPages={this.hideAddPages}
+            changePagesToInsert={this.changePagesToInsert}
+            nrPagesToInsert={this.state.nrPagesToInsert}
+            addPages={this.addPages}
+            onCheckboxChanged={this.onCheckboxChanged}
+          />
+        )}
+
         <div className="pageSelectorContainer">
           <div className="pageSelector">
             <PageHeader
@@ -146,7 +175,7 @@ class LiveHtml5Pagination extends React.Component {
             <div className={className}>{groupContainer}</div>
           </div>
         </div>
-      </DragDropContextProvider>
+      </React.Fragment>
     );
   }
 }
@@ -165,13 +194,15 @@ const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
     pagesOrder: pagesOrderSelector(state),
-    activePageId: activePageIdSelector(state)
+    activePageId: activePageIdSelector(state),
+    groupSize: groupSizeSelector(state)
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onClickHandler: () => dispatch(changeRandomPage()),
-    onChangePagesOrder: payload => dispatch(changePagesOrder(payload))
+    onChangePagesOrderHandler: payload => dispatch(changePagesOrder(payload)),
+    onAddPagesHandler: payload => dispatch(addPages(payload))
   };
 };
 const LiveHtml5PaginationPlugin = hot(module)(

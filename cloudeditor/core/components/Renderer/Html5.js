@@ -113,6 +113,12 @@ class Html5 extends React.Component {
     this.canvas = ref;
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.zoom != this.props.zoom) {
+      this.updateContainerDimensions();
+    }
+  }
+
   componentDidMount() {
     this.updateContainerDimensions();
     //window.addEventListener("resize", debounce(this.updateContainerDimensions));
@@ -120,7 +126,6 @@ class Html5 extends React.Component {
     window.addEventListener("resizePage", this.updateContainerDimensions);
     document.addEventListener("click", this.blurAction);
   }
-  componentDidUpdate() {}
 
   render() {
     const style = {

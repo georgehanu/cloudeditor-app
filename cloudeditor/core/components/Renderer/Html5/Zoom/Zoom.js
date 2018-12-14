@@ -1,6 +1,5 @@
 const React = require("react");
 const PropTypes = require("prop-types");
-const randomColor = require("randomcolor");
 
 require("./Zoom.css");
 const Page = require("../Page/Page");
