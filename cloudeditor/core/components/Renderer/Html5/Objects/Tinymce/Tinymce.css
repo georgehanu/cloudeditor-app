@@ -1,0 +1,11 @@
+.mce-statusbar.mce-container,
+.mce-toolbar-grp.mce-container {
+  display: none;
+}
+
+.TinymceContainer {
+  background-color: red;
+  color: #000;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}

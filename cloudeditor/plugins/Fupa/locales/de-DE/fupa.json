@@ -27,5 +27,16 @@
   "Player_Red": "R",
   "Player_SubsIn": "I",
   "Player_SubsOut": "O",
-  "Player_Minutes": "M"
+  "Player_Minutes": "M",
+  "Standings_Index": "",
+  "Standings_UpDown": "",
+  "Standings_Logo": "",
+  "Standings_Team": "",
+  "Standings_Played": "S",
+  "Standings_Wins": "S",
+  "Standings_Draws": "U",
+  "Standings_Loses": "N",
+  "Standings_Goals": "Tore",
+  "Standings_Goals_Diff": "Diff",
+  "Standings_Points": "P"
 }

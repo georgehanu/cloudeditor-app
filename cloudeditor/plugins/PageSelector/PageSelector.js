@@ -105,6 +105,7 @@ class PageSelector extends React.Component {
       this.setState({ selectedId });
 
       /* scroll the pages so that the first one is the one selected */
+      /*
       const element = document
         .getElementById(selectedId)
         .getBoundingClientRect();
@@ -122,7 +123,7 @@ class PageSelector extends React.Component {
           (index % 2 === 0 ? 2 : 2 + padding);
         console.log(value);
         container.scrollLeft = value;
-      }
+      }*/
     }
   };
 

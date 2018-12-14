@@ -23,10 +23,9 @@ const teamSelection = props => {
     } else {
       teamName = rawName + (level > 1 ? " (" + level + ".)" : "");
     }
-    const selected = item.id === team.id;
 
     return (
-      <option key={item.id} selected={selected} value={item.id}>
+      <option key={item.id} value={item.id}>
         {teamName}
       </option>
     );
@@ -44,7 +43,10 @@ const teamSelection = props => {
       </div>
       <div className="ClubTeam">
         {t("Team")}:
-        <select onChange={event => props.changed(Number(event.target.value))}>
+        <select
+          onChange={event => props.changed(Number(event.target.value))}
+          value={team.id}
+        >
           {teamsList}
         </select>
         <Standings {...props.teamStandings} />
