@@ -146,6 +146,10 @@ const build = config => {
                * var regex1 = new RegExp(/^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/)
                 var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
                */
+          },
+          {
+            from: "./" + namespace + "/core/assets/tinymce",
+            to: "./tinymce"
           }
         ],
         { debug: prod ? "" : "" }
