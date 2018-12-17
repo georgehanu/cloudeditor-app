@@ -14,7 +14,8 @@ const emptyTable = getEmptyObject({
 });
 
 const tableStyle = {
-  width: "calc(100% - 4px)",
+  //width: "calc(100% - 4px)",
+  width: "100%",
   borderSpacing: "0",
   color: "black"
 };
@@ -27,16 +28,20 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
     handleClick = () => {
       const tableContent = document.getElementById(this.state.tabelId)
         .innerHTML;
+
       const tableDimensions = document
         .getElementById(this.state.tabelId)
         .getBoundingClientRect();
+
+      width = props.width ? props.width : tableDimensions.width;
 
       props.addObjectToPage(
         {
           ...emptyTable,
           tableContent: tableContent,
           id: uuidv4(),
-          width: tableDimensions.width + 4,
+          //width: tableDimensions.width + 4,
+          width,
           height: tableDimensions.height
         },
         props.activePage

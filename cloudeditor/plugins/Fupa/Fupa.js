@@ -5,7 +5,7 @@ const FupaBuilder = require("./FupaBuilder");
 
 class Fupa extends React.Component {
   render() {
-    return <FupaBuilder />;
+    return <FupaBuilder cfg={this.props.cfg} />;
   }
 }
 
@@ -25,6 +25,13 @@ module.exports = {
       icon: "FupaLogo",
       showMore: true,
       tooltip: { title: "Fupa", description: "Fupa.net" }
+    },
+    cfg: {
+      tableSizes: {
+        Standings: { width: 378 },
+        Matches: { width: 400 },
+        Players: { width: 500 }
+      }
     }
   }),
   reducers: { fupa: require("./store/reducers") },

@@ -5,14 +5,23 @@ const withResizable = require("../hoc/withResizable/withResizable");
 const withRotatable = require("../hoc/withRotatable/withRotatable");
 const { compose } = require("redux");
 require("./Tinymce.css");
+const uuidv4 = require("uuid/v4");
 
 class Tinymce extends React.Component {
+  state = {
+    activeEditor: null
+  };
+  onChangeHandler = event => {
+    console.log("changed");
+  };
+
   render() {
     return (
       <TinyMCE
+        //key={uuidv4()}
         content={this.props.tableContent}
         config={{
-          plugins: "table",
+          plugins: "table autoresize",
           toolbar: "table",
           menubar: false,
           //autoresize_max_height: 500,
@@ -21,9 +30,19 @@ class Tinymce extends React.Component {
           //theme_advanced_buttons3_add: "row_props",
           //menubar: "table",
           //content_css: 'css',
-          body_class: "TinymceContainer"
+          body_class: "TinymceContainer",
+          //selector: "textarea.editor"
+          init_instance_callback: function(editor) {
+            //console.log("init");
+            //editor.execCommand("mceAutoResize");
+          }
         }}
-        //onChange={this.props.handleEditorChange}
+        init={{
+          setup: editor => {
+            this.setState({ activeEditor: editor });
+          }
+        }}
+        onChange={this.onChangeHandler}
       />
     );
   }

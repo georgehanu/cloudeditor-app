@@ -53,6 +53,7 @@ class FupaBuilder extends React.Component {
           teamStandings={this.props.teamStandings}
           teamMatches={this.props.teamMatches}
           teamPlayers={this.props.teamPlayers}
+          tableSizes={this.props.cfg.tableSizes || []}
         />
       </div>
     );

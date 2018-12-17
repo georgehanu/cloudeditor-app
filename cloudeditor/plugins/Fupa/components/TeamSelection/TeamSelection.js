@@ -49,9 +49,12 @@ const teamSelection = props => {
         >
           {teamsList}
         </select>
-        <Standings {...props.teamStandings} />
-        <Matches {...props.teamMatches} />
-        <Players {...props.teamPlayers} />
+        <Standings
+          {...props.teamStandings}
+          {...props.tableSizes["Standings"]}
+        />
+        <Matches {...props.teamMatches} {...props.tableSizes["Matches"]} />
+        <Players {...props.teamPlayers} {...props.tableSizes["Players"]} />
       </div>
     </div>
   );

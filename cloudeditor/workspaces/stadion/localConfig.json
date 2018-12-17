@@ -4,7 +4,12 @@
     "desktop": [
       "SideBar",
       "Html5Renderer",
-      "Fupa",
+      {
+        "name": "Fupa",
+        "cfg": {
+          "additionalConfig": 123
+        }
+      },
       "AddImage",
       "AddPdf",
       "PageSelector",
