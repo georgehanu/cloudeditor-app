@@ -14,13 +14,13 @@
         "singleFirstLastPage": false,
         "groupSize": 1,
         "includeBoxes": true,
-        "showTrimbox": true,
+        "showTrimbox": false,
         "predefinedGroups": false
       }
     },
     "defaultPage": {
       "width": 500,
-      "height": 600
+      "height": 500
     }
   }
 }

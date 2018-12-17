@@ -1,4 +1,5 @@
 const Types = require("../components/DesignAndGoConfig/types");
+const uuidv4 = require("uuid/v4");
 const {
   DAG_UPLOAD_IMAGE,
   DAG_UPLOAD_IMAGE_SUCCESS,
@@ -10,7 +11,8 @@ const {
   DAG_SIGNIN_START,
   DAG_SIGNIN_FAILED,
   DAG_SIGNIN_SUCCESS,
-  DAG_SIGNIN_CLEAR_MESSAGE
+  DAG_SIGNIN_CLEAR_MESSAGE,
+  DAG_CHANGE_RENDER_ID
 } = require("./actionTypes");
 
 const { handleActions } = require("redux-actions");
@@ -24,9 +26,9 @@ const initialState = {
   activeSlider: 0,
   sliderData: [
     {
-      //image: Jam1,
+      productImage: "Jam1.png",
+      pageNo: 0,
       upload: true,
-      classImg: "ImageJam1",
       colors: [
         {
           containerBgColor: "green",
@@ -41,11 +43,17 @@ const initialState = {
           containerBgColor: "green"
         }
       ],
-      activeColorButton: 0
+      activeColorButton: 0,
+      labelArea: {
+        left: 100 / (1200 / 286),
+        top: 100 / (1400 / 410),
+        width: 100 / (1200 / 656),
+        height: 100 / (1400 / 796)
+      }
     },
     {
-      //image: Jam2,
-      classImg: "ImageJam2",
+      productImage: "Jam2.png",
+      pageNo: 1,
       colors: [
         {
           containerBgColor: "red",
@@ -59,44 +67,13 @@ const initialState = {
           containerBgColor: "yellow"
         }
       ],
-      activeColorButton: 1
-    },
-    {
-      //image: Jam3,
-      upload: true,
-      classImg: "ImageJam3",
-      colors: [
-        {
-          containerBgColor: "blue",
-          color1: "blue",
-          color2: "yellow"
-        },
-        { color1: "blue", color2: "yellow" },
-        {},
-        {
-          colorPicker: true,
-          containerBgColor: "blue"
-        }
-      ],
-      activeColorButton: 2
-    },
-    {
-      //image: Jam4,
-      classImg: "ImageJam4",
-      colors: [
-        {
-          containerBgColor: "green",
-          color1: "blue",
-          color2: "yellow"
-        },
-        { color1: "blue", color2: "yellow" },
-        {},
-        {
-          colorPicker: true,
-          containerBgColor: "green"
-        }
-      ],
-      activeColorButton: 3
+      activeColorButton: 1,
+      labelArea: {
+        left: 100 / (1200 / 278),
+        top: 100 / (1400 / 450),
+        width: 100 / (1200 / 654),
+        height: 100 / (1400 / 752)
+      }
     }
   ],
   data: {
@@ -116,63 +93,9 @@ const initialState = {
           "Add the details about your beer and a custom label will be created for you. Use the arrows beside the bottle to try out different designs.",
         class: "Description"
       }
-    ],
-    items: [
-      {
-        type: Types.INPUT,
-        label: "Jam name",
-        class: "Input InputName",
-        name: "wineName",
-        text: "Sarah's Special"
-      },
-      {
-        type: Types.INPUT,
-        label: "Jam type",
-        class: "Input InputType",
-        name: "wineType",
-        text: "Mixed Berry Jam"
-      },
-      {
-        type: Types.INPUT,
-        label: "Tag line - Part one",
-        class: "Input",
-        name: "wineTagOne",
-        text: "Homemade in Aotearoa"
-      },
-      {
-        type: Types.INPUT,
-        label: "Tag line - Part two",
-        class: "Input",
-        name: "wineTagTwo",
-        text: "by Sarah Crompton"
-      },
-      {
-        type: Types.INPUT,
-        label: "Batch date",
-        class: "Input InputDate",
-        name: "wineAlcool",
-        text: "Nov 2018",
-        maxLenght: 12
-      },
-      {
-        type: Types.COLOR,
-        label: "Options",
-        class: "Input ColorButtonGroup",
-        name: "wineAlcool"
-      },
-      {
-        type: Types.UPLOAD_IMAGE,
-        class: "Button Input",
-        name: "send"
-      },
-      {
-        type: Types.BUTTON,
-        label: "Buy Stickers",
-        class: "Button",
-        name: "send"
-      }
     ]
-  }
+  },
+  renderId: null
 };
 
 module.exports = handleActions(
@@ -297,6 +220,14 @@ module.exports = handleActions(
       return {
         ...state,
         errorMessageSignIn: null
+      };
+    },
+    [DAG_CHANGE_RENDER_ID]: (state, action) => {
+      //return state;
+      //debugger;
+      return {
+        ...state,
+        renderId: uuidv4()
       };
     }
   },

@@ -35,7 +35,13 @@ const config = {
   },
   port: 8081,
   cleanDistDir: !prod,
-  cssPrefix: ".cloudeditor"
+  cssPrefix: ".cloudeditor",
+  copyFrom: []
 };
 
+if (workspace === "designAndGo")
+  config["copyFrom"].push({
+    from: "./" + namespace + "/themes/" + workspace + "/images/*",
+    to: "./editorImages/[name].[ext]"
+  });
 module.exports = require("./buildConfig")(config);

@@ -23,7 +23,8 @@ const {
   DELETE_OBJ,
   CHANGE_PAGE,
   CHANGE_GROUPS,
-  CHANGE_RANDOM_PAGE
+  CHANGE_RANDOM_PAGE,
+  OBJECTS_READY
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -47,13 +48,13 @@ const addObject = (state, action) => {
     }
   };
 };
-const changePage = (state, payload) => {
+const changePage = (state, page_id) => {
   return {
     ...state,
-    selectedPage: payload.page_id,
-    activeGroup: payload.group_id
+    activePage: page_id
   };
 };
+
 const changeRandomPage = (state, payload) => {
   return {
     ...state,
@@ -328,6 +329,10 @@ module.exports = handleActions(
         selectedObjectsIds: []
       };
     }
+    // [OBJECTS_READY]: (state, action) => {
+    //   console.log("objects Ready");
+    //   return state;
+    // }
   },
   initialState
 );

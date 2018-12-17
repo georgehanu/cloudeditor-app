@@ -13,6 +13,12 @@ class Fabric extends React.Component {
     this.canvasRef = React.createRef();
   }
 
+  // countObjects = function(children) {
+  //   let length = 0;
+  //   if (isArray(children)) {
+  //   }
+  // };
+
   componentDidMount() {
     this._stage = createElement("Canvas", this.props, this.canvasRef.current);
 
@@ -39,6 +45,10 @@ class Fabric extends React.Component {
     });
     this._mountNode = FabricRenderer.createContainer(this._stage);
 
+    this._stage.instance.totalChilds = Object.keys(
+      this.props.children.props.objects
+    ).length;
+
     FabricRenderer.updateContainer(this.props.children, this._mountNode, this);
   }
 
@@ -46,6 +56,9 @@ class Fabric extends React.Component {
     logger.info("componentDidUpdate");
     this._stage._applyProps(this.props, prevProps);
 
+    this._stage.instance.totalChilds = Object.keys(
+      this.props.children.props.objects
+    ).length;
     FabricRenderer.updateContainer(this.props.children, this._mountNode, this);
   }
   componentWillUnmount() {

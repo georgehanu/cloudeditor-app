@@ -69,14 +69,8 @@ class ObjectBlock extends React.PureComponent {
 
     forEachObjIndexed((variable, key) => {
       text = text.replace("[%]" + key + "[/%]", variable.value);
+      fontSize = 50;
     }, variables);
-
-    // variables.forEach((variable, index) => {
-    //   Block.text = Block.text.replace(
-    //     "[%]" + variable + "[/%]",
-    //     variable.value
-    //   );
-    // });
 
     let blockProps = {
       ...block,

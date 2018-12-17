@@ -746,6 +746,11 @@ fabric.Textbox.prototype.set = function(key, value) {
     needsDims = this._dimensionAffectingProps.indexOf(key) !== -1;
   }
   if (needsDims) {
+    if (this.useDefaultFontSize || false) {
+      const defaultFontZise = this.defaultFontZise || 0;
+      this.fontSize =
+        defaultFontZise > this.fontSize ? defaultFontZise : this.fontSize;
+    }
     this.initDimensions();
     this.setCoords();
     if (

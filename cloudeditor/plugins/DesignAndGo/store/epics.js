@@ -6,10 +6,12 @@ const {
   DAG_SIGNIN_SUCCESS,
   DAG_SIGNIN_FAILED
 } = require("./actionTypes");
+
+const { dagChangeRenderId } = require("./actions");
 const axios = require("axios");
 
-const { Observable } = require("rxjs");
-const { mapTo, map, mergeMap } = require("rxjs/operators");
+const { Observable, of } = require("rxjs");
+const { mergeMap, switchMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/upload.php";
@@ -89,5 +91,12 @@ module.exports = {
             });
         })
       )
+    ),
+  onObjectsReadyEpic: (action$, state$) =>
+    action$.pipe(
+      ofType("OBJECTS_READY"),
+      switchMap(action$ => {
+        return of(dagChangeRenderId());
+      })
     )
 };

@@ -37,17 +37,7 @@ class Textbox extends Text {
     this.instance.isLoaded = 1;
     this._applyProps(props);
   }
-  checkForVariables(variables, text) {
-    if (variables && variables.length) {
-      forEach(variable => {
-        text = text.replace(
-          new RegExp("%" + variable.display_name + "%", "g"),
-          variable.prefix + variable.value + variable.sufix
-        );
-      }, variables);
-    }
-    return text;
-  }
+
   deleteSkipProps(props) {}
   attachEvents() {
     this.instance.on(

@@ -11,26 +11,17 @@ body,
 }
 
 .renderContainer {
-  z-index: 99999;
+  /*z-index: 99999;*/
+  position: absolute;
+  left: -600px;
+  top: -600px;
+  visibility: hidden;
 }
 
 .canvasContainer {
   display: block;
-  width: 350px;
-  height: 800px;
-}
-
-.ImageJam1 {
-  background-image: url("./assets/Jam1.png");
-}
-.ImageJam2 {
-  background-image: url("./assets/Jam2.png");
-}
-.ImageJam3 {
-  background-image: url("./assets/Jam3.png");
-}
-.ImageJam4 {
-  background-image: url("./assets/Jam4.png");
+  width: 600px;
+  height: 600px;
 }
 
 .SliderPage {
@@ -38,6 +29,31 @@ body,
   background-size: contain;
   background-position: center;
   top: 0%;
+  text-align: center;
+  line-height: 0;
+}
+
+.SliderPage .productContainer {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.SliderPage .productContainer .productImage {
+  max-width: 100%;
+  max-height: 100%;
+}
+.SliderPage .productContainer .productLabel {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
 }
 
 .slick-slider.slick-initialized {

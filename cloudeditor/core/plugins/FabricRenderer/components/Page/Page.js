@@ -69,14 +69,14 @@ class Page extends React.Component {
             viewOnly={viewOnly}
             designerCallbacks={this.props.designerCallbacks}
           />
-          <Boxes
+          {/* <Boxes
             boxes={this.props.boxes}
             offsetX={pageOffsetX}
             offsetY={pageOffsetY}
             width={this.props.width}
             height={this.props.height}
             scale={scale}
-          />
+          /> */}
         </Fabric>
       </React.Fragment>
     );

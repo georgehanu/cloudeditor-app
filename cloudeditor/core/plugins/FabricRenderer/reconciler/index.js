@@ -8,6 +8,8 @@ const logger = require("../../../utils/LoggerUtils");
 
 const UPDATE_SIGNAL = {};
 
+let objectsRendered = 0;
+
 const hostConfig = {
   // cancelDeferredCallback: ReactScheduler.cancelDeferredCallback,
   now: ReactDOMFrameScheduling.now,
@@ -21,6 +23,7 @@ const hostConfig = {
 
   appendInitialChild(canvas, child) {
     logger.info("appendInitialChild", canvas, child);
+    objectsRendered++;
     canvas.instance.add(child.instance);
   },
 
@@ -61,6 +64,20 @@ const hostConfig = {
   },
 
   resetAfterCommit() {
+    const canvas = arguments[0].instance;
+
+    if (canvas.totalChilds === canvas.getObjects().length) {
+      canvas.fire("canvas:objects:ready");
+      // console.log(
+      //   arguments[0].instance.toDataURL({
+      //     left: canvas.getCanvasOffsetX(),
+      //     top: canvas.getCanvasOffsetY(),
+      //     width: canvas.getCanvasWorkingWidth(),
+      //     height: canvas.getCanvasWorkingHeight(),
+      //     format: "png"
+      //   })
+      // );
+    }
     logger.info("resetAfterCommit");
     // Noop
   },
@@ -92,6 +109,7 @@ const hostConfig = {
 
   appendChild(parentInstance, child) {
     logger.info("appendChild", parentInstance, child);
+    objectsRendered++;
     parentInstance.instance.add(child.instance);
     child._updatePicture();
   },
@@ -99,9 +117,11 @@ const hostConfig = {
   appendChildToContainer(parentInstance, child) {
     //we need to check if the element is already in canvas/ (for bring to front/sent to back)
     if (parentInstance.instance._objects.indexOf(child.instance) > -1) {
+      objectsRendered--;
       parentInstance.instance.remove(child.instance);
     }
     logger.info("appendChildToContainer", parentInstance, child);
+    objectsRendered++;
     parentInstance.instance.add(child.instance);
 
     child._updatePicture();
@@ -116,6 +136,7 @@ const hostConfig = {
 
     //we need to check if the element is already in canvas/ (for bring to front/sent to back)
     if (parentInstance.instance._objects.indexOf(child.instance) > -1) {
+      objectsRendered--;
       parentInstance.instance.remove(child.instance);
     }
 
@@ -124,17 +145,20 @@ const hostConfig = {
     if (beforeChild.instance) {
       index = parentInstance.instance._objects.indexOf(beforeChild.instance);
     }
+    objectsRendered++;
     parentInstance.instance.insertAt(child.instance, index);
 
     child._updatePicture();
   },
 
   removeChild(parentInstance, child) {
+    objectsRendered--;
     parentInstance.instance.remove(child.instance);
     logger.info("removeChild", parentInstance, child);
   },
 
   removeChildFromContainer(parentInstance, child) {
+    objectsRendered--;
     parentInstance.instance.remove(child.instance);
     logger.info("removeChildFromContainer", parentInstance, child);
   },

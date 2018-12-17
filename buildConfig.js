@@ -19,7 +19,8 @@ const build = config => {
     sourcemaps,
     fileLoaderDirs,
     cleanDistDir,
-    cssPrefix
+    cssPrefix,
+    copyFrom
   } = config;
   return {
     entry,
@@ -146,7 +147,8 @@ const build = config => {
                * var regex1 = new RegExp(/^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/)
                 var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
                */
-          }
+          },
+          ...copyFrom
         ],
         { debug: prod ? "" : "" }
       )

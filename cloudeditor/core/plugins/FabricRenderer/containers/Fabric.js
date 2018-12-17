@@ -17,7 +17,8 @@ const {
   removeSelection,
   updateObjectProps,
   updateCropParams,
-  updateSelectionObjectsCoords
+  updateSelectionObjectsCoords,
+  objectsReady
 } = require("../../../stores/actions/project");
 const {
   displayedPageSelector,
@@ -83,6 +84,11 @@ class Fabric extends React.Component {
         id: uuidv4(),
         event_name: "text:editing:exited",
         callback: this.onObjectPropChangedHandler
+      },
+      {
+        id: uuidv4(),
+        event_name: "canvas:objects:ready",
+        callback: this.props.onObjectsReadyHandler
       }
     ];
   }
@@ -265,7 +271,10 @@ const mapDispatchToProps = dispatch => {
           id,
           props
         })
-      )
+      ),
+    onObjectsReadyHandler: args => {
+      return dispatch(objectsReady(args));
+    }
   };
 };
 

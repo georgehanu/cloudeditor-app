@@ -49,12 +49,7 @@ const Fields = props => {
     );
   });
 
-  return (
-    <div className="FieldsContainer">
-      {items}
-      <button onClick={props.changeVariable}>Click</button>
-    </div>
-  );
+  return <div className="FieldsContainer">{items}</div>;
 };
 
 const mapStateToProps = state => {

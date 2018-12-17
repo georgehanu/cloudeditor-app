@@ -5,7 +5,8 @@ const {
   DAG_CHANGE_COLOR_PICKER,
   DAG_CHANGE_INPUT,
   DAG_SIGNIN_START,
-  DAG_SIGNIN_CLEAR_MESSAGE
+  DAG_SIGNIN_CLEAR_MESSAGE,
+  DAG_CHANGE_RENDER_ID
 } = require("./actionTypes");
 const { createActions } = require("redux-actions");
 
@@ -18,6 +19,7 @@ const { dagChangeColorPicker } = createActions(DAG_CHANGE_COLOR_PICKER);
 const { dagChangeInput } = createActions(DAG_CHANGE_INPUT);
 const { dagSigninStart } = createActions(DAG_SIGNIN_START);
 const { dagSigninClearMessage } = createActions(DAG_SIGNIN_CLEAR_MESSAGE);
+const { dagChangeRenderId } = createActions(DAG_CHANGE_RENDER_ID);
 
 module.exports = {
   dagUploadImage,
@@ -26,5 +28,6 @@ module.exports = {
   dagChangeColorPicker,
   dagChangeInput,
   dagSigninStart,
-  dagSigninClearMessage
+  dagSigninClearMessage,
+  dagChangeRenderId
 };

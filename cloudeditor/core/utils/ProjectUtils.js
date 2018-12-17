@@ -130,7 +130,9 @@ const getObjectsDefaults = cfg => {
       underline: 0,
       vAlignment: "middle",
       wordSpacing: "normal",
-      value: "Edit Text Here"
+      value: "Edit Text Here",
+      defaultFontZise: 24,
+      useDefaultFontSize: true
     },
     text || {}
   );
@@ -610,7 +612,9 @@ const getEmptyObject = cfg => {
           underline: cfg.underline || false,
           italic: cfg.italic || false,
           fontFamily: cfg.fontFamily || false,
-          text: cfg.text || ""
+          text: cfg.text || "",
+          defaultFontZise: cfg.fontSize || 12,
+          useDefaultFontSize: cfg.useDefaultFontSize || true
         };
         break;
       default:
@@ -713,7 +717,8 @@ const getDGProject = cfg => {
     height: 50,
     left: 100,
     top: 230,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
@@ -729,11 +734,15 @@ const getDGProject = cfg => {
     height: 50,
     left: 100,
     top: 300,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
-    value: "Mixed Berry Jam"
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]jarType[/%]",
+    text: "[%]jarType[/%]"
   });
 
   let page1TagLine1 = getEmptyObject({
@@ -742,12 +751,15 @@ const getDGProject = cfg => {
     height: 50,
     left: 50,
     top: 400,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
-    value: "Homemade in Aotearoa",
-    text: "Homemade in Aotearoa"
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]tagLine1[/%]",
+    text: "[%]tagLine1[/%]"
   });
 
   let page1TagLine2 = getEmptyObject({
@@ -756,12 +768,15 @@ const getDGProject = cfg => {
     height: 50,
     left: 50,
     top: 460,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
-    value: "by Sarah Crompton",
-    text: "by Sarah Crompton"
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]tagLine2[/%]",
+    text: "[%]tagLine2[/%]"
   });
 
   let page1BatchDate = getEmptyObject({
@@ -770,12 +785,15 @@ const getDGProject = cfg => {
     height: 30,
     left: 150,
     top: 520,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
-    value: "Dec 2018",
-    text: "Dec 2018"
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]batchDate[/%]",
+    text: "[%]batchDate[/%]"
   });
 
   let page2JamName = getEmptyObject({
@@ -784,8 +802,8 @@ const getDGProject = cfg => {
     height: 50,
     left: 150,
     top: 170,
-    fontSize: 50,
-    defaultFontSize: 50,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
@@ -801,10 +819,13 @@ const getDGProject = cfg => {
     height: 50,
     left: 115,
     top: 230,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
     value: "[%]jarType[/%]",
     text: "[%]jarType[/%]"
   });
@@ -815,10 +836,13 @@ const getDGProject = cfg => {
     height: 50,
     left: 100,
     top: 320,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
     value: "[%]tagLine1[/%]",
     text: "[%]tagLine1[/%]"
   });
@@ -829,10 +853,13 @@ const getDGProject = cfg => {
     height: 50,
     left: 100,
     top: 380,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
     value: "[%]tagLine2[/%]",
     text: "[%]tagLine2[/%]"
   });
@@ -843,10 +870,13 @@ const getDGProject = cfg => {
     height: 30,
     left: 200,
     top: 440,
-    fontSize: 12,
+    fontSize: 30,
+    defaultFontSize: 30,
     bold: false,
     italic: false,
     fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
     value: "[%]batchDate[/%]",
     text: "[%]batchDate[/%]"
   });
@@ -903,9 +933,8 @@ const getDGProject = cfg => {
       [page2TagLine2.id]: page2TagLine2,
       [page2BatchDate.id]: page2BatchDate
     },
-    pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id, page4.id],
-    activePage: page2.id,
-    selectedPage: page2.id // designer
+    pagesOrder: [...project.pagesOrder, page1.id, page2.id],
+    activePage: page1.id
   };
 };
 

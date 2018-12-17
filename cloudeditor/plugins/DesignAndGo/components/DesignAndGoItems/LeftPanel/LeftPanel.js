@@ -35,6 +35,7 @@ class LeftPanel extends React.Component {
                 />
                 <div className="EditLabelButtonContainer">
                   <a
+                    href="javascript:void(0)"
                     className="EditLabelButton"
                     onClick={this.props.onDataOpenHandler}
                   >

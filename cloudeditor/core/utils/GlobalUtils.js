@@ -18,6 +18,17 @@ const GlobalUtils = {
       return false;
     }
     return true;
+  },
+  getCanvasImage: function() {
+    if (canvas) {
+      return canvas.toDataURL({
+        left: canvas.getCanvasOffsetX(),
+        top: canvas.getCanvasOffsetY(),
+        width: canvas.getCanvasWorkingWidth(),
+        height: canvas.getCanvasWorkingHeight(),
+        format: "png"
+      });
+    }
   }
 };
 

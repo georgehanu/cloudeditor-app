@@ -16,10 +16,11 @@ const objects = props => {
     scale,
     viewOnly,
     designerCallbacks,
-    completeObjects,
     configs,
     variables
   } = props;
+
+  const completeObjects = pick(keys(props.objects), props.stateObjects);
 
   return Object.keys(objects).map(obKey => {
     const { offsetLeft, offsetTop } = objects[obKey];
@@ -46,7 +47,8 @@ const objects = props => {
 const mapStateToProps = (state, props) => {
   return {
     //items: dagDataItemsSelector(state),
-    completeObjects: pick(keys(props.objects), state.project.objects),
+    //completeObjects: pick(keys(props.objects), state.project.objects),
+    stateObjects: state.project.objects,
     variables: state.variables.variables,
     configs: state.project.configs.objects
   };

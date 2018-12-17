@@ -42,7 +42,7 @@ const staticCanvasTypes = arrayOf(
 
 const staticCanvasDefaults = {
   allowTouchScrolling: true,
-  backgroundColor: "rgb(255,255,255)",
+  backgroundColor: "rgba(255,255,255, 0)",
   backgroundImage: null,
   backgroundVpt: true,
   controlsAboveOverlay: false,
