@@ -1,3 +1,4 @@
+const { updateObject } = require("../../utils/UtilUtils");
 const { CHANGE_ZOOM, CHANGE_WORKAREA_PROPS } = require("../actionTypes/ui");
 
 const { handleActions, combineActions } = require("redux-actions");

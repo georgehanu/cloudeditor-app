@@ -12,10 +12,3 @@
   height: 90%;
   width: 90%;
 }
-
-.pageContainer {
-  display: block;
-  background-color: rebeccapurple;
-  position: relative;
-  margin: 0 auto;
-}

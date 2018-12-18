@@ -4,7 +4,6 @@ const updateObject = (oldObject, updatedProperties) => {
     ...updatedProperties
   };
 };
-
 module.exports = {
   updateObject
 };

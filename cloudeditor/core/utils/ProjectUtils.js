@@ -179,9 +179,9 @@ const getProjectTemplate = cfg => {
   const project = {
     title: (cfg && cfg.title) || "Empty Project",
     pages: {},
+    groups: {},
     pagesOrder: [],
     activePage: null,
-    selectedPage: null,
     activeGroup: null,
     objects: {},
     selectedObjectsIds: [],
@@ -204,15 +204,22 @@ const getProjectTemplate = cfg => {
 };
 
 const getProjectPageTemplate = cfg => {
+  const background = {
+    type: "color",
+    color: randomcolor()
+  };
   return {
-    id: uuidv4(),
-    width: (cfg && cfg.width) || 1080,
-    height: (cfg && cfg.height) || 1080,
-    objectsIds: [],
-    background: {
-      type: "color",
-      color: randomcolor()
-    }
+    id: pathOr(uuidv4(), ["id"], cfg),
+    width: pathOr(1080, ["width"], cfg),
+    height: pathOr(1080, ["height"], cfg),
+    objectsIds: pathOr([], ["objectsIds"], cfg),
+    background: pathOr(background, ["background"], cfg)
+  };
+};
+const getProjectGroupTemplate = cfg => {
+  return {
+    id: pathOr(uuidv4(), ["id"], cfg),
+    pagesIds: pathOr([], ["pagesIds"], cfg)
   };
 };
 
@@ -288,10 +295,16 @@ const getUIPermissionsTemplate = cfg => {
 const getEmptyProject = cfg => {
   let project = getProjectTemplate(cfg);
   const emptyPage = getEmptyPage(cfg);
+  const emptyGroup = getEmptyGroup(
+    merge({ pagesIds: [emptyPage.id] }, cfg || {})
+  );
   return {
     ...project,
     pages: {
       [emptyPage.id]: emptyPage
+    },
+    groups: {
+      [emptyGroup.id]: emptyGroup
     },
     pagesOrder: [emptyPage.id],
     activePage: emptyPage.id,
@@ -401,10 +414,10 @@ const getRandomProject = cfg => {
     objectsIds: [text1.id, text2.id]
   };
 
-  page4 = {
-    ...page4,
-    id: "page_4",
-    objectsIds: [text1.id]
+  page2 = {
+    ...page2,
+    id: "page_2",
+    objectsIds: []
   };
 
   page3 = {
@@ -412,11 +425,13 @@ const getRandomProject = cfg => {
     id: "page_3",
     objectsIds: []
   };
-  page2 = {
-    ...page2,
-    id: "page_2",
-    objectsIds: []
+
+  page4 = {
+    ...page4,
+    id: "page_4",
+    objectsIds: [text1.id]
   };
+
   return {
     ...project,
     pages: {
@@ -445,6 +460,10 @@ const getRandomProject = cfg => {
  */
 const getEmptyPage = cfg => {
   return getProjectPageTemplate(cfg);
+};
+
+const getEmptyGroup = cfg => {
+  return getProjectGroupTemplate(cfg);
 };
 
 const getEmptyObject = cfg => {
@@ -553,7 +572,7 @@ const getEmptyUI = cfg => {
     fonts: {},
     fontMetrics: {},
     workArea: {
-      zoom: 1,
+      zoom: 0.5,
       scale: 1,
       pageOffset: {
         x: 0,
@@ -598,6 +617,7 @@ const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
   getEmptyPage,
+  getEmptyGroup,
   getEmptyObject,
   getEmptyUI,
   getRandomUI,

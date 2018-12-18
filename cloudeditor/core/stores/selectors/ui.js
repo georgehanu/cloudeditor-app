@@ -1,10 +1,8 @@
-const permissionsSelector = state =>
-  (state && state.renderer && state.renderer.type) || "html5";
+const { pathOr } = require("ramda");
 
-const zoomValueSelector = state =>
-  (state && state.ui.workArea && state.ui.workArea.zoom) || 1;
-
+const zoomSelector = state => pathOr(1, ["ui", "workArea", "zoom"], state);
+const scaleSelector = state => pathOr(1, ["ui", "workArea", "scale"], state);
 module.exports = {
-  permissionsSelector,
-  zoomValueSelector
+  zoomSelector,
+  scaleSelector
 };

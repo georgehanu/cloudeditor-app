@@ -35,7 +35,8 @@ updatePageOffset = (ref, { width, height }) => {
 
 class Html5Renderer extends React.Component {
   state = {
-    componentReady: false
+    componentReady: false,
+    scale: 1
   };
 
   constructor(props) {
@@ -44,52 +45,29 @@ class Html5Renderer extends React.Component {
     this.pageContainerRef = React.createRef();
   }
 
-  getCanvasReference = ref => {
-    this.canvas = ref;
-  };
-
   updatePageOffset = () => {
     const scale = updatePageOffset(this.canvas, this.props);
-    this.updateWorkArea(scale);
-    this.setState({ componentReady: true }, () => {});
-  };
-
-  updateWorkArea = scale => {
-    const canvasContainer = this.canvas;
-    const pageContainer = this.pageContainerRef.current;
-
-    if (!canvasContainer || !pageContainer) return false;
-    const pageContainerBounding = pageContainer.getBoundingClientRect();
-    const canvasContainerParent = canvasContainer.parentElement.getBoundingClientRect();
-    const workArea = {
-      scale,
-      pageOffset: {
-        x: pageContainerBounding.x - canvasContainerParent.x,
-        y: pageContainerBounding.y - canvasContainerParent.y
-      }
-    };
-
-    this.props.changeWorkAreaPropsHandler(workArea);
+    this.setState({ scale: scale, componentReady: true });
   };
 
   componentDidMount() {
     this.updatePageOffset();
-    window.addEventListener("resize", debounce(this.updatePageOffset));
   }
-  componentDidUpdate() {
-    console.log("canvasContainerRef", this.canvas);
-    console.log("pageRefContent", this.pageContainerRef.current);
-  }
+
+  getCanvasReference = ref => {
+    this.canvas = ref;
+  };
 
   render() {
     const style = {
       backgroundColor: randomColor()
     };
-    const { componentReady } = this.state;
-    const { scale, zoom } = this.props;
+    const { componentReady, scale } = this.state;
+    const { zoom } = this.props;
     return (
       <Canvas
         {...this.props}
+        scale={scale}
         componentReady={componentReady}
         getPageRef={this.pageContainerRef}
         getCanvasRef={this.getCanvasReference}
@@ -99,29 +77,16 @@ class Html5Renderer extends React.Component {
   }
 }
 Html5Renderer.propTypes = {
-  scale: PropTypes.number,
+  viewOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   zoom: PropTypes.number
 };
 
 Html5Renderer.defaultProps = {
-  scale: 1,
+  viewOnly: 1,
   zoom: 1
 };
 
-const mapStateToProps = state => {
-  return {
-    zoom: zoomSelector(state),
-    scale: scaleSelector(state)
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    changeWorkAreaPropsHandler: payload =>
-      dispatch(changeWorkareaProps(payload))
-  };
-};
-
 module.exports = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  null
 )(Html5Renderer);
