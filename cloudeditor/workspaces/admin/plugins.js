@@ -5,6 +5,7 @@ const SideBar = require("../../core/plugins/Sidebar/Sidebar");
 const AddImage = require("../../plugins/AddImage/AddImage");
 const Zoom = require("../../plugins/Zoom/Zoom");
 const AddPdf = require("../../plugins/AddPdf/AddPdf");
+const Fupa = require("../../plugins/Fupa/Fupa");
 
 const plugins = {
   Html5Renderer,
@@ -13,7 +14,8 @@ const plugins = {
   SideBar,
   AddImage,
   Zoom,
-  AddPdf
+  AddPdf,
+  Fupa
 };
 
 const requires = {};

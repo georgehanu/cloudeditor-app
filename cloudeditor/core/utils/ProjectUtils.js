@@ -521,10 +521,10 @@ const getEmptyObject = cfg => {
   let object = {
     id: cfg.id || uuidv4(),
     type: cfg.type || false,
-    width: parseFloat(cfg.width.toFixed(2)) || 500,
-    height: parseFloat(cfg.height.toFixed(2)) || 500,
-    left: parseFloat(cfg.left.toFixed(2)),
-    top: parseFloat(cfg.top.toFixed(2)),
+    width: cfg.width || 500,
+    height: cfg.height || 500,
+    left: cfg.left,
+    top: cfg.top,
     editable: cfg.editable || 1,
     value: cfg.value || "default value",
     resizable: cfg.resizable || 1,
@@ -606,7 +606,18 @@ const getEmptyObject = cfg => {
           borderColor: getObjectColorTemplate((cfg && cfg.borderColor) || {})
         };
         break;
-        sdefault: return { ...object };
+      case "tinymce":
+        return {
+          ...object,
+          width: cfg.width || 300,
+          height: cfg.height || 300,
+          left: cfg.left || 100,
+          top: cfg.top || 100,
+          tableContent: cfg.tableContent || ""
+        };
+        break;
+      default:
+        return { ...object };
         break;
     }
   }

@@ -10,6 +10,7 @@ const withDraggable = require("../hoc/withDraggable/withDraggable");
 const withResizable = require("../hoc/withResizable/withResizable");
 const withRotatable = require("../hoc/withRotatable/withRotatable");
 const withSnap = require("../hoc/withSnap/withSnap");
+const Tinymce = require("../Tinymce/Tinymce");
 
 const {
   createDeepEqualSelector: createSelector
@@ -93,6 +94,16 @@ class ObjectBlock extends React.Component {
     return <TextBlock {...textProps} />;
   };
   render() {
+    if (this.props.type === "tinymce") {
+      return (
+        <Tinymce
+          key={this.props.id}
+          tableContent={this.props.tableContent}
+          height={this.props.height}
+          width={this.props.width}
+        />
+      );
+    }
     const {
       width,
       height,

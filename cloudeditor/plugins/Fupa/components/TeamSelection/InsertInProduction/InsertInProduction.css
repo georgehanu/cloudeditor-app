@@ -1,0 +1,13 @@
+.InsertInProductionContainer button {
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  outline: none;
+}
+
+.InsertInProductionContainer button:hover {
+  cursor: pointer;
+}
