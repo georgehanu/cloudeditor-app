@@ -1,6 +1,5 @@
 const React = require("react");
 const { debounce } = require("underscore");
-const Button = require("../../Button/Button");
 const Utils = require("../../../ToolbarConfig/utils");
 
 const SliderWnd = props => {

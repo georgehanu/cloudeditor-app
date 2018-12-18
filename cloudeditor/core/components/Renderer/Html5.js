@@ -1,8 +1,5 @@
 const React = require("react");
-const PropTypes = require("prop-types");
 const { connect } = require("react-redux");
-const { debounce } = require("underscore");
-const randomColor = require("randomcolor");
 const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
 
@@ -73,7 +70,7 @@ class Html5 extends React.Component {
     forEach(blurselector => {
       const elements = document.getElementsByClassName(blurselector);
       forEach(element => {
-        if (element == target) {
+        if (element === target) {
           isBlur = false;
         }
         if (element.contains(target)) {
@@ -114,7 +111,7 @@ class Html5 extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.zoom != this.props.zoom) {
+    if (prevProps.zoom !== this.props.zoom) {
       this.updateContainerDimensions();
     }
   }
@@ -128,9 +125,6 @@ class Html5 extends React.Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: randomColor()
-    };
     const { pageReady } = this.state;
     return (
       <Canvas

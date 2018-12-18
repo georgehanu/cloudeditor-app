@@ -1,15 +1,10 @@
 const React = require("react");
-const assign = require("object-assign");
 const { debounce } = require("underscore");
 const { hot } = require("react-hot-loader");
 const { connect } = require("react-redux");
-const randomColor = require("randomcolor");
 const { DragSource, DropTarget } = require("react-dnd");
 const PAGES = "PAGES";
-const {
-  /*  createSelectorWithDependencies: createSelector, */
-  registerSelectors
-} = require("reselect-tools");
+
 const {
   createDeepEqualSelector: createSelector
 } = require("../../../../rewrites/reselect/createSelector");
@@ -130,7 +125,7 @@ class PageContainer extends React.PureComponent {
     }
   };
   render() {
-    const { classes, mode } = this.props;
+    const { classes } = this.props;
     // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let style = {};

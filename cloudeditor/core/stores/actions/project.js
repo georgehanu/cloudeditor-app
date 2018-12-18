@@ -70,6 +70,5 @@ module.exports = {
   onTextChange,
   changeRandomPage,
   changePagesOrder,
-  addPages,
-  addObject
+  addPages
 };

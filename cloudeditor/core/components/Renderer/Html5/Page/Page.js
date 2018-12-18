@@ -159,6 +159,7 @@ const makeMapStateToProps = (state, props) => {
             offsetTop: scaledPage.offset.top + innerPage.offset.top,
             offsetLeft: scaledPage.offset.left + innerPage.offset.left
           };
+          return false;
         });
       }, scaledPage.innerPages);
       return objectsOffset;

@@ -109,7 +109,6 @@ class LiveHtml5Pagination extends React.Component {
   };
   render() {
     const { groups, className, mode } = this.props;
-    const page_number = 1;
     let groupContainer = groups.map(group => {
       const groupLength = group.length;
       return group.map((page, index) => {
@@ -117,7 +116,7 @@ class LiveHtml5Pagination extends React.Component {
           "paginationPage",
           mode,
           "singlePageContainer",
-          page == this.props.activePageId ? " singlePageSelected" : "",
+          page === this.props.activePageId ? " singlePageSelected" : "",
           this.state.hoverId === page ? " singlePageHover" : ""
         ];
         if (groupLength === 1) {
@@ -136,7 +135,7 @@ class LiveHtml5Pagination extends React.Component {
             classes={classes}
             page_id={page}
             key={page}
-            mode={mode}
+            mode1={mode}
             hoverId={page}
             selectedId={page}
             mode={this.state.size}

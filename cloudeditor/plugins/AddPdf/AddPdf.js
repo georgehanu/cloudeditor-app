@@ -4,12 +4,6 @@ const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
 const UploadFile = require("../../core/components/UploadFile/UploadFile");
 
-const {
-  uploadedPdfsSelector,
-  uploadedPdfLoadingPdfSelector,
-  uploadedLoadingSelector
-} = require("./store/selectors");
-const { uploadPdfStart, removePdfFromGallery } = require("./store/actions");
 const ACCEPTED_FILES = "pdf";
 const TYPE = "pdf";
 

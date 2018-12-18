@@ -11,8 +11,6 @@ const {
   merge,
   pathOr,
   pluck,
-  reduce,
-  add,
   values,
   compose,
   last,
@@ -20,8 +18,6 @@ const {
   lensPath,
   set,
   view,
-  concat,
-  equals,
   mergeAll,
   forEachObjIndexed,
   clone
@@ -42,13 +38,7 @@ const {
   objectsDefaultConfigSelector
 } = require("./project");
 
-const {
-  getMaxProp,
-  getHeadProp,
-  getLastProp,
-  addProps
-} = require("../../utils/UtilUtils");
-const { zoomSelector, scaleSelector } = require("./ui");
+const { getMaxProp, addProps } = require("../../utils/UtilUtils");
 
 const totalPages = createSelector(
   pagesOrderSelector,
@@ -135,7 +125,6 @@ const displayedPageSelector = groupSelector => {
 
       const offset = { left: 0, top: 0 };
       let label = "";
-      let shortLabel = "";
       let selectable = true;
       let lockPosition = true;
       forEach(page => {
@@ -155,15 +144,6 @@ const displayedPageSelector = groupSelector => {
         selectable = innerPages[page]["selectable"];
       }, group);
 
-      const trimBoxes = compose(
-        pluck("trimbox"),
-        pluck("boxes")
-      )(innerPages);
-
-      const bleedBoxes = compose(
-        pluck("bleed"),
-        pluck("boxes")
-      )(innerPages);
       let boxes = {};
       const defaultBox = {
         left: 0,
@@ -201,6 +181,7 @@ const displayedPageSelector = groupSelector => {
               )(box)
             };
           }
+          return bKey;
         });
       }, pagesBoxes);
 
@@ -243,7 +224,7 @@ const displayedPageLabelsSelector = pageIdSelector => {
         if (el === pageIdSelector) {
           found = true;
         }
-        if (el != pageIdSelector && !found && pages[el]["countInPagination"]) {
+        if (el !== pageIdSelector && !found && pages[el]["countInPagination"]) {
           pageNumber++;
         }
       }, pageOrder);

@@ -11,7 +11,6 @@ const {
   pipe,
   assocPath,
   takeLast,
-  values,
   head,
   keys,
   forEach,
@@ -128,7 +127,7 @@ let getObjectsInGroup = (pageObjectsIds, allObjects, activePage) => {
   let result = {};
   result = pick(pageObjectsIds, allObjects);
   forEachObjIndexed(obj => {
-    if (obj.type == "group") {
+    if (obj.type === "group") {
       obj._elements = getObjectsInGroup(
         obj._objectsIds,
         allObjects,
@@ -153,7 +152,6 @@ const getPagesWithObjects = (
   activeGroupId,
   selectedPageId
 ) => {
-  const firstPage = pages[head(activeGroupPages)];
   let activePage = {
     id: activeGroupId,
     width: useTrimbox ? boxes["trimbox"]["left"] : 0,
@@ -180,7 +178,7 @@ const getPagesWithObjects = (
       objects: merge(activePage.objects, pageObjects),
       overlays: activePage.overlays
     };
-    if (currentPageId != selectedPageId) {
+    if (currentPageId !== selectedPageId) {
       const overlay = {
         group_id: activeGroupId,
         id: currentPageId,
@@ -189,7 +187,7 @@ const getPagesWithObjects = (
           ? boxes["trimbox"]["top"] + lastPage.height + activePage.height
           : lastPage.height + activePage.height,
         width:
-          lastPageId == currentPageId && useTrimbox
+          lastPageId === currentPageId && useTrimbox
             ? page.width + boxes["trimbox"]["right"]
             : page.width + initialWidth
       };

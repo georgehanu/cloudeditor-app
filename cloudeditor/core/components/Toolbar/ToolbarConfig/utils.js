@@ -122,13 +122,13 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
       if (item.type === Types.POPTEXT_VALIGN) {
         item.selected = activeItem.vAlign + "_valign";
       } else if (item.type === Types.BUTTON_LEFT_ALIGNED) {
-        item.selected = activeItem.textAlign == "left";
+        item.selected = activeItem.textAlign === "left";
       } else if (item.type === Types.BUTTON_RIGHT_ALIGNED) {
-        item.selected = activeItem.textAlign == "right";
+        item.selected = activeItem.textAlign === "right";
       } else if (item.type === Types.BUTTON_CENTER_ALIGNED) {
-        item.selected = activeItem.textAlign == "center";
+        item.selected = activeItem.textAlign === "center";
       } else if (item.type === Types.BUTTON_JUSTIFY_ALIGNED) {
-        item.selected = activeItem.textAlign == "justify";
+        item.selected = activeItem.textAlign === "justify";
       } else if (item.type === Types.BUTTON_LETTER_BOLD) {
         item.selected = activeItem.bold;
       } else if (item.type === Types.BUTTON_LETTER_ITALIC) {
@@ -201,7 +201,7 @@ const CreatePayload = (activeitem, itemPayload) => {
       break;
     case Types.FILTER_CHOOSER:
       attrs = { filter: itemPayload.value };
-      if (itemPayload.value == "original") {
+      if (itemPayload.value === "original") {
         attrs = { filter: "", flip: "" };
       }
       break;
@@ -267,6 +267,8 @@ const CreatePayload = (activeitem, itemPayload) => {
       attrs = { leftSlider: itemPayload.value };
       const resizeEvent = new Event("cropperUpdate");
       document.dispatchEvent(resizeEvent);
+      break;
+    default:
       break;
   }
   return { id: activeitem.id, props: attrs };

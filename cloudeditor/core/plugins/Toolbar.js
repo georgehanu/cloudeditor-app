@@ -1,7 +1,6 @@
 const React = require("react");
 const { connect } = require("react-redux");
 
-const randomColor = require("randomcolor");
 const assign = require("object-assign");
 require("../../themes/default/Toolbar/styles/editor_icons.css");
 require("../../themes/default/Toolbar/styles/otp.css");
@@ -12,14 +11,14 @@ const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/Settings
 const ImageToolbar = require("../components/Toolbar/ToolbarTypes/image");
 const TextToolbar = require("../components/Toolbar/ToolbarTypes/text");
 
-const { setObjectFromToolbar } = require("../stores/actions/Toolbar");
+const { setObjectFromToolbar } = require("../stores/actions/toolbar");
 const {
   selectedObjectToolbarSelector,
   selectedObjectLayerSelector,
   selectedPageDimmensionsSelector,
   uiPageOffsetSelector,
   targetPositionSelector
-} = require("../stores/selectors/Toolbar");
+} = require("../stores/selectors/toolbar");
 const Types = require("../../core/components/Toolbar/ToolbarConfig/types");
 const Utils = require("../../core/components/Toolbar/ToolbarConfig/utils");
 
@@ -159,7 +158,6 @@ class Toolbar extends React.Component {
     }
 
     const activeItem = this.props.activeToolbar;
-    const uiPageOffset = this.props.uiPageOffset;
 
     let attributes = {};
     if (activeItem.type === "image") {
@@ -286,6 +284,6 @@ module.exports = {
       blurSelectors: ["ToolbarContainer", "pageBlock"]
     }
   }),
-  reducers: { toolbar: require("../stores/reducers/Toolbar") },
-  epics: require("../stores/epics/Toolbar")
+  reducers: { toolbar: require("../stores/reducers/toolbar") },
+  epics: require("../stores/epics/toolbar")
 };

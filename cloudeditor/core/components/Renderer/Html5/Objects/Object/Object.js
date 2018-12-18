@@ -1,6 +1,5 @@
 const React = require("react");
 const PropTypes = require("prop-types");
-const randomColor = require("randomcolor");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
 const { includes } = require("ramda");
@@ -24,7 +23,6 @@ const {
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
-const Draggable = require("./Draggable");
 const TextBlock = require("../Text/Text");
 
 const {
@@ -206,7 +204,6 @@ const makeMapStateToProps = (state, props) => {
   );
 
   const mapStateToProps = (state, props) => {
-    const displayedBlock = getDisplayedBlockSelector(state, props);
     const scaledBlock = getScaledDisplayedBlockSelector(state, props);
     return { ...scaledBlock };
   };

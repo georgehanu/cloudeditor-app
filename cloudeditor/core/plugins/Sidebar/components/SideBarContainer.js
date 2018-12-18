@@ -78,7 +78,6 @@ class SideBarContainer extends React.Component {
   };
 
   render() {
-    const Container = this.props.container;
     const className =
       this.props.className +
       " " +

@@ -1,6 +1,6 @@
 const uuidv4 = require("uuid/v4");
 const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
-const randomcolor = require("randomcolor");
+const randomColor = require("randomColor");
 
 const getObjectColorTemplate = cfg => {
   return merge(
@@ -195,7 +195,7 @@ const getProjectTemplate = cfg => {
 const getProjectPageTemplate = cfg => {
   const background = {
     type: "color",
-    color: randomcolor()
+    color: randomColor()
   };
   return {
     id: pathOr(uuidv4(), ["id"], cfg),
@@ -296,61 +296,61 @@ const getEmptyProject = cfg => {
 };
 
 const getRandomProject = cfg => {
-  const defaultImages = [
-    "http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
-    "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350",
-    //"http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
-    "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg",
-    //"https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
-    "https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2018/04/jonathan-martin-brunate-lead-image_0.jpg",
-    "https://www.evoke-landscape-design.co.uk/wp-content/uploads/home-tree.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnln4X6Wha8vlaJMTkL3KEK2_v3Hxov3RqLJ5EZgJc3LbS47IG",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XeKxMs9AQOlzv0IxEF3mjc9wkGw0HNMPmCq8Scf9JHZcxqL7hQ"
-  ];
+  // const defaultImages = [
+  //   "http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
+  //   "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350",
+  //   //"http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
+  //   "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg",
+  //   //"https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
+  //   "https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2018/04/jonathan-martin-brunate-lead-image_0.jpg",
+  //   "https://www.evoke-landscape-design.co.uk/wp-content/uploads/home-tree.jpg",
+  //   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnln4X6Wha8vlaJMTkL3KEK2_v3Hxov3RqLJ5EZgJc3LbS47IG",
+  //   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XeKxMs9AQOlzv0IxEF3mjc9wkGw0HNMPmCq8Scf9JHZcxqL7hQ"
+  // ];
   let project = getProjectTemplate(cfg);
   let page1 = getProjectPageTemplate(cfg);
   let page2 = getProjectPageTemplate(cfg);
   let page3 = getProjectPageTemplate(cfg);
   let page4 = getProjectPageTemplate(cfg);
 
-  let img1 = getEmptyObject({
-    type: "image",
-    width: 343.16999999999996,
-    height: 921.4480733944953,
-    left: 0,
-    orientation: "north",
-    top: 0,
-    src:
-      "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
-  });
+  // let img1 = getEmptyObject({
+  //   type: "image",
+  //   width: 343.16999999999996,
+  //   height: 921.4480733944953,
+  //   left: 0,
+  //   orientation: "north",
+  //   top: 0,
+  //   src:
+  //     "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
+  // });
 
-  let img3 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
-    top: Math.random() * 500,
-    orientation: "north",
-    src: defaultImages[0]
-  });
-  let img4 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
-    top: Math.random() * 500,
-    orientation: "north",
-    src: defaultImages[parseInt(Math.random() * defaultImages.length)]
-  });
-  let img5 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
-    orientation: "north",
-    top: Math.random() * 500,
-    src: defaultImages[4]
-  });
+  // let img3 = getEmptyObject({
+  //   type: "image",
+  //   width: Math.random() * 500,
+  //   height: Math.random() * 500,
+  //   left: Math.random() * 500,
+  //   top: Math.random() * 500,
+  //   orientation: "north",
+  //   src: defaultImages[0]
+  // });
+  // let img4 = getEmptyObject({
+  //   type: "image",
+  //   width: Math.random() * 500,
+  //   height: Math.random() * 500,
+  //   left: Math.random() * 500,
+  //   top: Math.random() * 500,
+  //   orientation: "north",
+  //   src: defaultImages[parseInt(Math.random() * defaultImages.length)]
+  // });
+  // let img5 = getEmptyObject({
+  //   type: "image",
+  //   width: Math.random() * 500,
+  //   height: Math.random() * 500,
+  //   left: Math.random() * 500,
+  //   orientation: "north",
+  //   top: Math.random() * 500,
+  //   src: defaultImages[4]
+  // });
   let text6 = getEmptyObject({
     type: "textflow",
     width: 123,
@@ -425,14 +425,14 @@ const getRandomProject = cfg => {
     fill: "red"
   });
 
-  let graphics = getEmptyObject({
-    type: "graphics",
-    width: Math.random() * 500,
-    height: 400,
-    left: 150,
-    top: 200,
-    src: "http://localhost:8080/alfa006_top.svg"
-  });
+  // let graphics = getEmptyObject({
+  //   type: "graphics",
+  //   width: Math.random() * 500,
+  //   height: 400,
+  //   left: 150,
+  //   top: 200,
+  //   src: "http://localhost:8080/alfa006_top.svg"
+  // });
 
   page1 = {
     ...page1,
@@ -480,33 +480,33 @@ const getRandomProject = cfg => {
   };
 };
 
-const getRandomProject2 = cfg => {
-  let project = getEmptyProject();
-  let i;
-  for (i = 0; i < 50; i++) {
-    let page = getEmptyPage();
-    let j;
-    for (j = 0; j < 10; j++) {
-      let object = getEmptyObject({
-        type: "textflow",
-        width: 100 + Math.random() * 500,
-        height: 100 + Math.random() * 500,
-        left: Math.random() * 1000,
-        top: Math.random() * 1000,
-        text: "Enter text here",
-        fontFamily: "Dax",
-        fontSize: 5 + Math.random() * 50,
-        fill: "red"
-      });
-      page.objectsIds.push(object.id);
-      project.objects[object.id] = object;
-    }
-    project.pages[page.id] = page;
-    project.pagesOrder.push(page.id);
-    project.activePage = page.id;
-  }
-  return project;
-};
+// const getRandomProject2 = cfg => {
+//   let project = getEmptyProject();
+//   let i;
+//   for (i = 0; i < 50; i++) {
+//     let page = getEmptyPage();
+//     let j;
+//     for (j = 0; j < 10; j++) {
+//       let object = getEmptyObject({
+//         type: "textflow",
+//         width: 100 + Math.random() * 500,
+//         height: 100 + Math.random() * 500,
+//         left: Math.random() * 1000,
+//         top: Math.random() * 1000,
+//         text: "Enter text here",
+//         fontFamily: "Dax",
+//         fontSize: 5 + Math.random() * 50,
+//         fill: "red"
+//       });
+//       page.objectsIds.push(object.id);
+//       project.objects[object.id] = object;
+//     }
+//     project.pages[page.id] = page;
+//     project.pagesOrder.push(page.id);
+//     project.activePage = page.id;
+//   }
+//   return project;
+// };
 
 /**
  *
@@ -551,7 +551,6 @@ const getEmptyObject = cfg => {
           cropX: 538,
           cropY: 0,
           cropW: 0,
-          cropH: 0,
           ratio: 1,
           brightness: 0,
           leftSlider: 0,
@@ -588,7 +587,6 @@ const getEmptyObject = cfg => {
           top: cfg.top || 500,
           _objectsIds: cfg._objectsIds || []
         };
-        break;
       case "text":
       case "textflow":
         return {
@@ -605,9 +603,8 @@ const getEmptyObject = cfg => {
           bgColor: getObjectColorTemplate((cfg && cfg.bgColor) || {}),
           borderColor: getObjectColorTemplate((cfg && cfg.borderColor) || {})
         };
-        break;
-        sdefault: return { ...object };
-        break;
+      default:
+        return { ...object };
     }
   }
 };
@@ -615,8 +612,8 @@ const getEmptyObject = cfg => {
 const getEmptyUI = cfg => {
   const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });
   const color2 = getEmptyColor({ id: 2, label: "red", htmlRGB: "#f00" });
-  const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
-  const font2 = getEmptyFont({ label: "Arial", id: 2 });
+  // const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
+  // const font2 = getEmptyFont({ label: "Arial", id: 2 });
   return {
     rerenderId: null,
     fonts: {},
@@ -675,7 +672,8 @@ const ProjectUtils = {
   getEmptyUI,
   getRandomUI,
   getEmptyColor,
-  getEmptyFont
+  getEmptyFont,
+  getFontMetricTemplate
 };
 
 module.exports = ProjectUtils;
