@@ -1,7 +1,6 @@
 const {
   createSelectorWithDependencies: createSelector
 } = require("reselect-tools");
-
 const { pick } = require("ramda");
 
 const {
@@ -58,24 +57,47 @@ const selectedPageDimmensionsSelector = createSelector(
 );
 
 const uiSelector = state => (state && state.ui) || {};
-const uiPageOffsetSelector = createSelector([uiSelector], ui => {
-  return ui.workArea;
-});
-const uiScaleSelector = createSelector([uiSelector], ui => {
-  return ui.workArea.scale;
-});
-const uiFullHeightSelector = createSelector([uiSelector], ui => {
-  return ui.workArea.canvas.fullHeight;
-});
-const uiFullWidthSelector = createSelector([uiSelector], ui => {
-  return ui.workArea.canvas.fullWidth;
-});
-const uiZoomSelector = createSelector([uiSelector], ui => {
-  return ui.workArea.zoom;
-});
-const uiViewportTransformSelector = createSelector([uiSelector], ui => {
-  return ui.workArea.viewportTransform;
-});
+const uiPageOffsetSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea;
+  }
+);
+const uiScaleSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea.scale;
+  }
+);
+const uiFullHeightSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea.canvas.fullHeight;
+  }
+);
+const uiFullWidthSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea.canvas.fullWidth;
+  }
+);
+const uiZoomSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea.zoom;
+  }
+);
+const uiViewportTransformSelector = createSelector(
+  [uiSelector],
+  ui => {
+    return ui.workArea.viewportTransform;
+  }
+);
+/*Start Toolbar base selectors*/
+const targetPositionSelector = state => {
+  return state.toolbar.targetPosition;
+};
+/*End Toolbar base selectors*/
 
 module.exports = {
   selectedObjectToolbarSelector,
@@ -86,5 +108,6 @@ module.exports = {
   uiFullHeightSelector,
   uiFullWidthSelector,
   uiZoomSelector,
-  uiViewportTransformSelector
+  uiViewportTransformSelector,
+  targetPositionSelector
 };

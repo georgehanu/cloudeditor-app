@@ -1,9 +1,11 @@
 const { combineReducers, combineEpics } = require("../utils/PluginsUtils");
 const { createDebugStore } = require("../utils/DebugUtils");
 const projectEpics = require("../stores/epics/project");
+const assetsEpics = require("../stores/epics/assets");
 
 const standardEpics = {
-  ...projectEpics
+  ...projectEpics,
+  ...assetsEpics
 };
 
 module.exports = (
@@ -15,7 +17,8 @@ module.exports = (
   const rootReducer = combineReducers(plugins, {
     ...appReducers,
     project: require("../stores/reducers/project"),
-    ui: require("../stores/reducers/ui")
+    ui: require("../stores/reducers/ui"),
+    assets: require("../stores/reducers/assets")
   });
 
   const rootEpic = combineEpics(plugins, { ...appEpics, ...standardEpics });

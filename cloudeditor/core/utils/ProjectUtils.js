@@ -1,12 +1,11 @@
 const uuidv4 = require("uuid/v4");
-const { merge, mergeAll, pathOr } = require("ramda");
+const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
 const randomcolor = require("randomcolor");
 
 const getObjectColorTemplate = cfg => {
   return merge(
     {
       colorSpace: "DeviceRGB",
-      transparent: 1,
       htmlRGB: null,
       RGB: null,
       CMYK: null,
@@ -94,6 +93,8 @@ const getObjectsDefaults = cfg => {
       charSpacing: 0,
       circleText: 0,
       fillColor: getObjectColorTemplate((text && text.fillColor) || {}),
+      bgColor: getObjectColorTemplate((text && text.bgColor) || {}),
+      borderColor: getObjectColorTemplate((text && text.borderColor) || {}),
       deviationX: 0,
       deviationY: 0,
       fontId: 1,
@@ -128,9 +129,12 @@ const getObjectsDefaults = cfg => {
 const getDocumentDefaults = cfg => {
   const defaults = merge(
     {
-      facingPages: false,
-      facingNumber: 2,
+      facingPages: true,
+      singleFirstLastPage: true,
+      groupSize: 2,
+      includeBoxes: true,
       showTrimbox: true,
+      predefinedGroups: [2, 3], //or false
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]
@@ -142,33 +146,26 @@ const getDocumentDefaults = cfg => {
 };
 
 const getPagesDefaults = cfg => {
-  const defaults = merge(
+  const defaults = mergeDeepRight(
     {
-      width: 1080,
-      height: 1080,
-      boxes: merge(
-        {
-          trimbox: merge(
-            {
-              top: 20,
-              right: 20,
-              bottom: 20,
-              left: 20
-            },
-            pathOr({}, ["boxes", "trimbox"], cfg)
-          ),
-          bleed: merge(
-            {
-              top: 10,
-              right: 10,
-              bottom: 10,
-              left: 10
-            },
-            pathOr({}, ["boxes", "bleed"], cfg)
-          )
+      defaults: {
+        width: 1080,
+        height: 1080
+      },
+      boxes: {
+        trimbox: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20
         },
-        (cfg && cfg.boxes) || {}
-      )
+        bleed: {
+          top: 10,
+          right: 10,
+          bottom: 10,
+          left: 10
+        }
+      }
     },
     cfg || {}
   );
@@ -177,25 +174,17 @@ const getPagesDefaults = cfg => {
 
 const getProjectTemplate = cfg => {
   const project = {
-    title: (cfg && cfg.title) || "Empty Project",
+    title: pathOr("Empty Project", ["title", "document"], cfg),
     pages: {},
-    groups: {},
-    pagesOrder: [],
     activePage: null,
-    activeGroup: null,
+    pagesOrder: [],
     objects: {},
     selectedObjectsIds: [],
     activeSelection: null,
     configs: {
-      document: getDocumentDefaults(
-        (cfg && cfg.defaults && cfg.defaults.document) || {}
-      ),
-      pages: getPagesDefaults(
-        (cfg && cfg.defaults && cfg.defaults.pages) || {}
-      ),
-      objects: getObjectsDefaults(
-        (cfg && cfg.defaults && cfg.defaults.objects) || {}
-      )
+      document: getDocumentDefaults(pathOr({}, ["defaults", "document"], cfg)),
+      pages: getPagesDefaults(pathOr({}, ["defaults", "pages"], cfg)),
+      objects: getObjectsDefaults(pathOr({}, ["defaults", "objects"], cfg))
     },
     colors: {},
     fonts: {}
@@ -210,16 +199,15 @@ const getProjectPageTemplate = cfg => {
   };
   return {
     id: pathOr(uuidv4(), ["id"], cfg),
+    label: pathOr("Page %no%", ["label"], cfg),
+    shortLabel: pathOr("%no%", ["label"], cfg),
+    countInPagination: pathOr(true, ["countInPagination"], cfg),
+    lockPosition: pathOr(true, ["lockPosition"], cfg),
+    selectable: pathOr(true, ["selectable"], cfg),
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
     objectsIds: pathOr([], ["objectsIds"], cfg),
     background: pathOr(background, ["background"], cfg)
-  };
-};
-const getProjectGroupTemplate = cfg => {
-  return {
-    id: pathOr(uuidv4(), ["id"], cfg),
-    pagesIds: pathOr([], ["pagesIds"], cfg)
   };
 };
 
@@ -227,16 +215,17 @@ const getColorTemplate = cfg => {
   return merge(
     {
       id: uuidv4(),
-      label: null, //label of the color
-      htmlRGB: null, //html value of the color
-      RGB: null, //pdflib RGB value
-      CMYK: null, //pdflib CMYK value
-      separation: null, // pdflib Separation color value
-      separationColorSpace: null, //fallback for separation color
-      separationColor: null //fallback for separation color
+      label: null,
+      htmlRGB: null,
+      RGB: null,
+      CMYK: null,
+      separation: null,
+      separationColorSpace: null,
+      separationColor: null,
+      type: ["COLOR_TAB_FG", "COLOR_TAB_BG", "COLOR_TAB_BORDER_COLOR"]
     },
     cfg || {}
-  );
+  ); //label of the color //html value of the color //pdflib RGB value //pdflib CMYK value // pdflib Separation color value //fallback for separation color //fallback for separation color
 };
 
 const getFontTemplate = cfg => {
@@ -295,16 +284,10 @@ const getUIPermissionsTemplate = cfg => {
 const getEmptyProject = cfg => {
   let project = getProjectTemplate(cfg);
   const emptyPage = getEmptyPage(cfg);
-  const emptyGroup = getEmptyGroup(
-    merge({ pagesIds: [emptyPage.id] }, cfg || {})
-  );
   return {
     ...project,
     pages: {
       [emptyPage.id]: emptyPage
-    },
-    groups: {
-      [emptyGroup.id]: emptyGroup
     },
     pagesOrder: [emptyPage.id],
     activePage: emptyPage.id,
@@ -369,12 +352,13 @@ const getRandomProject = cfg => {
     src: defaultImages[4]
   });
   let text6 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
+    type: "textflow",
+    width: 123,
+    height: 343,
+    left: 34,
     orientation: "north",
-    top: Math.random() * 500,
+    fontFamily: "Dax",
+    top: 120,
     value: "this is a default value for text"
   });
   let text1 = getEmptyObject({
@@ -393,7 +377,49 @@ const getRandomProject = cfg => {
     width: 200,
     height: 200,
     left: 100,
-    top: 100,
+    top: 200,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text3 = getEmptyObject({
+    type: "textflow",
+    width: 200,
+    height: 200,
+    left: 300,
+    top: 300,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text4 = getEmptyObject({
+    type: "textflow",
+    width: 220,
+    height: 200,
+    left: 400,
+    top: 400,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text5 = getEmptyObject({
+    id: "14adb525-49bc-4da4-b497-922a6aebbb3a",
+    type: "textflow",
+    width: 210,
+    height: 200,
+    left: 500,
+    angle: 45,
+    top: 500,
+    text: "Enter text number 2 here",
+    fontFamily: "Dax",
+    fill: "red"
+  });
+  let text7 = getEmptyObject({
+    type: "textflow",
+    width: 210,
+    height: 200,
+    left: 700,
+    top: 70,
     text: "Enter text number 2 here",
     fontFamily: "Dax",
     fill: "red"
@@ -417,19 +443,19 @@ const getRandomProject = cfg => {
   page2 = {
     ...page2,
     id: "page_2",
-    objectsIds: []
+    objectsIds: [text3.id, text4.id]
   };
 
   page3 = {
     ...page3,
     id: "page_3",
-    objectsIds: []
+    objectsIds: [text5.id, text6.id]
   };
 
   page4 = {
     ...page4,
     id: "page_4",
-    objectsIds: [text1.id]
+    objectsIds: [text7.id]
   };
 
   return {
@@ -441,16 +467,45 @@ const getRandomProject = cfg => {
       [page4.id]: page4
     },
     objects: {
-      [img1.id]: img1,
       [text1.id]: text1,
-      [text2.id]: text2
+      [text2.id]: text2,
+      [text3.id]: text3,
+      [text4.id]: text4,
+      [text5.id]: text5,
+      [text6.id]: text6,
+      [text7.id]: text7
     },
-
-    pagesOrder: [page1.id, page2.id, page3.id, page4.id],
-    activePage: page1.id,
-    selectedPage: page1.id,
-    activeGroup: "group_1"
+    pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
+    activePage: page3.id
   };
+};
+
+const getRandomProject2 = cfg => {
+  let project = getEmptyProject();
+  let i;
+  for (i = 0; i < 50; i++) {
+    let page = getEmptyPage();
+    let j;
+    for (j = 0; j < 10; j++) {
+      let object = getEmptyObject({
+        type: "textflow",
+        width: 100 + Math.random() * 500,
+        height: 100 + Math.random() * 500,
+        left: Math.random() * 1000,
+        top: Math.random() * 1000,
+        text: "Enter text here",
+        fontFamily: "Dax",
+        fontSize: 5 + Math.random() * 50,
+        fill: "red"
+      });
+      page.objectsIds.push(object.id);
+      project.objects[object.id] = object;
+    }
+    project.pages[page.id] = page;
+    project.pagesOrder.push(page.id);
+    project.activePage = page.id;
+  }
+  return project;
 };
 
 /**
@@ -462,18 +517,14 @@ const getEmptyPage = cfg => {
   return getProjectPageTemplate(cfg);
 };
 
-const getEmptyGroup = cfg => {
-  return getProjectGroupTemplate(cfg);
-};
-
 const getEmptyObject = cfg => {
   let object = {
-    id: uuidv4(),
+    id: cfg.id || uuidv4(),
     type: cfg.type || false,
-    width: cfg.width || 500,
-    height: cfg.height || 500,
-    left: cfg.left,
-    top: cfg.top,
+    width: parseFloat(cfg.width.toFixed(2)) || 500,
+    height: parseFloat(cfg.height.toFixed(2)) || 500,
+    left: parseFloat(cfg.left.toFixed(2)),
+    top: parseFloat(cfg.top.toFixed(2)),
     editable: cfg.editable || 1,
     value: cfg.value || "default value",
     resizable: cfg.resizable || 1,
@@ -482,8 +533,12 @@ const getEmptyObject = cfg => {
     rotateAngle: cfg.rotateAngle || 0,
     ispSnap: cfg.ispSnap || 1,
     orientation: cfg.orientation || "north",
+    fontFamily: cfg.fontFamily || "Arial",
     rotate: cfg.rotate || 0,
-    angle: 0
+    angle: cfg.angle || 0,
+    dragging: 0,
+    rotating: 0,
+    resizing: 0
   };
 
   if (cfg && cfg.type) {
@@ -545,7 +600,10 @@ const getEmptyObject = cfg => {
           bold: cfg.bold || false,
           underline: cfg.underline || false,
           italic: cfg.italic || false,
-          fontFamily: cfg.fontFamily || false
+          fontFamily: cfg.fontFamily || false,
+          fillColor: getObjectColorTemplate((cfg && cfg.fillColor) || {}),
+          bgColor: getObjectColorTemplate((cfg && cfg.bgColor) || {}),
+          borderColor: getObjectColorTemplate((cfg && cfg.borderColor) || {})
         };
         break;
 
@@ -567,12 +625,20 @@ const getEmptyObject = cfg => {
 };
 
 const getEmptyUI = cfg => {
+  const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });
+  const color2 = getEmptyColor({ id: 2, label: "red", htmlRGB: "#f00" });
+  const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
+  const font2 = getEmptyFont({ label: "Arial", id: 2 });
   return {
-    colors: {},
+    rerenderId: null,
     fonts: {},
     fontMetrics: {},
+    colors: {
+      [color1.id]: color1,
+      [color2.id]: color2
+    },
     workArea: {
-      zoom: 0.5,
+      zoom: 1,
       scale: 1,
       pageOffset: {
         x: 0,
@@ -617,7 +683,6 @@ const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
   getEmptyPage,
-  getEmptyGroup,
   getEmptyObject,
   getEmptyUI,
   getRandomUI,

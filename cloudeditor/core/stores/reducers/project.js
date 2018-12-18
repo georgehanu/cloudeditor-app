@@ -1,14 +1,13 @@
 const {
   append,
   mergeDeepLeft,
-  forEachObjIndexed,
+  clone,
   reduce,
-  without,
+  insertAll,
   merge
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
-  ADD_OBJECT,
   ADD_OBJECT_TO_PAGE,
   ADD_OBJECT_ID_TO_SELECTED,
   ADD_OBJECT_ID_ACTION_SELECTED,
@@ -22,7 +21,11 @@ const {
   UPDATE_CROP_PARAMS,
   DELETE_OBJ,
   CHANGE_PAGE,
-  CHANGE_GROUPS
+  CHANGE_GROUPS,
+  CHANGE_RANDOM_PAGE,
+  CHANGE_PAGES_ORDER,
+  ADD_PAGES,
+  ADD_OBJECT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -30,6 +33,41 @@ const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
 const uuidv4 = require("uuid/v4");
 
+const addPages = (state, action) => {
+  const { activePage, pages, pagesOrder } = state;
+  let newPages = { ...pages };
+  const { nrPagesToInsert, location } = action;
+  let newIds = [];
+  let newOrder = clone(pagesOrder);
+  for (let i = 0; i < nrPagesToInsert; i++) {
+    const emptyPage = ProjectUtils.getEmptyPage();
+    const { id } = emptyPage;
+    newPages[id] = emptyPage;
+    newIds.push(id);
+  }
+  let pageIndex = pagesOrder.findIndex(el => {
+    return el === activePage;
+  });
+  switch (location) {
+    case "after":
+      pageIndex++;
+      break;
+    case "end":
+      pageIndex = pagesOrder.length;
+      break;
+    default:
+      break;
+  }
+  newOrder = insertAll(pageIndex, newIds, pagesOrder);
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      ...newPages
+    },
+    pagesOrder: newOrder
+  };
+};
 const changeProjectTitle = (state, action) => {
   return {
     ...state,
@@ -37,20 +75,44 @@ const changeProjectTitle = (state, action) => {
   };
 };
 
+const changePagesOrder = (state, action) => {
+  return { ...state, pagesOrder: action.pages, activePage: action.page_id };
+};
+
 const addObject = (state, action) => {
+  const object = ProjectUtils.getEmptyObject(action);
+  const pageId = state.activePage;
   return {
     ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
     objects: {
       ...state.objects,
-      [action.object.id]: action.object
+      [object.id]: object
     }
   };
 };
 const changePage = (state, payload) => {
   return {
     ...state,
-    selectedPage: payload.page_id,
-    activeGroup: payload.group_id
+    activePage: payload.page_id
+  };
+};
+const changeRandomPage = (state, payload) => {
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      "14adb525-49bc-4da4-b497-922a6aebbb3a": {
+        ...state.objects["14adb525-49bc-4da4-b497-922a6aebbb3a"],
+        width: 500 + Math.random() * 500
+      }
+    }
   };
 };
 const changeGroups = (state, payload) => {
@@ -69,32 +131,8 @@ const changeGroups = (state, payload) => {
   };
 };
 
-const addObjectToPage = (state, action) => {
-  const { object } = action;
-  const pageId = state.selectedPage;
-  const page = {
-    ...state.pages[state],
-    objectsIds: state.pages[pageId].objectsIds.concat(object.id)
-  };
-
-  return {
-    ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
-    objects: {
-      ...state.objects,
-      [object.id]: object
-    }
-  };
-};
-
 const addObjectIdToSelected = (state, payload) => {
-  return { ...state, selectedObjectsIds: [payload] };
+  return { ...state, selectedObjectsIds: [payload.id] };
 };
 const addObjectIdActionSelected = (state, payload) => {
   return { ...state, selectedActionObjectsIds: [payload] };
@@ -138,6 +176,7 @@ const removeActionSelection = (state, payload) => {
 
 const config = ConfigUtils.getDefaults();
 const emptyProject = ProjectUtils.getRandomProject(config.project);
+//const emptyProject = ProjectUtils.getEmptyProject(config.project);
 
 const initialState = {
   ...emptyProject,
@@ -168,14 +207,23 @@ module.exports = handleActions(
     [CHANGE_PROJECT_TITLE]: (state, action) => {
       return changeProjectTitle(state, action.payload);
     },
+    [ADD_OBJECT]: (state, action) => {
+      return addObject(state, action.payload);
+    },
+    [ADD_PAGES]: (state, action) => {
+      return addPages(state, action.payload);
+    },
+    [CHANGE_PAGES_ORDER]: (state, action) => {
+      return changePagesOrder(state, action.payload);
+    },
+    [CHANGE_RANDOM_PAGE]: (state, action) => {
+      return changeRandomPage(state, action.payload);
+    },
     [CHANGE_GROUPS]: (state, action) => {
       return changeGroups(state, action.payload);
     },
     [CHANGE_PAGE]: (state, action) => {
       return changePage(state, action.payload);
-    },
-    [ADD_OBJECT]: (state, action) => {
-      return addObject(state, action.payload);
     },
     [ADD_OBJECT_TO_PAGE]: (state, action) => {
       return addObjectToPage(state, action.payload);
@@ -275,7 +323,6 @@ module.exports = handleActions(
       };
     },
     [DUPLICATE_OBJ]: (state, action) => {
-      console.log("duplicate");
       const originalObj = state.objects[action.payload.id];
       const duplicateObj = {
         ...originalObj,

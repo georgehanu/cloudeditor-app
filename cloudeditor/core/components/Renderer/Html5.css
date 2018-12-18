@@ -1,21 +1,12 @@
 .canvasContainer {
-  position: absolute;
-  display: block;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  z-index: 500;
-  height: 90%;
-  width: 90%;
-}
-
-.pageContainer {
-  display: block;
-  background-color: rebeccapurple;
-  position: relative;
-  margin: 0 auto;
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding-left: 120px;
+  padding-top: 80px;
+  padding-bottom: 170px;
+  padding-right: 10px;
 }

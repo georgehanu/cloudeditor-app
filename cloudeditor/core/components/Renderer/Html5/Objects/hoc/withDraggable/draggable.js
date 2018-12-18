@@ -9,20 +9,15 @@ const createDraggable = ($el, onDragStart, onDrag, onDragStop) => {
       snap: ".drag_alignLines",
       snapMode: "customPrintq",
       snapTolerance: 10,
+      distance: 2,
       helper: "original",
       start: (event, ui) => {
-        console.log("start draggable");
         if (is(Function, onDragStart)) onDragStart(event, ui);
       },
       drag: (event, ui) => {
-        console.log("drag draggable");
         if (is(Function, onDrag)) onDrag(event, ui);
       },
       stop: (event, ui) => {
-        $(event.originalEvent.target).one("click", function(e) {
-          e.stopImmediatePropagation();
-        });
-        console.log("stop draggable");
         if (is(Function, onDragStop)) onDragStop(event, ui);
       },
       snapped: (event, ui) => {
@@ -41,10 +36,13 @@ const enableDraggable = ($el, onDragStart, onDrag, onDragStop) => {
 };
 
 const checkUI = $el => {
-  if ($el.length) return $el.data("ui-draggable");
+  if ($el.length) return $el.data("ui-draggable") === undefined ? false : true;
   return false;
 };
 
+const destroyUi = $el => {
+  if (checkUI($el)) $el.draggable("destroy");
+};
 const handleDraggable = ($el, status, onDragStart, onDrag, onDragStop) => {
   if ($el.length) {
     if (!status) {
@@ -55,4 +53,4 @@ const handleDraggable = ($el, status, onDragStart, onDrag, onDragStop) => {
   }
 };
 
-module.exports = handleDraggable;
+module.exports = { handleDraggable, destroyUi };

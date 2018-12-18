@@ -1,7 +1,20 @@
 {
   "plugins": {
     "mobile": ["Html5Renderer"],
-    "desktop": ["Html5Renderer"]
+    "desktop": [
+      "Html5Renderer",
+      "Toolbar",
+      {
+        "name": "LiveHtml5Pagination",
+        "cfg": {
+          "className": "html5LivePaginationContainer"
+        }
+      },
+      "SideBar",
+      "AddImage",
+      "AddPdf",
+      "Zoom"
+    ]
   },
   "mainComponent": {
     "component": "div",

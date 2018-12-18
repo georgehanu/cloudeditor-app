@@ -2,9 +2,7 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
-const {
-  UploadImage
-} = require("../AddImage/components/UploadImage/UploadImage");
+const UploadFile = require("../../core/components/UploadFile/UploadFile");
 
 const {
   uploadedPdfsSelector,
@@ -12,27 +10,24 @@ const {
   uploadedLoadingSelector
 } = require("./store/selectors");
 const { uploadPdfStart, removePdfFromGallery } = require("./store/actions");
+const ACCEPTED_FILES = "pdf";
+const TYPE = "pdf";
 
 const Gallery = require("../../core/components/Gallery/Gallery");
 class AddPdf extends React.Component {
-  deleteImageHandler = id => {
-    if (id === undefined) return;
-
-    this.props.removePdfFromGallery({ id });
-  };
-
-  selectImageHandler = index => {};
-
   render() {
     return (
-      <div className="UploadContainer">
-        <UploadImage uploadImage={this.props.uploadPdfStart} />
-
+      <div className="uploadContainer">
+        <UploadFile
+          uploadFile={this.props.uploadPdfStart}
+          acceptedFiles={ACCEPTED_FILES}
+          type={TYPE}
+        />
         <Gallery
           items={this.props.uploadedPdfs}
+          type={TYPE}
           deleteImage={this.deleteImageHandler}
           selectImage={this.selectImageHandler}
-          loadingNr={this.props.loadingPdfs}
           loading={this.props.loading}
         />
       </div>
@@ -40,24 +35,9 @@ class AddPdf extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    uploadedPdfs: uploadedPdfsSelector(state),
-    loading: uploadedLoadingSelector(state),
-    loadingPdfs: uploadedPdfLoadingPdfSelector(state)
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    uploadPdfStart: files => dispatch(uploadPdfStart(files)),
-    removePdfFromGallery: id => dispatch(removePdfFromGallery(id))
-  };
-};
-
 const AddPdfPlugin = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  null
 )(withNamespaces("addPdf")(AddPdf));
 
 module.exports = {
@@ -72,7 +52,5 @@ module.exports = {
       showMore: true,
       tooltip: { title: "Add Pdf", description: "Add a new pdf block" }
     }
-  }),
-  reducers: { uiAddPdf: require("./store/reducers") },
-  epics: require("./store/epics")
+  })
 };

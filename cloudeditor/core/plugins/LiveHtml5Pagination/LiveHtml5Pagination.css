@@ -1,0 +1,243 @@
+@font-face {
+  font-family: "stadion";
+  src: url("./assets/stadion.eot");
+  src: url("./assets/stadion.woff") format("woff");
+  src: url("./assets/stadion.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}
+.pageSelectorContainer {
+  height: 150px;
+  width: 100%;
+  display: inline-flex;
+  position: absolute;
+  bottom: 0px;
+  padding-left: 100px;
+  z-index: 501;
+}
+
+.html5LivePaginationContainer {
+  height: 100%;
+}
+
+.pageSelectorHeader {
+  height: 25px;
+  background-color: #f9fafc;
+  border-bottom: 1px solid #dcdee1;
+  line-height: 25px;
+  border-radius: 0;
+  /*font-family: "Avenir LT W01 85 Heavy";*/
+
+  line-height: 18px;
+  margin: 5px 0 2px 0;
+  border-right: 2px solid #dcdee1;
+  padding: 4px 10px 0 10px;
+  font-size: 12px;
+  text-align: -webkit-center;
+}
+
+.pageSelector {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #dcdee1;
+  border-top: 1px solid #dcdee1;
+  box-sizing: border-box;
+  z-index: 1000;
+  background-color: white;
+  border-left: 1px solid #dcdee1;
+  width: 100%;
+}
+
+.singlePage {
+  width: 70px;
+  height: 70px;
+  display: block;
+  border: 2px solid #dcdee1;
+
+  box-sizing: border-box;
+}
+
+.singlePageRight,
+.singlePageCenter {
+  margin-right: 10px;
+  margin-left: 0px;
+}
+.singlePageLeft {
+  margin-left: 10px;
+}
+
+.singlePageRight .singlePageText {
+  text-align: right;
+}
+
+.singlePageCenter .singlePageText {
+  text-align: center;
+}
+
+.singlePageText {
+  color: #666;
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  font-size: 11px;
+  padding: 4px 0 0 0;
+  height: auto;
+  bottom: 0px;
+  height: 20px;
+  bottom: -18px;
+}
+.paginationPage {
+  height: 100px;
+}
+
+.html5LivePaginationContainer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 100%;
+  flex-wrap: nowrap;
+  display: flex;
+  padding: 5px 0px;
+}
+
+.pageHeaderText {
+  position: absolute;
+}
+
+.pageHeaderButtonExtend,
+.pageHeaderButtonMinimize {
+  width: 30px;
+  height: 16px;
+  position: absolute;
+  top: 18px;
+  margin-left: 5px;
+}
+
+.pageHeaderButtonExtend {
+  margin-left: -25px;
+}
+
+#container.pageSelectorExtended .pageSelectorContainer {
+  height: 300px;
+}
+
+#container.pageSelectorMinimized .pageSelectorContainer {
+  height: 25px;
+}
+
+#container.pageSelectorMinimized .pageHeaderButtonExtend {
+  margin-left: -10px;
+  top: 8px;
+  font-size: 11px;
+}
+
+#container.pageSelectorExtended .pageHeaderButtonMinimize {
+  margin-left: -10px;
+}
+
+#container.pageSelectorMinimized .html5LivePaginationContainer {
+  display: none;
+}
+
+#container.pageSelectorMinimized .pageSelectorHeader {
+  margin: 0px;
+  padding-top: 0px;
+  height: 23px;
+  border-bottom: none;
+}
+
+.pageHeaderButtonMinimize,
+.pageHeaderButtonExtend,
+.pageHeaderButtonAddPages {
+  background-color: #fefeff;
+  border: 1px solid #dcdee1;
+  outline: none;
+  cursor: pointer;
+  margin-top: 0px;
+}
+
+.pageHeaderButtonsContainer .icon {
+  color: #b6b6b6;
+}
+
+#container.pageSelectorExtended .singlePageContainer {
+  height: 235px;
+}
+
+.singlePageCenter {
+  margin-left: 3px;
+}
+
+#container.pageSelectorExtended .html5LivePaginationContainer {
+  padding: 10px 0px;
+}
+
+.pageHeaderText,
+.singlePageText {
+  color: #58595b;
+}
+
+.html5LivePaginationContainer ul {
+  list-style-type: disc;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+}
+
+.singlePageContainer.singlePageHover {
+  border: 1px solid orange;
+}
+
+.pageAddPagesContainer {
+  float: right;
+  width: 100px;
+  height: 20px;
+  position: relative;
+}
+
+.pageHeaderButtonAddPages {
+  border: none;
+  color: #58595b;
+}
+
+.singlePageContainer.singlePageSelected {
+  color: red;
+}
+
+.paginationPage .zoomContainer {
+  height: 100%;
+  width: 100%;
+}
+.paginationPage .canvasContainer {
+  height: 100%;
+}
+.pageSelectorExtended .paginationPage .canvasContainer {
+  height: 100%;
+}
+@font-face {
+  font-family: "stadion";
+  src: url("assets/stadion.eot");
+  src: url("assets/stadion.woff") format("woff");
+  src: url("assets/stadion.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}
+
+.stadion-down:before {
+  font-family: "stadion";
+  content: "\e900";
+}
+
+.stadion-up:before {
+  font-family: "stadion";
+  content: "\e903";
+}
+
+.stadion-left:before {
+  font-family: "stadion";
+  content: "\e902";
+}

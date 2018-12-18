@@ -1,0 +1,21 @@
+.boxLine {
+  position: absolute;
+  background: transparent;
+  border-width: 0px;
+  border-style: dashed;
+  box-sizing: border-box;
+}
+.boxLine.trimbox {
+  border-color: Red;
+}
+.boxLine.bleed {
+  border-color: green;
+}
+.boxLine.top,
+.boxLine.bottom {
+  border-top-width: 1px;
+}
+.boxLine.right,
+.boxLine.left {
+  border-left-width: 1px;
+}

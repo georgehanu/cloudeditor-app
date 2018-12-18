@@ -2,32 +2,37 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
-const SidebarButton = require("../../core/components/sidebar/SidebarButton");
+const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponents/SidebarButton");
 
-const { zoomValueSelector } = require("../../core/stores/selectors/ui");
+const { zoomSelector } = require("../../core/stores/selectors/ui");
 const { changeZoom } = require("../../core/stores/actions/ui");
 const { withHandlers, compose } = require("recompose");
-const STEP = 0.04;
+
+require("./Zoom.css");
+
+const STEP = 0.1;
 
 const Zoom = props => {
   return (
-    <div className="Zoom">
+    <div className="zoom">
       <SidebarButton clicked={props.zoomIn}>
-        <div className="IconContainer">
+        <div className="iconContainer">
           <div className="icon printqicon-zoom_in" />
         </div>
-        <div className="IconTitle">{"Zoom In"}</div>
+        <div className="iconTitle">{"Zoom In"}</div>
       </SidebarButton>
-      <div className="ZoomMiddle">
+      <div className="zoomMiddle">
         <div className="icon printqicon-rotate_handler" onClick={props.reset} />
-        <div className="ZoomValue">{props.zoomValue.toFixed(2) + "%"}</div>
+        <div className="zoomValue">
+          {(props.zoomValue * 100).toFixed(0) + "%"}
+        </div>
       </div>
 
       <SidebarButton clicked={props.zoomOut}>
-        <div className="IconContainer">
+        <div className="iconContainer">
           <div className="icon printqicon-zoom_out" />
         </div>
-        <div className="IconTitle">{"Zoom Out"}</div>
+        <div className="iconTitle">{"Zoom Out"}</div>
       </SidebarButton>
     </div>
   );
@@ -39,7 +44,7 @@ const enhance = compose(
       props.changeZoom(props.zoomValue + STEP);
     },
     zoomOut: props => event => {
-      if (props.zoomValue > STEP) props.changeZoom(props.zoomValue - STEP);
+      if (props.zoomValue > 1) props.changeZoom(props.zoomValue - STEP);
     },
     reset: props => event => {
       props.changeZoom(1);
@@ -49,7 +54,7 @@ const enhance = compose(
 
 const mapStateToProps = state => {
   return {
-    zoomValue: zoomValueSelector(state)
+    zoomValue: zoomSelector(state)
   };
 };
 
@@ -69,7 +74,7 @@ module.exports = {
     SideBar: {
       position: 5,
       priority: 1,
-      text: "Zoom In",
+      text: "zoom In",
       icon: "printqicon-zoom_in",
       showMore: false,
       embedButtonPlugin: true

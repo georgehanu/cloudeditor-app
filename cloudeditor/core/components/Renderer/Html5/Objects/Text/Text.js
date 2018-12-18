@@ -3,26 +3,31 @@ const randomColor = require("randomcolor");
 const PropTypes = require("prop-types");
 const ContentEditable = require("../ContentEditable/ContentEditable");
 
-class TextBlock extends React.PureComponent {
+require("./Text.css");
+
+class TextBlock extends React.Component {
   constructor(props) {
     super(props);
+    this.editableContainerRef = null;
   }
   handleChange = (ev, value) => {
-    this.props.onTextChange({
+    /*   this.props.onTextChange({
       id: this.props.id,
       props: {
         value: value
       }
-    });
-
-    this.props.onUpdateProps({
+    }); */
+    /*  this.props.onUpdateProps({
       id: this.props.id,
       props: {
         value: value
       }
-    });
+    }); */
   };
 
+  getInputRef = ref => {
+    this.editableContainerRef = ref;
+  };
   componentDidMount() {}
 
   render() {
@@ -31,12 +36,13 @@ class TextBlock extends React.PureComponent {
       width: width,
       maxWidth: width,
       fontFamily: this.props.fontFamily,
+      color: this.props.fillColor,
       fontSize: this.props.fontSize,
       textAlign: this.props.textAlign,
       textDecoration: this.props.underline ? "underline" : "none",
       fontWeight: this.props.bold ? "bold" : "normal",
       fontStyle: this.props.italic ? "italic" : "normal",
-      backgroundColor: randomColor()
+      verticalAlign: this.props.vAlign
     };
 
     let content = <div>{this.props.value}</div>;
@@ -44,18 +50,24 @@ class TextBlock extends React.PureComponent {
     if (this.props.contentEditable) {
       content = (
         <ContentEditable
-          ref={ref => this.props.editableRef(ref)}
+          innerRef={this.getInputRef}
           className={this.props.type}
           content={this.props.value}
+          active={this.props.active}
+          id={this.props.id}
           tagName="div"
           sanitise={true}
           multiLine={true}
-          onChange={this.handleChange}
+          /*  onChange={this.handleChange} */
         />
       );
     }
 
-    return <div style={style}>{content}</div>;
+    return (
+      <div className="blockData" style={style}>
+        {content}
+      </div>
+    );
   }
 }
 
@@ -69,7 +81,8 @@ TextBlock.propTypes = {
   italic: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   lineHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   wordSpacing: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  letterSpacing: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  letterSpacing: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  fillColor: PropTypes.string
 };
 
 TextBlock.defaultProps = {
@@ -82,7 +95,8 @@ TextBlock.defaultProps = {
   italic: 0,
   lineHeight: "normal",
   wordSpacing: "normal",
-  letterSpacing: "normal"
+  letterSpacing: "normal",
+  fillColor: "#000"
 };
 
 module.exports = TextBlock;

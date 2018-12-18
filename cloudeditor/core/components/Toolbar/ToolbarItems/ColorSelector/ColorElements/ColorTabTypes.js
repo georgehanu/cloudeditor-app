@@ -1,0 +1,10 @@
+const TEXT_COLOR = "TEXT_COLOR";
+const BG_COLOR = "BG_COLOR";
+const BORDER_COLOR = "BORDER_COLOR";
+const BORDER_SIZE = "BORDER_SIZE";
+module.exports = {
+  TEXT_COLOR,
+  BG_COLOR,
+  BORDER_COLOR,
+  BORDER_SIZE
+};

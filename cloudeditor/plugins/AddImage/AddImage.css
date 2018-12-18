@@ -1,0 +1,209 @@
+.uploadFileInputs {
+  position: relative;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.uploadFormInput {
+  position: absolute;
+  text-align: right;
+  -moz-opacity: 0;
+  opacity: 0;
+  height: 40px;
+  width: 100%;
+  display: none;
+}
+
+.uploadIcon,
+.uploadMessage {
+  color: white;
+  line-height: 40px;
+}
+
+.uploadLabel {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgb(153, 209, 34);
+}
+
+.uploadDescription {
+  width: 100%;
+  display: inline-block;
+  padding: 15px 0px 5px 0px;
+  text-align: center;
+  color: #fff;
+  opacity: 0.5;
+  font-size: 14px;
+}
+
+.uploadGalleryItemImage {
+  overflow: hidden;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-decoration: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.uploadGallery .uploadGalleryLi {
+  display: block;
+  width: 131px;
+  height: 82px;
+  margin-bottom: 10px;
+  position: relative;
+  float: left;
+  margin-left: 10px;
+  list-style: none;
+}
+
+.uploadGallery .uploadGalleryUl {
+  padding-left: 0px;
+  width: 100%;
+  display: block;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.uploadGallery {
+  margin-right: 5px !important;
+  overflow: hidden;
+  width: auto;
+  height: auto;
+  margin-top: 10px;
+}
+
+.galleryItemActions {
+  width: 100%;
+  height: 100%;
+  background-color: none;
+  -webkit-transition: background-color 0.3s ease;
+  -moz-transition: background-color 0.3s ease;
+  -ms-transition: background-color 0.3s ease;
+  -o-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  position: absolute;
+  top: 0px;
+}
+
+.uploadGalleryItem {
+  position: relative;
+  overflow: hidden;
+  width: 131px;
+  height: 82px;
+  border: 1px solid transparent;
+}
+
+.galleryItemActions .select {
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  line-height: 30px;
+  text-align: center;
+  top: 25px;
+  background-color: rgb(153, 209, 34);
+  color: #ffffff;
+  left: -50px;
+  -webkit-transition: left 0.3s ease;
+  -moz-transition: left 0.3s ease;
+  -ms-transition: left 0.3s ease;
+  -o-transition: left 0.3s ease;
+  transition: left 0.3s ease;
+}
+
+.galleryItemActions .delete {
+  cursor: pointer;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  line-height: 30px;
+  text-align: center;
+  top: 25px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  right: -50px;
+  -webkit-transition: right 0.3s ease;
+  -moz-transition: right 0.3s ease;
+  -ms-transition: right 0.3s ease;
+  -o-transition: right 0.3s ease;
+  transition: right 0.3s ease;
+  font-size: 20px;
+}
+
+.uploadGalleryLi:hover .galleryItemActions {
+  background-color: rgba(29, 44, 63, 0.7);
+}
+
+.uploadGalleryLi:hover .galleryItemActions .select {
+  left: 13px;
+}
+.uploadGalleryLi:hover .galleryItemActions .delete {
+  right: 13px;
+}
+
+.uploadGalleryItem.uploadGalleryItemSelected {
+  border: 1px solid red;
+}
+#sidebar-wrapper .toggleSidebarContainer {
+  display: none;
+}
+
+#sidebar-wrapper .icon.More {
+  display: none;
+}
+
+#sidebar-wrapper .uploadGallery .uploadGalleryLi,
+#sidebar-wrapper .uploadGalleryItem {
+  width: 120px;
+}
+section.dropzone {
+  height: 60px;
+}
+#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading {
+  text-align: -webkit-center;
+}
+
+#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .loader {
+  font-size: 8px;
+  margin: 0px;
+}
+
+#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .loader .spinnerText {
+  left: 2px;
+  top: 35px;
+  font-size: 12px;
+}
+
+#sidebar-wrapper .uploadLabel {
+  background-color: #f9fafc;
+  border: 1px solid #dcdee1;
+}
+
+#sidebar-wrapper .uploadLabel .uploadMessage {
+  color: #58595b;
+  margin-left: 3px;
+}
+#sidebar-wrapper-container .galleryItemActions .icon {
+  color: white;
+}
+
+#container.sidebarContainerExpand .pageSelectorContainer {
+  padding-left: 500px;
+}
+.sidebarContainerExpand .canvasContainer {
+  padding-left: 520px;
+}

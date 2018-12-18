@@ -1,10 +1,8 @@
 .zoomContainer {
-  display: inline-block;
+  display: block;
   height: 100%;
-  margin: 0 auto;
-  position: relative;
-  padding: 0;
   width: 100%;
+  overflow: auto;
 }
 .zoomContainer.zoomActive {
   overflow: auto;

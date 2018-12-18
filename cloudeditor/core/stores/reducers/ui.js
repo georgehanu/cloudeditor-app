@@ -1,5 +1,9 @@
 const { updateObject } = require("../../utils/UtilUtils");
-const { CHANGE_ZOOM, CHANGE_WORKAREA_PROPS } = require("../actionTypes/ui");
+const {
+  CHANGE_ZOOM,
+  CHANGE_WORKAREA_PROPS,
+  CHANGE_RERENDER_ID
+} = require("../actionTypes/ui");
 
 const { handleActions, combineActions } = require("redux-actions");
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -11,6 +15,12 @@ const changeZoom = (state, payload) => {
       ...state.workArea,
       zoom: payload
     }
+  };
+};
+const changeRerenderId = (state, payload) => {
+  return {
+    ...state,
+    rerenderId: payload.id
   };
 };
 const changeWorkAreaProps = (state, payload) => {
@@ -29,6 +39,9 @@ module.exports = handleActions(
     },
     [CHANGE_WORKAREA_PROPS]: (state, action) => {
       return changeWorkAreaProps(state, action.payload);
+    },
+    [CHANGE_RERENDER_ID]: (state, action) => {
+      return changeRerenderId(state, action.payload);
     }
   },
   initialState

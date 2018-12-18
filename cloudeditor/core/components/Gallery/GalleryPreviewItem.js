@@ -1,18 +1,18 @@
 const React = require("react");
-const withTooltip = require("../../hoc/withTooltip");
+const withTooltip = require("../../hoc/withTooltip/withTooltip");
 
-const GalleryPreviewItem = props => {
+const galleryPreviewItem = props => {
   const className =
-    "UploadGalleryItem " +
-    (props.selectedId === props.id ? "UploadGalleryItemSelected" : "");
+    "uploadGalleryItem " +
+    (props.selectedId === props.id ? "uploadGalleryItemSelected" : "");
 
   return (
     <React.Fragment>
       <div className={className} {...props.tooltipData}>
         <img
-          src={props.src}
-          alt="GalleryItem"
-          className="UploadGalleryItemImage"
+          src={props.thumbnail_src}
+          alt="galleryItem"
+          className="uploadGalleryItemImage"
           onClick={() => props.selectImage(props.id)}
         />
       </div>
@@ -20,5 +20,4 @@ const GalleryPreviewItem = props => {
   );
 };
 
-module.exports = withTooltip(GalleryPreviewItem, "");
-//module.exports = GalleryPreviewItem;
+module.exports = withTooltip(galleryPreviewItem, "");

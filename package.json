@@ -92,6 +92,7 @@
     "query-string": "^6.2.0",
     "ramda": "^0.26.1",
     "randomcolor": "^0.5.3",
+    "re-reselect": "^2.2.0",
     "react": "^16.6.3",
     "react-color": "^2.14.1",
     "react-dnd": "2.6.0",

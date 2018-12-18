@@ -1,10 +1,10 @@
 const React = require("react");
-const { connect } = require("react-redux");
 const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
-const { hot } = require("react-hot-loader");
+const { flatten } = require("ramda");
 
-const { activePageSelector } = require("../stores/selectors/project");
+require("./Html5Renderer/Html5Renderer.css");
+
 class Html5Renderer extends React.Component {
   getTools = () => {
     return this.props.items.sort((a, b) => a.position - b.position);
@@ -26,27 +26,28 @@ class Html5Renderer extends React.Component {
       return <Tool {...toolCfg} items={tool.items || []} key={i.toString()} />;
     });
   };
+
+  getBlurSelectors() {
+    const tools = this.getTools();
+    return flatten(
+      tools.map((tool, i) => {
+        return tool.blurSelectors;
+      })
+    );
+  }
+
   render() {
+    const blurSelectors = this.getBlurSelectors();
     return (
       <div className="renderContainer">
-        {<Renderer {...this.props.activePage} />}
+        {<Renderer blurSelectors={blurSelectors} />}
       </div>
     );
   }
 }
 
-// let's export the plugin and a set of required reducers
-const mapStateToProps = state => {
-  return {
-    activePage: activePageSelector(state)
-  };
-};
-
-const Html5RendererPlugin = hot(module)(
-  connect(mapStateToProps)(Html5Renderer)
-);
 module.exports = {
-  Html5Renderer: assign(Html5RendererPlugin),
+  Html5Renderer: assign(Html5Renderer),
   reducers: {},
   epics: {}
 };

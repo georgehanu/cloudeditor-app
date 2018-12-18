@@ -11,7 +11,14 @@ class PluginsContainer extends React.Component {
   state = {
     additionalClasses: []
   };
-
+  getPluginDescriptor = plugin => {
+    return PluginsUtils.getPluginDescriptor(
+      this.getStore,
+      this.props.plugins,
+      this.props.pluginsConfig[this.props.mode],
+      plugin
+    );
+  };
   addContainerClasses = (pluginName, newClassesArray) => {
     let newClasses = [...this.state.additionalClasses];
     let index = newClasses.findIndex((el, index) => {
@@ -23,15 +30,6 @@ class PluginsContainer extends React.Component {
       newClasses[index] = { pluginName, pluginClasses: newClassesArray };
     }
     this.setState({ additionalClasses: newClasses });
-  };
-
-  getPluginDescriptor = plugin => {
-    return PluginsUtils.getPluginDescriptor(
-      this.getStore,
-      this.props.plugins,
-      this.props.pluginsConfig[this.props.mode],
-      plugin
-    );
   };
 
   renderPlugins = plugins => {
@@ -82,14 +80,12 @@ class PluginsContainer extends React.Component {
         }),
         {}
       );
-
       let newClasses = [];
       for (let plugin in this.state.additionalClasses) {
         newClasses.push(...this.state.additionalClasses[plugin].pluginClasses);
       }
 
       const classes = [this.props.className, ...newClasses].join(" ");
-
       return (
         <Component
           id={this.props.id}
