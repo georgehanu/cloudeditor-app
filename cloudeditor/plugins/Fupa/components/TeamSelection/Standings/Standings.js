@@ -12,7 +12,8 @@ const fupaTdBase = {
   textAlign: "center",
   fontSize: "12px",
   lineHeight: "12px",
-  border: "none"
+  border: "none",
+  fontFamily: "Arial"
 };
 
 const fupaImageWrapper = {
@@ -105,26 +106,20 @@ const Standings = props => {
         >
           {el.rank}.
         </td>
-        <td width="14px" style={{ ...fupaTd, textAlign: "left" }} title="-1">
+        <td width="14px" style={{ ...fupaTd, textAlign: "left" }} title="">
           <div style={{ color: "#bfbfbf" }} />
         </td>
         <td width="30px" style={{ ...fupaTd, padding: "1px 2px" }}>
-          <div>
-            <a href={el.linkUrl}>
-              <div
-                style={{ ...fupaImageWrapper, width: "25px", height: "25px" }}
-              >
-                <picture style={{ ...fupaImageWrapperPicture }}>
-                  <source srcSet={imageUrl + " 1x, " + imageUrl + " 2x"} />
-                  <img
-                    src={imageUrl}
-                    title={el.team.name.full}
-                    alt={el.team.name.full}
-                    style={{ ...fupaImageWrapperPicture }}
-                  />
-                </picture>
-              </div>
-            </a>
+          <div style={{ ...fupaImageWrapper, width: "25px", height: "25px" }}>
+            <picture style={{ ...fupaImageWrapperPicture }}>
+              <source srcSet={imageUrl + " 1x, " + imageUrl + " 2x"} />
+              <img
+                src={imageUrl}
+                title={el.team.name.full}
+                alt={el.team.name.full}
+                style={{ ...fupaImageWrapperPicture }}
+              />
+            </picture>
           </div>
         </td>
 
@@ -132,7 +127,7 @@ const Standings = props => {
           width="162px"
           style={{ ...fupaTd, textAlign: "left", paddingLeft: "4px" }}
         >
-          <a href={el.linkUrl}>{el.team.name.full}</a>{" "}
+          {el.team.name.full}
         </td>
 
         <td width="18px" style={{ ...fupaTd }}>

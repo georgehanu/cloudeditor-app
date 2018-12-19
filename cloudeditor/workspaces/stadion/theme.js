@@ -7,6 +7,7 @@ const addPdf = require("../../themes/stadion/addPdf.scss");
 const pageSelector = require("../../plugins/PageSelector/PageSelector.scss");
 const layouts = require("../../plugins/Layouts/Layouts.scss");
 const zoom = require("../../plugins/Zoom/Zoom.scss");
+const toolbar = require("../../themes/default/toolbar/plugin.scss");
 
 module.exports = {
   stadion,
@@ -17,5 +18,6 @@ module.exports = {
   addPdf,
   pageSelector,
   layouts,
-  zoom
+  zoom,
+  toolbar
 };

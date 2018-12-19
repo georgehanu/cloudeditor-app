@@ -152,7 +152,7 @@ class Toolbar extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    //console.log(this.props);
     let toolbarData = null;
     if (this.props.activeToolbar === null) {
       return null;
@@ -176,7 +176,8 @@ class Toolbar extends React.Component {
     } else if (
       activeItem.type === "text" ||
       activeItem.type === "textbox" ||
-      activeItem.type === "textflow"
+      activeItem.type === "textflow" ||
+      activeItem.type === "tinymce"
     ) {
       toolbarData = Utils.LoadTextSettings(
         TextToolbar,

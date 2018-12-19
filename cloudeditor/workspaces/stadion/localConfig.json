@@ -4,6 +4,7 @@
     "desktop": [
       "SideBar",
       "Html5Renderer",
+      "Toolbar",
       {
         "name": "Fupa",
         "cfg": {
@@ -12,7 +13,6 @@
       },
       "AddImage",
       "AddPdf",
-      "PageSelector",
       "Layouts",
       "Zoom"
     ]

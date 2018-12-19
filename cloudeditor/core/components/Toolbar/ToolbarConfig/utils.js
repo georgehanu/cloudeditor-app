@@ -140,7 +140,7 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
       } else if (item.type === Types.SLIDER_TEXT_SPACEING) {
         item.defaultValue = parseInt(activeItem.charSpacing);
       } else if (item.type === Types.INCREMENTAL_FONT_SIZE) {
-        item.defaultValue = activeItem.fontSize + ".00";
+        item.fontSize = activeItem.fontSize;
       } else if (item.type === Types.POPTEXT_FONT) {
         item.value = activeItem.fontFamily;
       } else if (item.type === Types.POPTEXT_LAYER) {

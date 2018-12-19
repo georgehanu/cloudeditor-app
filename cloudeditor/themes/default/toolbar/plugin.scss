@@ -234,7 +234,8 @@
   cursor: pointer;
 }
 
-button.ButtonSelected {
+button.ButtonSelected,
+button.ButtonSelected .icon {
   color: rgb(153, 209, 34);
 }
 

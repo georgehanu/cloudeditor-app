@@ -24,17 +24,12 @@ const show = columnName => {
   return showColumnsPlayers.includes(columnName);
 };
 
-const formatName = name => {
-  const names = name.split(" ");
-  if (names.length === 1) {
-    return <span>{names[0]}</span>;
-  } else {
-    return (
-      <span>
-        {names[1]}, {names[0]}
-      </span>
-    );
-  }
+const formatName = player => {
+  return (
+    <span>
+      {player.lastName}, {player.firstName}
+    </span>
+  );
 };
 
 const formatNumber = value => {
@@ -130,7 +125,7 @@ const Players = props => {
         )}
         {show("NAME") && (
           <td style={{ ...fupaTd }}>
-            {formatName(el.player.name)} (<span>{el.player.jerseyNumber}</span>)
+            {formatName(el.player)} (<span>{el.player.jerseyNumber}</span>)
           </td>
         )}
         {show("COUNTRY") && (

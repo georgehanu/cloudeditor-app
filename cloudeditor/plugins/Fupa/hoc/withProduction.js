@@ -6,11 +6,15 @@ const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 const { getEmptyObject } = require("../../../core/utils/ProjectUtils");
 
-const { addObjectToPage } = require("../../../core/stores/actions/project");
+const { addObject } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
-  type: "tinymce"
+  type: "tinymce",
+  width: 300,
+  height: 300,
+  top: 10,
+  left: 10
 });
 
 const tableStyle = {
@@ -20,14 +24,20 @@ const tableStyle = {
   color: "black"
 };
 
+const tbodyStyle = {
+  fontFamily: "Arial",
+  fontSize: "12pt"
+};
+
 const withProductionHoc = (WrappedComponent, TableName) => props => {
   const WithProduction = class extends React.Component {
     state = {
       tabelId: uuidv4()
     };
     handleClick = () => {
-      const tableContent = document.getElementById(this.state.tabelId)
-        .innerHTML;
+      let tableContent = document
+        .getElementById(this.state.tabelId)
+        .innerHTML.replace(new RegExp("px", "g"), "pt");
 
       const tableDimensions = document
         .getElementById(this.state.tabelId)
@@ -35,14 +45,16 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       width = props.width ? props.width : tableDimensions.width;
 
-      props.addObjectToPage(
+      props.addObject(
         {
           ...emptyTable,
           tableContent: tableContent,
           id: uuidv4(),
           //width: tableDimensions.width + 4,
           width,
-          height: tableDimensions.height
+          height: tableDimensions.height,
+          left: 10,
+          top: 10
         },
         props.activePage
       );
@@ -56,7 +68,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
               <ToggleTable TableName={TableName}>
                 <div id={this.state.tabelId} className="ContainerTable">
                   <table style={{ ...tableStyle }}>
-                    <tbody>
+                    <tbody style={{ ...tbodyStyle }}>
                       <WrappedComponent {...props} />
                     </tbody>
                   </table>
@@ -80,8 +92,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addObjectToPage: (object, pageId) =>
-      dispatch(addObjectToPage({ object, pageId }))
+    addObject: object => dispatch(addObject(object))
   };
 };
 
