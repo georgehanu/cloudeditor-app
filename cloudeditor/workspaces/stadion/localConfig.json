@@ -14,7 +14,8 @@
       "AddImage",
       "AddPdf",
       "Layouts",
-      "Zoom"
+      "Zoom",
+      "ProjectHeader"
     ]
   },
   "Layout": {

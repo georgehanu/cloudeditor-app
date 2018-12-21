@@ -1,10 +1,10 @@
 .zoomValue {
   display: inline-block;
   line-height: 25px;
-  margin-left: 12px;
 }
 .zoomMiddle {
   height: 25px;
+  text-align: center;
 }
 
 .zoomMiddle .icon {
@@ -14,4 +14,34 @@
   text-align: -webkit-center;
   cursor: pointer;
   margin-left: 6px;
+}
+
+.zoomButtons {
+  text-align: center;
+}
+
+.zoomButtons button {
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+  white-space: nowrap;
+  display: inline-block;
+  border-style: solid;
+  border-width: 0;
+  cursor: pointer;
+  padding-right: 1.125rem;
+  padding-left: 1.125rem;
+  transition: background 200ms ease-in-out 0s;
+  color: white;
+  background-color: #484747;
+  border: 0;
+  font-weight: 400;
+  text-align: center;
+  line-height: normal;
+  text-transform: none;
+  font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+
+  margin-bottom: 6px;
+  height: 23px;
 }

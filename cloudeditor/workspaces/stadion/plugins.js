@@ -7,6 +7,7 @@ const AddPdf = require("../../plugins/AddPdf/AddPdf");
 const Layouts = require("../../plugins/Layouts/Layouts");
 const Toolbar = require("../../core/plugins/Toolbar");
 const Zoom = require("../../plugins/Zoom/Zoom");
+const ProjectHeader = require("../../plugins/ProjectHeader/ProjectHeader");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -17,7 +18,8 @@ const plugins = {
   //  PageSelector,
   Layouts,
   Zoom,
-  Toolbar
+  Toolbar,
+  ProjectHeader
 };
 
 const requires = {};
