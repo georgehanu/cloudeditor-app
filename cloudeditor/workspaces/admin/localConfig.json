@@ -3,6 +3,7 @@
     "mobile": ["Html5Renderer"],
     "desktop": [
       "Html5Renderer",
+      "FabricRenderer",
       "Toolbar",
       {
         "name": "LiveHtml5Pagination",
