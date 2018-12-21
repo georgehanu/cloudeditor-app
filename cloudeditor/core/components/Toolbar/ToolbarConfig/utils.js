@@ -136,7 +136,10 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
       } else if (item.type === Types.BUTTON_LETTER_UNDERLINE) {
         item.selected = activeItem.underline;
       } else if (item.type === Types.COLOR_SELECTOR) {
-        item.color = activeItem.fill;
+        //item.color = activeItem.fill;
+        item.color = activeItem.fillColor
+          ? activeItem.fillColor.htmlRGB
+          : activeItem.fill;
       } else if (item.type === Types.SLIDER_TEXT_SPACEING) {
         item.defaultValue = parseInt(activeItem.charSpacing);
       } else if (item.type === Types.INCREMENTAL_FONT_SIZE) {
@@ -272,11 +275,25 @@ const CreatePayload = (activeitem, itemPayload) => {
   return { id: activeitem.id, props: attrs };
 };
 
-const calculateToolBarPosition = targetPosition => {
+const calculateToolBarPosition = (targetPosition, toolbarType) => {
   // scale = scale + ((zoom * 100 - 100) / 100) * scale;
+  let leftPosition = targetPosition.left + targetPosition.width / 2;
+  let topPosition = targetPosition.top - 15;
+
+  if (leftPosition + toolbarType.width / 2 > window.innerWidth) {
+    leftPosition = window.innerWidth - toolbarType.width / 2;
+  } else if (leftPosition - toolbarType.width / 2 < 0) {
+    leftPosition = toolbarType.width / 2;
+  }
+
+  if (targetPosition.top - 15 < toolbarType.height) {
+    topPosition = toolbarType.height;
+  }
+
   return {
-    top: targetPosition.top - 15,
-    left: targetPosition.left + targetPosition.width / 2
+    top: topPosition,
+    left: leftPosition,
+    width: toolbarType.width
   };
 };
 module.exports = {

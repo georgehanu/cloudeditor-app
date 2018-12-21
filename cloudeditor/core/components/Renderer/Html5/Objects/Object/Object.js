@@ -157,6 +157,8 @@ class ObjectBlock extends React.Component {
             fontFamily={this.props.fontFamily}
             fontSize={this.props.fontSize}
             zoomScale={this.props.zoomScale}
+            bgColor={this.props.bgColor}
+            fillColor={this.props.fillColor}
             toolbarUpdate={this.props.toolbarUpdate}
           />
         );

@@ -10,6 +10,7 @@ const { updateObjectProps } = require("../../../../../stores/actions/project");
 const { connect } = require("react-redux");
 
 class Tinymce extends React.Component {
+  state = {};
   onChangeHandler = event => {
     console.log("changed");
   };
@@ -23,13 +24,14 @@ class Tinymce extends React.Component {
     this.props.updateObjectProps({
       id: this.props.id,
       props: {
-        bold: event.target.style.fontWeight === "bold" ? true : false,
-        italic: event.target.style.fontStyle === "italic" ? true : false,
-        underline:
-          event.target.style.textDecoration === "italic" ? true : false,
+        bold: event.target.style.fontWeight === "bold",
+        italic: event.target.style.fontStyle === "italic",
+        underline: event.target.style.textDecoration === "italic",
         textAlign: event.target.style.textAlign,
         fontSize,
         fontFamily: event.target.style.fontFamily,
+        fillColor: { htmlRGB: event.target.style.backgroundColor },
+        bgColor: { htmlRGB: event.target.style.color },
         toolbarUpdate: false
       }
     });
@@ -40,7 +42,6 @@ class Tinymce extends React.Component {
       const editableArea = tinyMCE
         .get("Tiny" + nextProps.id)
         .selection.getNode();
-
       editableArea.style.fontWeight = nextProps.bold ? "bold" : "normal";
       editableArea.style.fontStyle = nextProps.italic ? "italic" : "normal";
       editableArea.style.textDecoration = nextProps.underline
@@ -49,6 +50,13 @@ class Tinymce extends React.Component {
       editableArea.style.textAlign = nextProps.textAlign;
       editableArea.style.fontSize = nextProps.fontSize + "pt";
       editableArea.style.fontFamily = nextProps.fontFamily;
+
+      if (nextProps.fillColor) {
+        editableArea.style.backgroundColor = nextProps.fillColor.htmlRGB;
+      }
+      if (nextProps.bgColor) {
+        editableArea.style.color = nextProps.bgColor.htmlRGB;
+      }
     }
 
     return prevState;
