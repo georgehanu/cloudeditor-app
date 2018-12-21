@@ -10,12 +10,6 @@ class SideBarContainer extends React.Component {
     pluginIndex: null,
     expanded: true
   };
-  getToolConfig = tool => {
-    if (tool.tool) {
-      return {};
-    }
-    return this.props.toolCfg || {};
-  };
 
   getTool = tool => {
     return tool.plugin;
@@ -42,12 +36,13 @@ class SideBarContainer extends React.Component {
   renderTools = () => {
     return this.props.tools.map((tool, i) => {
       const Tool = this.getTool(tool);
-      const toolCfg = this.getToolConfig(tool);
+      console.log(tool, "Toold");
+
       const iconStyle = "icon " + (tool.icon ? tool.icon : "");
       return (
         <li key={i} className="sidebarButtonContainer">
           {tool.embedButtonPlugin === true ? (
-            <Tool {...toolCfg} items={tool.items || []} />
+            <Tool cfg={tool.cfg || {}} items={tool.items || []} />
           ) : (
             <React.Fragment>
               <SidebarButton
@@ -68,7 +63,7 @@ class SideBarContainer extends React.Component {
                 visible={i === this.state.pluginIndex ? true : false}
                 clicked={() => this.showPlugin(i)}
               >
-                <Tool {...toolCfg} items={tool.items || []} />
+                <Tool cfg={tool.cfg || {}} items={tool.items || []} />
               </PaneContainer>
             </React.Fragment>
           )}

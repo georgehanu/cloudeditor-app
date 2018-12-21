@@ -14,7 +14,13 @@
       "SideBar",
       "AddImage",
       "AddPdf",
-      "Zoom"
+      "Zoom",
+      {
+        "name": "Fupa",
+        "cfg": {
+          "additionalConfig": 123
+        }
+      }
     ]
   },
   "mainComponent": {

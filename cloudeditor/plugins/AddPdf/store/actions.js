@@ -1,10 +1,11 @@
-const { createActions } = require("redux-actions");
 const {
   REMOVE_PDF_FROM_GALLERY,
   UPLOAD_PDF_START,
   UPLOAD_PDF_SUCCESS,
   UPLOAD_PDF_FAILED
 } = require("./actionTypes");
+
+const { createActions } = require("redux-actions");
 
 const {
   removePdfFromGallery,

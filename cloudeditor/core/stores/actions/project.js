@@ -14,7 +14,8 @@ const {
   CHANGE_RANDOM_PAGE,
   CHANGE_PAGES_ORDER,
   ADD_PAGES,
-  ADD_OBJECT
+  ADD_OBJECT,
+  ADD_TABLE
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -34,7 +35,8 @@ const {
   changeRandomPage,
   changePagesOrder,
   addPages,
-  addObject
+  addObject,
+  addTable
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -51,7 +53,8 @@ const {
   CHANGE_RANDOM_PAGE,
   CHANGE_PAGES_ORDER,
   ADD_PAGES,
-  ADD_OBJECT
+  ADD_OBJECT,
+  ADD_TABLE
 );
 
 module.exports = {
@@ -70,5 +73,6 @@ module.exports = {
   onTextChange,
   changeRandomPage,
   changePagesOrder,
-  addPages
+  addPages,
+  addTable
 };

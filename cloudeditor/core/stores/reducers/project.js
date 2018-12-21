@@ -25,12 +25,14 @@ const {
   CHANGE_RANDOM_PAGE,
   CHANGE_PAGES_ORDER,
   ADD_PAGES,
-  ADD_OBJECT
+  ADD_OBJECT,
+  ADD_TABLE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
+const $ = require("jquery");
 const uuidv4 = require("uuid/v4");
 
 const addPages = (state, action) => {
@@ -80,6 +82,24 @@ const changePagesOrder = (state, action) => {
 };
 
 const addObject = (state, action) => {
+  const object = ProjectUtils.getEmptyObject(action);
+  const pageId = state.activePage;
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
+    objects: {
+      ...state.objects,
+      [object.id]: object
+    }
+  };
+};
+const addTable = (state, action) => {
   const object = ProjectUtils.getEmptyObject(action);
   const pageId = state.activePage;
   return {
@@ -209,6 +229,9 @@ module.exports = handleActions(
     },
     [ADD_OBJECT]: (state, action) => {
       return addObject(state, action.payload);
+    },
+    [ADD_TABLE]: (state, action) => {
+      return addTable(state, action.payload);
     },
     [ADD_PAGES]: (state, action) => {
       return addPages(state, action.payload);

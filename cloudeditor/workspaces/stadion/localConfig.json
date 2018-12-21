@@ -1,0 +1,30 @@
+{
+  "plugins": {
+    "mobile": ["Html5Renderer"],
+    "desktop": [
+      "SideBar",
+      "Html5Renderer",
+      {
+        "name": "Fupa",
+        "cfg": {
+          "additionalConfig": 123
+        }
+      },
+      "AddImage",
+      "AddPdf",
+      "PageSelector",
+      "Layouts",
+      "Zoom"
+    ]
+  },
+  "Layout": {
+    "SideBar": {},
+    "Body": {}
+  },
+
+  "mainComponent": {
+    "component": "div",
+    "id": "container",
+    "className": "container"
+  }
+}

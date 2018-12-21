@@ -51,7 +51,10 @@ const withResizable = WrappedComponent => {
     }
     updateUI = () => {
       this.enableUI =
-        !this.props.active && !this.props.viewOnly && this.props.resizable;
+        !this.props.active &&
+        !this.props.viewOnly &&
+        this.props.resizable &&
+        this.props.type !== "tinymce";
       this.$el = $(this.el);
       handleUI(
         this.$el,

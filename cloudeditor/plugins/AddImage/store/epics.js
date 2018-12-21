@@ -9,7 +9,7 @@ const { Observable } = require("rxjs");
 const { mapTo, map, mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-const URL = "http://work.cloudlab.at:9012/pa/asgard/public/api/editor/upload";
+const URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/upload.php";
 
 module.exports = {
   onEpicImage: (action$, state$) =>
@@ -20,7 +20,7 @@ module.exports = {
           let oneFile = 0;
           for (oneFile = 0; oneFile < action$.payload.length; oneFile++) {
             let serverData = new FormData();
-            serverData.append("file", action$.payload[oneFile]);
+            serverData.append("fileToUpload", action$.payload[oneFile]);
             axios
               .post(URL, serverData)
               .then(resp => resp.data)

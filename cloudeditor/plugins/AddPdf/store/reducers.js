@@ -1,5 +1,3 @@
-const uuidv4 = require("uuid/v4");
-const { handleActions } = require("redux-actions");
 const {
   REMOVE_PDF_FROM_GALLERY,
   UPLOAD_PDF_FAILED,
@@ -13,6 +11,8 @@ const initialState = {
   loading: false,
   errorMessage: null
 };
+const uuidv4 = require("uuid/v4");
+const { handleActions } = require("redux-actions");
 
 module.exports = handleActions(
   {
