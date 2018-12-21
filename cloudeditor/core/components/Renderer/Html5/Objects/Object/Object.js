@@ -25,8 +25,10 @@ const {
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
+
 const Draggable = require("./Draggable");
 const TextBlock = require("../Text/Text");
+const ImageBlock = require("../Image/Image");
 
 const {
   updateObjectProps,
@@ -86,24 +88,51 @@ class ObjectBlock extends React.Component {
       fillColor: props.fillColor.htmlRGB,
       bgColor: props.bgColor.htmlRGB,
       borderColor: props.borderColor.htmlRGB,
-      onUpdateProps: props.onUpdateProps,
+      onUpdateProps: props.onUpdatePropsHandler,
       onTextChange: props.onTextChange,
       editableRef: this.getEditableReference,
       contentEditable
     };
     return <TextBlock {...textProps} />;
   };
+  renderImage = () => {
+    const props = { ...this.props };
+    const { viewOnly, editable } = props;
+    const imageProps = {
+      viewOnly,
+      editable,
+      id: props.id,
+      active: props.active,
+      width: props.width,
+      height: props.height,
+      cropX: props.cropX,
+      cropY: props.cropY,
+      cropW: props.cropW,
+      filter: props.filter,
+      cropH: props.cropH,
+      onUpdateProps: props.onUpdatePropsHandler,
+      image_src: props.image_src,
+      leftSlider: props.leftSlider,
+      alternateZoom: props.alternate_zoom
+    };
+
+    return <ImageBlock {...imageProps} />;
+  };
+  renderTable = () => {
+    return (
+      <Tinymce
+        key={this.props.id}
+        id={this.props.id}
+        tableContent={this.props.tableContent}
+        height={this.props.height}
+        width={this.props.width}
+        onUpdateProps={this.props.onUpdatePropsHandler}
+        zoomScale={this.props.zoomScale}
+        tableContent={this.props.tableContent}
+      />
+    );
+  };
   render() {
-    if (this.props.type === "tinymce") {
-      return (
-        <Tinymce
-          key={this.props.id}
-          tableContent={this.props.tableContent}
-          height={this.props.height}
-          width={this.props.width}
-        />
-      );
-    }
     const {
       width,
       height,
@@ -145,12 +174,27 @@ class ObjectBlock extends React.Component {
       left: (-1 * parseFloat(borderWidth)) / 2
     };
     let element = null;
+    let styleNorth = {};
+    let tinyMceResizable = null;
     switch (type) {
       case "textflow":
       case "textline":
         element = this.renderText();
         break;
       case "image":
+        element = this.renderImage();
+        break;
+      case "tinymce":
+        element = this.renderTable();
+        styleNorth = { width: width + 16, height: height + 16 };
+        tinyMceResizable = (
+          <React.Fragment>
+            <div className="ui-resizable-handle ui-resizable-se ui-icon" />
+            <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
+            <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
+            <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
+          </React.Fragment>
+        );
         break;
       default:
         break;
@@ -163,9 +207,12 @@ class ObjectBlock extends React.Component {
         style={style}
         ref={this.getReference}
       >
-        <div className={"north"}>{element}</div>
+        <div style={styleNorth} className={"north"}>
+          {element}
+        </div>
         <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
+        {tinyMceResizable}
       </div>
     );
   }

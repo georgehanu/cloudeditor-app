@@ -19,7 +19,8 @@ const build = config => {
     sourcemaps,
     fileLoaderDirs,
     cleanDistDir,
-    cssPrefix
+    cssPrefix,
+    copyFrom
   } = config;
   return {
     entry,
@@ -61,7 +62,9 @@ const build = config => {
           test: /\.(sa|sc|c)ss$/,
           use: [
             MiniCssExtractPlugin.loader,
+
             "css-loader",
+            "sass-loader",
             {
               loader: "postcss-loader",
               options: {
@@ -77,9 +80,7 @@ const build = config => {
                   })
                 ]
               }
-            },
-
-            "sass-loader"
+            }
           ]
         },
         {
@@ -146,7 +147,8 @@ const build = config => {
                * var regex1 = new RegExp(/^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/)
                 var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
                */
-          }
+          },
+          ...copyFrom
         ],
         { debug: prod ? "" : "" }
       )

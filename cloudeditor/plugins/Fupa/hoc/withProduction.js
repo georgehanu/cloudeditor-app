@@ -6,7 +6,7 @@ const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 const { getEmptyObject } = require("../../../core/utils/ProjectUtils");
 
-const { addObject } = require("../../../core/stores/actions/project");
+const { addTable } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
@@ -39,7 +39,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       width = props.width ? props.width : tableDimensions.width;
 
-      props.addObject({
+      props.addTable({
         ...emptyTable,
         tableContent: tableContent,
         id: uuidv4(),
@@ -80,7 +80,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { addObject: payload => dispatch(addObject(payload)) };
+  return { addTable: payload => dispatch(addTable(payload)) };
 };
 
 const withProduction = compose(

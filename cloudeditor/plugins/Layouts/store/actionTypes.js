@@ -1,0 +1,5 @@
+const LAYOUTS_SELECT_IMAGE = "LAYOUTS_SELECT_IMAGE";
+
+module.exports = {
+  LAYOUTS_SELECT_IMAGE
+};

@@ -57,6 +57,9 @@ const colorTabSelector = createCachedSelector(
 )((state, props) => props.activeTab);
 const rerenderIdSelector = state => pathOr("null"["rerenderId"], state);
 
+const zoomValueSelector = state =>
+  (state && state.ui.workArea && state.ui.workArea.zoom) || 1;
+
 module.exports = {
   zoomSelector,
   scaleSelector,
