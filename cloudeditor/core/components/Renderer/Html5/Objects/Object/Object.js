@@ -25,7 +25,6 @@ const {
 const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
 
-const Draggable = require("./Draggable");
 const TextBlock = require("../Text/Text");
 const ImageBlock = require("../Image/Image");
 
