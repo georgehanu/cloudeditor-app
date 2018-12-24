@@ -152,7 +152,6 @@ class Toolbar extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     let toolbarData = null;
     if (this.props.activeToolbar === null) {
       return null;

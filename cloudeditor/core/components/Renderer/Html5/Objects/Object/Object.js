@@ -113,7 +113,11 @@ class ObjectBlock extends React.Component {
       onUpdateProps: props.onUpdatePropsHandler,
       image_src: props.image_src,
       leftSlider: props.leftSlider,
-      alternateZoom: props.alternate_zoom
+      initialRestore: props.initialRestore,
+      alternateZoom: props.alternate_zoom,
+      resizing: props.resizing,
+      zoomScale: this.props.zoomScale,
+      workingPercent: this.props.workingPercent
     };
 
     return <ImageBlock {...imageProps} />;
@@ -202,6 +206,22 @@ class ObjectBlock extends React.Component {
 
     return (
       <div
+        onMouseEnter={() => {
+          this.props.onUpdatePropsHandler({
+            id: this.props.id,
+            props: {
+              checkSnap: 1
+            }
+          });
+        }}
+        onMouseLeave={() => {
+          this.props.onUpdatePropsHandler({
+            id: this.props.id,
+            props: {
+              checkSnap: 0
+            }
+          });
+        }}
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}

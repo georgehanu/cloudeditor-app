@@ -100,7 +100,6 @@ const groupsSelector = state => {
 };
 
 const objectsSelectorSelector = state => {
-  console.log("1234");
   return (state && state.project && state.project.objects) || {};
 };
 

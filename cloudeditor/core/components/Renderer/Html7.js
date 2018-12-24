@@ -77,10 +77,7 @@ class Html5Renderer extends React.Component {
     this.updatePageOffset();
     window.addEventListener("resize", debounce(this.updatePageOffset));
   }
-  componentDidUpdate() {
-    console.log("canvasContainerRef", this.canvas);
-    console.log("pageRefContent", this.pageContainerRef.current);
-  }
+  componentDidUpdate() {}
 
   render() {
     const style = {

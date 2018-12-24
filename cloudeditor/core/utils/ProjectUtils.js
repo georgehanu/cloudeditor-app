@@ -460,7 +460,7 @@ const getRandomProject = cfg => {
   page3 = {
     ...page3,
     id: "page_3",
-    objectsIds: [img5.id]
+    objectsIds: [text1.id]
   };
 
   page4 = {
@@ -560,7 +560,8 @@ const getEmptyObject = cfg => {
           ...object,
           image_src: cfg.image_src,
           cropH: 0,
-          cropX: 538,
+          cropX: 0,
+          workingPercent: 0,
           cropY: 0,
           cropW: 0,
           cropH: 0,
@@ -570,7 +571,8 @@ const getEmptyObject = cfg => {
           contrast: 0,
           filter: "",
           imageWidth: 0,
-          imageHeight: 0
+          imageHeight: 0,
+          initialRestore: 0
         };
       case "graphics":
         return {

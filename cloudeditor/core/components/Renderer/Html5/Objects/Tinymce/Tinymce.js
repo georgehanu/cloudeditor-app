@@ -1,7 +1,6 @@
 const React = require("react");
 const TinyMCE = require("react-tinymce");
 const withDraggable = require("../hoc/withDraggable/withDraggable");
-const withResizable = require("../hoc/withResizable/withResizable");
 const withRotatable = require("../hoc/withRotatable/withRotatable");
 const { compose } = require("redux");
 require("./Tinymce.css");
@@ -16,9 +15,7 @@ class Tinymce extends React.Component {
     super(props);
     this.tinyEditor = null;
   }
-  onChangeHandler = (event, data) => {
-    console.log(this.tinyEditor, "ceva");
-  };
+  onChangeHandler = (event, data) => {};
   onObjectResizeHandler = (event, editor) => {
     var MutationObserver =
       window.MutationObserver ||
@@ -70,9 +67,6 @@ class Tinymce extends React.Component {
     table.removeAttribute("data-mce-style");
   };
 
-  componentDidMount() {
-    console.log("apo");
-  }
   componentDidUpdate() {
     if (this.currentEditor) {
       var element = this.currentEditor.dom.doc.getElementsByClassName(

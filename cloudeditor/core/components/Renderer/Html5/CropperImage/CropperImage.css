@@ -1,3 +1,7 @@
 .jwc_frame img {
   position: absolute;
 }
+.pageBlock.editable.image u,
+.pageBlock.editable.image .blockBorder {
+  z-index: -1;
+}

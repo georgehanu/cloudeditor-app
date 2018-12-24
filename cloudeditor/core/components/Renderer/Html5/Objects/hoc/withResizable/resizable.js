@@ -14,7 +14,6 @@ const createResizable = ($el, onStart, onResize, onResizeStop) => {
       },
       resize: (event, ui) => {
         if (is(Function, onResize)) onResize(event, ui);
-        console.log("withResizable");
       },
       stop: (event, ui) => {
         if (is(Function, onResizeStop)) onResizeStop(event, ui);

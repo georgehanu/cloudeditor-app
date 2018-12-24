@@ -14,7 +14,8 @@ const { removeSelection } = require("../../stores/actions/project");
 const {
   displayedPageSelector,
   activeGroupSelector,
-  getSelectedObjectsLengthSelector
+  getSelectedObjectsLengthSelector,
+  displayedPagesLabelsSelector
 } = require("../../stores/selectors/Html5Renderer");
 const {
   canvasSelector,
@@ -89,7 +90,7 @@ class Html5 extends React.Component {
     if (this.containerRef) {
       const parent = {
         width: this.containerRef.offsetWidth,
-        height: this.containerRef.offsetHeight
+        height: this.containerRef.offsetHeight - 20
       };
       const child = {
         width: this.props.activePage.width,
@@ -124,7 +125,7 @@ class Html5 extends React.Component {
     //window.addEventListener("resize", debounce(this.updateContainerDimensions));
     window.addEventListener("resize", this.updateContainerDimensions);
     window.addEventListener("resizePage", this.updateContainerDimensions);
-    document.addEventListener("click", this.blurAction);
+    document.addEventListener("mousedown", this.blurAction);
   }
 
   render() {
@@ -141,6 +142,7 @@ class Html5 extends React.Component {
         containerWidth={this.props.canvasDimm.workingWidth}
         containerHeight={this.props.canvasDimm.workingHeight}
         pageReady={pageReady}
+        labels={this.props.labels}
         rerenderId={this.props.rerenderId}
       />
     );
@@ -165,6 +167,7 @@ const makeMapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
       canvasDimm: canvasSelector(state, props),
+      labels: displayedPagesLabelsSelector(state, props),
       zoom: zoomSelector(state),
       selectedLength: getSelectedObjectsLengthSelector(state),
       rerenderId: rerenderIdSelector(state)

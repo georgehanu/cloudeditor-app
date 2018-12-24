@@ -18,7 +18,6 @@ const colorsSelector = state => {
   return values(pathOr({}, ["ui", "colors"], state));
 };
 const getTabActiveSelector = (_, props) => {
-  console.log("getTabActiveSelector");
   return props.activeTab;
 };
 

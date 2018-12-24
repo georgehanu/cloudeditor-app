@@ -31,16 +31,14 @@ const SliderWnd = props => {
           max={max}
           step={step}
           onChange={event =>
-            debounce(
-              props.ToolbarHandler({
-                mainHandler: true,
-                payloadMainHandler: {
-                  type: props.settingsHandler,
-                  value: event.target.value
-                },
-                keepDetailsWnd: true
-              })
-            )
+            props.ToolbarHandler({
+              mainHandler: true,
+              payloadMainHandler: {
+                type: props.settingsHandler,
+                value: event.target.value
+              },
+              keepDetailsWnd: true
+            })
           }
         />
       </div>

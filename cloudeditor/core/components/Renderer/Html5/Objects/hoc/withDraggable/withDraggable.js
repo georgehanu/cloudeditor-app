@@ -25,6 +25,7 @@ const withDraggable = WrappedComponent => {
       });
     };
     onDragStartHandler = (event, ui) => {
+      this.changePropsOnDragHandler(ui, 1);
       const draggable = $(event.target).data("ui-draggable");
       ui = addSnapElements(event, ui, draggable.snapElements, draggable);
     };

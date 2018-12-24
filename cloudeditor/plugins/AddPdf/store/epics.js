@@ -40,7 +40,6 @@ module.exports = {
                 }
               })
               .catch(error => {
-                console.log(error, "ERROR");
                 obs.next({
                   type: UPLOAD_PDF_FAILED,
                   payload: "Error message: " + error.message

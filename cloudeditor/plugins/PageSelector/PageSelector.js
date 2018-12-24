@@ -121,7 +121,6 @@ class PageSelector extends React.Component {
         let value =
           (2 + index) * (element.width + padding) +
           (index % 2 === 0 ? 2 : 2 + padding);
-        console.log(value);
         container.scrollLeft = value;
       }*/
     }

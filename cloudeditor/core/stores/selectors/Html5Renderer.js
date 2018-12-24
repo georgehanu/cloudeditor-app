@@ -138,6 +138,7 @@ const displayedPageSelector = groupSelector => {
       let shortLabel = "";
       let selectable = true;
       let lockPosition = true;
+      let pagesLabels = [];
       forEach(page => {
         innerPages[page] = merge(pages[page], config);
         innerPages[page]["boxes"] = {
@@ -149,6 +150,9 @@ const displayedPageSelector = groupSelector => {
         };
         innerPages[page]["offset"] = { ...offset };
         offset["left"] += innerPages[page]["width"];
+        pagesLabels[page] = {
+          left: innerPages[page]["width"]
+        };
         label = innerPages[page]["label"];
         shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
@@ -221,6 +225,7 @@ const displayedPageSelector = groupSelector => {
         lockPosition: lockPosition,
         label: label,
         selectable: selectable,
+        pagesLabels,
         offset: {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
@@ -254,6 +259,23 @@ const displayedPageLabelsSelector = pageIdSelector => {
     }
   );
 };
+const displayedPagesLabelsSelector = createSelector(
+  pagesOrderSelector,
+  pagesSelector,
+  (pageOrder, pages) => {
+    let pageNumber = 1;
+    let labels = [];
+    forEach(el => {
+      const page = pages[el];
+      labels[el] = {
+        longLabel: page["label"].replace("%no%", pageNumber),
+        shortLabel: page["shortLabel"].replace("%no%", pageNumber)
+      };
+      pageNumber++;
+    }, pageOrder);
+    return labels;
+  }
+);
 
 const applyZoomScaleToTarget = (page, zoomScale, paths) => {
   let scaledPage = clone(page);
@@ -401,5 +423,6 @@ module.exports = {
   displayedMergedObjectSelector,
   selectedObjectsIdsSelector,
   getSelectedObjectsLengthSelector,
-  displayedPageLabelsSelector
+  displayedPageLabelsSelector,
+  displayedPagesLabelsSelector
 };

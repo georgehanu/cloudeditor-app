@@ -7,3 +7,19 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+.pageNameContainer {
+  padding-left: 120px;
+  position: absolute;
+  bottom: 0px;
+  width: 1733px;
+  padding-bottom: 170px;
+  left: 0px;
+}
+.pageName {
+  position: relative;
+  position: relative;
+  width: auto;
+  float: none;
+  clear: both;
+  display: inline-block;
+}
