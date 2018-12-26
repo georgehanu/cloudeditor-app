@@ -29,6 +29,9 @@ const pagesOrderSelector = state => {
 const activePageIdSelector = state =>
   pathOr(null, ["project", "activePage"], state);
 
+const titleSelector = state =>
+  pathOr("Empty project", ["project", "title"], state);
+
 /* Start Document Config Selectors */
 const facingPagesSelector = state => {
   return pathOr(
@@ -295,5 +298,6 @@ module.exports = {
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
-  objectsDefaultConfigSelector
+  objectsDefaultConfigSelector,
+  titleSelector
 };

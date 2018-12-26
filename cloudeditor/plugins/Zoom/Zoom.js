@@ -2,7 +2,8 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
-const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponents/SidebarButton");
+//const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponents/SidebarButton");
+const SidebarButton = require("../../core/components/sidebar/SidebarButton");
 
 const { zoomSelector } = require("../../core/stores/selectors/ui");
 const { changeZoom } = require("../../core/stores/actions/ui");
@@ -22,7 +23,6 @@ const Zoom = props => {
         <div className="iconTitle">{"Zoom In"}</div>
       </SidebarButton>
       <div className="zoomMiddle">
-        <div className="icon printqicon-rotate_handler" onClick={props.reset} />
         <div className="zoomValue">
           {(props.zoomValue * 100).toFixed(0) + "%"}
         </div>
@@ -34,6 +34,23 @@ const Zoom = props => {
         </div>
         <div className="iconTitle">{"Zoom Out"}</div>
       </SidebarButton>
+      <div className="zoomButtons">
+        <button className="zoomButtonTop" onClick={() => props.setZoomValue(1)}>
+          100%
+        </button>
+        <button
+          className="zoomButtonMiddle"
+          onClick={() => props.setZoomValue(1.5)}
+        >
+          150%
+        </button>
+        <button
+          className="zoomButtonBottom"
+          onClick={() => props.setZoomValue(2)}
+        >
+          200%
+        </button>
+      </div>
     </div>
   );
 };
@@ -46,8 +63,8 @@ const enhance = compose(
     zoomOut: props => event => {
       if (props.zoomValue > 1) props.changeZoom(props.zoomValue - STEP);
     },
-    reset: props => event => {
-      props.changeZoom(1);
+    setZoomValue: props => value => {
+      props.changeZoom(value);
     }
   })
 );

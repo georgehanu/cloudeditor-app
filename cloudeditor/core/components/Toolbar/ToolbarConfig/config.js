@@ -178,7 +178,8 @@ const Config = {
     baseType: Types.INCREMENTAL,
     className: "icon printqicon-spacing",
     parentClassName: "",
-    defaultValue: "28.00"
+    defaultValue: "28.00",
+    fontSize: ""
   },
   [Types.SIMPLE_ICON]: {
     baseType: Types.SIMPLE_ICON,

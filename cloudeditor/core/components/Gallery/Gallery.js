@@ -8,6 +8,7 @@ const { pathOr } = require("ramda");
 const { removeAssetFromGallery } = require("../../stores/actions/assets");
 
 const gallery = props => {
+  console.log(props, "aaaaaa");
   let items = [];
 
   if (props.hideActions === undefined || props.hideActions === false) {

@@ -26,6 +26,7 @@ const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
 const Draggable = require("./Draggable");
 const TextBlock = require("../Text/Text");
+const Tinymce = require("../Tinymce/Tinymce");
 
 const {
   updateObjectProps,
@@ -141,6 +142,28 @@ class ObjectBlock extends React.Component {
         break;
       case "image":
         break;
+
+      case "tinymce":
+        element = (
+          <Tinymce
+            tableContent={this.props.tableContent}
+            height={this.props.height}
+            width={this.props.width}
+            underline={this.props.underline}
+            bold={this.props.bold}
+            italic={this.props.italic}
+            id={this.props.id}
+            textAlign={this.props.textAlign}
+            fontFamily={this.props.fontFamily}
+            fontSize={this.props.fontSize}
+            zoomScale={this.props.zoomScale}
+            bgColor={this.props.bgColor}
+            fillColor={this.props.fillColor}
+            toolbarUpdate={this.props.toolbarUpdate}
+          />
+        );
+        break;
+
       default:
         break;
     }
