@@ -9,6 +9,10 @@ const layouts = require("../../plugins/Layouts/Layouts.scss");
 const zoom = require("../../plugins/Zoom/Zoom.css");
 const toolbar = require("../../themes/default/toolbar/plugin.scss");
 const projectHeader = require("../../plugins/ProjectHeader/ProjectHeader.scss");
+const projectMenu = require("../../plugins/ProjectMenu/ProjectMenu.scss");
+const menuItemMyProject = require("../../plugins/MenuItemMyProject/MenuItemMyProject.scss");
+const menuItemPages = require("../../plugins/MenuItemPages/MenuItemPages.scss");
+const menuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextImage.scss");
 
 module.exports = {
   stadion,
@@ -21,5 +25,9 @@ module.exports = {
   layouts,
   zoom,
   toolbar,
-  projectHeader
+  projectHeader,
+  projectMenu,
+  menuItemMyProject,
+  menuItemPages,
+  menuItemTextImage
 };

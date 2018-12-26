@@ -15,7 +15,11 @@
       "AddPdf",
       "Layouts",
       "Zoom",
-      "ProjectHeader"
+      "ProjectHeader",
+      "ProjectMenu",
+      "MenuItemMyProject",
+      "MenuItemPages",
+      "MenuItemTextImage"
     ]
   },
   "Layout": {

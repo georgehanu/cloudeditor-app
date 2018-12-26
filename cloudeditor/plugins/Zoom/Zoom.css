@@ -45,3 +45,7 @@
   margin-bottom: 6px;
   height: 23px;
 }
+
+.zoomButtons button:hover {
+  background-color: #c30c15;
+}

@@ -8,6 +8,10 @@ const Layouts = require("../../plugins/Layouts/Layouts");
 const Toolbar = require("../../core/plugins/Toolbar");
 const Zoom = require("../../plugins/Zoom/Zoom");
 const ProjectHeader = require("../../plugins/ProjectHeader/ProjectHeader");
+const ProjectMenu = require("../../plugins/ProjectMenu/ProjectMenu");
+const MenuItemMyProject = require("../../plugins/MenuItemMyProject/MenuItemMyProject");
+const MenuItemPages = require("../../plugins/MenuItemPages/MenuItemPages");
+const MenuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextImage");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -19,7 +23,11 @@ const plugins = {
   Layouts,
   Zoom,
   Toolbar,
-  ProjectHeader
+  ProjectHeader,
+  ProjectMenu,
+  MenuItemMyProject,
+  MenuItemPages,
+  MenuItemTextImage
 };
 
 const requires = {};
