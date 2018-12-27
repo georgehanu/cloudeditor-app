@@ -11,6 +11,12 @@
           "additionalConfig": 123
         }
       },
+      {
+        "name": "LiveHtml5Pagination",
+        "cfg": {
+          "className": "html5LivePaginationContainer"
+        }
+      },
       "AddImage",
       "AddPdf",
       "Layouts",

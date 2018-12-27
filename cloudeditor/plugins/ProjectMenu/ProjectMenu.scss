@@ -142,6 +142,7 @@
 }
 
 // theme.scss
+
 #sidebar-wrapper {
   top: 90px;
 }
@@ -149,5 +150,5 @@
   position: absolute;
 }
 .canvasContainer {
-  margin-top: 90px;
+  margin-top: 0px; /* 90 */
 }
