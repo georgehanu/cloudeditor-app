@@ -38,7 +38,9 @@ const {
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
+  tolerancePagesConfigSelector,
   includeBoxesSelector,
+  useMagneticSelector,
   objectsDefaultConfigSelector
 } = require("./project");
 
@@ -129,10 +131,33 @@ const displayedPageSelector = groupSelector => {
     pagesDefaultConfigSelector,
     trimboxPagesConfigSelector,
     bleedPagesConfigSelector,
+    tolerancePagesConfigSelector,
     includeBoxesSelector,
-    (group, pages, config, trimbox, bleed, includeBoxes) => {
+    useMagneticSelector,
+    activePageIdSelector,
+    pagesOrderSelector,
+    (
+      group,
+      pages,
+      config,
+      trimbox,
+      bleed,
+      tolerance,
+      includeBoxes,
+      useMagnetic,
+      activePageId,
+      pagesOrder
+    ) => {
       const innerPages = {};
-
+      let nextPage = false;
+      let prevPage = false;
+      const currentPosition = pagesOrder.indexOf(activePageId);
+      if (currentPosition + 2 <= pagesOrder.length) {
+        nextPage = pagesOrder[currentPosition + 1];
+      }
+      if (currentPosition !== 0) {
+        prevPage = pagesOrder[currentPosition - 1];
+      }
       const offset = { left: 0, top: 0 };
       let label = "";
       let shortLabel = "";
@@ -148,35 +173,35 @@ const displayedPageSelector = groupSelector => {
           ),
           bleed: merge(pathOr({}, [page, "boxes", "bleed"], pages), bleed)
         };
-        innerPages[page]["offset"] = { ...offset };
-        offset["left"] += innerPages[page]["width"];
-        pagesLabels[page] = {
-          left: innerPages[page]["width"]
+        innerPages[page]["boxesMagentic"] = {
+          magneticSnapEdge: { left: 1, top: 1, bottom: 1, right: 1 },
+          magneticSnap: {
+            left: pathOr(tolerance, [page, "tolerance"], pages),
+            top: pathOr(tolerance, [page, "tolerance"], pages),
+            bottom: pathOr(tolerance, [page, "tolerance"], pages),
+            right: pathOr(tolerance, [page, "tolerance"], pages)
+          }
         };
+        innerPages[page]["offset"] = { ...offset };
+        innerPages[page]["snapTolerance"] = pathOr(
+          tolerance,
+          [page, "tolerance"],
+          pages
+        );
+        offset["left"] += innerPages[page]["width"];
+        pagesLabels[page] = { left: innerPages[page]["width"] };
         label = innerPages[page]["label"];
         shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
         selectable = innerPages[page]["selectable"];
       }, group);
 
-      const trimBoxes = compose(
-        pluck("trimbox"),
-        pluck("boxes")
-      )(innerPages);
-
-      const bleedBoxes = compose(
-        pluck("bleed"),
-        pluck("boxes")
-      )(innerPages);
       let boxes = {};
-      const defaultBox = {
-        left: 0,
-        top: 0,
-        bottom: 0,
-        right: 0
-      };
+      let magneticBoxes = {};
+      const defaultBox = { left: 0, top: 0, bottom: 0, right: 0 };
 
-      var pagesBoxes = pluck("boxes", innerPages);
+      const pagesBoxes = pluck("boxes", innerPages);
+      const pagesBoxesMagnetic = pluck("boxesMagentic", innerPages);
       forEachObjIndexed((pageBoxes, pKey) => {
         Object.keys(pageBoxes).map(bKey => {
           boxes[bKey] = defaultBox;
@@ -207,6 +232,36 @@ const displayedPageSelector = groupSelector => {
           }
         });
       }, pagesBoxes);
+      forEachObjIndexed((pageBoxesMagnetic, pKey) => {
+        Object.keys(pageBoxesMagnetic).map(bKey => {
+          magneticBoxes[bKey] = defaultBox;
+          if (useMagnetic) {
+            const box = compose(pluck(bKey))(pagesBoxesMagnetic);
+            magneticBoxes[bKey] = {
+              top: compose(
+                apply(Math.max),
+                values,
+                pluck("top")
+              )(box),
+              right: compose(
+                last,
+                values,
+                pluck("right")
+              )(box),
+              bottom: compose(
+                apply(Math.max),
+                values,
+                pluck("bottom")
+              )(box),
+              left: compose(
+                head,
+                values,
+                pluck("top")
+              )(box)
+            };
+          }
+        });
+      }, pagesBoxesMagnetic);
 
       return {
         width: addProps(
@@ -221,11 +276,15 @@ const displayedPageSelector = groupSelector => {
           (includeBoxes
             ? getMaxProp(boxes, "top") + getMaxProp(boxes, "bottom")
             : 0),
+        snapTolerance: getMaxProp(innerPages, "snapTolerance"),
         boxes: boxes,
+        magneticBoxes: useMagnetic ? magneticBoxes : {},
         lockPosition: lockPosition,
         label: label,
         selectable: selectable,
         pagesLabels,
+        nextPage,
+        prevPage,
         offset: {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
@@ -303,6 +362,7 @@ const scaledDisplayedPageSelector = (
       const defaultPaths = [
         ["width"],
         ["height"],
+        ["snapTolerance"],
         ["offset", "top"],
         ["offset", "left"],
         ["boxes", "trimbox", "top"],
@@ -313,6 +373,10 @@ const scaledDisplayedPageSelector = (
         ["boxes", "bleed", "right"],
         ["boxes", "bleed", "bottom"],
         ["boxes", "bleed", "left"],
+        ["magneticBoxes", "magneticSnapEdge", "top"],
+        ["magneticBoxes", "magneticSnap", "right"],
+        ["magneticBoxes", "magneticSnap", "bottom"],
+        ["magneticBoxes", "magneticSnap", "left"],
         ["borderWidth"]
       ];
 

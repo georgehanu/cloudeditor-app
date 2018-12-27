@@ -1,7 +1,7 @@
 .ui-resizable-handle {
   width: 10px;
   height: 10px;
-  background-color: rgb(153, 209, 34);
+  background-color: #646464;
   z-index: 501 !important;
 }
 .ui-resizable-n {
@@ -53,24 +53,7 @@
   right: -6px;
 }
 
-.ui-rotatable-handle {
-  top: -25px;
-  left: 50%;
-  margin-left: -8px;
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  display: inline-block;
-  opacity: 1;
-}
-
-.ui-rotatable-handle {
-  font-size: 10px;
-  background: rgb(153, 209, 34);
-  text-align: center;
+.ui-resizable-se,
+.ui-resizable-nw {
   border-radius: 50%;
-  line-height: 18px;
-  width: 18px;
-  height: 18px;
-  color: #fff;
 }

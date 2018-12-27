@@ -25,7 +25,13 @@ const centerPage = ({ width, height, containerWidth, containerHeight }) => {
 };
 class Canvas extends React.Component {
   render() {
-    let { containerHeight, containerWidth, zoomScale, viewOnly } = this.props;
+    let {
+      containerHeight,
+      containerWidth,
+      zoomScale,
+      viewOnly,
+      bottomContainer
+    } = this.props;
     let { width, height } = this.props.activePage;
     width *= zoomScale;
     height *= zoomScale;
@@ -36,7 +42,7 @@ class Canvas extends React.Component {
       containerHeight
     });
     const pageNamesStyle = {
-      width,
+      top: bottomContainer,
       left: margins.marginLeft
     };
     const { getCanvasRef, ...otherProps } = this.props;
@@ -46,11 +52,21 @@ class Canvas extends React.Component {
       const innerPages = this.props.activePage.innerPages;
       const pages = Object.keys(innerPages).map(pageKey => {
         const pageNameStyle = {
-          left: innerPages[pageKey]["offset"]["left"] * this.props.zoomScale
+          left:
+            (innerPages[pageKey]["offset"]["left"] +
+              this.props.activePage.offset.left) *
+            this.props.zoomScale,
+          width:
+            (innerPages[pageKey]["width"] + this.props.activePage.offset.left) *
+            this.props.zoomScale
         };
+        const classes = [
+          "pageName",
+          pageKey === this.props.activePageId ? "isActive" : ""
+        ].join(" ");
         return (
-          <div key={pageKey} className={"pageName"} style={pageNameStyle}>
-            {this.props.labels[pageKey]["longLabel"]}
+          <div key={pageKey} className={classes} style={pageNameStyle}>
+            <div>{this.props.labels[pageKey]["longLabel"]}</div>
           </div>
         );
       });
@@ -60,10 +76,48 @@ class Canvas extends React.Component {
         </div>
       );
     }
+    let nextPageHandler = null;
+    if (this.props.activePage.nextPage) {
+      nextPageHandler = (
+        <div
+          className={"paginationItem"}
+          onClick={() => {
+            this.props.onChangePage({
+              page_id: this.props.activePage.nextPage
+            });
+          }}
+        >
+          <span className={"icon printqicon-nextarrow"} />
+        </div>
+      );
+    }
+    let prevPageHandler = null;
+    if (this.props.activePage.prevPage) {
+      prevPageHandler = (
+        <div
+          className={"paginationItem"}
+          onClick={() => {
+            this.props.onChangePage({
+              page_id: this.props.activePage.prevPage
+            });
+          }}
+        >
+          <span className={"icon printqicon-backarrow "} />
+        </div>
+      );
+    }
     return (
       <div className="canvasContainer" ref={getCanvasRef}>
         <Zoom {...otherProps} />
         {pageNumbers}
+        <div className={"paginationBottomContainer"}>
+          <div className="previousContainer paginationSubContainer">
+            {prevPageHandler}
+          </div>
+          <div className="nextContainer paginationSubContainer">
+            {nextPageHandler}
+          </div>
+        </div>
       </div>
     );
   }

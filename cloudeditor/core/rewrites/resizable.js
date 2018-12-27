@@ -29,10 +29,10 @@ require("webpack-jquery-ui/resizable");
       inst.snapElements = [];
       inst.snapping = false;
 
-      if (inst.isRotate == 0) {
-        $(typeof snap == "string" ? snap : ":data(ui-resizable)").each(
+      if (inst.isRotate === 0) {
+        $(typeof snap === "string" ? snap : ":data(ui-resizable)").each(
           function() {
-            if (this == inst.element[0] || this == inst.helper[0]) return;
+            if (this === inst.element[0] || this === inst.helper[0]) return;
 
             var $el = $(this),
               p = $el.position(),
@@ -59,7 +59,7 @@ require("webpack-jquery-ui/resizable");
     resize: function(event, ui) {
       var inst = $(this).data("ui-resizable");
       inst.isRotate = $(this).data("rotateAngle");
-      if (inst.isRotate != 0) return;
+      if (inst.isRotate !== 0) return;
 
       var changeWidth = ui.size.width - ui.originalSize.width; // find change in width
       var newWidth = ui.originalSize.width + changeWidth; // adjust new width by our zoomScale
@@ -80,8 +80,6 @@ require("webpack-jquery-ui/resizable");
         ts = [],
         ws = [],
         hs = [],
-        se = [],
-        inst = $(this).data("ui-resizable"),
         axes = inst.axis.split(""),
         st = inst.options.snapTolerance,
         md = inst.options.snapMode,
@@ -100,12 +98,25 @@ require("webpack-jquery-ui/resizable");
           h = Math.min(_b, coords.b) - Math.max(_t, coords.t);
 
         coords.snapping = false;
+        if ($(this.item).hasClass("magneticSnap")) {
+          st = inst.options.snapToleranceDynamic;
+          l = inst.position.left + inst.lm;
+          _l = l - st;
+          t = inst.position.top + inst.tm;
+          _t = t - st;
+          r = l + inst.size.width + inst.ow;
+          _r = r + st;
+          b = t + inst.size.height + inst.oh;
+          _b = b + st;
+        } else {
+          st = inst.options.snapTolerance;
+        }
 
         if (w < 0 || h < 0) return;
 
-        if (inst.isRotate != 0) return;
+        if (inst.isRotate !== 0) return;
         $.each(axes, function(k, axis) {
-          if (md == "outer") {
+          if (md === "outer") {
             switch (axis) {
               case "w":
               case "e":
@@ -115,7 +126,7 @@ require("webpack-jquery-ui/resizable");
               case "s":
                 if (h > st * 2) return;
             }
-          } else if (md == "inner") {
+          } else if (md === "inner") {
             switch (axis) {
               case "w":
               case "e":

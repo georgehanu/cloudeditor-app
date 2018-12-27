@@ -61,6 +61,13 @@ const includeBoxesSelector = state => {
     state
   );
 };
+const useMagneticSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "useMagentic"],
+    state
+  );
+};
 const showTrimboxSelector = state => {
   return pathOr(
     false,
@@ -87,6 +94,9 @@ const bleedPagesConfigSelector = state => {
     ["project", "configs", "pages", "boxes", "bleed"],
     state
   );
+};
+const tolerancePagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "tolerance"], state);
 };
 /* End Pages Config Selectors */
 /* Start Objects Config Selectors */
@@ -290,9 +300,11 @@ module.exports = {
   groupSizeSelector,
   predefinedGroupsSelector,
   includeBoxesSelector,
+  useMagneticSelector,
   showTrimboxSelector,
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
+  tolerancePagesConfigSelector,
   objectsDefaultConfigSelector
 };

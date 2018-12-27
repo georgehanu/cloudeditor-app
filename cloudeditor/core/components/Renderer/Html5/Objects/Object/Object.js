@@ -32,7 +32,8 @@ const ImageBlock = require("../Image/Image");
 
 const {
   updateObjectProps,
-  addObjectIdToSelected
+  addObjectIdToSelected,
+  deleteObj
 } = require("../../../../../stores/actions/project");
 
 class ObjectBlock extends React.Component {
@@ -53,6 +54,9 @@ class ObjectBlock extends React.Component {
   };
   onClickBlockHandler = event => {
     event.preventDefault();
+    if ($(event.target).hasClass("deleteBlockHandler")) {
+      return false;
+    }
     const { id, viewOnly } = this.props;
     if (viewOnly) return false;
     this.props.handleDraggableUi(this.$el, false);
@@ -203,7 +207,32 @@ class ObjectBlock extends React.Component {
       default:
         break;
     }
-
+    let resizableHandle = null;
+    if (this.props.resizable && !viewOnly) {
+      resizableHandle = (
+        <div
+          className={
+            "ui-rotatable-handle icon printqicon-rotate_handler ui-draggable"
+          }
+        />
+      );
+    }
+    let deleteHandle = null;
+    if (this.props.deletable && !viewOnly) {
+      deleteHandle = (
+        <div
+          onClick={event => {
+            event.preventDefault();
+            this.props.onDeleteObjectHandler({
+              id: this.props.id
+            });
+          }}
+          className={"deleteBlockHandler"}
+        >
+          x
+        </div>
+      );
+    }
     return (
       <div
         onMouseEnter={() => {
@@ -232,7 +261,10 @@ class ObjectBlock extends React.Component {
         </div>
         <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
+
         {tinyMceResizable}
+        {resizableHandle}
+        {deleteHandle}
       </div>
     );
   }
@@ -294,7 +326,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onSetActiveBlockHandler: payload =>
       dispatch(addObjectIdToSelected(payload)),
-    onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload))
+    onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload)),
+    onDeleteObjectHandler: payload => dispatch(deleteObj(payload))
   };
 };
 

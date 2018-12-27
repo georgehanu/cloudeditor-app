@@ -135,7 +135,9 @@ const getDocumentDefaults = cfg => {
       singleFirstLastPage: true,
       groupSize: 2,
       includeBoxes: true,
-      showTrimbox: true,
+      includeMagentic: false,
+      showTrimbox: false,
+      useMagentic: true,
       predefinedGroups: [2, 3], //or false
       groups: {
         group_1: ["page_1"],
@@ -154,6 +156,7 @@ const getPagesDefaults = cfg => {
         width: 1080,
         height: 1080
       },
+      tolerance: 40,
       boxes: {
         trimbox: {
           top: 20,
@@ -541,6 +544,7 @@ const getEmptyObject = cfg => {
     value: cfg.value || "default value",
     resizable: cfg.resizable || 1,
     rotatable: cfg.rotatable || 1,
+    deletable: cfg.deletable || 1,
     movable: cfg.movable || 1,
     rotateAngle: cfg.rotateAngle || 0,
     ispSnap: cfg.ispSnap || 1,

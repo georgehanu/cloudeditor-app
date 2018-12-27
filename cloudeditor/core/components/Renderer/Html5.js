@@ -10,13 +10,14 @@ const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
 
 const { changeWorkareaProps } = require("../../stores/actions/ui");
-const { removeSelection } = require("../../stores/actions/project");
+const { removeSelection, changePage } = require("../../stores/actions/project");
 const {
   displayedPageSelector,
   activeGroupSelector,
   getSelectedObjectsLengthSelector,
   displayedPagesLabelsSelector
 } = require("../../stores/selectors/Html5Renderer");
+const { activePageIdSelector } = require("../../stores/selectors/project");
 const {
   canvasSelector,
   zoomSelector,
@@ -90,14 +91,16 @@ class Html5 extends React.Component {
     if (this.containerRef) {
       const parent = {
         width: this.containerRef.offsetWidth,
-        height: this.containerRef.offsetHeight - 20
+        height: this.containerRef.offsetHeight
       };
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
       };
+      const boundingContainer = this.containerRef.getBoundingClientRect();
       this.setState({
         zoomScale: computeZoomScale(this.props.zoom, parent, child),
+        bottomContainer: boundingContainer.bottom,
         pageReady: true
       });
 
@@ -141,9 +144,12 @@ class Html5 extends React.Component {
         zoomScale={this.state.zoomScale}
         containerWidth={this.props.canvasDimm.workingWidth}
         containerHeight={this.props.canvasDimm.workingHeight}
+        bottomContainer={this.state.bottomContainer}
         pageReady={pageReady}
         labels={this.props.labels}
+        activePageId={this.props.activePageId}
         rerenderId={this.props.rerenderId}
+        onChangePage={this.props.onChangePageHandler}
       />
     );
   }
@@ -156,7 +162,8 @@ const mapDispatchToProps = dispatch => {
   return {
     changeWorkAreaPropsHandler: payload =>
       dispatch(changeWorkareaProps(payload)),
-    onRemoveActiveBlockHandler: payload => dispatch(removeSelection(payload))
+    onRemoveActiveBlockHandler: payload => dispatch(removeSelection(payload)),
+    onChangePageHandler: payload => dispatch(changePage(payload))
   };
 };
 
@@ -170,7 +177,8 @@ const makeMapStateToProps = (state, props) => {
       labels: displayedPagesLabelsSelector(state, props),
       zoom: zoomSelector(state),
       selectedLength: getSelectedObjectsLengthSelector(state),
-      rerenderId: rerenderIdSelector(state)
+      rerenderId: rerenderIdSelector(state),
+      activePageId: activePageIdSelector(state, props)
     };
   };
   return mapStateToProps;

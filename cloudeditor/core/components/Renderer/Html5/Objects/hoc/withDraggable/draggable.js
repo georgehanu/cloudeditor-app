@@ -9,7 +9,8 @@ const createDraggable = ($el, onDragStart, onDrag, onDragStop) => {
       snap: ".drag_alignLines",
       snapMode: "customPrintq",
       snapTolerance: 10,
-      //distance: 2,
+      snapToleranceDynamic: 10,
+      distance: 2,
       helper: "original",
       start: (event, ui) => {
         if (is(Function, onDragStart)) onDragStart(event, ui);
