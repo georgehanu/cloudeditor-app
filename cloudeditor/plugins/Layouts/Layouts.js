@@ -19,6 +19,7 @@ class Layouts extends React.Component {
   };
 
   render() {
+    console.log(this.props.layoutImages, "Layout");
     return (
       <div className="LayoutsContainer">
         <Gallery

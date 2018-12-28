@@ -23,6 +23,9 @@ const {
 const Types = require("../../core/components/Toolbar/ToolbarConfig/types");
 const Utils = require("../../core/components/Toolbar/ToolbarConfig/utils");
 
+const textToolbar = { width: 396, height: 92 };
+const imageToolbar = { width: 445, height: 47 };
+
 class Toolbar extends React.Component {
   state = {
     showDetailsWnd: false,
@@ -161,7 +164,9 @@ class Toolbar extends React.Component {
     const uiPageOffset = this.props.uiPageOffset;
 
     let attributes = {};
+    let toolbarType = null;
     if (activeItem.type === "image") {
+      toolbarType = imageToolbar;
       toolbarData = Utils.LoadImageSettings(
         ImageToolbar,
         activeItem,
@@ -175,8 +180,10 @@ class Toolbar extends React.Component {
     } else if (
       activeItem.type === "text" ||
       activeItem.type === "textbox" ||
-      activeItem.type === "textflow"
+      activeItem.type === "textflow" ||
+      activeItem.type === "tinymce"
     ) {
+      toolbarType = textToolbar;
       toolbarData = Utils.LoadTextSettings(
         TextToolbar,
         activeItem,
@@ -186,7 +193,10 @@ class Toolbar extends React.Component {
     }
     if (toolbarData === null) return null;
     const { targetPosition } = this.props;
-    let containerStyle = Utils.calculateToolBarPosition(targetPosition);
+    let containerStyle = Utils.calculateToolBarPosition(
+      targetPosition,
+      toolbarType
+    );
     const topAreaGroups = Utils.filterBasedOnLocation(
       toolbarData.groups,
       Types.Position.TOP

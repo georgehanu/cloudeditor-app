@@ -28,7 +28,7 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
       };
     }
     if (props.tooltip.imageSrc) {
-      className += " TooltipImage";
+      className += " tooltipImage";
       position = "right";
     }
   }

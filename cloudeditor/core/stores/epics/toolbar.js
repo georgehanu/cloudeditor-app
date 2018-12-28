@@ -19,7 +19,10 @@ function dispachEvent(action) {
   if (action.payload.action === undefined) {
     return {
       type: UPDATE_OBJECT_PROPS,
-      payload: action.payload
+      payload: {
+        id: action.payload.id,
+        props: { ...action.payload.props, toolbarUpdate: true }
+      }
     };
   } else if (action.payload.action === "layer") {
     return {

@@ -24,14 +24,20 @@ const tableStyle = {
   color: "black"
 };
 
+const tbodyStyle = {
+  fontFamily: "Arial",
+  fontSize: "12pt"
+};
+
 const withProductionHoc = (WrappedComponent, TableName) => props => {
   const WithProduction = class extends React.Component {
     state = {
       tabelId: uuidv4()
     };
     handleClick = () => {
-      const tableContent = document.getElementById(this.state.tabelId)
-        .innerHTML;
+      let tableContent = document
+        .getElementById(this.state.tabelId)
+        .innerHTML.replace(new RegExp("px", "g"), "pt");
 
       const tableDimensions = document
         .getElementById(this.state.tabelId)
@@ -57,7 +63,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
               <ToggleTable TableName={TableName}>
                 <div id={this.state.tabelId} className="ContainerTable">
                   <table style={{ ...tableStyle }}>
-                    <tbody>
+                    <tbody style={{ ...tbodyStyle }}>
                       <WrappedComponent {...props} />
                     </tbody>
                   </table>

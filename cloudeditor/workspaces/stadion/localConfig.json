@@ -4,17 +4,28 @@
     "desktop": [
       "SideBar",
       "Html5Renderer",
+      "Toolbar",
       {
         "name": "Fupa",
         "cfg": {
           "additionalConfig": 123
         }
       },
+      {
+        "name": "LiveHtml5Pagination",
+        "cfg": {
+          "className": "html5LivePaginationContainer"
+        }
+      },
       "AddImage",
       "AddPdf",
-      "PageSelector",
       "Layouts",
-      "Zoom"
+      "Zoom",
+      "ProjectHeader",
+      "ProjectMenu",
+      "MenuItemMyProject",
+      "MenuItemPages",
+      "MenuItemTextImage"
     ]
   },
   "Layout": {

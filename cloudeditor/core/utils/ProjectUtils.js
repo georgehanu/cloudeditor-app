@@ -157,6 +157,12 @@ const getPagesDefaults = cfg => {
         height: 1080
       },
       tolerance: 40,
+      blockActions: {
+        allowAddImage: 1,
+        allowAddText: 1,
+        allowDeleteBlock: 1
+      },
+      allowDeletePage: 1,
       boxes: {
         trimbox: {
           top: 20,
@@ -618,7 +624,7 @@ const getEmptyObject = cfg => {
           bold: cfg.bold || false,
           underline: cfg.underline || false,
           italic: cfg.italic || false,
-          fontFamily: cfg.fontFamily || false,
+          fontFamily: cfg.fontFamily || "Dax",
           fillColor: getObjectColorTemplate((cfg && cfg.fillColor) || {}),
           bgColor: getObjectColorTemplate((cfg && cfg.bgColor) || {}),
           borderColor: getObjectColorTemplate((cfg && cfg.borderColor) || {})

@@ -36,7 +36,6 @@ class SideBarContainer extends React.Component {
   renderTools = () => {
     return this.props.tools.map((tool, i) => {
       const Tool = this.getTool(tool);
-
       const iconStyle = "icon " + (tool.icon ? tool.icon : "");
       return (
         <li key={i} className="sidebarButtonContainer">

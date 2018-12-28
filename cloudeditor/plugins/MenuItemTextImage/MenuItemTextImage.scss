@@ -1,0 +1,62 @@
+.projectMenuContainer .menuItemTextImageContainer {
+  position: absolute;
+  width: 650px;
+  //left: 140px;
+}
+
+.projectMenuContainer .iconCategory.textContent {
+  background: url(assets/text_content_icon.png) no-repeat;
+}
+
+.projectMenuContainer .iconCategory.imageContent {
+  background: url(assets/image_content_icon.png) no-repeat;
+}
+
+.projectMenuContainer .iconCategory.textFavourite {
+  background: url(assets/text_favorite.png) no-repeat;
+}
+
+.projectMenuContainer .iconCategory.imageFavourite {
+  background: url(assets/image_favorite.png) no-repeat;
+}
+.projectMenuContainer .iconCategory {
+  padding: 10px 0;
+  display: block;
+  width: auto;
+  height: 63px;
+  background-size: auto auto !important;
+}
+
+.projectMenuContainer .submenuContainer {
+  display: block;
+  float: left;
+  width: 49.44%;
+  overflow-y: auto;
+  height: 500px;
+  margin-bottom: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.projectMenuContainer ul.submenuContainer li {
+  height: 49%;
+  display: block;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #666666;
+  line-height: 20px;
+}
+
+.projectMenuContainer .menuItemTextImageContainer .projectMenuItemContent ul {
+  padding: 20px 0px 0px 17px;
+}
+
+.projectMenuContainer .submenuHeading {
+  text-transform: uppercase;
+  font-weight: 900;
+  display: block !important;
+  cursor: default;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #666666;
+}

@@ -29,6 +29,9 @@ const pagesOrderSelector = state => {
 const activePageIdSelector = state =>
   pathOr(null, ["project", "activePage"], state);
 
+const titleSelector = state =>
+  pathOr("Empty project", ["project", "title"], state);
+
 /* Start Document Config Selectors */
 const facingPagesSelector = state => {
   return pathOr(
@@ -97,6 +100,12 @@ const bleedPagesConfigSelector = state => {
 };
 const tolerancePagesConfigSelector = state => {
   return pathOr(0, ["project", "configs", "pages", "tolerance"], state);
+};
+const blockActionsPagesConfigSelector = state => {
+  return pathOr({}, ["project", "configs", "pages", "blockActions"], state);
+};
+const deletePagePagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "allowDeletePage"], state);
 };
 /* End Pages Config Selectors */
 /* Start Objects Config Selectors */
@@ -306,5 +315,8 @@ module.exports = {
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
   tolerancePagesConfigSelector,
-  objectsDefaultConfigSelector
+  objectsDefaultConfigSelector,
+  titleSelector,
+  blockActionsPagesConfigSelector,
+  deletePagePagesConfigSelector
 };

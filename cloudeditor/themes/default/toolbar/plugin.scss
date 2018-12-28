@@ -92,7 +92,6 @@
   top: -31px /*!important*/;
   margin-left: -10px /*!important*/;
 }
-/*.printqToolbar .toolbarSection .group.fontname_group ul li a */
 .FontPoptextList li {
   height: 36px;
   line-height: 36px;
@@ -234,7 +233,8 @@
   cursor: pointer;
 }
 
-button.ButtonSelected {
+button.ButtonSelected,
+button.ButtonSelected .icon {
   color: rgb(153, 209, 34);
 }
 
@@ -823,4 +823,8 @@ input[type="range"]::-webkit-slider-runnable-track {
   color: #2a81ac;
   margin-top: -5px;
   float: right;
+}
+
+.SettingsWnd {
+  position: absolute;
 }

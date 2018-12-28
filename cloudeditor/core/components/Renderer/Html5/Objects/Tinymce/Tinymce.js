@@ -5,6 +5,8 @@ const withRotatable = require("../hoc/withRotatable/withRotatable");
 const { compose } = require("redux");
 require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
+const { updateObjectProps } = require("../../../../../stores/actions/project");
+const { connect } = require("react-redux");
 
 class Tinymce extends React.Component {
   state = {
@@ -133,12 +135,27 @@ class Tinymce extends React.Component {
         onObjectResizeStart={this.onObjectResizeHandler}
         onObjectResized={this.onObjectResizedHandler}
         onChange={this.onChangeHandler}
+        onClick={this.onClickHandler}
+        id={"Tiny" + this.props.id}
       />
     );
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    updateObjectProps: payload => {
+      dispatch(updateObjectProps(payload));
+    }
+  };
+};
+
 module.exports = compose(
   withDraggable,
   withRotatable
-)(Tinymce);
+)(
+  connect(
+    null,
+    mapDispatchToProps
+  )(Tinymce)
+);
