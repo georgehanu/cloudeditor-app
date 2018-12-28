@@ -1,8 +1,7 @@
 const React = require("react");
 const PropTypes = require("prop-types");
-const { connect } = require("react-redux");
-const { debounce } = require("underscore");
 const randomColor = require("randomcolor");
+const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
 

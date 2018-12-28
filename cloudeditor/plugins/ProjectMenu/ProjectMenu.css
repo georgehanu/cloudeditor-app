@@ -155,3 +155,6 @@
 .canvasContainer {
   margin-top: 0px; /* 90 */
 }
+.canvasContainer {
+  padding-top: 100px;
+}

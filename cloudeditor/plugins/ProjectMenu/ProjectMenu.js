@@ -3,7 +3,7 @@ const { connect } = require("react-redux");
 const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 const ProjectMenuContainer = require("./components/ProjectMenuContainer");
-
+require("./ProjectMenu.css");
 class ProjectMenu extends React.Component {
   getTools = () => {
     return this.props.items.sort((a, b) => a.position - b.position);

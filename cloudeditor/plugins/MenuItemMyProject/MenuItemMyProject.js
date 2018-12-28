@@ -1,7 +1,7 @@
 const React = require("react");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
-
+require("./MenuItemMyProject.css");
 class MenuItemMyProject extends React.Component {
   render() {
     return (

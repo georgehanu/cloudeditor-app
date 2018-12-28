@@ -11,7 +11,6 @@ const {
   createDeepEqualSelector: createSelector
 } = require("../../core/rewrites/reselect/createSelector");
 const { changePage } = require("../../core/stores/actions/project");
-
 const pagesLabelSelector = createSelector(
   pagesOrderSelector,
   pagesSelector,
@@ -29,7 +28,7 @@ const pagesLabelSelector = createSelector(
     return pagesLabel;
   }
 );
-
+require("./MenuItemPages.css");
 class MenuItemPages extends React.Component {
   render() {
     const pages = this.props.pagesLabel.map((el, index) => {

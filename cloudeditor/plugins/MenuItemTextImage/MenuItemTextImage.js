@@ -6,7 +6,12 @@ const { withNamespaces } = require("react-i18next");
 const SubmenuText = require("./components/SubmenuData/SubmenuText");
 const SubmenuImage = require("./components/SubmenuData/SubmenuImage");
 const ImportType = require("./components/ImportComponents/ImportType");
+const { addObjectMiddle } = require("../../core/stores/actions/project");
+const {
+  getDisplayedPageBlockActions
+} = require("../../core/stores/selectors/Html5Renderer");
 
+require("./MenuItemTextImage.css");
 class MenuItemTextImage extends React.Component {
   state = {
     showModalImport: false,
@@ -32,6 +37,9 @@ class MenuItemTextImage extends React.Component {
       };
     return prevState;
   }
+  onClickAddBlock = params => {
+    this.props.onClickAddBlockHandler(params);
+  };
 
   render() {
     return (
@@ -45,23 +53,31 @@ class MenuItemTextImage extends React.Component {
         )}
         <div className="projectMenuItemHeader" />
         <div className="projectMenuItemContent">
-          <SubmenuText showModalImportHandler={this.showModalImportHandler} />
-          <SubmenuImage showModalImportHandler={this.showModalImportHandler} />
+          <SubmenuText
+            onAddBlock={this.onClickAddBlock}
+            showModalImportHandler={this.showModalImportHandler}
+            blockActions={this.props.blockActions}
+          />
+          <SubmenuImage
+            onAddBlock={this.onClickAddBlock}
+            showModalImportHandler={this.showModalImportHandler}
+            blockActions={this.props.blockActions}
+          />
         </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
   return {
-    //pagesLabel: pagesLabelSelector(state)
+    blockActions: getDisplayedPageBlockActions(state, props)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    //onChangePageHandler: payload => dispatch(changePage(payload))
+    onClickAddBlockHandler: payload => dispatch(addObjectMiddle(payload))
   };
 };
 

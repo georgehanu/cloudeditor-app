@@ -11,7 +11,7 @@ const {
   merge,
   pathOr,
   pluck,
-  reduce,
+  pick,
   add,
   values,
   compose,
@@ -41,7 +41,9 @@ const {
   tolerancePagesConfigSelector,
   includeBoxesSelector,
   useMagneticSelector,
-  objectsDefaultConfigSelector
+  objectsDefaultConfigSelector,
+  blockActionsPagesConfigSelector,
+  deletePagePagesConfigSelector
 } = require("./project");
 
 const {
@@ -110,7 +112,6 @@ const groupsSelector = createSelector(
     }
   }
 );
-
 const activeGroupSelector = createSelector(
   activePageIdSelector,
   groupsSelector,
@@ -136,6 +137,7 @@ const displayedPageSelector = groupSelector => {
     useMagneticSelector,
     activePageIdSelector,
     pagesOrderSelector,
+    deletePagePagesConfigSelector,
     (
       group,
       pages,
@@ -146,9 +148,11 @@ const displayedPageSelector = groupSelector => {
       includeBoxes,
       useMagnetic,
       activePageId,
-      pagesOrder
+      pagesOrder,
+      allowDeletePage
     ) => {
       const innerPages = {};
+      const activePage = pages[activePageId];
       let nextPage = false;
       let nextGroup = false;
       let prevPage = false;
@@ -295,6 +299,11 @@ const displayedPageSelector = groupSelector => {
         pagesLabels,
         nextPage,
         nextGroup,
+        allowDeletePage: pathOr(
+          allowDeletePage,
+          ["allowDeletePage"],
+          activePage
+        ),
         prevPage,
         prevGroup,
         offset: {
@@ -473,6 +482,15 @@ const getSelectedObjectsLengthSelector = createSelector(
     return selectedIds.length;
   }
 );
+const getDisplayedPageBlockActions = createSelector(
+  pagesSelector,
+  activePageIdSelector,
+  blockActionsPagesConfigSelector,
+  (pages, activePageId, defaults) => {
+    const page = pick(activePageId, pages);
+    return merge(pathOr({}, ["blockActions"], page), defaults);
+  }
+);
 
 registerSelectors({
   totalPages,
@@ -500,5 +518,6 @@ module.exports = {
   selectedObjectsIdsSelector,
   getSelectedObjectsLengthSelector,
   displayedPageLabelsSelector,
-  displayedPagesLabelsSelector
+  displayedPagesLabelsSelector,
+  getDisplayedPageBlockActions
 };

@@ -120,7 +120,7 @@ class Canvas extends React.Component {
         </div>
         <div className="nextContainer paginationSubContainer">
           {nextPageHandler}
-        </divdiv>
+        </div>
       </div>
     );
   };

@@ -5,7 +5,7 @@ const { hot } = require("react-hot-loader");
 const randomColor = require("randomcolor");
 const AddPages = require("./components/AddPages/AddPages");
 const { AFTER, BEFORE, END } = require("./components/utils");
-
+require("./PageSelector.css");
 class PageSelector extends React.Component {
   state = {
     activePage: 10,

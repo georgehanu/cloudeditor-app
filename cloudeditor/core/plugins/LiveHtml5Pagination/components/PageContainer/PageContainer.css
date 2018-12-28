@@ -62,3 +62,26 @@
 .singlePageContainer.singlePageSelected .singlePageText {
   color: red;
 }
+.deletePage {
+  width: 15px;
+  height: 15px;
+  background: red;
+  z-index: 502;
+  line-height: 12px;
+  border-radius: 50%;
+  text-align: center;
+  color: #fff;
+  font-size: 12px;
+  text-decoration: none;
+  right: 0px;
+  position: absolute;
+  transform: translate(50%, -50%);
+  display: none;
+}
+.singlePageContainer:hover .deletePage {
+  display: inline-block;
+}
+.singlePageContainer:hover .deletePage.hide,
+.singlePageContainer.singlePageSelected:hover .deletePage {
+  display: none;
+}

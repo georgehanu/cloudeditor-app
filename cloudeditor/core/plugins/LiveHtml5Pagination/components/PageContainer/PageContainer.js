@@ -20,7 +20,10 @@ const {
 const { computeZoomScale } = require("../../../../utils/UtilUtils");
 require("./PageContainer.css");
 const Canvas = require("../../../../components/Renderer/Html5/Canvas/Canvas");
-const { changePage } = require("../../../../stores/actions/project");
+const {
+  changePage,
+  deletePage
+} = require("../../../../stores/actions/project");
 
 const PageSource = {
   beginDrag(props) {
@@ -129,6 +132,13 @@ class PageContainer extends React.PureComponent {
       this.props.onChangePage({ page_id });
     }
   };
+  onDeletePageHandler = event => {
+    event.stopPropagation();
+    if (this.props.activePage.allowDeletePage) {
+      const { page_id } = this.props;
+      this.props.onDeletePage({ page_id });
+    }
+  };
   render() {
     const { classes, mode } = this.props;
     // if (mode === "minimized") return null;
@@ -144,6 +154,18 @@ class PageContainer extends React.PureComponent {
     return this.props.connectDropTarget(
       this.props.connectDragSource(
         <div className={classes} style={style} onClick={this.clickHandler}>
+          <a
+            onClick={event => {
+              this.onDeletePageHandler(event);
+            }}
+            href="javascript:void(0)"
+            className={[
+              "deletePage",
+              !this.props.activePage.allowDeletePage ? "hide" : ""
+            ].join(" ")}
+          >
+            x
+          </a>
           <Canvas
             getCanvasRef={this.getCanvasReference}
             getContainerRef={this.getContainerReference}
@@ -188,7 +210,8 @@ const makeMapStateToProps = (state, props) => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onChangePage: payload => dispatch(changePage(payload))
+    onChangePage: payload => dispatch(changePage(payload)),
+    onDeletePage: payload => dispatch(deletePage(payload))
   };
 };
 module.exports = hot(module)(

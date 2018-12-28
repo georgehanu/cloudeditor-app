@@ -4,7 +4,7 @@ const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 
 const { titleSelector } = require("../../core/stores/selectors/project");
-
+require("./ProjectHeader.css");
 class ProjectHeader extends React.Component {
   render() {
     return (

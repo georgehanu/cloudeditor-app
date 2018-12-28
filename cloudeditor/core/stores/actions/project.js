@@ -16,7 +16,9 @@ const {
   ADD_PAGES,
   ADD_OBJECT,
   ADD_TABLE,
-  DELETE_OBJ
+  DELETE_OBJ,
+  ADD_OBJECT_MIDDLE,
+  DELETE_PAGE
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -38,7 +40,9 @@ const {
   addPages,
   addObject,
   addTable,
-  deleteObj
+  deleteObj,
+  addObjectMiddle,
+  deletePage
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -57,7 +61,9 @@ const {
   ADD_PAGES,
   ADD_OBJECT,
   ADD_TABLE,
-  DELETE_OBJ
+  DELETE_OBJ,
+  ADD_OBJECT_MIDDLE,
+  DELETE_PAGE
 );
 
 module.exports = {
@@ -79,5 +85,7 @@ module.exports = {
   addPages,
   addObject,
   addTable,
-  deleteObj
+  deleteObj,
+  addObjectMiddle,
+  deletePage
 };

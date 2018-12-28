@@ -9,7 +9,15 @@ const submenuImage = props => {
         <p className="submenuHeading">
           {props.t("Pictures / Logos / Decorations")}
         </p>
-        <p className="submenuItem disabled">
+        <p
+          onClick={() => {
+            props.onAddBlock({ type: "image" });
+          }}
+          className={[
+            "submenuItem",
+            !props.blockActions.allowAddText ? "disabled" : ""
+          ].join(" ")}
+        >
           {props.t("Insert new image area")}
         </p>
         <p className="submenuItem">

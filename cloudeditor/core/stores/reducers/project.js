@@ -4,7 +4,8 @@ const {
   clone,
   reduce,
   insertAll,
-  merge
+  merge,
+  without
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -26,7 +27,9 @@ const {
   CHANGE_PAGES_ORDER,
   ADD_PAGES,
   ADD_OBJECT,
-  ADD_TABLE
+  ADD_TABLE,
+  ADD_OBJECT_MIDDLE,
+  DELETE_PAGE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -67,6 +70,17 @@ const addPages = (state, action) => {
       ...state.pages,
       ...newPages
     },
+    pagesOrder: newOrder
+  };
+};
+const deletePage = (state, action) => {
+  const { page_id } = action;
+  const { pages, pagesOrder } = state;
+  const newOrder = without(page_id, pagesOrder);
+  const newPages = without(page_id, pages);
+  return {
+    ...state,
+    pages: newPages,
     pagesOrder: newOrder
   };
 };
@@ -221,6 +235,41 @@ const swap = (index1, index2, list) => {
 
   return result;
 };
+addObjectMiddle = (state, action) => {
+  const pageId = state.activePage;
+  const page = state.pages[pageId];
+  const { width, height } = page;
+  const blockWidth = width / 6;
+  const blockHeight = blockWidth * (height / width);
+  if (width > height) {
+    blockHeight = height / 6;
+    blockWidth = blockHeight * (width / height);
+  }
+  const left = (width - blockWidth) / 2;
+  const top = (height - blockHeight) / 2;
+  const defaultBlock = {
+    ...action,
+    left,
+    top,
+    width: blockWidth,
+    height: blockHeight
+  };
+  const object = ProjectUtils.getEmptyObject(defaultBlock);
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
+    objects: {
+      ...state.objects,
+      [object.id]: object
+    }
+  };
+};
 
 module.exports = handleActions(
   {
@@ -334,7 +383,6 @@ module.exports = handleActions(
           ...newObjectsId
         ];
       }
-
       return {
         ...state,
         pages: {
@@ -381,6 +429,12 @@ module.exports = handleActions(
         objects: newObjects,
         selectedObjectsIds: []
       };
+    },
+    [ADD_OBJECT_MIDDLE]: (state, action) => {
+      return addObjectMiddle(state, action.payload);
+    },
+    [DELETE_PAGE]: (state, action) => {
+      return deletePage(state, action.payload);
     }
   },
   initialState
