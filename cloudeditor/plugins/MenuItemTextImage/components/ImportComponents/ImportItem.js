@@ -11,15 +11,27 @@ const importItem = props => {
         <input
           type="radio"
           className="importTextItemRadio"
+          id={"label_" + props.id}
           checked={props.checked}
           onChange={() => props.textSelected(props.id)}
         />
-        <label className="itemLabel">{props.text}</label>
+        <label
+          for={"label_" + props.id}
+          className="itemLabel"
+          dangerouslySetInnerHTML={{ __html: props.text }}
+        />
         {props.checked && (
           <div className="importTextItemSet">
             <div className="importTextItemInProduction">
               <i />
-              <span>{props.t("Insert in product")}</span>
+              <span
+                onClick={() => {
+                  props.onAddBlock({ type: "textflow", value: props.text });
+                  props.closeModal();
+                }}
+              >
+                {props.t("Insert in product")}
+              </span>
             </div>
             <div className="importTextItemFavourite">
               <input type="checkbox" checked={props.status} />
@@ -34,7 +46,17 @@ const importItem = props => {
       <li className="importImageItem">
         <label className="itemLabel">{props.filename}</label>
         <span className="itemLabelDate">{props.date_added}</span>
-        <div className="itemImage">
+        <div
+          className="itemImage"
+          onClick={() => {
+            props.onAddBlock({
+              type: "graphics",
+              image_src: IMAGE_SRC_URL + props.image,
+              imagePath: props.image
+            });
+            props.closeModal();
+          }}
+        >
           <img src={IMAGE_SRC_URL + props.image} />
         </div>
         <div className="importImageItemSet">
@@ -44,7 +66,18 @@ const importItem = props => {
           </div>
           <div className="importImageItemInProduction">
             <i />
-            <span>{props.t("Insert in product")}</span>
+            <span
+              onClick={() => {
+                props.onAddBlock({
+                  type: "graphics",
+                  image_src: IMAGE_SRC_URL + props.image,
+                  imagePath: props.image
+                });
+                props.closeModal();
+              }}
+            >
+              {props.t("Insert in product")}
+            </span>
           </div>
         </div>
       </li>

@@ -53,6 +53,7 @@ const importType = props => {
         sort={sort}
         favourite={favourite}
         closeModal={props.closeModal}
+        onAddBlock={props.onAddBlock}
       />
     </React.Fragment>
   );

@@ -3,7 +3,7 @@ const PropTypes = require("prop-types");
 const randomColor = require("randomcolor");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
-const { includes } = require("ramda");
+const { includes, equals } = require("ramda");
 const $ = require("jquery");
 
 const withDraggable = require("../hoc/withDraggable/withDraggable");
@@ -29,6 +29,7 @@ require("./Object.css");
 const Draggable = require("./Draggable");
 const TextBlock = require("../Text/Text");
 const ImageBlock = require("../Image/Image");
+const GraphicBlock = require("../Graphic/Graphic");
 
 const {
   updateObjectProps,
@@ -48,6 +49,12 @@ class ObjectBlock extends React.Component {
       this.editable.setFocus();
       this.editable.setCaret();
     }
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (equals(nextProps, this.props)) {
+      return false;
+    }
+    return true;
   }
   getEditableReference = ref => {
     this.editable = ref;
@@ -126,6 +133,21 @@ class ObjectBlock extends React.Component {
 
     return <ImageBlock {...imageProps} />;
   };
+  renderGraphic = () => {
+    const props = { ...this.props };
+    const { viewOnly, editable } = props;
+    const graphicProps = {
+      viewOnly,
+      editable,
+      id: props.id,
+      active: props.active,
+      width: props.width,
+      height: props.height,
+      image_src: props.image_src
+    };
+
+    return <GraphicBlock {...graphicProps} />;
+  };
   renderTable = () => {
     return (
       <Tinymce
@@ -191,6 +213,9 @@ class ObjectBlock extends React.Component {
         break;
       case "image":
         element = this.renderImage();
+        break;
+      case "graphics":
+        element = this.renderGraphic();
         break;
       case "tinymce":
         element = this.renderTable();

@@ -49,6 +49,7 @@ class MenuItemTextImage extends React.Component {
             closeModal={this.closeModalImportHandler}
             isFavourite={this.state.isFavourite}
             isText={this.state.isText}
+            onAddBlock={this.onClickAddBlock}
           />
         )}
         <div className="projectMenuItemHeader" />

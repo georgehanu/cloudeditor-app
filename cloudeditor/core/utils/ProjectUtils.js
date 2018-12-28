@@ -451,7 +451,7 @@ const getRandomProject = cfg => {
     height: 400,
     left: 150,
     top: 200,
-    src: "http://localhost:8080/alfa006_top.svg"
+    image_src: "http://localhost:8080/alfa006_top.svg"
   });
 
   page1 = {
@@ -588,8 +588,9 @@ const getEmptyObject = cfg => {
         return {
           ...object,
           image_src:
-            cfg.src ||
-            "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg"
+            cfg.image_src ||
+            "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg",
+          imagePath: cfg.imagePath || ""
         };
       case "textbox":
         return {

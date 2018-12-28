@@ -12,6 +12,8 @@ const importBody = props => {
         textSelected={props.textSelected}
         key={index}
         isText={props.isText}
+        onAddBlock={props.onAddBlock}
+        closeModal={props.closeModal}
       />
     );
   });
