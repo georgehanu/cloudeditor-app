@@ -1,4 +1,4 @@
-const withSpinner = require("../../../../core/hoc/withSpinner");
+const withSpinner = require("../../../../core/hoc/withSpinner/withSpinner");
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
 const { isEmpty, filter, propEq, map, pipe, pathOr, slice } = require("ramda");

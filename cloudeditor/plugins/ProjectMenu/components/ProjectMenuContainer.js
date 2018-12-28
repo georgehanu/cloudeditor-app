@@ -3,7 +3,8 @@ const React = require("react");
 
 class ProjectMenuContainer extends React.Component {
   state = {
-    menuItemActive: null
+    menuItemActive: null,
+    subWndOpened: false
   };
 
   getTool = tool => {
@@ -14,7 +15,12 @@ class ProjectMenuContainer extends React.Component {
     this.setState({ menuItemActive: index });
   };
   onMouseLeaveHandler = index => {
+    if (this.state.subWndOpened) return;
     this.setState({ menuItemActive: null });
+  };
+
+  onSetSubWndHandler = value => {
+    this.setState({ subWndOpened: value });
   };
 
   renderTools = () => {
@@ -24,14 +30,25 @@ class ProjectMenuContainer extends React.Component {
       return (
         <li
           key={i}
-          className="projectMenuButtonContainer"
+          className={
+            "projectMenuButtonContainer " +
+            (i === this.state.menuItemActive
+              ? "projectMenuButtonContainerActive"
+              : "")
+          }
           onMouseEnter={() => this.onMouseEnterHandler(i)}
           onMouseLeave={() => this.onMouseLeaveHandler(i)}
         >
           <ProjectMenuButton active={i === this.state.menuItemActive}>
             {tool.text}
           </ProjectMenuButton>
-          <Tool cfg={tool.cfg || {}} items={tool.items || []} index={i} />
+          <Tool
+            cfg={tool.cfg || {}}
+            items={tool.items || []}
+            index={i}
+            active={true}
+            onSetSubWndHandler={this.onSetSubWndHandler}
+          />
         </li>
       );
     });

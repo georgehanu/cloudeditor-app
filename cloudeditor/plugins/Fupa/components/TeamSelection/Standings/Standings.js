@@ -2,7 +2,7 @@ const React = require("react");
 const { withNamespaces } = require("react-i18next");
 require("./Standings.css");
 const withProduction = require("../../../hoc/withProduction");
-const withSpinner = require("../../../../../core/hoc/withSpinner");
+const withSpinner = require("../../../../../core/hoc/withSpinner/withSpinner");
 const Colors = require("../Utils/Colors");
 
 const fupaTdBase = {

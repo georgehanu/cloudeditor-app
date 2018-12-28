@@ -5,7 +5,7 @@ const submenuData = props => {
   return (
     <li>
       <div className="submenuDataContainer">
-        <i class={className} />
+        <i className={className} />
         {props.children}
       </div>
     </li>

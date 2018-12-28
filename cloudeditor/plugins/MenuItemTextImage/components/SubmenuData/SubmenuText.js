@@ -7,15 +7,23 @@ const submenuText = props => {
     <ul className="submenuContainer">
       <SubmenuData iconClass="textContent">
         <p className="submenuHeading">{props.t("Text and content")}</p>
-        <p class="submenuItem disabled">{props.t("Insert new text area")}</p>
-        <p class="submenuItem">
+        <p className="submenuItem disabled">
+          {props.t("Insert new text area")}
+        </p>
+        <p
+          className="submenuItem"
+          onClick={() => props.showModalImportHandler(false, true)}
+        >
           {props.t("Select and insert sayings / quotes")}
         </p>
       </SubmenuData>
 
       <SubmenuData iconClass="textFavourite">
         <p className="submenuHeading">{props.t("Your Favourites")}</p>
-        <p class="submenuItem">
+        <p
+          className="submenuItem"
+          onClick={() => props.showModalImportHandler(true, true)}
+        >
           {props.t("Select and insert sayings / quotes")}
         </p>
       </SubmenuData>

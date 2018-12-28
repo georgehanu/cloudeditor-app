@@ -1,7 +1,6 @@
 const React = require("react");
 
 const projectMenuButton = props => {
-  console.log(props, "menuButton");
   let defaultClasses = ["projectMenuButton"];
   if (props.active) {
     defaultClasses.push("projectMenuButtonActive");

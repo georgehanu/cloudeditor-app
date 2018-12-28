@@ -1,0 +1,235 @@
+.menuItemTextImageContainer .importTextModal,
+.menuItemTextImageContainer .importImageModal {
+  z-index: 600;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out;
+  padding: 0px;
+  position: fixed;
+  width: 240px;
+  overflow-y: auto;
+  left: 0px;
+  top: 0px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 14px;
+  background: #f9fafc;
+  height: 80%;
+  margin-top: 5%;
+  width: 80%;
+  margin-left: 10%;
+}
+
+.menuItemTextImageContainer .importHeader {
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid #dcdee1;
+}
+
+.menuItemTextImageContainer .importPoptext {
+  float: left;
+  margin: 20px 20px 0 0;
+  outline: none;
+}
+
+.menuItemTextImageContainer .importPoptext label {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  float: left;
+  padding: 6px 0px 0px 11px;
+  margin: 0 12px 0 0;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.menuItemTextImageContainer .importPoptext select {
+  width: 120px;
+  height: auto;
+  line-height: normal;
+  padding: 6px 0px 6px 6px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.menuItemTextImageContainer .pagination li {
+  line-height: 20px;
+  display: inline;
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .pagination li a {
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  outline: none;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  border-left-width: 1px;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  border: 1px solid #dddddd;
+  /* border-left-width: 0; */
+  border-radius: 4px;
+  margin: 0 4px;
+  opacity: 1;
+  float: left;
+  padding: 4px 12px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.menuItemTextImageContainer ul.pagination li.previous {
+  margin-right: 30px;
+}
+
+.menuItemTextImageContainer ul.pagination li.activePagination a {
+  background-color: #454545;
+  color: white;
+}
+
+.menuItemTextImageContainer ul.pagination {
+  padding-top: 20px;
+}
+
+.menuItemTextImageContainer .importTextModal .itemLabel,
+.menuItemTextImageContainer .importImageModal .itemLabel {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  padding-left: 17px;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+  vertical-align: middle;
+  color: #777;
+  outline: none;
+}
+
+.menuItemTextImageContainer .importImageModal .itemLabel {
+  width: 100%;
+}
+
+.menuItemTextImageContainer .importTextBody ul,
+.menuItemTextImageContainer .importImageBody ul {
+  list-style: none;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItem {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  display: inline-block;
+}
+
+.menuItemTextImageContainer .importTextBody ul,
+.menuItemTextImageContainer .importImageBody ul {
+  padding-left: 5px;
+  padding-top: 15px;
+}
+
+.menuItemTextImageContainer .importTextItem input,
+.menuItemTextImageContainer .importImageItem input {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .importTextModal .importPoptext select {
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555555;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemSet {
+  margin-left: 40px;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemFavourite,
+.menuItemTextImageContainer .importTextModal .importTextItemInProduction span {
+  float: left;
+}
+
+.menuItemTextImageContainer .importTextItemInProduction span,
+.menuItemTextImageContainer .importImageItemInProduction span {
+  font-weight: 600;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemInProduction {
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemFavourite {
+  margin-left: 10px;
+}
+
+.menuItemTextImageContainer .importTextItemInProduction i,
+.menuItemTextImageContainer .importImageItemInProduction i {
+  background: url(../../assets/arrow.png) no-repeat;
+  display: block;
+  width: 20px;
+  height: 13px;
+  float: left;
+  margin-top: 3px;
+}
+
+.menuItemTextImageContainer .importImageItemFavourite,
+.menuItemTextImageContainer .importTextItemFavourite {
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .loader {
+  color: grey;
+}
+
+.menuItemTextImageContainer .importImageModal .importImageItem {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  display: block;
+  width: 250px;
+  float: left;
+  margin: 0 0 55px 50px;
+  outline: none;
+}
+
+.menuItemTextImageContainer .importImageModal .importItemSet {
+  margin-left: 40px;
+}
+
+.menuItemTextImageContainer .importImageModal .itemImage {
+  width: 100%;
+  height: 200px;
+  box-shadow: 3px 2px 6px 0px #bebebe;
+  -moz-box-shadow: 3px 2px 6px 0px #bebebe;
+  -webkit-box-shadow: 3px 2px 6px 0px #bebebe;
+  background-color: white;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.menuItemTextImageContainer .importImageModal .itemImage img {
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  max-width: 200px;
+  max-height: 200px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+  min-height: 50px;
+}
+
+.menuItemTextImageContainer .importImageModal .importImageItemInProduction {
+  cursor: pointer;
+  margin-left: 2px;
+}

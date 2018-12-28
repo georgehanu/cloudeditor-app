@@ -1,6 +1,5 @@
 const Html5Renderer = require("../../core/plugins/Html5Renderer");
 const Fupa = require("../../plugins/Fupa/Fupa");
-//const SideBar = require("../../core/plugins/SideBar");
 const SideBar = require("../../core/plugins/Sidebar/Sidebar");
 const AddImage = require("../../plugins/AddImage/AddImage");
 const AddPdf = require("../../plugins/AddPdf/AddPdf");

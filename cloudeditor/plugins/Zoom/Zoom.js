@@ -2,8 +2,7 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
-//const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponents/SidebarButton");
-const SidebarButton = require("../../core/components/sidebar/SidebarButton");
+const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponents/SidebarButton");
 
 const { zoomSelector } = require("../../core/stores/selectors/ui");
 const { changeZoom } = require("../../core/stores/actions/ui");

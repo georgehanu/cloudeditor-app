@@ -82,7 +82,10 @@
 .projectMenuItem {
   display: none;
 }
-.projectMenuContainer .projectMenuButtonContainer:hover .projectMenuItem {
+
+.projectMenuContainer
+  .projectMenuButtonContainer.projectMenuButtonContainerActive
+  .projectMenuItem {
   display: block;
 }
 
