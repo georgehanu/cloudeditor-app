@@ -10,6 +10,7 @@ const importItem = props => {
       <li className="importTextItem">
         <input
           type="radio"
+          className="importTextItemRadio"
           checked={props.checked}
           onChange={() => props.textSelected(props.id)}
         />

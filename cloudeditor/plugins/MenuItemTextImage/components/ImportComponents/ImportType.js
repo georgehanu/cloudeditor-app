@@ -52,6 +52,7 @@ const importType = props => {
         categories={categories}
         sort={sort}
         favourite={favourite}
+        closeModal={props.closeModal}
       />
     </React.Fragment>
   );
