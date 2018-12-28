@@ -311,3 +311,7 @@ input[type="radio"]:checked + label:before {
   position: absolute;
   top: 13px;
 }
+
+.menuItemTextImageContainer .importImageModal .itemLabel {
+  padding-left: 0px;
+}
