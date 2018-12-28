@@ -23,16 +23,23 @@ const centerPage = ({ width, height, containerWidth, containerHeight }) => {
     marginTop
   };
 };
+
 class Canvas extends React.Component {
-  render() {
+  onClickChangePageHandler = page_id => {
+    this.props.onChangePage({
+      page_id
+    });
+  };
+  getPageNumbersRender = () => {
+    let { width, height } = this.props.activePage;
     let {
       containerHeight,
       containerWidth,
-      zoomScale,
       viewOnly,
+      zoomScale,
       bottomContainer
     } = this.props;
-    let { width, height } = this.props.activePage;
+    if (bottomContainer === undefined) return null;
     width *= zoomScale;
     height *= zoomScale;
     const margins = centerPage({
@@ -42,12 +49,11 @@ class Canvas extends React.Component {
       containerHeight
     });
     const pageNamesStyle = {
-      top: bottomContainer,
+      top: bottomContainer - margins.marginTop,
       left: margins.marginLeft
     };
-    const { getCanvasRef, ...otherProps } = this.props;
-    let pageNumbers = null;
 
+    let pageNumbers = null;
     if (!viewOnly) {
       const innerPages = this.props.activePage.innerPages;
       const pages = Object.keys(innerPages).map(pageKey => {
@@ -76,15 +82,18 @@ class Canvas extends React.Component {
         </div>
       );
     }
+    return pageNumbers;
+  };
+  getBottomPagination = () => {
+    const { viewOnly } = this.props;
+    if (viewOnly) return null;
     let nextPageHandler = null;
     if (this.props.activePage.nextPage) {
       nextPageHandler = (
         <div
           className={"paginationItem"}
           onClick={() => {
-            this.props.onChangePage({
-              page_id: this.props.activePage.nextPage
-            });
+            this.onClickChangePageHandler(this.props.activePage.nextPage);
           }}
         >
           <span className={"icon printqicon-nextarrow"} />
@@ -97,9 +106,7 @@ class Canvas extends React.Component {
         <div
           className={"paginationItem"}
           onClick={() => {
-            this.props.onChangePage({
-              page_id: this.props.activePage.prevPage
-            });
+            this.onClickChangePageHandler(this.props.activePage.prevPage);
           }}
         >
           <span className={"icon printqicon-backarrow "} />
@@ -107,17 +114,101 @@ class Canvas extends React.Component {
       );
     }
     return (
+      <div className={"paginationBottomContainer"}>
+        <div className="previousContainer paginationSubContainer">
+          {prevPageHandler}
+        </div>
+        <div className="nextContainer paginationSubContainer">
+          {nextPageHandler}
+        </divdiv>
+      </div>
+    );
+  };
+  getSidePagination = () => {
+    let { width, height } = this.props.activePage;
+    let {
+      containerHeight,
+      containerWidth,
+      viewOnly,
+      zoomScale,
+      bottomContainer
+    } = this.props;
+    width *= zoomScale;
+    height *= zoomScale;
+    const margins = centerPage({
+      width,
+      height,
+      containerWidth,
+      containerHeight
+    });
+    if (bottomContainer === undefined) return null;
+    const leftStyle = {
+      top:
+        bottomContainer -
+        margins.marginTop -
+        (containerHeight - margins.marginTop * 2) / 2,
+      left: margins.marginLeft
+    };
+    if (viewOnly) return null;
+    let leftSide = null;
+    if (this.props.activePage.prevGroup)
+      leftSide = (
+        <div
+          style={leftStyle}
+          className={"sidePaginationItem sidePaginationItemLeft"}
+        >
+          <div
+            className={"sidePaginationSubItem"}
+            onClick={() => {
+              this.onClickChangePageHandler(this.props.activePage.prevGroup);
+            }}
+          >
+            <span className={"icon printqicon-backarrow "} />
+          </div>
+        </div>
+      );
+    let rightSide = null;
+    const rightStyle = {
+      top:
+        bottomContainer -
+        margins.marginTop -
+        (containerHeight - margins.marginTop * 2) / 2,
+      left: margins.marginLeft + (containerWidth - margins.marginLeft * 2)
+    };
+    if (this.props.activePage.nextGroup)
+      rightSide = (
+        <div
+          style={rightStyle}
+          className={"sidePaginationItem sidePaginationItemRight"}
+        >
+          <div
+            className={"sidePaginationSubItem"}
+            onClick={() => {
+              this.onClickChangePageHandler(this.props.activePage.nextGroup);
+            }}
+          >
+            <span className={"icon printqicon-nextarrow "} />
+          </div>
+        </div>
+      );
+    return (
+      <React.Fragment>
+        {leftSide}
+        {rightSide}
+      </React.Fragment>
+    );
+  };
+  render() {
+    const { getCanvasRef, ...otherProps } = this.props;
+    const pageNumbers = this.getPageNumbersRender();
+    let bottomPagination = this.getBottomPagination();
+    let sidePagination = this.getSidePagination();
+    return (
       <div className="canvasContainer" ref={getCanvasRef}>
         <Zoom {...otherProps} />
         {pageNumbers}
-        <div className={"paginationBottomContainer"}>
-          <div className="previousContainer paginationSubContainer">
-            {prevPageHandler}
-          </div>
-          <div className="nextContainer paginationSubContainer">
-            {nextPageHandler}
-          </div>
-        </div>
+        {bottomPagination}
+        {sidePagination}
       </div>
     );
   }

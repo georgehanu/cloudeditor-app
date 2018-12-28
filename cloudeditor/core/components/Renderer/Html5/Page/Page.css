@@ -8,7 +8,7 @@
   background-size: cover;
 }
 .pageNameContainer {
-  margin-left: 120px;
+  margin-left: 150px;
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -19,7 +19,7 @@
   max-width: 100%;
 }
 .sidebarContainerExpand .pageNameContainer {
-  margin-left: 520px;
+  margin-left: 550px;
 }
 .pageName {
   position: relative;
@@ -85,4 +85,30 @@
 }
 .paginationItem span {
   line-height: 20px;
+}
+.sidePaginationItem {
+  position: absolute;
+  width: 30px;
+  transform: translate(-100%, -50%);
+  margin-left: 150px;
+}
+
+.sidebarContainerExpand .sidePaginationItem {
+  margin-left: 550px;
+}
+.sidebarContainerExpand .sidePaginationItemRight {
+  margin-left: 530px;
+}
+.sidePaginationItem .sidePaginationSubItem {
+  width: 25px;
+  height: 40px;
+  background-color: #fefeff;
+  border: 1px solid #dcdee1;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+}
+.sidePaginationItemRight {
+  transform: translate(100%, -50%);
+  margin-left: 130px;
 }

@@ -150,13 +150,23 @@ const displayedPageSelector = groupSelector => {
     ) => {
       const innerPages = {};
       let nextPage = false;
+      let nextGroup = false;
       let prevPage = false;
+      let prevGroup = false;
       const currentPosition = pagesOrder.indexOf(activePageId);
       if (currentPosition + 2 <= pagesOrder.length) {
         nextPage = pagesOrder[currentPosition + 1];
       }
       if (currentPosition !== 0) {
         prevPage = pagesOrder[currentPosition - 1];
+      }
+      const currentFirstPagePosition = pagesOrder.indexOf(head(group));
+      const currentLastPagePosition = pagesOrder.indexOf(last(group));
+      if (currentLastPagePosition + 2 <= pagesOrder.length) {
+        nextGroup = pagesOrder[currentLastPagePosition + 1];
+      }
+      if (currentFirstPagePosition !== 0) {
+        prevGroup = pagesOrder[currentFirstPagePosition - 1];
       }
       const offset = { left: 0, top: 0 };
       let label = "";
@@ -284,7 +294,9 @@ const displayedPageSelector = groupSelector => {
         selectable: selectable,
         pagesLabels,
         nextPage,
+        nextGroup,
         prevPage,
+        prevGroup,
         offset: {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
@@ -373,7 +385,7 @@ const scaledDisplayedPageSelector = (
         ["boxes", "bleed", "right"],
         ["boxes", "bleed", "bottom"],
         ["boxes", "bleed", "left"],
-        ["magneticBoxes", "magneticSnapEdge", "top"],
+        ["magneticBoxes", "magneticSnap", "top"],
         ["magneticBoxes", "magneticSnap", "right"],
         ["magneticBoxes", "magneticSnap", "bottom"],
         ["magneticBoxes", "magneticSnap", "left"],
