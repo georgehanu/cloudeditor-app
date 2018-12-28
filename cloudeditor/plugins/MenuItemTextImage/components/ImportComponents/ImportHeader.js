@@ -42,6 +42,15 @@ const importHeader = props => {
         containerClassName={"pagination"}
         activeClassName={"activePagination"}
       />
+
+      <a
+        href="#"
+        className="closeMenu"
+        onClick={e => {
+          e.preventDefault();
+          props.closeModal();
+        }}
+      />
     </div>
   );
 };

@@ -7,7 +7,7 @@ const MenuHeader = props => {
       <div className="TitleMenu">{props.t(props.title)}</div>
       <a
         href="#"
-        className="CloseMenu"
+        className="closeMenu"
         onClick={e => {
           e.preventDefault();
           props.modalClosed();
