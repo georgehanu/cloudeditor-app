@@ -1,5 +1,5 @@
 const { pathOr } = require("ramda");
-const { isEmpty, isNil, propEq, find, defaultTo, pipe } = require("ramda");
+const { isNil, propEq, find, defaultTo, pipe } = require("ramda");
 const {
   createSelectorWithDependencies: createSelector
 } = require("reselect-tools");

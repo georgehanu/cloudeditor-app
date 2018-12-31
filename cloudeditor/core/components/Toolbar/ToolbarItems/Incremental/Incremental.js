@@ -1,5 +1,4 @@
 const React = require("react");
-const { withState, withHandlers, compose } = require("recompose");
 const Button = require("../Button/Button");
 const Utils = require("../../ToolbarConfig/utils");
 

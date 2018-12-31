@@ -80,7 +80,7 @@ const Matches = props => {
       );
     } else {
       // display the score
-      if (currentTeamGoals == opositeTeamGoals) {
+      if (currentTeamGoals === opositeTeamGoals) {
         matchInfoBgColor = "#e1e3e2";
         matchInfoFgColor = "black";
       } else if (currentTeamGoals > opositeTeamGoals) {

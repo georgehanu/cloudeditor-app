@@ -57,7 +57,7 @@ const importItem = props => {
             props.closeModal();
           }}
         >
-          <img src={IMAGE_SRC_URL + props.image} />
+          <img src={IMAGE_SRC_URL + props.image} alt="" />
         </div>
         <div className="importImageItemSet">
           <div className="importImageItemFavourite">

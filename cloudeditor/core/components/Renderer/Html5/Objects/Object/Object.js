@@ -156,7 +156,6 @@ class ObjectBlock extends React.Component {
         width={this.props.width}
         onUpdateProps={this.props.onUpdatePropsHandler}
         zoomScale={this.props.zoomScale}
-        tableContent={this.props.tableContent}
       />
     );
   };
@@ -228,7 +227,7 @@ class ObjectBlock extends React.Component {
         );
         break;
 
-      case "tinymce":
+      case "tinymce_miky":
         element = (
           <Tinymce
             tableContent={this.props.tableContent}

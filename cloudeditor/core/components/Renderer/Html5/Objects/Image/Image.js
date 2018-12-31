@@ -1,5 +1,5 @@
 const React = require("react");
-const randomColor = require("randomcolor");
+const randomColor = require("randomColor");
 const CropperImage = require("../../CropperImage/CropperImage");
 
 class ImageBlock extends React.PureComponent {
@@ -15,7 +15,7 @@ class ImageBlock extends React.PureComponent {
     this.setState({ ready: true });
   }
   render() {
-    const { key, width, height, top, left, ...otherProps } = this.props;
+    const { width, height, top, left } = this.props;
     const style = {
       width: width,
       height: height,

@@ -1,12 +1,7 @@
-const {
-  FETCH_TEAM_MATCHES_FAILED,
-  FETCH_TEAM_MATCHES_FULFILLED
-} = require("../store/actionTypes");
 //https://fupa.docs.stoplight.io/api-docs-v1/club/get-one-club
 const Rx = require("rxjs");
-const { Observable } = require("rxjs");
 
-const { switchMap, catchError, concatMap } = require("rxjs/operators");
+const { switchMap, catchError } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const actionTypes = require("./actionTypes");

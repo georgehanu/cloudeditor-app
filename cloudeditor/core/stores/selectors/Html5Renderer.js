@@ -265,6 +265,7 @@ const displayedPageSelector = groupSelector => {
               )(box)
             };
           }
+          return false;
         });
       }, pagesBoxesMagnetic);
 

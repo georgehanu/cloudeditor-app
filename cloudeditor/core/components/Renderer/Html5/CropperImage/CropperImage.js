@@ -1,6 +1,5 @@
 const React = require("react");
 const { merge } = require("ramda");
-const $ = require("jquery");
 const { equals } = require("ramda");
 require("./CropperImage.css");
 class CropperImage extends React.Component {
@@ -43,7 +42,7 @@ class CropperImage extends React.Component {
   componentDidUpdate = () => {
     if (
       this.props.viewOnly ||
-      this.props.zoomScale != this.options.zoomScale ||
+      this.props.zoomScale !== this.options.zoomScale ||
       this.props.resizing
     ) {
       this.options = merge(
@@ -115,9 +114,7 @@ class CropperImage extends React.Component {
         originalHeight,
         widthRatio,
         heightRatio,
-        workingPercent,
-        originalWidth,
-        originalHeight
+        workingPercent
       }
     );
   };
@@ -281,6 +278,8 @@ class CropperImage extends React.Component {
       case "flip_both":
         flipStyle = "scale(-1)";
         break;
+      default:
+        break;
     }
     const { leftImage, topImage, widthImage } = this.options;
     const filterStyle = {
@@ -306,6 +305,7 @@ class CropperImage extends React.Component {
           src={this.props.image_src}
           ref={this.el}
           style={filterStyle}
+          alt=""
         />
       </div>
     );

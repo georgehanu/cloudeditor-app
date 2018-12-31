@@ -35,7 +35,6 @@ const {
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
-const $ = require("jquery");
 const uuidv4 = require("uuid/v4");
 
 const addPages = (state, action) => {
@@ -239,8 +238,8 @@ addObjectMiddle = (state, action) => {
   const pageId = state.activePage;
   const page = state.pages[pageId];
   const { width, height } = page;
-  const blockWidth = width / 6;
-  const blockHeight = blockWidth * (height / width);
+  let blockWidth = width / 6;
+  let blockHeight = blockWidth * (height / width);
   if (width > height) {
     blockHeight = height / 6;
     blockWidth = blockHeight * (width / height);

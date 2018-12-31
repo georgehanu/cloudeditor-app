@@ -3,7 +3,7 @@ const { connect } = require("react-redux");
 const { createSelector } = require("reselect");
 const PropTypes = require("prop-types");
 const sidebarSelectors = require("../../stores/selectors/sideBar");
-//const { withNamespaces } = require("react-i18next");
+const { withNamespaces } = require("react-i18next");
 
 require("./Sidebar.css");
 const SideBarContainer = require("./components/SideBarContainer");
