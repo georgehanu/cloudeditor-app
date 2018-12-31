@@ -32,23 +32,36 @@ class ProjectMenuContainer extends React.Component {
           key={i}
           className={
             "projectMenuButtonContainer " +
+            (tool.menuItemClass || "") +
             (i === this.state.menuItemActive
-              ? "projectMenuButtonContainerActive"
+              ? " projectMenuButtonContainerActive"
               : "")
           }
           onMouseEnter={() => this.onMouseEnterHandler(i)}
           onMouseLeave={() => this.onMouseLeaveHandler(i)}
         >
-          <ProjectMenuButton active={i === this.state.menuItemActive}>
-            {tool.text}
-          </ProjectMenuButton>
-          <Tool
-            cfg={tool.cfg || {}}
-            items={tool.items || []}
-            index={i}
-            active={true}
-            onSetSubWndHandler={this.onSetSubWndHandler}
-          />
+          {tool.embedButtonPlugin === true ? (
+            <Tool
+              cfg={tool.cfg || {}}
+              items={tool.items || []}
+              text={tool.text}
+              index={i}
+              active={i === this.state.menuItemActive}
+            />
+          ) : (
+            <React.Fragment>
+              <ProjectMenuButton active={i === this.state.menuItemActive}>
+                {tool.text}
+              </ProjectMenuButton>
+              <Tool
+                cfg={tool.cfg || {}}
+                items={tool.items || []}
+                index={i}
+                active={true}
+                onSetSubWndHandler={this.onSetSubWndHandler}
+              />
+            </React.Fragment>
+          )}
         </li>
       );
     });
