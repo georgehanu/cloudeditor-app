@@ -12,6 +12,7 @@ const projectMenu = require("../../plugins/ProjectMenu/ProjectMenu.scss");
 const menuItemMyProject = require("../../plugins/MenuItemMyProject/MenuItemMyProject.scss");
 const menuItemPages = require("../../plugins/MenuItemPages/MenuItemPages.scss");
 const menuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextImage.scss");
+const menuItemUndoRedo = require("../../plugins/MenuItemUndoRedo/MenuItemUndoRedo.css");
 
 module.exports = {
   stadion,
@@ -27,5 +28,6 @@ module.exports = {
   projectMenu,
   menuItemMyProject,
   menuItemPages,
-  menuItemTextImage
+  menuItemTextImage,
+  menuItemUndoRedo
 };

@@ -20,5 +20,6 @@ const ProjectHeaderPlugin = connect(
 )(withNamespaces("projectMenu")(ProjectMenu));
 
 module.exports = {
-  ProjectMenu: assign(ProjectHeaderPlugin)
+  ProjectMenu: assign(ProjectHeaderPlugin),
+  reducers: { auth: require("./store/reducers") }
 };

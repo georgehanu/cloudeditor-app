@@ -25,7 +25,8 @@
       "ProjectMenu",
       "MenuItemMyProject",
       "MenuItemPages",
-      "MenuItemTextImage"
+      "MenuItemTextImage",
+      "MenuItemUndoRedo"
     ]
   },
   "Layout": {

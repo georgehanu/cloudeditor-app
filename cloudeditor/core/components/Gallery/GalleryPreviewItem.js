@@ -2,9 +2,8 @@ const React = require("react");
 const withTooltip = require("../../hoc/withTooltip/withTooltip");
 
 const galleryPreviewItem = props => {
-  const className =
-    "uploadGalleryItem " +
-    (props.selectedId === props.id ? "uploadGalleryItemSelected" : "");
+  const className = "uploadGalleryItem ";
+  // + (props.selectedId === props.id ? "uploadGalleryItemSelected" : "");
 
   return (
     <React.Fragment>

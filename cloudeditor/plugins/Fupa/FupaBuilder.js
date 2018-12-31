@@ -34,27 +34,29 @@ class FupaBuilder extends React.Component {
   render() {
     const { clubSelection, clubTeams, teamSelection } = this.props;
     return (
-      <div className="fupa">
-        <ClubsSearch />
-        <ClubSelection
-          {...clubSelection}
-          limit={15}
-          selected={this.props.selectClub}
-        />
-        <ClubTeams
-          {...clubTeams}
-          limit={99}
-          backToSearch={this.props.backToSearch}
-          selected={this.props.changeCurrentTeam}
-        />
-        <TeamSelection
-          {...teamSelection}
-          changed={this.props.changeCurrentTeam}
-          teamStandings={this.props.teamStandings}
-          teamMatches={this.props.teamMatches}
-          teamPlayers={this.props.teamPlayers}
-          tableSizes={this.props.cfg.tableSizes || []}
-        />
+      <div className="fupaContainer">
+        <div className="fupa">
+          <ClubsSearch />
+          <ClubSelection
+            {...clubSelection}
+            limit={15}
+            selected={this.props.selectClub}
+          />
+          <ClubTeams
+            {...clubTeams}
+            limit={99}
+            backToSearch={this.props.backToSearch}
+            selected={this.props.changeCurrentTeam}
+          />
+          <TeamSelection
+            {...teamSelection}
+            changed={this.props.changeCurrentTeam}
+            teamStandings={this.props.teamStandings}
+            teamMatches={this.props.teamMatches}
+            teamPlayers={this.props.teamPlayers}
+            tableSizes={this.props.cfg.tableSizes || []}
+          />
+        </div>
       </div>
     );
   }

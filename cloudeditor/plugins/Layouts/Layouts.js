@@ -2,31 +2,19 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
-const {
-  layoutImagesSelector,
-  layoutSelectedImageSelector
-} = require("./store/selectors");
-/*
-const { UploadImage } = require("./components/UploadImage/UploadImage");
-*/
-const { layoutsSelectImage } = require("./store/actions");
+
+const TYPE = "layout";
 
 const Gallery = require("../../core/components/Gallery/Gallery");
 
 class Layouts extends React.Component {
-  selectImageHandler = imageId => {
-    this.props.layoutsSelectImage(imageId);
-  };
-
   render() {
-    console.log(this.props.layoutImages, "Layout");
     return (
       <div className="LayoutsContainer">
         <Gallery
-          items={this.props.layoutImages}
+          type={TYPE}
           hideActions={true}
-          selectImage={this.selectImageHandler}
-          selectedId={this.props.layoutSelectedImage}
+          addContainerClasses={this.props.addContainerClasses}
         />
       </div>
     );
@@ -34,18 +22,11 @@ class Layouts extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    layoutImages: layoutImagesSelector(state),
-    layoutSelectedImage: layoutSelectedImageSelector(state)
-    /*loading: uploadedLoadingSelector(state),
-    loadingImages: uploadedImagesLoadingImagesSelector(state)*/
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    layoutsSelectImage: imageId => dispatch(layoutsSelectImage(imageId))
-  };
+  return {};
 };
 
 const LayoutsPlugin = connect(
@@ -63,6 +44,5 @@ module.exports = {
       showMore: true,
       tooltip: { title: "Layouts", description: "Layouts" }
     }
-  }),
-  reducers: { layouts: require("./store/reducers") }
+  })
 };
