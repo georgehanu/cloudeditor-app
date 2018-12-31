@@ -7,7 +7,6 @@ const initialState = {};
 module.exports = handleActions(
   {
     [ADD_IMAGE_FROM_BUTTON]: (state, action) => {
-      console.log("called from epic", action);
       return state;
     }
   },

@@ -2,7 +2,7 @@ const React = require("react");
 
 const Box = require("./Box");
 const boxes = props => {
-  const { boxes, width, height } = props;
+  const { boxes, width, height, inlineClass } = props;
   const renderBox = Object.keys(boxes).map(obKey => {
     return (
       <Box
@@ -12,6 +12,7 @@ const boxes = props => {
         width={width}
         height={height}
         borderWidth={1}
+        inlineClass={inlineClass}
       />
     );
   });

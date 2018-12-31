@@ -40,6 +40,11 @@ require("webpack-jquery-ui/draggable");
           if (inst.snapElements[i].height === 10)
             inst.snapElements[i].height = 0;
         }
+        if ($(inst.snapElements[i].item).hasClass("magneticSnapEdge")) {
+          d = o.snapToleranceDynamic;
+        } else {
+          d = o.snapTolerance;
+        }
         l = inst.snapElements[i].left - inst.margins.left;
         r = l + inst.snapElements[i].width;
         t = inst.snapElements[i].top - inst.margins.top;

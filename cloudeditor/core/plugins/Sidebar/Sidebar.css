@@ -354,13 +354,13 @@
   display: none;
 }
 .pageSelectorMinimized .canvasContainer {
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 }
 .pageSelectorNormal .canvasContainer {
-  padding-bottom: 170px;
+  padding-bottom: 230px;
 }
 .pageSelectorExtended .canvasContainer {
-  padding-bottom: 320px;
+  padding-bottom: 360px;
 }
 .pageSelectorExtended .pageSelectorContainer .canvasContainer,
 .pageSelectorNormal .pageSelectorContainer .canvasContainer,

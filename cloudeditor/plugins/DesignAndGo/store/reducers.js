@@ -278,8 +278,6 @@ module.exports = handleActions(
       };
     },
     [DAG_SIGNIN_SUCCESS]: (state, action) => {
-      //console.log(action.email);
-      //console.log(action.password);
       return {
         ...state,
         loadingSignIn: false,

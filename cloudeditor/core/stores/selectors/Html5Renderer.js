@@ -11,6 +11,7 @@ const {
   merge,
   pathOr,
   pluck,
+  pick,
   values,
   compose,
   last,
@@ -34,8 +35,12 @@ const {
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
+  tolerancePagesConfigSelector,
   includeBoxesSelector,
-  objectsDefaultConfigSelector
+  useMagneticSelector,
+  objectsDefaultConfigSelector,
+  blockActionsPagesConfigSelector,
+  deletePagePagesConfigSelector
 } = require("./project");
 
 const { getMaxProp, addProps } = require("../../utils/UtilUtils");
@@ -98,7 +103,6 @@ const groupsSelector = createSelector(
     }
   }
 );
-
 const activeGroupSelector = createSelector(
   activePageIdSelector,
   groupsSelector,
@@ -119,14 +123,51 @@ const displayedPageSelector = groupSelector => {
     pagesDefaultConfigSelector,
     trimboxPagesConfigSelector,
     bleedPagesConfigSelector,
+    tolerancePagesConfigSelector,
     includeBoxesSelector,
-    (group, pages, config, trimbox, bleed, includeBoxes) => {
+    useMagneticSelector,
+    activePageIdSelector,
+    pagesOrderSelector,
+    deletePagePagesConfigSelector,
+    (
+      group,
+      pages,
+      config,
+      trimbox,
+      bleed,
+      tolerance,
+      includeBoxes,
+      useMagnetic,
+      activePageId,
+      pagesOrder,
+      allowDeletePage
+    ) => {
       const innerPages = {};
-
+      const activePage = pages[activePageId];
+      let nextPage = false;
+      let nextGroup = false;
+      let prevPage = false;
+      let prevGroup = false;
+      const currentPosition = pagesOrder.indexOf(activePageId);
+      if (currentPosition + 2 <= pagesOrder.length) {
+        nextPage = pagesOrder[currentPosition + 1];
+      }
+      if (currentPosition !== 0) {
+        prevPage = pagesOrder[currentPosition - 1];
+      }
+      const currentFirstPagePosition = pagesOrder.indexOf(head(group));
+      const currentLastPagePosition = pagesOrder.indexOf(last(group));
+      if (currentLastPagePosition + 2 <= pagesOrder.length) {
+        nextGroup = pagesOrder[currentLastPagePosition + 1];
+      }
+      if (currentFirstPagePosition !== 0) {
+        prevGroup = pagesOrder[currentFirstPagePosition - 1];
+      }
       const offset = { left: 0, top: 0 };
       let label = "";
       let selectable = true;
       let lockPosition = true;
+      let pagesLabels = [];
       forEach(page => {
         innerPages[page] = merge(pages[page], config);
         innerPages[page]["boxes"] = {
@@ -136,8 +177,23 @@ const displayedPageSelector = groupSelector => {
           ),
           bleed: merge(pathOr({}, [page, "boxes", "bleed"], pages), bleed)
         };
+        innerPages[page]["boxesMagentic"] = {
+          magneticSnapEdge: { left: 1, top: 1, bottom: 1, right: 1 },
+          magneticSnap: {
+            left: pathOr(tolerance, [page, "tolerance"], pages),
+            top: pathOr(tolerance, [page, "tolerance"], pages),
+            bottom: pathOr(tolerance, [page, "tolerance"], pages),
+            right: pathOr(tolerance, [page, "tolerance"], pages)
+          }
+        };
         innerPages[page]["offset"] = { ...offset };
+        innerPages[page]["snapTolerance"] = pathOr(
+          tolerance,
+          [page, "tolerance"],
+          pages
+        );
         offset["left"] += innerPages[page]["width"];
+        pagesLabels[page] = { left: innerPages[page]["width"] };
         label = innerPages[page]["label"];
         shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
@@ -145,14 +201,11 @@ const displayedPageSelector = groupSelector => {
       }, group);
 
       let boxes = {};
-      const defaultBox = {
-        left: 0,
-        top: 0,
-        bottom: 0,
-        right: 0
-      };
+      let magneticBoxes = {};
+      const defaultBox = { left: 0, top: 0, bottom: 0, right: 0 };
 
-      var pagesBoxes = pluck("boxes", innerPages);
+      const pagesBoxes = pluck("boxes", innerPages);
+      const pagesBoxesMagnetic = pluck("boxesMagentic", innerPages);
       forEachObjIndexed((pageBoxes, pKey) => {
         Object.keys(pageBoxes).map(bKey => {
           boxes[bKey] = defaultBox;
@@ -184,6 +237,36 @@ const displayedPageSelector = groupSelector => {
           return bKey;
         });
       }, pagesBoxes);
+      forEachObjIndexed((pageBoxesMagnetic, pKey) => {
+        Object.keys(pageBoxesMagnetic).map(bKey => {
+          magneticBoxes[bKey] = defaultBox;
+          if (useMagnetic) {
+            const box = compose(pluck(bKey))(pagesBoxesMagnetic);
+            magneticBoxes[bKey] = {
+              top: compose(
+                apply(Math.max),
+                values,
+                pluck("top")
+              )(box),
+              right: compose(
+                last,
+                values,
+                pluck("right")
+              )(box),
+              bottom: compose(
+                apply(Math.max),
+                values,
+                pluck("bottom")
+              )(box),
+              left: compose(
+                head,
+                values,
+                pluck("top")
+              )(box)
+            };
+          }
+        });
+      }, pagesBoxesMagnetic);
 
       return {
         width: addProps(
@@ -198,10 +281,22 @@ const displayedPageSelector = groupSelector => {
           (includeBoxes
             ? getMaxProp(boxes, "top") + getMaxProp(boxes, "bottom")
             : 0),
+        snapTolerance: getMaxProp(innerPages, "snapTolerance"),
         boxes: boxes,
+        magneticBoxes: useMagnetic ? magneticBoxes : {},
         lockPosition: lockPosition,
         label: label,
         selectable: selectable,
+        pagesLabels,
+        nextPage,
+        nextGroup,
+        allowDeletePage: pathOr(
+          allowDeletePage,
+          ["allowDeletePage"],
+          activePage
+        ),
+        prevPage,
+        prevGroup,
         offset: {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
@@ -235,6 +330,23 @@ const displayedPageLabelsSelector = pageIdSelector => {
     }
   );
 };
+const displayedPagesLabelsSelector = createSelector(
+  pagesOrderSelector,
+  pagesSelector,
+  (pageOrder, pages) => {
+    let pageNumber = 1;
+    let labels = [];
+    forEach(el => {
+      const page = pages[el];
+      labels[el] = {
+        longLabel: page["label"].replace("%no%", pageNumber),
+        shortLabel: page["shortLabel"].replace("%no%", pageNumber)
+      };
+      pageNumber++;
+    }, pageOrder);
+    return labels;
+  }
+);
 
 const applyZoomScaleToTarget = (page, zoomScale, paths) => {
   let scaledPage = clone(page);
@@ -262,6 +374,7 @@ const scaledDisplayedPageSelector = (
       const defaultPaths = [
         ["width"],
         ["height"],
+        ["snapTolerance"],
         ["offset", "top"],
         ["offset", "left"],
         ["boxes", "trimbox", "top"],
@@ -272,6 +385,10 @@ const scaledDisplayedPageSelector = (
         ["boxes", "bleed", "right"],
         ["boxes", "bleed", "bottom"],
         ["boxes", "bleed", "left"],
+        ["magneticBoxes", "magneticSnap", "top"],
+        ["magneticBoxes", "magneticSnap", "right"],
+        ["magneticBoxes", "magneticSnap", "bottom"],
+        ["magneticBoxes", "magneticSnap", "left"],
         ["borderWidth"]
       ];
 
@@ -356,6 +473,15 @@ const getSelectedObjectsLengthSelector = createSelector(
     return selectedIds.length;
   }
 );
+const getDisplayedPageBlockActions = createSelector(
+  pagesSelector,
+  activePageIdSelector,
+  blockActionsPagesConfigSelector,
+  (pages, activePageId, defaults) => {
+    const page = pick(activePageId, pages);
+    return merge(pathOr({}, ["blockActions"], page), defaults);
+  }
+);
 
 registerSelectors({
   totalPages,
@@ -382,5 +508,7 @@ module.exports = {
   displayedMergedObjectSelector,
   selectedObjectsIdsSelector,
   getSelectedObjectsLengthSelector,
-  displayedPageLabelsSelector
+  displayedPageLabelsSelector,
+  displayedPagesLabelsSelector,
+  getDisplayedPageBlockActions
 };

@@ -1,0 +1,318 @@
+.menuItemTextImageContainer .importTextModal,
+.menuItemTextImageContainer .importImageModal {
+  z-index: 600;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out;
+  padding: 0px;
+  position: fixed;
+  width: 240px;
+  overflow-y: auto;
+  left: 0px;
+  top: 0px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 14px;
+  background: #f9fafc;
+  height: 80%;
+  margin-top: 5%;
+  width: 80%;
+  margin-left: 10%;
+}
+
+.menuItemTextImageContainer .importHeader {
+  height: 60px;
+  width: 100%;
+  border-bottom: 1px solid #dcdee1;
+}
+
+.menuItemTextImageContainer .importPoptext {
+  float: left;
+  margin: 14px 20px 0 0;
+  outline: none;
+}
+
+.menuItemTextImageContainer .importPoptext label {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  float: left;
+  padding: 6px 0px 0px 11px;
+  margin: 0 12px 0 0;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.menuItemTextImageContainer .importPoptext select {
+  width: 120px;
+  height: auto;
+  line-height: normal;
+  padding: 6px 0px 6px 6px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.menuItemTextImageContainer .pagination li {
+  line-height: 15px;
+  display: inline;
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .pagination li a {
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  outline: none;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  border-left-width: 1px;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  border: 1px solid #dddddd;
+  /* border-left-width: 0; */
+  border-radius: 4px;
+  margin: 0 4px;
+  opacity: 1;
+  float: left;
+  padding: 4px 12px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.menuItemTextImageContainer ul.pagination li.previous {
+  margin-right: 30px;
+}
+
+.menuItemTextImageContainer ul.pagination li.activePagination a {
+  background-color: #454545;
+  color: white;
+}
+
+.menuItemTextImageContainer ul.pagination {
+  padding-top: 15px;
+}
+
+.menuItemTextImageContainer .importTextModal .itemLabel,
+.menuItemTextImageContainer .importImageModal .itemLabel {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  padding-left: 17px;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+  vertical-align: middle;
+  color: #777;
+  outline: none;
+}
+
+.menuItemTextImageContainer .importImageModal .itemLabel {
+  width: 100%;
+}
+
+.menuItemTextImageContainer .importTextBody ul,
+.menuItemTextImageContainer .importImageBody ul {
+  list-style: none;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItem,
+.menuItemTextImageContainer .importImageModal .importTextItem {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  display: inline-block;
+}
+
+.menuItemTextImageContainer .importTextBody ul,
+.menuItemTextImageContainer .importImageBody ul {
+  padding-left: 5px;
+  padding-top: 15px;
+}
+
+.menuItemTextImageContainer .importTextItem input,
+.menuItemTextImageContainer .importImageItem input {
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .importPoptext select {
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555555;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemSet {
+  margin-left: 27px;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemFavourite,
+.menuItemTextImageContainer .importTextModal .importTextItemInProduction span {
+  float: left;
+}
+
+.menuItemTextImageContainer .importTextItemInProduction span,
+.menuItemTextImageContainer .importImageItemInProduction span {
+  font-weight: 600;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemInProduction {
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .importTextModal .importTextItemFavourite {
+  margin-left: 10px;
+}
+
+.menuItemTextImageContainer .importTextItemInProduction i,
+.menuItemTextImageContainer .importImageItemInProduction i {
+  background: url(../../assets/arrow.png) no-repeat;
+  display: block;
+  width: 20px;
+  height: 13px;
+  float: left;
+  margin-top: 3px;
+}
+
+.menuItemTextImageContainer .importImageItemFavourite,
+.menuItemTextImageContainer .importTextItemFavourite {
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .loader {
+  color: grey;
+}
+
+.menuItemTextImageContainer .importImageModal .importImageItem {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  display: block;
+  width: 250px;
+  float: left;
+  margin: 0 0 55px 50px;
+  outline: none;
+}
+
+.menuItemTextImageContainer .importImageModal .importItemSet {
+  margin-left: 40px;
+}
+
+.menuItemTextImageContainer .importImageModal .itemImage {
+  width: 100%;
+  height: 200px;
+  box-shadow: 3px 2px 6px 0px #bebebe;
+  -moz-box-shadow: 3px 2px 6px 0px #bebebe;
+  -webkit-box-shadow: 3px 2px 6px 0px #bebebe;
+  background-color: white;
+  margin-bottom: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.menuItemTextImageContainer .importImageModal .itemImage img {
+  width: auto;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  max-width: 200px;
+  max-height: 200px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+  min-height: 50px;
+}
+
+.menuItemTextImageContainer .importImageModal .importImageItemInProduction {
+  cursor: pointer;
+  margin-left: 2px;
+}
+
+.menuItemTextImageContainer .importTextBody,
+.menuItemTextImageContainer .importImageBody {
+  height: 100%;
+  position: absolute;
+  padding-bottom: 60px;
+}
+
+.menuItemTextImageContainer .importTextBody ul,
+.menuItemTextImageContainer .importImageBody ul {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.menuItemTextImageContainer .importTextModal,
+.menuItemTextImageContainer .importImageModal {
+  overflow: hidden;
+}
+
+.importTextItem .importTextItemRadio {
+  position: absolute;
+}
+
+.menuItemTextImageContainer .importTextModal .itemLabel {
+  padding-left: 27px;
+}
+
+.menuItemTextImageContainer .closeMenu {
+  position: absolute;
+  right: 32px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.menuItemTextImageContainer .closeMenu:hover {
+  opacity: 1;
+}
+.menuItemTextImageContainer .closeMenu:before,
+.menuItemTextImageContainer .closeMenu:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.menuItemTextImageContainer .closeMenu:before {
+  transform: rotate(45deg);
+}
+.menuItemTextImageContainer .closeMenu:after {
+  transform: rotate(-45deg);
+}
+
+input[type="radio"]:before {
+  width: 14px;
+  height: 14px;
+  border-radius: 8px;
+  top: -2px;
+  left: -1px;
+  position: relative;
+  background-color: white;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 1px solid #454545;
+}
+
+input[type="radio"]:checked + label:before {
+  content: "\2022";
+  color: #666666;
+  font-size: 30px;
+  text-align: center;
+  line-height: 14px;
+  left: 17px;
+  position: absolute;
+  top: 13px;
+}
+
+.menuItemTextImageContainer .importImageModal .itemLabel {
+  padding-left: 0px;
+}

@@ -30,7 +30,7 @@ require("webpack-jquery-ui/resizable");
       inst.snapping = false;
 
       if (inst.isRotate === 0) {
-        $(typeof snap == "string" ? snap : ":data(ui-resizable)").each(
+        $(typeof snap === "string" ? snap : ":data(ui-resizable)").each(
           function() {
             if (this === inst.element[0] || this === inst.helper[0]) return;
 
@@ -98,6 +98,19 @@ require("webpack-jquery-ui/resizable");
           h = Math.min(_b, coords.b) - Math.max(_t, coords.t);
 
         coords.snapping = false;
+        if ($(this.item).hasClass("magneticSnap")) {
+          st = inst.options.snapToleranceDynamic;
+          l = inst.position.left + inst.lm;
+          _l = l - st;
+          t = inst.position.top + inst.tm;
+          _t = t - st;
+          r = l + inst.size.width + inst.ow;
+          _r = r + st;
+          b = t + inst.size.height + inst.oh;
+          _b = b + st;
+        } else {
+          st = inst.options.snapTolerance;
+        }
 
         if (w < 0 || h < 0) return;
 

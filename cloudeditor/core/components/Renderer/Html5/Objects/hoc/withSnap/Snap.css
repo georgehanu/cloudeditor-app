@@ -1,3 +1,6 @@
 .snapLine.snaped {
   background: Red;
 }
+.snapLine.middle.snaped {
+  background: transparent;
+}

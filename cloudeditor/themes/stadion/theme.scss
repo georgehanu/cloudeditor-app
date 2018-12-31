@@ -100,20 +100,20 @@ body {
   }
 }
 
-.Tooltip {
+.tooltip {
   background-color: #f0eff0;
   position: relative !important;
   color: black;
   max-width: 240px !important;
 }
 
-.TooltipTitle {
+.tooltipTitle {
   margin: 0;
   margin: 10px;
   font-size: 16px;
 }
 
-.TooltipDesc {
+.tooltipDesc {
   margin: 0;
   padding: 0px 10px 10px 10px;
   font-size: 14px;
@@ -135,7 +135,7 @@ body {
   border-top-color: #f0eff0 !important;
 }
 
-#sidebar-wrapper .ToggleSidebarContainer {
+#sidebar-wrapper .toggleSidebarContainer {
   display: none;
 }
 

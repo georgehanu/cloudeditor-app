@@ -24,17 +24,12 @@ const show = columnName => {
   return showColumnsPlayers.includes(columnName);
 };
 
-const formatName = name => {
-  const names = name.split(" ");
-  if (names.length === 1) {
-    return <span>{names[0]}</span>;
-  } else {
-    return (
-      <span>
-        {names[1]}, {names[0]}
-      </span>
-    );
-  }
+const formatName = player => {
+  return (
+    <span>
+      {player.lastName}, {player.firstName}
+    </span>
+  );
 };
 
 const formatNumber = value => {

@@ -51,8 +51,8 @@ SideBar.defaultProps = {
   stateSelector: "sidebar"
 };
 
-//const SideBarPlugin = connect(selector)(withNamespaces("sideBar")(SideBar));
-const SideBarPlugin = connect(selector)(SideBar);
+const SideBarPlugin = connect(selector)(withNamespaces("sidebar")(SideBar));
+//const SideBarPlugin = connect(selector)(SideBar);
 
 // let's export the plugin and a set of required reducers
 module.exports = {

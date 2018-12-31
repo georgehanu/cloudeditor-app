@@ -23,6 +23,7 @@ const {
 require("./Page.css");
 
 const Boxes = require("../Boxes/Boxes");
+const Line = require("../Boxes/Line");
 const centerPage = ({ width, height, containerWidth, containerHeight }) => {
   const marginTop = !(height > containerHeight)
     ? (containerHeight - height) / 2
@@ -93,6 +94,8 @@ class Page extends React.Component {
           key={obKey}
           id={obKey}
           zoomScale={zoomScale}
+          snapTolerance={this.props.activePage.snapTolerance}
+          middle={{ left: this.props.width / 2, top: this.props.height / 2 }}
           {...objects[obKey]}
           viewOnly={viewOnly}
         />
@@ -113,13 +116,42 @@ class Page extends React.Component {
       backgroundColor: randomColor()
     };
     let boxes = null;
+    let snapBoxes = null;
     if (!viewOnly) {
       boxes = (
-        <Boxes
-          boxes={this.props.boxes}
-          width={this.props.width}
-          height={this.props.height}
-        />
+        <React.Fragment>
+          <Boxes
+            boxes={this.props.boxes}
+            width={this.props.width}
+            height={this.props.height}
+          />
+          <Boxes
+            boxes={this.props.magneticBoxes}
+            width={this.props.width}
+            height={this.props.height}
+            inlineClass={"drag_alignLines drag_alignLinesDynamic"}
+          />
+        </React.Fragment>
+      );
+      const classes = "snapLine boxLine drag_alignLines middle_snap";
+      const topStyle = {
+        width: this.props.width,
+        left: 0,
+        top: this.props.height / 2,
+        height: 1
+      };
+      const leftStyle = {
+        width: 1,
+        left: this.props.width / 2,
+        top: 0,
+        height: this.props.height
+      };
+
+      snapBoxes = (
+        <React.Fragment>
+          <Line {...topStyle} classes={classes + " horizontal"} />
+          <Line {...leftStyle} classes={classes + " vertical"} />
+        </React.Fragment>
       );
     }
 
@@ -130,6 +162,7 @@ class Page extends React.Component {
         className="pageContainer page"
       >
         {boxes}
+        {snapBoxes}
         {this.renderObjects()}
       </div>
     );

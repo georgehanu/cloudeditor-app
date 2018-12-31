@@ -7,3 +7,108 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+.pageNameContainer {
+  margin-left: 150px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 20px;
+  line-height: 20px;
+  width: 100%;
+  overflow: hidden;
+  max-width: 100%;
+}
+.sidebarContainerExpand .pageNameContainer {
+  margin-left: 550px;
+}
+.pageName {
+  position: relative;
+  position: absolute;
+  width: auto;
+  display: inline-block;
+}
+.pageName.isActive div {
+  background: red;
+  color: #fff;
+}
+.pageName div {
+  width: auto;
+  padding: 0 5px;
+
+  display: inline-block;
+  line-height: 17px;
+  height: 20px;
+  line-height: 20px;
+  display: inline-block;
+  font-size: 12px;
+}
+.pageName:first-child {
+  left: 0px !important;
+}
+.pageSelectorMinimized .paginationBottomContainer {
+  padding-bottom: 57px;
+}
+.pageSelectorExtended .paginationBottomContainer {
+  padding-bottom: 335px;
+}
+.paginationBottomContainer {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  padding-bottom: 185px;
+  height: 25px;
+}
+.paginationBottomContainer .paginationSubContainer {
+  width: 50%;
+  float: left;
+  padding: 0 20px;
+  display: inline-block;
+  height: 25px;
+}
+.paginationBottomContainer
+  .paginationSubContainer.previousContainer
+  .paginationItem {
+  float: right;
+}
+.paginationBottomContainer
+  .paginationSubContainer.nextContainer
+  .paginationItem {
+  float: left;
+}
+.paginationItem {
+  width: 25px;
+  height: 25px;
+  background-color: #fefeff;
+  border: 1px solid #dcdee1;
+  text-align: center;
+  cursor: pointer;
+}
+.paginationItem span {
+  line-height: 20px;
+}
+.sidePaginationItem {
+  position: absolute;
+  width: 30px;
+  transform: translate(-100%, -50%);
+  margin-left: 150px;
+}
+
+.sidebarContainerExpand .sidePaginationItem {
+  margin-left: 550px;
+}
+.sidebarContainerExpand .sidePaginationItemRight {
+  margin-left: 530px;
+}
+.sidePaginationItem .sidePaginationSubItem {
+  width: 25px;
+  height: 40px;
+  background-color: #fefeff;
+  border: 1px solid #dcdee1;
+  text-align: center;
+  cursor: pointer;
+  line-height: 40px;
+}
+.sidePaginationItemRight {
+  transform: translate(100%, -50%);
+  margin-left: 130px;
+}

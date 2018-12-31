@@ -28,6 +28,9 @@ const withResizable = WrappedComponent => {
     };
     onResizeStartHandler = (event, ui) => {
       var resizable = $(event.target).data("ui-resizable");
+      resizable.options.snapToleranceDynamic =
+        this.props.snapTolerance * this.props.zoomScale;
+      resizable.options.snapTolerance = 10;
       ui = addSnapElements(event, ui, resizable.coords, resizable);
     };
     onResizeHandler = (event, ui) => {

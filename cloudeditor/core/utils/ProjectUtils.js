@@ -185,7 +185,9 @@ const getDocumentDefaults = cfg => {
       singleFirstLastPage: true,
       groupSize: 2,
       includeBoxes: true,
-      showTrimbox: true,
+      includeMagentic: false,
+      showTrimbox: false,
+      useMagentic: true,
       predefinedGroups: [2, 3], //or false
       groups: {
         group_1: ["page_1"],
@@ -204,6 +206,13 @@ const getPagesDefaults = cfg => {
         width: 1080,
         height: 1080
       },
+      tolerance: 40,
+      blockActions: {
+        allowAddImage: 1,
+        allowAddText: 1,
+        allowDeleteBlock: 1
+      },
+      allowDeletePage: 1,
       boxes: {
         trimbox: {
           top: 20,
@@ -411,7 +420,7 @@ const getRandomProject = cfg => {
   page3 = {
     ...page3,
     id: "page_3",
-    objectsIds: []
+    objectsIds: [text1.id]
   };
 
   page4 = {

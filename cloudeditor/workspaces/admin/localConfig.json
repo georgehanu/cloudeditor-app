@@ -24,7 +24,12 @@
         "cfg": {
           "additionalConfig": 123
         }
-      }
+      },
+      "ProjectHeader",
+      "ProjectMenu",
+      "MenuItemMyProject",
+      "MenuItemPages",
+      "MenuItemTextImage"
     ]
   },
   "mainComponent": {

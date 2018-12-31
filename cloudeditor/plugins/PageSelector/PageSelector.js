@@ -5,7 +5,7 @@ const { hot } = require("react-hot-loader");
 const randomColor = require("randomcolor");
 const AddPages = require("./components/AddPages/AddPages");
 const { AFTER, BEFORE, END } = require("./components/utils");
-
+require("./PageSelector.css");
 class PageSelector extends React.Component {
   state = {
     activePage: 10,
@@ -121,7 +121,6 @@ class PageSelector extends React.Component {
         let value =
           (2 + index) * (element.width + padding) +
           (index % 2 === 0 ? 2 : 2 + padding);
-        console.log(value);
         container.scrollLeft = value;
       }*/
     }

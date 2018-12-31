@@ -6,14 +6,15 @@ require("./resizable.css");
 const createResizable = ($el, onStart, onResize, onResizeStop) => {
   if ($el.length) {
     $el.resizable({
-      handles: "all",
+      handles: "e,s,se,n,w,nw",
       snap: ".drag_alignLines",
+      snapTolerance: 10,
+      snapToleranceDynamic: 10,
       start: (event, ui) => {
         if (is(Function, onStart)) onStart(event, ui);
       },
       resize: (event, ui) => {
         if (is(Function, onResize)) onResize(event, ui);
-        console.log("withResizable");
       },
       stop: (event, ui) => {
         if (is(Function, onResizeStop)) onResizeStop(event, ui);

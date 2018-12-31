@@ -28,6 +28,9 @@ const pagesOrderSelector = state => {
 const activePageIdSelector = state =>
   pathOr(null, ["project", "activePage"], state);
 
+const titleSelector = state =>
+  pathOr("Empty project", ["project", "title"], state);
+
 /* Start Document Config Selectors */
 const facingPagesSelector = state => {
   return pathOr(
@@ -60,6 +63,13 @@ const includeBoxesSelector = state => {
     state
   );
 };
+const useMagneticSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "useMagentic"],
+    state
+  );
+};
 const showTrimboxSelector = state => {
   return pathOr(
     false,
@@ -86,6 +96,15 @@ const bleedPagesConfigSelector = state => {
     ["project", "configs", "pages", "boxes", "bleed"],
     state
   );
+};
+const tolerancePagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "tolerance"], state);
+};
+const blockActionsPagesConfigSelector = state => {
+  return pathOr({}, ["project", "configs", "pages", "blockActions"], state);
+};
+const deletePagePagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "allowDeletePage"], state);
 };
 /* End Pages Config Selectors */
 /* Start Objects Config Selectors */
@@ -288,9 +307,14 @@ module.exports = {
   groupSizeSelector,
   predefinedGroupsSelector,
   includeBoxesSelector,
+  useMagneticSelector,
   showTrimboxSelector,
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
-  objectsDefaultConfigSelector
+  tolerancePagesConfigSelector,
+  objectsDefaultConfigSelector,
+  titleSelector,
+  blockActionsPagesConfigSelector,
+  deletePagePagesConfigSelector
 };

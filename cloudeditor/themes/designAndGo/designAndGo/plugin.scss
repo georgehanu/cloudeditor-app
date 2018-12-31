@@ -519,7 +519,7 @@
   font-weight: 500;
 }
 
-.CloseMenu {
+.closeMenu {
   position: absolute;
   right: 32px;
   top: 10px;
@@ -527,11 +527,11 @@
   height: 32px;
   opacity: 0.3;
 }
-.CloseMenu:hover {
+.closeMenu:hover {
   opacity: 1;
 }
-.CloseMenu:before,
-.CloseMenu:after {
+.closeMenu:before,
+.closeMenu:after {
   position: absolute;
   left: 15px;
   content: " ";
@@ -539,10 +539,10 @@
   width: 2px;
   background-color: #333;
 }
-.CloseMenu:before {
+.closeMenu:before {
   transform: rotate(45deg);
 }
-.CloseMenu:after {
+.closeMenu:after {
   transform: rotate(-45deg);
 }
 

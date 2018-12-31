@@ -57,3 +57,18 @@
   height: 0;
   display: block;
 }
+.deleteBlockHandler {
+  width: 20px;
+  height: 20px;
+  z-index: 501 !important;
+  position: ABSOLUTE;
+  top: -12px;
+  right: -12px;
+  color: #ffff;
+  background: red;
+  line-height: 17px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}

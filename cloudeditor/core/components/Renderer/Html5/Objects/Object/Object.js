@@ -2,7 +2,7 @@ const React = require("react");
 const PropTypes = require("prop-types");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
-const { includes } = require("ramda");
+const { includes, equals } = require("ramda");
 const $ = require("jquery");
 
 const withDraggable = require("../hoc/withDraggable/withDraggable");
@@ -27,10 +27,12 @@ require("./Object.css");
 
 const TextBlock = require("../Text/Text");
 const ImageBlock = require("../Image/Image");
+const GraphicBlock = require("../Graphic/Graphic");
 
 const {
   updateObjectProps,
-  addObjectIdToSelected
+  addObjectIdToSelected,
+  deleteObj
 } = require("../../../../../stores/actions/project");
 
 class ObjectBlock extends React.Component {
@@ -46,11 +48,20 @@ class ObjectBlock extends React.Component {
       this.editable.setCaret();
     }
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (equals(nextProps, this.props)) {
+      return false;
+    }
+    return true;
+  }
   getEditableReference = ref => {
     this.editable = ref;
   };
   onClickBlockHandler = event => {
     event.preventDefault();
+    if ($(event.target).hasClass("deleteBlockHandler")) {
+      return false;
+    }
     const { id, viewOnly } = this.props;
     if (viewOnly) return false;
     this.props.handleDraggableUi(this.$el, false);
@@ -111,10 +122,29 @@ class ObjectBlock extends React.Component {
       onUpdateProps: props.onUpdatePropsHandler,
       image_src: props.image_src,
       leftSlider: props.leftSlider,
-      alternateZoom: props.alternate_zoom
+      initialRestore: props.initialRestore,
+      alternateZoom: props.alternate_zoom,
+      resizing: props.resizing,
+      zoomScale: this.props.zoomScale,
+      workingPercent: this.props.workingPercent
     };
 
     return <ImageBlock {...imageProps} />;
+  };
+  renderGraphic = () => {
+    const props = { ...this.props };
+    const { viewOnly, editable } = props;
+    const graphicProps = {
+      viewOnly,
+      editable,
+      id: props.id,
+      active: props.active,
+      width: props.width,
+      height: props.height,
+      image_src: props.image_src
+    };
+
+    return <GraphicBlock {...graphicProps} />;
   };
   renderTable = () => {
     return (
@@ -182,6 +212,9 @@ class ObjectBlock extends React.Component {
       case "image":
         element = this.renderImage();
         break;
+      case "graphics":
+        element = this.renderGraphic();
+        break;
       case "tinymce":
         element = this.renderTable();
         styleNorth = { width: width + 16, height: height + 16 };
@@ -194,12 +227,75 @@ class ObjectBlock extends React.Component {
           </React.Fragment>
         );
         break;
+
+      case "tinymce":
+        element = (
+          <Tinymce
+            tableContent={this.props.tableContent}
+            height={this.props.height}
+            width={this.props.width}
+            underline={this.props.underline}
+            bold={this.props.bold}
+            italic={this.props.italic}
+            id={this.props.id}
+            textAlign={this.props.textAlign}
+            fontFamily={this.props.fontFamily}
+            fontSize={this.props.fontSize}
+            zoomScale={this.props.zoomScale}
+            bgColor={this.props.bgColor}
+            fillColor={this.props.fillColor}
+            toolbarUpdate={this.props.toolbarUpdate}
+          />
+        );
+        break;
+
       default:
         break;
     }
-
+    let resizableHandle = null;
+    if (this.props.resizable && !viewOnly) {
+      resizableHandle = (
+        <div
+          className={
+            "ui-rotatable-handle icon printqicon-rotate_handler ui-draggable"
+          }
+        />
+      );
+    }
+    let deleteHandle = null;
+    if (this.props.deletable && !viewOnly) {
+      deleteHandle = (
+        <div
+          onClick={event => {
+            event.preventDefault();
+            this.props.onDeleteObjectHandler({
+              id: this.props.id
+            });
+          }}
+          className={"deleteBlockHandler"}
+        >
+          x
+        </div>
+      );
+    }
     return (
       <div
+        onMouseEnter={() => {
+          this.props.onUpdatePropsHandler({
+            id: this.props.id,
+            props: {
+              checkSnap: 1
+            }
+          });
+        }}
+        onMouseLeave={() => {
+          this.props.onUpdatePropsHandler({
+            id: this.props.id,
+            props: {
+              checkSnap: 0
+            }
+          });
+        }}
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}
@@ -210,7 +306,10 @@ class ObjectBlock extends React.Component {
         </div>
         <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
+
         {tinyMceResizable}
+        {resizableHandle}
+        {deleteHandle}
       </div>
     );
   }
@@ -271,7 +370,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onSetActiveBlockHandler: payload =>
       dispatch(addObjectIdToSelected(payload)),
-    onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload))
+    onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload)),
+    onDeleteObjectHandler: payload => dispatch(deleteObj(payload))
   };
 };
 

@@ -21,7 +21,6 @@ const Zoom = props => {
         <div className="iconTitle">{"Zoom In"}</div>
       </SidebarButton>
       <div className="zoomMiddle">
-        <div className="icon printqicon-rotate_handler" onClick={props.reset} />
         <div className="zoomValue">
           {(props.zoomValue * 100).toFixed(0) + "%"}
         </div>
@@ -45,8 +44,8 @@ const enhance = compose(
     zoomOut: props => event => {
       if (props.zoomValue > 1) props.changeZoom(props.zoomValue - STEP);
     },
-    reset: props => event => {
-      props.changeZoom(1);
+    setZoomValue: props => value => {
+      props.changeZoom(value);
     }
   })
 );
