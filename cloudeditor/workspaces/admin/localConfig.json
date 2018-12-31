@@ -2,7 +2,12 @@
   "plugins": {
     "mobile": ["Html5Renderer"],
     "desktop": [
-      "Html5Renderer",
+      {
+        "name": "Html5Renderer",
+        "cfg": {
+          "facingPages": false
+        }
+      },
       "Toolbar",
       {
         "name": "LiveHtml5Pagination",

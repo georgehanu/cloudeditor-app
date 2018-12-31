@@ -3,6 +3,8 @@ const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
 
+const withPageGroups = require("../../hoc/renderer/withPageGroups");
+
 const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
 
@@ -171,5 +173,5 @@ module.exports = hot(module)(
   connect(
     makeMapStateToProps,
     mapDispatchToProps
-  )(Html5)
+  )(withPageGroups(Html5))
 );

@@ -51,7 +51,6 @@ class PluginsContainer extends React.Component {
         <Plugin.impl
           key={Plugin.id}
           {...this.props.params}
-          {...Plugin.cfg}
           pluginCfg={Plugin.cfg}
           items={Plugin.items}
           addContainerClasses={this.addContainerClasses}

@@ -1,9 +1,12 @@
 const React = require("react");
 const { debounce } = require("underscore");
 const { hot } = require("react-hot-loader");
+const { compose } = require("redux");
 const { connect } = require("react-redux");
 const { DragSource, DropTarget } = require("react-dnd");
 const PAGES = "PAGES";
+
+const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
 
 const {
   createDeepEqualSelector: createSelector
@@ -187,12 +190,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 module.exports = hot(module)(
-  connect(
-    makeMapStateToProps,
-    mapDispatchToProps
-  )(
-    DropTarget(PAGES, PageTarget, collectDrop)(
-      DragSource(PAGES, PageSource, collectDrag)(PageContainer)
-    )
-  )
+  compose(
+    withPageGroups,
+    connect(
+      makeMapStateToProps,
+      mapDispatchToProps
+    ),
+    DropTarget(PAGES, PageTarget, collectDrop),
+    DragSource(PAGES, PageSource, collectDrag)
+  )(PageContainer)
 );
