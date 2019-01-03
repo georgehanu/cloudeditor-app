@@ -36,8 +36,6 @@ const {
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
   tolerancePagesConfigSelector,
-  includeBoxesSelector,
-  useMagneticSelector,
   objectsDefaultConfigSelector,
   blockActionsPagesConfigSelector,
   deletePagePagesConfigSelector
@@ -98,7 +96,6 @@ const groupsSelector = createSelector(
       }
 
       if (tmp.length) groups.push(tmp);
-
       return groups;
     }
   }
@@ -116,7 +113,11 @@ const activeGroupSelector = createSelector(
     return flatten(result);
   }
 );
-const displayedPageSelector = groupSelector => {
+const displayedPageSelector = (
+  groupSelector,
+  includeBoxesSelector,
+  useMagneticSelector
+) => {
   return createSelector(
     groupSelector,
     pagesSelector,
@@ -168,8 +169,10 @@ const displayedPageSelector = groupSelector => {
       let selectable = true;
       let lockPosition = true;
       let pagesLabels = [];
+      let innerPagesCounter = 0;
       forEach(page => {
         innerPages[page] = merge(pages[page], config);
+        innerPages[page]["order"] = innerPagesCounter;
         innerPages[page]["boxes"] = {
           trimbox: merge(
             pathOr({}, [page, "boxes", "trimbox"], pages),
@@ -198,6 +201,7 @@ const displayedPageSelector = groupSelector => {
         shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
         selectable = innerPages[page]["selectable"];
+        innerPagesCounter++;
       }, group);
 
       let boxes = {};
@@ -302,7 +306,8 @@ const displayedPageSelector = groupSelector => {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
         },
-        innerPages
+        innerPages,
+        totalInnerPages: innerPagesCounter
       };
     }
   );
@@ -369,7 +374,6 @@ const scaledDisplayedPageSelector = (
     displayedPageSelector,
     zoomScaleSelector,
     (page, zoomScale) => {
-      console.log("zoomscale", zoomScale, page);
       let scaledPage = clone(page);
       if (zoomScale === 1) return scaledPage;
 

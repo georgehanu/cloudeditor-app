@@ -276,25 +276,12 @@ class ObjectBlock extends React.Component {
 
   renderHeaderFooter(type) {
     const props = { ...this.props };
-    props.width = props.parent.innerPage.width + 2 * props.parent.left;
+    props.width = props.parent.width + 2 * props.parent.left;
     props.left = -props.parent.left;
     if (type === "header") props.top = -props.parent.top;
     if (type === "footer")
-      props.top =
-        props.parent.innerPage.height + props.parent.top - props.height;
-
-    const style = {
-      width: props.width,
-      height: props.height,
-      left: props.left + props.offsetLeft,
-      top: props.top + props.offsetTop,
-      transform: "rotate(" + (props.angle || 0) + "deg)",
-      backgroundColor: "red",
-      position: "absolute",
-      border: "1px dotted green",
-      opacity: "0.5"
-    };
-    return <div style={style}>{this.props.children}</div>;
+      props.top = props.parent.height + props.parent.top - props.height;
+    return this.renderBaseBlock(props, null);
   }
 
   render() {

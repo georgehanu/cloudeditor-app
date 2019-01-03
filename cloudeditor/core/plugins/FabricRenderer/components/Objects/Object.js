@@ -39,8 +39,6 @@ class ObjectBlock extends React.PureComponent {
       block = applyZoomScaleToTarget(block, scale, defaultPaths);
     }
 
-    console.log("scaledBlockscaledBlock", block);
-
     const { type, left, top, id } = block;
 
     let text = block.text || {};

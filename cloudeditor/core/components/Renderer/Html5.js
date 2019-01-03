@@ -16,7 +16,11 @@ const {
   getSelectedObjectsLengthSelector,
   displayedPagesLabelsSelector
 } = require("../../stores/selectors/Html5Renderer");
-const { activePageIdSelector } = require("../../stores/selectors/project");
+const {
+  activePageIdSelector,
+  includeBoxesSelector,
+  useMagneticSelector
+} = require("../../stores/selectors/project");
 const {
   canvasSelector,
   zoomSelector,
@@ -164,7 +168,11 @@ const mapDispatchToProps = dispatch => {
 };
 
 const makeMapStateToProps = (state, props) => {
-  const getDisplayedPageSelector = displayedPageSelector(activeGroupSelector);
+  const getDisplayedPageSelector = displayedPageSelector(
+    activeGroupSelector,
+    includeBoxesSelector,
+    useMagneticSelector
+  );
 
   const mapStateToProps = (state, props) => {
     return {

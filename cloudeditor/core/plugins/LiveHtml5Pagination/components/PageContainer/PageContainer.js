@@ -193,7 +193,20 @@ const makeMapStateToProps = (state, props) => {
       return [page_id];
     }
   );
-  const getDisplayedPageSelector = displayedPageSelector(pageSelector);
+
+  const includeBoxesSelector = (_, props) => {
+    return props.includeBoxes;
+  };
+
+  const useMagneticSelector = (_, props) => {
+    return props.useMagentic;
+  };
+
+  const getDisplayedPageSelector = displayedPageSelector(
+    pageSelector,
+    includeBoxesSelector,
+    useMagneticSelector
+  );
   const getDisplayedPageLabelsSelector = displayedPageLabelsSelector(
     activePage
   );

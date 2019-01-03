@@ -1,7 +1,6 @@
 const { pathOr } = require("ramda");
 
 const titleSelector = state => {
-  console.log("titleSelector");
   return pathOr("", ["project", "title"], state);
 };
 

@@ -294,7 +294,6 @@ module.exports = handleActions(
       return changeGroups(state, action.payload);
     },
     [CHANGE_PAGE]: (state, action) => {
-      console.log(action, "ACTION");
       return changePage(state, action.payload);
     },
     [ADD_OBJECT_TO_PAGE]: (state, action) => {

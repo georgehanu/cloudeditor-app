@@ -33,7 +33,6 @@ class PluginsContainer extends React.Component {
   };
 
   renderPlugins = plugins => {
-    logger.info("plugins", plugins);
     return plugins
       .filter(
         Plugin =>

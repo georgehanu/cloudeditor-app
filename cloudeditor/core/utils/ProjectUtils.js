@@ -164,7 +164,11 @@ const getObjectsDefaults = cfg => {
     {
       type: "section",
       global: false,
-      objectsIds: []
+      objectsIds: [],
+      movable: 0,
+      resizable: 0,
+      rotatable: 0,
+      rotateAngle: 0
     },
     section || {}
   );
@@ -388,7 +392,7 @@ const getEmptyProject = cfg => {
   };
 };
 
-const getRandomProject = cfg => {
+const getRandomProject1 = cfg => {
   let project = getProjectTemplate(cfg);
   let page1 = getProjectPageTemplate(cfg);
   let page2 = getProjectPageTemplate(cfg);
@@ -501,21 +505,63 @@ const getRandomProject = cfg => {
   };
 };
 
-/* 
-const getRandomProject2 = cfg => {
+const getRandomProject = cfg => {
   let project = getEmptyProject();
   let i;
-  for (i = 0; i < 50; i++) {
+  const textHeader = getEmptyObject({
+    id: "textHeader",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
+    left: 500,
+    top: 20,
+    value: "Header text here",
+    fontFamily: "Dax",
+    fontSize: 20,
+    fill: "red"
+  });
+  const textFooter = getEmptyObject({
+    id: "textFooter",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
+    left: 150,
+    top: 60,
+    value: "Footer text here",
+    fontFamily: "Dax",
+    fontSize: 20,
+    fill: "red"
+  });
+
+  const header = getEmptyObject({
+    id: "header",
+    type: "section",
+    subType: "header",
+    objectsIds: [textHeader.id],
+    height: 200
+  });
+
+  const footer = getEmptyObject({
+    id: "footer",
+    type: "section",
+    subType: "footer",
+    objectsIds: [textFooter.id],
+    height: 200
+  });
+  for (i = 0; i < 1; i++) {
     let page = getEmptyPage();
     let j;
-    for (j = 0; j < 10; j++) {
+    for (j = 0; j < 2; j++) {
       let object = getEmptyObject({
-        type: "textflow",
+        type: "text",
+        subType: "textflow",
         width: 100 + Math.random() * 500,
         height: 100 + Math.random() * 500,
         left: Math.random() * 1000,
         top: Math.random() * 1000,
-        text: "Enter text here",
+        value: "Enter text here",
         fontFamily: "Dax",
         fontSize: 5 + Math.random() * 50,
         fill: "red"
@@ -526,10 +572,15 @@ const getRandomProject2 = cfg => {
     project.pages[page.id] = page;
     project.pagesOrder.push(page.id);
     project.activePage = page.id;
+    page.objectsIds.push(textHeader.id);
+    page.objectsIds.push(textFooter.id);
+    project.globalObjectsIds = {
+      before: [header.id, footer.id],
+      after: []
+    };
   }
   return project;
-}; 
-*/
+};
 
 /**
  *

@@ -105,11 +105,23 @@ class Page extends React.Component {
     let objectsOffset = [];
     forEachObjIndexed((innerPage, pKey) => {
       const parent = {
+        id: pKey,
         uuid: pKey,
-        width: innerPage.width,
-        height: innerPage.height,
+        type: "page",
+        subType: "page",
+        width: width,
+        height: height,
         top: offset.top,
-        left: offset.left
+        left: offset.left,
+        innerPage: {
+          width: innerPage.width,
+          height: innerPage.height,
+          offset: {
+            top: innerPage.offset.top,
+            left: innerPage.offset.left
+          }
+        },
+        parent: null
       };
 
       objIds = concat(
@@ -122,8 +134,6 @@ class Page extends React.Component {
         acc.push({
           id: cV,
           uuid: pKey + "-" + cV,
-          offsetTop: offset.top + innerPage.offset.top,
-          offsetLeft: offset.left + innerPage.offset.left,
           parent
         });
         return acc;
@@ -217,7 +227,6 @@ const makeMapStateToProps = (state, props) => {
 
   const mapStateToProps = (state, props) => {
     const scaledPage = getScaledDisplayedPageSelector(state, props);
-    console.log("page zoomScale", props.zoomScale, scaledPage);
     return {
       ...scaledPage,
       activePageId: activePageIdSelector(state),
