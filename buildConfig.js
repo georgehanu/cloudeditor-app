@@ -23,6 +23,7 @@ const build = config => {
   } = config;
   return {
     entry,
+    context: config.contentBase,
     output: {
       path: paths.dist,
       publicPath,

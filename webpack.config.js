@@ -18,7 +18,7 @@ const config = {
     base: __dirname,
     dist: path.join(__dirname, "public", workspace),
     cleanPaths: ["public/" + workspace],
-    contentBase: "./dist/",
+    contentBase: path.join(__dirname, "cloudeditor/"),
     htmlInput: path.join(
       __dirname,
       namespace,

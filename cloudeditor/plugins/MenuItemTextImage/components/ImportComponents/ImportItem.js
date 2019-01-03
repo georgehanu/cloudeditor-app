@@ -12,11 +12,11 @@ const importItem = props => {
           type="radio"
           className="importTextItemRadio"
           id={"label_" + props.id}
-          checked={props.checked}
+          defaultChecked={props.checked}
           onChange={() => props.textSelected(props.id)}
         />
         <label
-          for={"label_" + props.id}
+          htmlFor={"label_" + props.id}
           className="itemLabel"
           dangerouslySetInnerHTML={{ __html: props.text }}
         />
@@ -26,7 +26,7 @@ const importItem = props => {
               <i />
               <span
                 onClick={() => {
-                  props.onAddBlock({ type: "textflow", value: props.text });
+                  props.onAddBlock({ subType: "textflow", value: props.text });
                   props.closeModal();
                 }}
               >
@@ -34,7 +34,7 @@ const importItem = props => {
               </span>
             </div>
             <div className="importTextItemFavourite">
-              <input type="checkbox" checked={props.status} />
+              <input type="checkbox" defaultChecked={props.status} />
               {props.t("Favourite")}
             </div>
           </div>
@@ -61,7 +61,7 @@ const importItem = props => {
         </div>
         <div className="importImageItemSet">
           <div className="importImageItemFavourite">
-            <input type="checkbox" checked={props.status} />
+            <input type="checkbox" defaultChecked={props.status} />
             {props.t("Favourite")}
           </div>
           <div className="importImageItemInProduction">

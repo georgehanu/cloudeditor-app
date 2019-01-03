@@ -1,4 +1,5 @@
 const { is } = require("ramda");
+const $ = require("jquery");
 
 require("../../../../../../rewrites/draggable");
 

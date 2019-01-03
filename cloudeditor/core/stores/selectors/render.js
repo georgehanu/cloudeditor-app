@@ -21,7 +21,11 @@ const objectsSelector = state => {
 };
 
 const globalObjectsIdsSelector = state => {
-  return pathOr({}, ["project", "globalObjectsIds"], state);
+  return pathOr(
+    { before: [], after: [] },
+    ["project", "globalObjectsIds"],
+    state
+  );
 };
 const selectedObjectsIdsSelector = state => {
   return pathOr([], ["project", "selectedObjectsIds"], state);

@@ -9,7 +9,7 @@ const submenuText = props => {
         <p className="submenuHeading">{props.t("Text and content")}</p>
         <p
           onClick={() => {
-            props.onAddBlock({ type: "textflow" });
+            props.onAddBlock({ subType: "textflow" });
           }}
           className={[
             "submenuItem",

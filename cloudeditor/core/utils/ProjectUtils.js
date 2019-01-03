@@ -18,8 +18,19 @@ const getObjectColorTemplate = cfg => {
 };
 
 const getObjectsDefaults = cfg => {
-  const { general, image, text, pdf, qr, section, footer, header, ...custom } =
-    cfg || {};
+  const {
+    general,
+    image,
+    text,
+    textline,
+    textflow,
+    pdf,
+    qr,
+    section,
+    footer,
+    header,
+    ...custom
+  } = cfg || {};
   const generalCfg = merge(
     {
       id: null,
@@ -90,7 +101,7 @@ const getObjectsDefaults = cfg => {
     image || {}
   );
   const pdfCfg = mergeAll([
-    image,
+    imageCfg,
     {
       subType: "pdf"
     },
@@ -98,7 +109,7 @@ const getObjectsDefaults = cfg => {
   ]);
 
   const qrCfg = mergeAll([
-    image,
+    imageCfg,
     {
       subType: "qr"
     },
@@ -133,10 +144,25 @@ const getObjectsDefaults = cfg => {
     text || {}
   );
 
+  const textlineCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textline"
+    },
+    textline || {}
+  ]);
+
+  const textflowCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textflow"
+    },
+    textflow || {}
+  ]);
+
   const sectionCfg = merge(
     {
       type: "section",
-      subType: "none",
       global: false,
       objectsIds: []
     },
@@ -171,6 +197,8 @@ const getObjectsDefaults = cfg => {
     pdfCfg,
     qrCfg,
     textCfg,
+    textflowCfg,
+    textlineCfg,
     sectionCfg,
     headerCfg,
     footerCfg,
@@ -368,41 +396,60 @@ const getRandomProject = cfg => {
   let page4 = getProjectPageTemplate(cfg);
 
   const text1 = getEmptyObject({
+    id: "text1",
     type: "text",
     subType: "textflow",
     width: 400,
     height: 100,
     left: 0,
     top: 0,
-    text: "Enter text here",
+    value: "Enter text here",
     fontFamily: "Dax",
     fontSize: 50,
     fill: "red"
   });
 
-  const text2 = getEmptyObject({
+  const textHeader = getEmptyObject({
+    id: "textHeader",
     type: "text",
     subType: "textflow",
     width: 100,
     height: 100,
-    left: 0,
-    top: 0,
-    text: "Enter text here",
+    left: 500,
+    top: 20,
+    value: "Header text here",
     fontFamily: "Dax",
-    fontSize: 50,
+    fontSize: 20,
+    fill: "red"
+  });
+  const textFooter = getEmptyObject({
+    id: "textFooter",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
+    left: 150,
+    top: 60,
+    value: "Footer text here",
+    fontFamily: "Dax",
+    fontSize: 20,
     fill: "red"
   });
 
   const header = getEmptyObject({
+    id: "header",
     type: "section",
     subType: "header",
-    objectsIds: [text1.id]
+    objectsIds: [textHeader.id],
+    height: 200
   });
 
   const footer = getEmptyObject({
+    id: "footer",
     type: "section",
     subType: "footer",
-    objectsIds: [text2.id]
+    objectsIds: [textFooter.id],
+    height: 200
   });
 
   page1 = {
@@ -440,7 +487,9 @@ const getRandomProject = cfg => {
     objects: {
       [text1.id]: text1,
       [header.id]: header,
-      [footer.id]: footer
+      [footer.id]: footer,
+      [textHeader.id]: textHeader,
+      [textFooter.id]: textFooter
     },
     globalObjectsIds: {
       ...project.globalObjectsIds,
@@ -448,7 +497,7 @@ const getRandomProject = cfg => {
       after: []
     },
     pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id, page4.id],
-    activePage: page1.id
+    activePage: page3.id
   };
 };
 
@@ -494,9 +543,7 @@ const getEmptyPage = cfg => {
 const getEmptyObject = cfg => {
   let object = merge(
     {
-      id: uuidv4(),
-      type: "none",
-      subType: "none"
+      id: uuidv4()
     },
     cfg || {}
   );

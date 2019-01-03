@@ -5,6 +5,7 @@ const { compose } = require("redux");
 const { includes, equals } = require("ramda");
 const $ = require("jquery");
 
+const InnerObjectBlock = require("./Object");
 const withDraggable = require("../hoc/withDraggable/withDraggable");
 const withResizable = require("../hoc/withResizable/withResizable");
 const withRotatable = require("../hoc/withRotatable/withRotatable");
@@ -163,7 +164,7 @@ class ObjectBlock extends React.Component {
       />
     );
 
-    return this.renderHeader(block);
+    return this.renderBaseBlock(this.props, block);
   };
 
   renderBaseBlock(props, block) {
@@ -198,7 +199,7 @@ class ObjectBlock extends React.Component {
       height,
       left: left + offsetLeft,
       top: top + offsetTop,
-      transform: "rotate(" + (angle || 0) + "deg)",
+      transform: "rotate(" + angle + "deg)",
       backgroundColor: bgColor.htmlRGB
     };
     const styleBorderColor = {
@@ -281,7 +282,41 @@ class ObjectBlock extends React.Component {
     if (type === "header") props.top = -props.parent.top;
     if (type === "footer")
       props.top = props.parent.height + props.parent.top - props.height;
-    return this.renderBaseBlock(props, null);
+
+    let objectsOffset = [];
+
+    objectsOffset = props.objectsIds.reduce(function(acc, cV, _) {
+      acc.push({
+        id: cV,
+        offsetTop: props.offsetTop,
+        offsetLeft: props.offsetLeft,
+        parent: props.parent
+      });
+      return acc;
+    }, objectsOffset);
+
+    const childrens = objectsOffset.map(obj => {
+      const { id, ...objProps } = obj;
+      return (
+        <div
+          key={id}
+          id={id}
+          zoomScale={props.zoomScale}
+          snapTolerance={props.snapTolerance}
+          middle={props.middle}
+          viewOnly={props.viewOnly}
+          {...objProps}
+        >
+          asdsa
+        </div>
+      );
+    });
+
+    return (
+      <React.Fragment>
+        {this.renderBaseBlock(props, null)} {childrens}
+      </React.Fragment>
+    );
   }
 
   render() {

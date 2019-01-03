@@ -369,6 +369,7 @@ const scaledDisplayedPageSelector = (
     displayedPageSelector,
     zoomScaleSelector,
     (page, zoomScale) => {
+      console.log("zoomscale", zoomScale, page);
       let scaledPage = clone(page);
       if (zoomScale === 1) return scaledPage;
 
@@ -426,7 +427,7 @@ const displayedMergedObjectSelector = (
     (object, defaults, active) => {
       return mergeAll([
         defaults.generalCfg,
-        defaults[object.type + "Cfg"],
+        defaults[object.subType + "Cfg"],
         object,
         {
           active
