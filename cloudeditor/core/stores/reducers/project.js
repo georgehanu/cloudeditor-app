@@ -402,10 +402,7 @@ module.exports = handleActions(
         top: originalObj.top + 30,
         left: originalObj.left + 30
       };
-      return addObjectToPage(state, {
-        object: duplicateObj,
-        pageId: state.activePage
-      });
+      return addObject(state, duplicateObj);
     },
     [DELETE_OBJ]: (state, action) => {
       let newObjects = { ...state.objects };

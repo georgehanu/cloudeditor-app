@@ -72,3 +72,18 @@
   font-weight: bold;
   cursor: pointer;
 }
+.ui-resizable-handle,
+.deleteBlockHandler,
+.ui-rotatable-handle {
+  display: none !important;
+}
+.pageBlock:hover .ui-resizable-handle,
+.pageBlock:hover .deleteBlockHandler,
+.pageBlock:hover .ui-rotatable-handle {
+  display: block !important;
+}
+.pageBlock.active:hover .ui-resizable-handle,
+.pageBlock.active:hover .deleteBlockHandler,
+.pageBlock.active:hover .ui-rotatable-handle {
+  display: none !important;
+}

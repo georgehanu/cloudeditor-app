@@ -49,6 +49,13 @@ class ObjectBlock extends React.Component {
       this.editable.setFocus();
       this.editable.setCaret();
     }
+    if (this.$el) {
+      const params = {
+        blockContainer: this.$el.get(0),
+        blockId: this.props.id
+      };
+      this.props.checkErrorMessages(params);
+    }
   }
   shouldComponentUpdate(nextProps, nextState) {
     if (equals(nextProps, this.props)) {
@@ -116,6 +123,8 @@ class ObjectBlock extends React.Component {
       active: props.active,
       width: props.width,
       height: props.height,
+      imageWidth: props.imageWidth,
+      imageHeight: props.imageHeight,
       cropX: props.cropX,
       cropY: props.cropY,
       cropW: props.cropW,
@@ -206,6 +215,7 @@ class ObjectBlock extends React.Component {
     let element = null;
     let styleNorth = {};
     let tinyMceResizable = null;
+
     switch (type) {
       case "textflow":
       case "textline":
@@ -282,22 +292,8 @@ class ObjectBlock extends React.Component {
     }
     return (
       <div
-        onMouseEnter={() => {
-          this.props.onUpdatePropsHandler({
-            id: this.props.id,
-            props: {
-              checkSnap: 1
-            }
-          });
-        }}
-        onMouseLeave={() => {
-          this.props.onUpdatePropsHandler({
-            id: this.props.id,
-            props: {
-              checkSnap: 0
-            }
-          });
-        }}
+        onMouseEnter={() => {}}
+        onMouseLeave={() => {}}
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}

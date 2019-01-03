@@ -7,10 +7,10 @@ const PageSource = {
   beginDrag(props) {
     return {
       type,
-      imageWidth: 200,
-      imageHeight: 300,
-      width: 0,
-      height: 0
+      image_src: props.image_src,
+      imagePath: props.image_path,
+      imageWidth: props.imageWidth,
+      imageHeight: props.imageHeight
     };
   },
   canDrag(props, monitor) {

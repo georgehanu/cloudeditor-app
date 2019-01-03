@@ -26,10 +26,16 @@ class CropperImage extends React.Component {
       originalWidth: 0,
       originalHeight: 0,
       zoomScale: 0,
+      image_src: "",
       resizing: 0
     };
   }
+
   shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.viewOnly) {
+      this.initializeDimensions();
+      this.setZoom();
+    }
     if (equals(nextProps, this.props)) return false;
     return true;
   }
@@ -37,6 +43,9 @@ class CropperImage extends React.Component {
     if (!this.props.viewOnly) {
       document.addEventListener("mousemove", this.handleMouseMove.bind(this));
       document.addEventListener("mouseup", this.handleMouseUp.bind(this));
+    } else {
+      this.initializeDimensions();
+      this.setZoom();
     }
   }
 
@@ -44,11 +53,16 @@ class CropperImage extends React.Component {
     if (
       this.props.viewOnly ||
       this.props.zoomScale != this.options.zoomScale ||
+      this.props.image_src != this.options.image_src ||
       this.props.resizing
     ) {
       this.options = merge(
         { ...this.options },
-        { zoomScale: this.props.zoomScale, resizing: this.props.resizing }
+        {
+          zoomScale: this.props.zoomScale,
+          resizing: this.props.resizing,
+          image_src: this.props.image_src
+        }
       );
       this.initializeDimensions();
     }
@@ -68,13 +82,21 @@ class CropperImage extends React.Component {
   };
   initializeDimensions = () => {
     let { workingPercent, minPercent, focalPoint, resizeTimes } = this.options;
-    const { alternateZoom, leftSlider, cropX, cropY, cropW } = this.props;
+    const {
+      alternateZoom,
+      leftSlider,
+      cropX,
+      cropY,
+      cropW,
+      imageWidth,
+      imageHeight
+    } = this.props;
     const targetWidth = this.props.width;
     const targetHeight = this.props.height;
     let widthRatio = 1;
     let heightRatio = 1;
-    const originalWidth = 684;
-    const originalHeight = 350;
+    const originalWidth = imageWidth;
+    const originalHeight = imageHeight;
     if (originalWidth > 0) {
       widthRatio = targetWidth / originalWidth;
       heightRatio = targetHeight / originalHeight;
@@ -92,7 +114,7 @@ class CropperImage extends React.Component {
         }
       }
     }
-    if (!cropW) {
+    if (!cropW || cropW === -0) {
       workingPercent = minPercent;
       focalPoint = {
         x: Math.round(originalWidth / 2),
@@ -257,14 +279,12 @@ class CropperImage extends React.Component {
     this.options = merge({ ...this.options }, { focalPoint });
   };
   render() {
-    const { parent } = this.props;
-    const targetWidth = parent.offsetWidth;
-    const targetHeight = parent.offsetHeight;
+    const { width, height } = this.props;
     const styleWrapper = {
       overflow: "hidden",
       position: "relative",
-      width: targetWidth,
-      height: targetHeight
+      width: width,
+      height: height
     };
     let filterString = "";
     let flipStyle = "";
@@ -297,7 +317,10 @@ class CropperImage extends React.Component {
           onLoad={() => {
             this.options = merge(
               { ...this.options },
-              { zoomScale: this.props.zoomScale, resizing: this.props.resizing }
+              {
+                zoomScale: this.props.zoomScale,
+                image_src: this.props.image_src
+              }
             );
             this.initializeDimensions();
             this.setZoom();

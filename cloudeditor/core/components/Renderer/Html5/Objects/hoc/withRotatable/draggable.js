@@ -12,7 +12,7 @@ require("webpack-jquery-ui/draggable");
 (function($) {
   $.extend($.ui.draggable.prototype.options, {
     snapTolerance: 20,
-    snapMode: "both"
+    snapMode: "customPrintq"
   });
 
   $.ui.plugin.add("draggable", "snap", {

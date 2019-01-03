@@ -2,10 +2,9 @@ const React = require("react");
 const ObjectBlock = require("../Objects/Object/Object");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
-const { randomColor } = require("randomColor");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
-const { forEachObjIndexed } = require("ramda");
+const { forEachObjIndexed, forEach } = require("ramda");
 
 const type = ["image", "text"];
 
@@ -19,6 +18,7 @@ const { addObject } = require("../../../../stores/actions/project");
 const {
   activePageIdSelector
 } = require("../../../../stores/selectors/project");
+const BlockMessage = require("../BlockMesage/BlockMessage");
 
 require("./Page.css");
 
@@ -40,28 +40,30 @@ const centerPage = ({ width, height, containerWidth, containerHeight }) => {
 
 const PageTarget = {
   drop(props, monitor, component) {
-    const object = { ...monitor.getItem() };
-    const componentBounding = ReactDOM.findDOMNode(
-      component
-    ).getBoundingClientRect();
-    const activePageId = props.activePageId;
-    innerPage = props.activePage.innerPages[activePageId];
-    let aspectRatio = innerPage.height / innerPage.width;
-    width = innerPage.width / 6;
-    switch (object.type) {
-      case "image":
-        aspectRatio = object.imageHeight / object.imageWidth;
-        break;
-      default:
-        break;
-    }
-    object.width = width;
-    object.height = width * aspectRatio;
-    const position = monitor.getSourceClientOffset();
+    if (monitor.isOver()) {
+      const object = { ...monitor.getItem() };
+      const componentBounding = ReactDOM.findDOMNode(
+        component
+      ).getBoundingClientRect();
+      const activePageId = props.activePageId;
+      innerPage = props.activePage.innerPages[activePageId];
+      let aspectRatio = innerPage.height / innerPage.width;
+      width = innerPage.width / 6;
+      switch (object.type) {
+        case "image":
+          aspectRatio = object.imageHeight / object.imageWidth;
+          break;
+        default:
+          break;
+      }
+      object.width = width;
+      object.height = width * aspectRatio;
+      const position = monitor.getSourceClientOffset();
 
-    object.left = (-1 * (componentBounding.x - position.x)) / props.zoomScale;
-    object.top = (-1 * (componentBounding.y - position.y)) / props.zoomScale;
-    props.onAddObjectHandler(object);
+      object.left = (-1 * (componentBounding.x - position.x)) / props.zoomScale;
+      object.top = (-1 * (componentBounding.y - position.y)) / props.zoomScale;
+      props.onAddObjectHandler(object);
+    }
   },
   canDrop(props, monitor) {
     if (!props.viewOnly) {
@@ -84,8 +86,48 @@ class Page extends React.Component {
   constructor(props) {
     super(props);
     this.pageContainerRef = React.createRef();
+    this.state = {
+      errorMessages: []
+    };
   }
+  getIfMessage = (pageBounding, blockBounding) => {
+    let type = 0;
+    let snapTolerance = this.props.activePage.snapTolerance;
+    const { zoomScale } = this.props;
+    snapTolerance *= zoomScale;
+    if (
+      blockBounding.left < pageBounding.left + snapTolerance ||
+      blockBounding.right > pageBounding.right - snapTolerance ||
+      blockBounding.top < pageBounding.top + snapTolerance ||
+      blockBounding.bottom > pageBounding.bottom - snapTolerance
+    )
+      type = 1;
+    if (
+      blockBounding.right < pageBounding.left ||
+      blockBounding.left > pageBounding.right ||
+      blockBounding.bottom < pageBounding.top ||
+      blockBounding.top > pageBounding.bottom
+    )
+      type = 2;
+    return type;
+  };
+  checkErrorMessages = params => {
+    const { blockContainer, blockId } = params;
+    let { errorMessages } = this.state;
+    const pageBounding = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    const blockContainerBounding = blockContainer.getBoundingClientRect();
 
+    errorMessages[blockId] = {
+      type: this.getIfMessage(pageBounding, blockContainerBounding),
+      left:
+        blockContainerBounding.left -
+        pageBounding.left +
+        blockContainerBounding.width / 2,
+      top: blockContainerBounding.top - pageBounding.top,
+      width: blockContainerBounding.width
+    };
+    this.setState({ errorMessages });
+  };
   renderObjects() {
     const { objectsOffsetList: objects, viewOnly, zoomScale } = this.props;
     return Object.keys(objects).map(obKey => {
@@ -97,11 +139,27 @@ class Page extends React.Component {
           snapTolerance={this.props.activePage.snapTolerance}
           middle={{ left: this.props.width / 2, top: this.props.height / 2 }}
           {...objects[obKey]}
+          checkErrorMessages={this.checkErrorMessages}
           viewOnly={viewOnly}
         />
       );
     });
   }
+  renderErrorMessages = () => {
+    const { errorMessages } = this.state;
+    return Object.keys(errorMessages).map(obKey => {
+      return (
+        <BlockMessage
+          key={obKey}
+          {...errorMessages[obKey]}
+          objectKeys={Object.keys(this.props.objectsOffsetList)}
+          id={obKey}
+          delay={10000}
+          viewOnly={this.props.viewOnly}
+        />
+      );
+    });
+  };
   getPageRef = () => {
     return this.ref;
   };
@@ -112,8 +170,7 @@ class Page extends React.Component {
       width,
       height,
       marginLeft,
-      marginTop,
-      backgroundColor: randomColor()
+      marginTop
     };
     let boxes = null;
     let snapBoxes = null;
@@ -164,6 +221,7 @@ class Page extends React.Component {
         {boxes}
         {snapBoxes}
         {this.renderObjects()}
+        {this.renderErrorMessages()}
       </div>
     );
   }

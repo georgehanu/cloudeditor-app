@@ -1,0 +1,29 @@
+.errorMessage {
+  height: auto;
+  min-width: 400px;
+  padding: 15px;
+  position: absolute;
+  transform: translate(-50%, -100%);
+}
+.errorBody {
+  background-color: rgba(243, 243, 243, 1);
+  border: 1px solid #e10019;
+  padding: 0px 12px 5px 12px;
+  padding-top: 20px;
+  z-index: 502;
+}
+.errorBody span {
+  font-size: 13px;
+  font-weight: 700;
+}
+.removeWarning {
+  font-size: 21px;
+  font-weight: bolder;
+  position: absolute;
+  top: 11px;
+  width: 100%;
+  left: -19px;
+  text-align: right;
+  color: #646464;
+  cursor: pointer;
+}

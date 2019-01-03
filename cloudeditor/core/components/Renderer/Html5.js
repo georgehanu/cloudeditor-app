@@ -131,9 +131,6 @@ class Html5 extends React.Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: randomColor()
-    };
     const { pageReady } = this.state;
     return (
       <Canvas
@@ -141,6 +138,7 @@ class Html5 extends React.Component {
         getContainerRef={this.getContainerReference}
         activePage={this.props.activePage}
         zoomScale={this.state.zoomScale}
+        zoom={this.props.zoom}
         containerWidth={this.props.canvasDimm.workingWidth}
         containerHeight={this.props.canvasDimm.workingHeight}
         bottomContainer={this.state.bottomContainer}
