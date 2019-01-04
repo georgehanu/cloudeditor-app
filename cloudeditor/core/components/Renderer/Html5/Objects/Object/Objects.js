@@ -1,6 +1,9 @@
 const React = require("react");
 const { connect } = require("react-redux");
-const { propEq, find, clone, pathOr } = require("ramda");
+const { propEq, find, clone, pathOr, pick, omit } = require("ramda");
+const objectAssign = require("object-assign");
+var now = require("performance-now");
+const isEqual = require("react-fast-compare");
 
 const ObjectBlock = require("./Object");
 
@@ -34,12 +37,65 @@ const flattenIds = (ids, objectsData, parents, parent) => {
   }
 };
 
+function getPageBlocks(ids, objectsData) {
+  if (Array.isArray(ids)) {
+    return ids.reduce(function(done, cId) {
+      if (objectsData[cId].hasOwnProperty("objectsIds"))
+        return objectAssign(
+          done,
+          getPageBlocks(objectsData[cId].objectsIds, objectsData)
+        );
+
+      return pick(ids, objectsData);
+    }, {});
+  }
+
+  return {};
+}
+
+function getPageBlocksIds(arr, data) {
+  if (Array.isArray(arr)) {
+    return arr.reduce(function(done, curr) {
+      if (data[curr].hasOwnProperty("objectsIds"))
+        return done.concat(
+          [data[curr].id].concat(getPageBlocksIds(data[curr].objectsIds, data))
+        );
+      return done.concat(data[curr].id);
+    }, []);
+  } else {
+    return arr;
+  }
+}
+
 class Blocks extends React.Component {
   state = {
     pageBlocksData: {}
   };
 
-  recursiveRenderBlocks(objects) {
+  static getDerivedStateFromProps(nextProps) {
+    const ids = nextProps.objects.map(function(obj) {
+      return obj.id;
+    });
+
+    const start = now();
+    let pageBlocksIds = getPageBlocksIds(ids, nextProps.objectsData);
+    pageBlocksData = pick(pageBlocksIds, nextProps.objectsData);
+    const end = now();
+
+    console.log("getPageBlocks1", (end - start).toFixed(15), pageBlocksData);
+    return { pageBlocksData };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const pProps = omit(["objectsData"], this.props);
+    const nProps = omit(["objectsData"], nextProps);
+    if (isEqual(nextState, this.state) && isEqual(pProps, nProps)) {
+      return false;
+    }
+    return true;
+  }
+
+  recursiveRenderBlocks(objects, objectsData) {
     const { zoomScale, snapTolerance, middle, viewOnly } = this.props;
     let that = this;
     const bUuids = objects.map(function(obj) {
@@ -48,11 +104,11 @@ class Blocks extends React.Component {
     return bUuids.map(function(bUuid) {
       const obj = find(propEq("uuid", bUuid), objects);
       const bId = obj.id;
-      const objectData = that.props.objectsData[bId];
+      const objectData = objectsData[bId];
       obj["offsetLeft"] = obj.parent.left + obj.parent.innerPage.offset.left;
       obj["offsetTop"] = obj.parent.top + obj.parent.innerPage.offset.top;
 
-      const objectsIds = pathOr([], ["objectsIds"], objectData);
+      const objectsIds = pathOr([], ["objectsIds"], objectsData);
       if (objectsIds.length) {
         let newObjects = [];
 
@@ -71,7 +127,7 @@ class Blocks extends React.Component {
         //   parent["width"] = obj.parent.width + 2 * obj.parent.left;
         // }
 
-        objIds = that.props.objectsData[bId]["objectsIds"];
+        objIds = objectsData[bId]["objectsIds"];
 
         newObjects = objIds.reduce(function(acc, cV, _) {
           acc.push({
@@ -115,9 +171,19 @@ class Blocks extends React.Component {
     });
   }
   render() {
+    //return null;
     //const { objects, zoomScale, snapTolerance, middle, viewOnly } = this.props;
 
-    return this.recursiveRenderBlocks(this.props.objects);
+    const start1 = now();
+    const render = this.recursiveRenderBlocks(
+      this.props.objects,
+      this.state.pageBlocksData
+    );
+    const end1 = now();
+
+    console.log("recursiveRenderBlocks", (end1 - start1).toFixed(15));
+
+    return render;
     //const newObjects = flattenIds(ids, this.props.objectsData, objects, null);
   }
 }

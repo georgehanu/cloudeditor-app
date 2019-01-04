@@ -19,7 +19,8 @@ const { groupsSelector } = require("../../stores/selectors/Html5Renderer");
 const {
   pagesOrderSelector,
   activePageIdSelector,
-  groupSizeSelector
+  groupSizeSelector,
+  facingPagesSelector
 } = require("../../stores/selectors/project");
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
 const AddPages = require("./components/AddPages/AddPages");
@@ -192,8 +193,9 @@ LiveHtml5Pagination.defaultProps = {
 };
 
 const mapStateToProps = state => {
+  const getGroupsSelector = groupsSelector(facingPagesSelector);
   return {
-    groups: groupsSelector(state),
+    groups: getGroupsSelector(state),
     pagesOrder: pagesOrderSelector(state),
     activePageId: activePageIdSelector(state),
     groupSize: groupSizeSelector(state)

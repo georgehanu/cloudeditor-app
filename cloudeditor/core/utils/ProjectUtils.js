@@ -550,7 +550,7 @@ const getRandomProject = cfg => {
     objectsIds: [textFooter.id],
     height: 200
   });
-  for (i = 0; i < 1; i++) {
+  for (i = 0; i < 5; i++) {
     let page = getEmptyPage();
     let j;
     for (j = 0; j < 2; j++) {
@@ -559,8 +559,8 @@ const getRandomProject = cfg => {
         subType: "textflow",
         width: 100 + Math.random() * 500,
         height: 100 + Math.random() * 500,
-        left: Math.random() * 1000,
-        top: Math.random() * 1000,
+        left: Math.random() * 300,
+        top: Math.random() * 300,
         value: "Enter text here",
         fontFamily: "Dax",
         fontSize: 5 + Math.random() * 50,
@@ -572,8 +572,10 @@ const getRandomProject = cfg => {
     project.pages[page.id] = page;
     project.pagesOrder.push(page.id);
     project.activePage = page.id;
-    page.objectsIds.push(textHeader.id);
-    page.objectsIds.push(textFooter.id);
+    project.objects[header.id] = header;
+    project.objects[footer.id] = footer;
+    project.objects[textHeader.id] = textHeader;
+    project.objects[textFooter.id] = textFooter;
     project.globalObjectsIds = {
       before: [header.id, footer.id],
       after: []

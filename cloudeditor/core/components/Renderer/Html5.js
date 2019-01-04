@@ -12,6 +12,7 @@ const { changeWorkareaProps } = require("../../stores/actions/ui");
 const { removeSelection, changePage } = require("../../stores/actions/project");
 const {
   displayedPageSelector,
+  groupsSelector,
   activeGroupSelector,
   getSelectedObjectsLengthSelector,
   displayedPagesLabelsSelector
@@ -168,8 +169,15 @@ const mapDispatchToProps = dispatch => {
 };
 
 const makeMapStateToProps = (state, props) => {
+  const facingPagesSelector = (state, props) => {
+    return facingPagesSelector.facingPages || 0;
+  };
+
+  const getGroupsSelector = groupsSelector(facingPagesSelector);
+  const getActiveGroupSelector = activeGroupSelector(getGroupsSelector);
+
   const getDisplayedPageSelector = displayedPageSelector(
-    activeGroupSelector,
+    getActiveGroupSelector,
     includeBoxesSelector,
     useMagneticSelector
   );

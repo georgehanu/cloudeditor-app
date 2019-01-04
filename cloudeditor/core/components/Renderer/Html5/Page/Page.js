@@ -113,6 +113,7 @@ class Page extends React.Component {
         height: height,
         top: offset.top,
         left: offset.left,
+        zoomScale,
         innerPage: {
           width: innerPage.width,
           height: innerPage.height,
