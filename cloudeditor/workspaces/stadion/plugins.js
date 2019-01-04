@@ -17,6 +17,7 @@ const MenuItemManual = require("../../plugins/MenuItemManual/MenuItemManual");
 const MenuItemCancel = require("../../plugins/MenuItemCancel/MenuItemCancel");
 const MenuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuItemHeaderFooter");
 const HelperLines = require("../../plugins/HelperLines/HelperLines");
+const PrintPreview = require("../../plugins/PrintPreview/PrintPreview");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -37,7 +38,8 @@ const plugins = {
   MenuItemHeaderFooter,
   MenuItemManual,
   MenuItemCancel,
-  HelperLines
+  HelperLines,
+  PrintPreview
 };
 
 const requires = {};

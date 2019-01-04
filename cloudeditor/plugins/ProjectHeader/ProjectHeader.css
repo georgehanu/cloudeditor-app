@@ -3,6 +3,7 @@
   background-color: #fff;
   width: 100%;
   z-index: 550;
+  position: absolute;
 }
 
 .projectHeaderContainer .projectHeaderLogo {
@@ -41,7 +42,8 @@
   margin-right: 10px;
 }
 
-.projectHeaderContainer .projectRightAddContainerButton {
+.projectHeaderContainer .projectRightAddContainerButton,
+.projectHeaderContainer .printPreviewButtonContainer button {
   box-shadow: none;
   border-radius: 0;
   white-space: nowrap;
@@ -64,7 +66,8 @@
   height: 36px;
   outline: none;
 }
-.projectHeaderContainer .projectRightAddContainerButton:hover {
+.projectHeaderContainer .projectRightAddContainerButton:hover,
+.projectHeaderContainer .printPreviewButtonContainer button:hover {
   background-color: #c30c15;
 }
 
@@ -92,15 +95,10 @@
   margin-right: 10px;
   margin-top: 15px;
 }
-/*
-// theme.scss
-#sidebar-wrapper {
-  top: 60px;
+.printPreviewButtonContainer {
+  display: contents;
 }
-.renderContainer {
-  position: absolute;
+
+.printPreviewButton {
+  width: 150px;
 }
-.canvasContainer {
-  margin-top: 60px;
-}
-*/

@@ -1,0 +1,69 @@
+.previewContainer {
+  position: relative;
+  padding-left: 100px;
+  width: 100%;
+  padding-top: 90px;
+  height: 100%;
+  background-color: white;
+  z-index: 520;
+}
+
+.projectPreviewContainer {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 150px;
+  /* should depend also on pagination height */
+}
+
+.showPrintPreview .projectPreviewContainer {
+  display: block;
+}
+
+.projectPreviewContainer {
+  display: none;
+}
+
+.showPrintPreview
+  .projectMenuContainer
+  .projectMenuButtonContainer.menuItemUndoRedo,
+.showPrintPreview
+  .projectMenuContainer
+  .projectMenuButtonContainer.menuItemTextImage,
+.showPrintPreview
+  .projectMenuContainer
+  .projectMenuButtonContainer.buttonMenuItemHeaderFooter {
+  display: none;
+}
+
+.previewImage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  width: auto;
+  height: auto;
+}
+
+.previewImagecontainer {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative;
+  text-align: center;
+  display: flex;
+}
+
+.magnifier {
+  width: auto !important;
+  height: auto !important;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  margin: 0 auto;
+  display: inline-block;
+  margin: auto auto;
+}

@@ -12,6 +12,10 @@ const {
 } = require("../../core/rewrites/reselect/createSelector");
 const { changePage } = require("../../core/stores/actions/project");
 
+const { previewEnabeldSelector } = require("../PrintPreview/store/selectors");
+
+const { previewLoadPage } = require("../PrintPreview/store/actions");
+
 const pagesLabelSelector = createSelector(
   pagesOrderSelector,
   pagesSelector,
@@ -31,15 +35,20 @@ const pagesLabelSelector = createSelector(
 );
 
 class MenuItemPages extends React.Component {
+  pageSelect = (page_id, index) => {
+    if (this.props.previewEnabeld) {
+      this.props.previewLoadPage(index);
+    } else {
+      this.props.onChangePageHandler({ page_id });
+    }
+  };
   render() {
     const pages = this.props.pagesLabel.map((el, index) => {
       return (
         <li
           key={index}
           className="submenuItem"
-          onClick={() =>
-            this.props.onChangePageHandler({ page_id: el.page_id })
-          }
+          onClick={() => this.pageSelect(el.page_id, index)}
         >
           {el.longLabel}
         </li>
@@ -58,13 +67,15 @@ class MenuItemPages extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    pagesLabel: pagesLabelSelector(state)
+    pagesLabel: pagesLabelSelector(state),
+    previewEnabeld: previewEnabeldSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChangePageHandler: payload => dispatch(changePage(payload))
+    onChangePageHandler: payload => dispatch(changePage(payload)),
+    previewLoadPage: pageNo => dispatch(previewLoadPage(pageNo))
   };
 };
 
