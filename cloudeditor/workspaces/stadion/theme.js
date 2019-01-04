@@ -15,6 +15,7 @@ const menuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextI
 const menuItemUndoRedo = require("../../plugins/MenuItemUndoRedo/MenuItemUndoRedo.css");
 const menuItemManual = require("../../plugins/MenuItemManual/MenuItemManual.css");
 const menuItemCancel = require("../../plugins/MenuItemCancel/MenuItemCancel.css");
+const menuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuItemHeaderFooter.css");
 
 module.exports = {
   stadion,
@@ -33,5 +34,6 @@ module.exports = {
   menuItemTextImage,
   menuItemUndoRedo,
   menuItemManual,
-  menuItemCancel
+  menuItemCancel,
+  menuItemHeaderFooter
 };

@@ -1,0 +1,90 @@
+/* extra padding for the Container ??? */
+.canvasContainer {
+  padding-top: 140px;
+}
+
+.helperLinesContainer {
+  position: absolute;
+  top: 90px;
+  width: 100%;
+  height: 30px;
+  background-color: white;
+  z-index: 500;
+  padding-left: 100px;
+}
+
+.showHeaderFooter .helperLinesContainer {
+  top: 120px;
+}
+
+.showHeaderFooter .canvasContainer {
+  padding-top: 160px;
+}
+
+.magneticLinesDescription {
+  font-weight: 400;
+  outline: none !important;
+  color: #737373;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  padding-left: 3px;
+  vertical-align: middle;
+  line-height: 28px;
+  display: inline-block;
+  padding-top: 2px;
+}
+
+.magneticLines .magneticLinesCheckbox {
+  vertical-align: middle;
+}
+
+.magneticLines {
+  width: 200px;
+  margin-left: 100px;
+  float: left;
+}
+
+.helperLinesLayout ul li {
+  font-weight: bold;
+  outline: none !important;
+  color: #737373;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  vertical-align: middle;
+  line-height: 20px;
+}
+
+.helperLinesLayout ul {
+  margin: 0px;
+}
+
+.helperLinesLayout {
+  display: inline-block;
+}
+
+.helperLinesLayout .activeItem {
+  font-weight: bold;
+  padding-left: 4px;
+}
+
+.helperLinesLayout {
+  cursor: pointer;
+  height: 28px;
+}
+
+.helperLinesLayout span {
+  font-weight: bold;
+  outline: none !important;
+  color: #737373;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  padding-left: 3px;
+  padding-left: 2px;
+  padding-right: 2px;
+  vertical-align: middle;
+  line-height: 28px;
+}
+
+.helperLinesLayout .submenuPoptextContainer {
+  margin-top: 2px;
+}

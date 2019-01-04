@@ -28,7 +28,9 @@
       "MenuItemTextImage",
       "MenuItemUndoRedo",
       "MenuItemCancel",
-      "MenuItemManual"
+      "MenuItemManual",
+      "MenuItemHeaderFooter",
+      "HelperLines"
     ]
   },
   "Layout": {

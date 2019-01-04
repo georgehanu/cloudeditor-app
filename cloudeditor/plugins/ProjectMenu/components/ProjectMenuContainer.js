@@ -47,6 +47,7 @@ class ProjectMenuContainer extends React.Component {
               text={tool.text}
               index={i}
               active={i === this.state.menuItemActive}
+              addContainerClasses={this.props.addContainerClasses}
             />
           ) : (
             <React.Fragment>
@@ -59,6 +60,7 @@ class ProjectMenuContainer extends React.Component {
                 index={i}
                 active={true}
                 onSetSubWndHandler={this.onSetSubWndHandler}
+                addContainerClasses={this.props.addContainerClasses}
               />
             </React.Fragment>
           )}

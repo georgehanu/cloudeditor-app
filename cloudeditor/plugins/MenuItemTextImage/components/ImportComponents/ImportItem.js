@@ -22,7 +22,13 @@ const importItem = props => {
               <span>{props.t("Insert in product")}</span>
             </div>
             <div className="importTextItemFavourite">
-              <input type="checkbox" checked={props.status} />
+              <input
+                type="checkbox"
+                name={props.id}
+                /*checked={props.status}*/ onChange={event =>
+                  props.markFavourite(event)
+                }
+              />
               {props.t("Favourite")}
             </div>
           </div>
@@ -39,7 +45,7 @@ const importItem = props => {
         </div>
         <div className="importImageItemSet">
           <div className="importImageItemFavourite">
-            <input type="checkbox" checked={props.status} />
+            <input type="checkbox" checked={props.status} name={props.id} />
             {props.t("Favourite")}
           </div>
           <div className="importImageItemInProduction">

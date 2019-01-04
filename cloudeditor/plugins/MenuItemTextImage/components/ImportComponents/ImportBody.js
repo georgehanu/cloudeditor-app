@@ -12,6 +12,7 @@ const importBody = props => {
         textSelected={props.textSelected}
         key={index}
         isText={props.isText}
+        markFavourite={props.markFavourite}
       />
     );
   });
