@@ -24,7 +24,7 @@
 }
 
 .fupa {
-  height: calc(100% - 31px);
+  height: 100%;
   width: 100%;
   font-family: Arial, sans-serif;
   font-size: 12px;

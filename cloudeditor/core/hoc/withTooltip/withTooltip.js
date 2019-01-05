@@ -39,7 +39,20 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
         <React.Fragment>
           <WrappedComponent {...props} tooltipData={tooltipData} />
           {props.tooltip && props.tooltip !== undefined && (
-            <ReactTooltip id={elementId} place={position}>
+            <ReactTooltip
+              id={elementId}
+              place={position}
+              afterShow={() => {
+                if (props.tooltip.imageSrc) {
+                  props.addContainerClasses("Tooltip", ["containerMaxZindex"]);
+                }
+              }}
+              afterHide={() => {
+                if (props.tooltip.imageSrc) {
+                  props.addContainerClasses("Tooltip", []);
+                }
+              }}
+            >
               <div className={className}>
                 {props.tooltip.title ? (
                   <React.Fragment>

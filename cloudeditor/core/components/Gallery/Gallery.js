@@ -29,6 +29,7 @@ const gallery = props => {
               {...el}
               deleteAsset={props.onDeleteAssetHandler}
               tooltip={{ imageSrc: el.thumbnail_src }}
+              addContainerClasses={props.addContainerClasses}
             />
           </LazyLoad>
         </li>
@@ -57,7 +58,9 @@ const gallery = props => {
 };
 
 const getItemsByType = (state, props) => {
-  return pathOr([], [props.type, "uploadedFiles"], state.assets);
+  if (props.type === "layout")
+    return pathOr([], [props.type, "items"], state.assets);
+  else return pathOr([], [props.type, "uploadedFiles"], state.assets);
 };
 const getLoadingByType = (state, props) => {
   return pathOr(0, [props.type, "loadingFiles"], state.assets);

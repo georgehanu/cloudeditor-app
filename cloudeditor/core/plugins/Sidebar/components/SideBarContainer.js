@@ -61,7 +61,11 @@ class SideBarContainer extends React.Component {
                 visible={i === this.state.pluginIndex ? true : false}
                 clicked={() => this.showPlugin(i)}
               >
-                <Tool cfg={tool.cfg || {}} items={tool.items || []} />
+                <Tool
+                  cfg={tool.cfg || {}}
+                  items={tool.items || []}
+                  addContainerClasses={this.props.addContainerClasses}
+                />
               </PaneContainer>
             </React.Fragment>
           )}

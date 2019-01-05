@@ -156,3 +156,11 @@
 .canvasContainer {
   padding-top: 100px;
 }
+
+.projectMenuButtonLink {
+  height: 30px;
+}
+
+.projectMenuContainer .projectMenuButtonLink .projectMenuButton .buttonIcon {
+  display: none;
+}

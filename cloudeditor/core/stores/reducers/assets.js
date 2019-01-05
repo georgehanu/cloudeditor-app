@@ -8,7 +8,333 @@ const {
   UPLOAD_ASSET_SUCCESS
 } = require("../actionTypes/assets");
 
-const initialState = {};
+const URL = "http://work.cloudlab.at:9012/ig/uploads/";
+
+const initialState = {
+  layout: {
+    items: [
+      {
+        id: uuidv4(),
+        src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
+        thumbnail_src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
+      },
+      {
+        id: uuidv4(),
+        src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
+        thumbnail_src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
+      },
+      {
+        id: uuidv4(),
+        src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
+        thumbnail_src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
+      },
+      {
+        id: uuidv4(),
+        src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
+        thumbnail_src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(2).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(3).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(4).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(5).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(6).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(7).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(8).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(9).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(10).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(2).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(3).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(4).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(5).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(6).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(7).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(8).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(9).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(10).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(2).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(3).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(4).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(5).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(6).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(7).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(8).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(9).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(10).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(2).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(3).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(4).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(5).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(6).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(7).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(8).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(9).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(10).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(2).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(3).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(4).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(5).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(6).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(7).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(8).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(9).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(10).png",
+        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
+      }
+    ]
+  }
+  /*layout: {
+    items: [
+      {
+        id: uuidv4(),
+        src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
+      },
+      {
+        id: uuidv4(),
+        src:
+          URL +
+          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(2).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(3).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(4).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(5).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(6).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(7).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(8).png"
+      },
+
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(9).png"
+      },
+      {
+        id: uuidv4(),
+        src: URL + "1%20-%20Copy%20(10).png"
+      }
+    ]
+  }*/
+};
 uploadFileStart = (state, action) => {
   return {
     ...state,

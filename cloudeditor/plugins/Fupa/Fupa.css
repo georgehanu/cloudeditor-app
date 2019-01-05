@@ -191,3 +191,8 @@
 .ContainerTable {
   margin-bottom: 9px;
 }
+
+.fupaContainer {
+  height: 100%;
+  padding-bottom: 110px;
+}
