@@ -237,7 +237,7 @@ const getDocumentDefaults = cfg => {
       footer: {
         enabled: true,
         mode: "read", // (read, edit)
-        activeOn: "all", //(all inner)
+        activeOn: "inner", //(all inner)
         display: "before", // (before, after),
         mirrored: false,
         objectsIds: []

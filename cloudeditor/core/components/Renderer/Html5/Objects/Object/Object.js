@@ -249,7 +249,7 @@ class ObjectBlock extends React.Component {
     }
     return (
       <div
-        /* onMouseEnter={() => {
+        onMouseEnter={() => {
           this.props.onUpdatePropsHandler({
             id: this.props.id,
             props: {
@@ -264,7 +264,7 @@ class ObjectBlock extends React.Component {
               checkSnap: 0
             }
           });
-        }} */
+        }}
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}

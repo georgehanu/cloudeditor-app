@@ -1,5 +1,6 @@
 const React = require("react");
 const assign = require("object-assign");
+const { connect } = require("react-redux");
 const ProjectMenuButton = require("../ProjectMenu/components/ProjectMenuButton");
 const SubmenuPoptext = require("./components/SubmenuPoptext");
 const SubmenuLayout = require("./components/SubmenuLayout");
@@ -9,6 +10,16 @@ const uuidv4 = require("uuid/v4");
 const axios = require("axios");
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
+
+const {
+  headerConfigSelector,
+  footerConfigSelector
+} = require("../../core/stores/selectors/project");
+
+const {
+  updateHeaderconfigProps,
+  updateFooterconfigProps
+} = require("../../core/stores/actions/project");
 
 class MenuItemHeaderFooter extends React.Component {
   state = {
@@ -39,6 +50,17 @@ class MenuItemHeaderFooter extends React.Component {
       open: false
     }
   };
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   return {
+  //     poptextActive: {
+  //       ...prevState.poptextActive,
+  //       active:
+  //         nextProps.headerCfg.activeOn.charAt(0).toUpperCase() +
+  //         nextProps.headerCfg.activeOn.slice(1)
+  //     }
+  //   };
+  // }
 
   translate = poptext => {
     const items = poptext.items.map((el, index) => {
@@ -164,6 +186,8 @@ class MenuItemHeaderFooter extends React.Component {
   };
 
   toggleSelectPoptext = (type, value) => {
+    const target = this.state.poptextEdit.active;
+
     if (type === "edit") {
       this.setState({
         poptextEdit: {
@@ -192,10 +216,25 @@ class MenuItemHeaderFooter extends React.Component {
       this.setState({
         poptextActive: {
           ...this.state.poptextActive,
-          open: false,
-          active: value
+          open: false
+          //active: value
         }
       });
+
+      if (value === "All") value = "all";
+      if (value === "Inside") value = "inner";
+
+      const payload = {
+        prop: "activeOn",
+        value: value
+      };
+
+      if (target === "Header") {
+        this.props.onUpdateHeaderConfigHandler(payload);
+      }
+      if (target === "Footer") {
+        this.props.onUpdateFooterConfigHandler(payload);
+      }
     }
   };
 
@@ -215,6 +254,27 @@ class MenuItemHeaderFooter extends React.Component {
     const className =
       "projectMenuButtonLink " +
       (this.state.submenuOpened ? "projectMenuButtonSubMenuOpened" : "");
+
+    const { headerCfg, footerCfg } = this.props;
+
+    const target = this.state.poptextEdit.active;
+
+    let activeOn = "";
+
+    switch (target) {
+      case "Header":
+        activeOn = headerCfg.activeOn;
+        break;
+      case "Footer":
+        activeOn = footerCfg.activeOn;
+        break;
+      default:
+        break;
+    }
+
+    if (activeOn === "all") activeOn = "All";
+    if (activeOn === "inner") activeOn = "Inside";
+
     return (
       <React.Fragment>
         <div className={className}>
@@ -277,7 +337,7 @@ class MenuItemHeaderFooter extends React.Component {
             <div className="submenuItemHeaderFooterActive">
               <span>{this.props.t("Active on")}:</span>
               <SubmenuPoptext
-                activeItem={this.state.poptextActive.active}
+                activeItem={activeOn}
                 togglePoptext={this.togglePoptextHandler}
                 toggleSelectPoptext={this.toggleSelectPoptext}
                 poptextName="active"
@@ -304,9 +364,26 @@ class MenuItemHeaderFooter extends React.Component {
   }
 }
 
-const MenuItemHeaderFooterPlugin = withNamespaces("menuItemHeaderFooter")(
-  MenuItemHeaderFooter
-);
+const mapStateToProps = state => {
+  return {
+    headerCfg: headerConfigSelector(state),
+    footerCfg: footerConfigSelector(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onUpdateHeaderConfigHandler: payload =>
+      dispatch(updateHeaderconfigProps(payload)),
+    onUpdateFooterConfigHandler: payload =>
+      dispatch(updateFooterconfigProps(payload))
+  };
+};
+
+const MenuItemHeaderFooterPlugin = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNamespaces("menuItemHeaderFooter")(MenuItemHeaderFooter));
 
 module.exports = {
   MenuItemHeaderFooter: assign(MenuItemHeaderFooterPlugin, {

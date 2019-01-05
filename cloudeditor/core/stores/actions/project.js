@@ -18,7 +18,10 @@ const {
   ADD_TABLE,
   DELETE_OBJ,
   ADD_OBJECT_MIDDLE,
-  DELETE_PAGE
+  DELETE_PAGE,
+
+  UPDATE_HEADERCONFIG_PROPS,
+  UPDATE_FOOTERCONFIG_PROPS
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -42,7 +45,10 @@ const {
   addTable,
   deleteObj,
   addObjectMiddle,
-  deletePage
+  deletePage,
+
+  updateHeaderconfigProps,
+  updateFooterconfigProps
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -63,7 +69,10 @@ const {
   ADD_TABLE,
   DELETE_OBJ,
   ADD_OBJECT_MIDDLE,
-  DELETE_PAGE
+  DELETE_PAGE,
+
+  UPDATE_HEADERCONFIG_PROPS,
+  UPDATE_FOOTERCONFIG_PROPS
 );
 
 module.exports = {
@@ -86,5 +95,7 @@ module.exports = {
   addTable,
   deleteObj,
   addObjectMiddle,
-  deletePage
+  deletePage,
+  updateHeaderconfigProps,
+  updateFooterconfigProps
 };
