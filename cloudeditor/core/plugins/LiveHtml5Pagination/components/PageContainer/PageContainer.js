@@ -1,15 +1,13 @@
 const React = require("react");
-const assign = require("object-assign");
 const { debounce } = require("underscore");
 const { hot } = require("react-hot-loader");
+const { compose } = require("redux");
 const { connect } = require("react-redux");
-const randomColor = require("randomcolor");
 const { DragSource, DropTarget } = require("react-dnd");
 const PAGES = "PAGES";
-const {
-  /*  createSelectorWithDependencies: createSelector, */
-  registerSelectors
-} = require("reselect-tools");
+
+const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
+
 const {
   createDeepEqualSelector: createSelector
 } = require("../../../../rewrites/reselect/createSelector");
@@ -20,7 +18,10 @@ const {
 const { computeZoomScale } = require("../../../../utils/UtilUtils");
 require("./PageContainer.css");
 const Canvas = require("../../../../components/Renderer/Html5/Canvas/Canvas");
-const { changePage } = require("../../../../stores/actions/project");
+const {
+  changePage,
+  deletePage
+} = require("../../../../stores/actions/project");
 
 const PageSource = {
   beginDrag(props) {
@@ -129,8 +130,15 @@ class PageContainer extends React.PureComponent {
       this.props.onChangePage({ page_id });
     }
   };
+  onDeletePageHandler = event => {
+    event.stopPropagation();
+    if (this.props.activePage.allowDeletePage) {
+      const { page_id } = this.props;
+      this.props.onDeletePage({ page_id });
+    }
+  };
   render() {
-    const { classes, mode } = this.props;
+    const { classes } = this.props;
     // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let style = {};
@@ -144,6 +152,18 @@ class PageContainer extends React.PureComponent {
     return this.props.connectDropTarget(
       this.props.connectDragSource(
         <div className={classes} style={style} onClick={this.clickHandler}>
+          <a
+            onClick={event => {
+              this.onDeletePageHandler(event);
+            }}
+            href="javascript:void(0)"
+            className={[
+              "deletePage",
+              !this.props.activePage.allowDeletePage ? "hide" : ""
+            ].join(" ")}
+          >
+            x
+          </a>
           <Canvas
             getCanvasRef={this.getCanvasReference}
             getContainerRef={this.getContainerReference}
@@ -167,13 +187,33 @@ const makeMapStateToProps = (state, props) => {
   const activePage = (state, props) => {
     return props.page_id;
   };
+
   const pageSelector = createSelector(
     activePage,
     page_id => {
       return [page_id];
     }
   );
-  const getDisplayedPageSelector = displayedPageSelector(pageSelector);
+
+  const groupSelector = (state, props) => {
+    return props.group;
+  };
+
+  const includeBoxesSelector = (_, props) => {
+    return props.includeBoxes;
+  };
+
+  const useMagneticSelector = (_, props) => {
+    return props.useMagentic;
+  };
+
+  const getDisplayedPageSelector = displayedPageSelector(
+    () => 1, //displayOnePage
+    groupSelector,
+    activePage,
+    includeBoxesSelector,
+    useMagneticSelector
+  );
   const getDisplayedPageLabelsSelector = displayedPageLabelsSelector(
     activePage
   );
@@ -188,16 +228,18 @@ const makeMapStateToProps = (state, props) => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onChangePage: payload => dispatch(changePage(payload))
+    onChangePage: payload => dispatch(changePage(payload)),
+    onDeletePage: payload => dispatch(deletePage(payload))
   };
 };
 module.exports = hot(module)(
-  connect(
-    makeMapStateToProps,
-    mapDispatchToProps
-  )(
-    DropTarget(PAGES, PageTarget, collectDrop)(
-      DragSource(PAGES, PageSource, collectDrag)(PageContainer)
-    )
-  )
+  compose(
+    withPageGroups,
+    connect(
+      makeMapStateToProps,
+      mapDispatchToProps
+    ),
+    DropTarget(PAGES, PageTarget, collectDrop),
+    DragSource(PAGES, PageSource, collectDrag)
+  )(PageContainer)
 );

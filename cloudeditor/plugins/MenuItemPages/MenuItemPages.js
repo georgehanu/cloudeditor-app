@@ -33,7 +33,7 @@ const pagesLabelSelector = createSelector(
     return pagesLabel;
   }
 );
-
+require("./MenuItemPages.css");
 class MenuItemPages extends React.Component {
   pageSelect = (page_id, index) => {
     if (this.props.previewEnabeld) {

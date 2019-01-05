@@ -1,7 +1,7 @@
 const React = require("react");
 
 const Utils = require("../../ToolbarConfig/utils");
-const withTooltip = require("../../hoc/WithTooltip");
+//const withTooltip = require("../../hoc/WithTooltip");
 
 const Button = props => {
   let defaultClasses = ["ButtonIcon"];

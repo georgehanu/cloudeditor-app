@@ -1,6 +1,5 @@
 const { pathOr, filter, values, includes, head } = require("ramda");
 const { default: createCachedSelector } = require("re-reselect");
-const { registerSelectors } = require("reselect-tools");
 const {
   createDeepEqualSelector: createSelector
 } = require("../../rewrites/reselect/createSelector");
@@ -18,7 +17,6 @@ const colorsSelector = state => {
   return values(pathOr({}, ["ui", "colors"], state));
 };
 const getTabActiveSelector = (_, props) => {
-  console.log("getTabActiveSelector");
   return props.activeTab;
 };
 

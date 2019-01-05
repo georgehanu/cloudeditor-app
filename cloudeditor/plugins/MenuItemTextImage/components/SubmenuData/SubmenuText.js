@@ -7,7 +7,15 @@ const submenuText = props => {
     <ul className="submenuContainer">
       <SubmenuData iconClass="textContent">
         <p className="submenuHeading">{props.t("Text and content")}</p>
-        <p className="submenuItem disabled">
+        <p
+          onClick={() => {
+            props.onAddBlock({ subType: "textflow" });
+          }}
+          className={[
+            "submenuItem",
+            !props.blockActions.allowAddText ? "disabled" : ""
+          ].join(" ")}
+        >
           {props.t("Insert new text area")}
         </p>
         <p

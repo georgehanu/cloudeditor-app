@@ -338,7 +338,11 @@ const initialState = {
 uploadFileStart = (state, action) => {
   return {
     ...state,
-    [action.type]: { ...state[action.type], loadingFiles: action.files.length }
+    [action.type]: {
+      ...state[action.type],
+      loading: true,
+      loadingFiles: action.files.length
+    }
   };
 };
 uploadAssetFailed = (state, action) => {
@@ -355,13 +359,17 @@ uploadAssetFailed = (state, action) => {
 uploadAssetSuccces = (state, action) => {
   const newUploadedFiles = pathOr([], [action.type, "uploadedFiles"], state);
   newUploadedFiles.push({ id: uuidv4(), ...action.data });
-
+  const loadingFiles =
+    state[action.type].loadingFiles === 0
+      ? 0
+      : state[action.type].loadingFiles - 1;
   return {
     ...state,
     [action.type]: {
       ...state[action.type],
       loading: state[action.type].loadingFiles === 1 ? false : true,
-      loadingFiles: 0,
+      loadingFiles: loadingFiles,
+
       uploadedFiles: newUploadedFiles
     }
   };

@@ -9,6 +9,7 @@ const {
   previewDisableMode
 } = require("../PrintPreview/store/actions");
 
+require("./ProjectHeader.css");
 class ProjectHeader extends React.Component {
   state = {
     preview: false

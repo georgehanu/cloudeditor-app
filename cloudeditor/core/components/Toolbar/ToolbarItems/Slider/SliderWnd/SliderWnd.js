@@ -1,6 +1,4 @@
 const React = require("react");
-const { debounce } = require("underscore");
-const Button = require("../../Button/Button");
 const Utils = require("../../../ToolbarConfig/utils");
 
 const SliderWnd = props => {
@@ -31,16 +29,14 @@ const SliderWnd = props => {
           max={max}
           step={step}
           onChange={event =>
-            debounce(
-              props.ToolbarHandler({
-                mainHandler: true,
-                payloadMainHandler: {
-                  type: props.settingsHandler,
-                  value: event.target.value
-                },
-                keepDetailsWnd: true
-              })
-            )
+            props.ToolbarHandler({
+              mainHandler: true,
+              payloadMainHandler: {
+                type: props.settingsHandler,
+                value: event.target.value
+              },
+              keepDetailsWnd: true
+            })
           }
         />
       </div>

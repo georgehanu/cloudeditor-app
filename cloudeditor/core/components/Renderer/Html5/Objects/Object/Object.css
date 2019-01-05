@@ -57,3 +57,38 @@
   height: 0;
   display: block;
 }
+
+.pageBlock.header,
+.pageBlock.footer {
+  position: absolute;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  display: block;
+  z-index: 0;
+  cursor: default;
+}
+
+.pageBlock.header {
+  border-bottom: 1px dashed black;
+}
+.pageBlock.footer {
+  border-top: 1px dashed black;
+}
+
+.deleteBlockHandler {
+  width: 20px;
+  height: 20px;
+  z-index: 501 !important;
+  position: ABSOLUTE;
+  top: -12px;
+  right: -12px;
+  color: #ffff;
+  background: red;
+  line-height: 17px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}

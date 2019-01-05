@@ -5,10 +5,10 @@ const Utils = require("../../ToolbarConfig/utils");
 const Slider = props => {
   const parentClassName = Utils.MergeClassName("Slider", props.parentClassName);
   const value = <span className={props.className} />;
-  let startValue = 0;
-  if (props.defaultValue) {
-    startValue = props.defaultValue;
-  }
+  // let startValue = 0;
+  // if (props.defaultValue) {
+  //   startValue = props.defaultValue;
+  // }
 
   return (
     <div className={parentClassName}>

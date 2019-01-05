@@ -19,3 +19,16 @@
 .boxLine.left {
   border-left-width: 1px;
 }
+.boxLine.magneticSnap,
+.boxLine.magneticSnapEdge {
+  background: transparent;
+  border-style: dashed;
+  border-width: 0px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-style: solid;
+  border-color: transparent;
+}
+.boxLine.magneticSnap.snaped {
+  background: #000;
+}

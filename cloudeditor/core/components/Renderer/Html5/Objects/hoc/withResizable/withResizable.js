@@ -14,20 +14,27 @@ const withResizable = WrappedComponent => {
       this.el = null;
     }
     changePropsOnDragHandler = (ui, resizing) => {
-      const { zoomScale, id, offsetTop, offsetLeft } = this.props;
+      const { zoomScale, id, offsetTop, offsetLeft, parent } = this.props;
       this.props.onUpdatePropsHandler({
         id,
         props: {
           width: ui.size.width / zoomScale,
           height: ui.size.height / zoomScale,
-          top: (ui.position.top - offsetTop) / zoomScale,
-          left: (ui.position.left - offsetLeft) / zoomScale,
+          top:
+            (ui.position.top - offsetTop - parent.innerPage.offset.top) /
+            zoomScale,
+          left:
+            (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
+            zoomScale,
           resizing
         }
       });
     };
     onResizeStartHandler = (event, ui) => {
       var resizable = $(event.target).data("ui-resizable");
+      resizable.options.snapToleranceDynamic =
+        this.props.snapTolerance * this.props.zoomScale;
+      resizable.options.snapTolerance = 10;
       ui = addSnapElements(event, ui, resizable.coords, resizable);
     };
     onResizeHandler = (event, ui) => {
@@ -51,7 +58,10 @@ const withResizable = WrappedComponent => {
     }
     updateUI = () => {
       this.enableUI =
-        !this.props.active && !this.props.viewOnly && this.props.resizable;
+        !this.props.active &&
+        !this.props.viewOnly &&
+        this.props.resizable &&
+        this.props.type !== "tinymce";
       this.$el = $(this.el);
       handleUI(
         this.$el,

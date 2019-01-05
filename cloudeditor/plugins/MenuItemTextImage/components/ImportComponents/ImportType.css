@@ -211,6 +211,7 @@
   background-color: white;
   margin-bottom: 20px;
   position: relative;
+  cursor: pointer;
 }
 
 .menuItemTextImageContainer .importImageModal .itemImage img {

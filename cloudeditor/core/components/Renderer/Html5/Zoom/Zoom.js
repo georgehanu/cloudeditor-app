@@ -3,8 +3,16 @@ const PropTypes = require("prop-types");
 
 require("./Zoom.css");
 const Page = require("../Page/Page");
-
 class Zoom extends React.Component {
+  onScrollHandler = event => {
+    const scrollLeft = event.target.scrollLeft;
+    let internalPagination = document.getElementsByClassName(
+      "pageNameContainer"
+    );
+    if (internalPagination.length) {
+      internalPagination[0].scrollTo(scrollLeft, 0);
+    }
+  };
   render() {
     const { getContainerRef, pageReady, zoom } = this.props;
     const classes = ["zoomContainer", zoom > 1 ? "zoomActive" : ""].join(" ");
@@ -13,7 +21,11 @@ class Zoom extends React.Component {
       pageContainer = <Page {...this.props} />;
     }
     return (
-      <div className={classes} ref={getContainerRef}>
+      <div
+        className={classes}
+        ref={getContainerRef}
+        onScroll={this.onScrollHandler}
+      >
         {pageContainer}
       </div>
     );

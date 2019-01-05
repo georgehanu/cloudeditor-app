@@ -1,5 +1,4 @@
 const React = require("react");
-const { debounce } = require("underscore");
 const Utils = require("../../ToolbarConfig/utils");
 
 const InlineSlider = props => {

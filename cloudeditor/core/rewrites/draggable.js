@@ -35,10 +35,15 @@ require("webpack-jquery-ui/draggable");
         y2 = y1 + inst.helperProportions.height;
 
       for (i = inst.snapElements.length - 1; i >= 0; i--) {
-        if (o.snapMode == "customPrintq") {
-          if (inst.snapElements[i].width == 10) inst.snapElements[i].width = 0;
-          if (inst.snapElements[i].height == 10)
+        if (o.snapMode === "customPrintq") {
+          if (inst.snapElements[i].width === 10) inst.snapElements[i].width = 0;
+          if (inst.snapElements[i].height === 10)
             inst.snapElements[i].height = 0;
+        }
+        if ($(inst.snapElements[i].item).hasClass("magneticSnapEdge")) {
+          d = o.snapToleranceDynamic;
+        } else {
+          d = o.snapTolerance;
         }
         l = inst.snapElements[i].left - inst.margins.left;
         r = l + inst.snapElements[i].width;
@@ -152,7 +157,6 @@ require("webpack-jquery-ui/draggable");
 
 function monkeyPatch_mouseStart() {
   // don't really need this, but in case I did, I could store it and chain
-  var oldFn = $.ui.draggable.prototype._mouseStart;
   $.ui.draggable.prototype._mouseStart = function(event) {
     var o = this.options;
 
@@ -183,7 +187,6 @@ function monkeyPatch_mouseStart() {
       }).length > 0;
 
     //The element's absolute position on the page minus margins
-    var angle = $(this.element).data("rotateAngle");
     //The element's absolute position on the page minus margins
     this.offset1 = this.element.offset();
     this.offset = this.positionAbs = {

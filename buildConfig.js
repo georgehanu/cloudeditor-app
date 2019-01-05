@@ -1,4 +1,3 @@
-const path = require("path");
 const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -19,10 +18,12 @@ const build = config => {
     sourcemaps,
     fileLoaderDirs,
     cleanDistDir,
-    cssPrefix
+    cssPrefix,
+    copyFrom
   } = config;
   return {
     entry,
+    context: config.contentBase,
     output: {
       path: paths.dist,
       publicPath,
@@ -147,10 +148,7 @@ const build = config => {
                 var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
                */
           },
-          {
-            from: "./" + namespace + "/core/assets/tinymce",
-            to: "./tinymce"
-          }
+          ...copyFrom
         ],
         { debug: prod ? "" : "" }
       )

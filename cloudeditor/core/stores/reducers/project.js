@@ -4,7 +4,8 @@ const {
   clone,
   reduce,
   insertAll,
-  merge
+  merge,
+  without
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -25,7 +26,10 @@ const {
   CHANGE_RANDOM_PAGE,
   CHANGE_PAGES_ORDER,
   ADD_PAGES,
-  ADD_OBJECT
+  ADD_OBJECT,
+  ADD_TABLE,
+  ADD_OBJECT_MIDDLE,
+  DELETE_PAGE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -68,6 +72,17 @@ const addPages = (state, action) => {
     pagesOrder: newOrder
   };
 };
+const deletePage = (state, action) => {
+  const { page_id } = action;
+  const { pages, pagesOrder } = state;
+  const newOrder = without(page_id, pagesOrder);
+  const newPages = without(page_id, pages);
+  return {
+    ...state,
+    pages: newPages,
+    pagesOrder: newOrder
+  };
+};
 const changeProjectTitle = (state, action) => {
   return {
     ...state,
@@ -80,6 +95,24 @@ const changePagesOrder = (state, action) => {
 };
 
 const addObject = (state, action) => {
+  const object = ProjectUtils.getEmptyObject(action);
+  const pageId = state.activePage;
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
+    objects: {
+      ...state.objects,
+      [object.id]: object
+    }
+  };
+};
+const addTable = (state, action) => {
   const object = ProjectUtils.getEmptyObject(action);
   const pageId = state.activePage;
   return {
@@ -201,6 +234,41 @@ const swap = (index1, index2, list) => {
 
   return result;
 };
+addObjectMiddle = (state, action) => {
+  const pageId = state.activePage;
+  const page = state.pages[pageId];
+  const { width, height } = page;
+  let blockWidth = width / 6;
+  let blockHeight = blockWidth * (height / width);
+  if (width > height) {
+    blockHeight = height / 6;
+    blockWidth = blockHeight * (width / height);
+  }
+  const left = (width - blockWidth) / 2;
+  const top = (height - blockHeight) / 2;
+  const defaultBlock = {
+    ...action,
+    left,
+    top,
+    width: blockWidth,
+    height: blockHeight
+  };
+  const object = ProjectUtils.getEmptyObject(defaultBlock);
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
+    objects: {
+      ...state.objects,
+      [object.id]: object
+    }
+  };
+};
 
 module.exports = handleActions(
   {
@@ -209,6 +277,9 @@ module.exports = handleActions(
     },
     [ADD_OBJECT]: (state, action) => {
       return addObject(state, action.payload);
+    },
+    [ADD_TABLE]: (state, action) => {
+      return addTable(state, action.payload);
     },
     [ADD_PAGES]: (state, action) => {
       return addPages(state, action.payload);
@@ -223,7 +294,6 @@ module.exports = handleActions(
       return changeGroups(state, action.payload);
     },
     [CHANGE_PAGE]: (state, action) => {
-      console.log(action, "ACTION");
       return changePage(state, action.payload);
     },
     [ADD_OBJECT_TO_PAGE]: (state, action) => {
@@ -311,7 +381,6 @@ module.exports = handleActions(
           ...newObjectsId
         ];
       }
-
       return {
         ...state,
         pages: {
@@ -358,6 +427,12 @@ module.exports = handleActions(
         objects: newObjects,
         selectedObjectsIds: []
       };
+    },
+    [ADD_OBJECT_MIDDLE]: (state, action) => {
+      return addObjectMiddle(state, action.payload);
+    },
+    [DELETE_PAGE]: (state, action) => {
+      return deletePage(state, action.payload);
     }
   },
   initialState

@@ -34,6 +34,7 @@ const SpecialEffectsBrightnes = props => {
         src={props.image}
         style={{ filter: filter }}
         className={props.brightnessClass}
+        alt=""
       />
       <div>
         <BrightnessSlider

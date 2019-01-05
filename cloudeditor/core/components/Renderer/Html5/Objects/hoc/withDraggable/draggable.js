@@ -9,6 +9,7 @@ const createDraggable = ($el, onDragStart, onDrag, onDragStop) => {
       snap: ".drag_alignLines",
       snapMode: "customPrintq",
       snapTolerance: 10,
+      snapToleranceDynamic: 10,
       distance: 2,
       helper: "original",
       start: (event, ui) => {
@@ -22,6 +23,12 @@ const createDraggable = ($el, onDragStart, onDrag, onDragStop) => {
       },
       snapped: (event, ui) => {
         ui.snapElement.addClass("snaped");
+        if ($(ui.snapElement).hasClass("horizontalSnap")) {
+          $(".middle_snap.horizontal").addClass("snaped");
+        }
+        if ($(ui.snapElement).hasClass("verticalSnap")) {
+          $(".middle_snap.vertical").addClass("snaped");
+        }
       }
     });
   }

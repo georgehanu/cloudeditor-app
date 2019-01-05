@@ -1,13 +1,15 @@
 const React = require("react");
-const ObjectBlock = require("../Objects/Object/Object");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { randomColor } = require("randomColor");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
-const { forEachObjIndexed } = require("ramda");
+const { forEachObjIndexed, pathOr, concat } = require("ramda");
 
 const type = ["image", "text"];
+const ObjectBlock = require("../Objects/Object/Object");
+const Objects = require("../Objects/Object/Objects");
+//const Ids = require("../Objects/Object/Test/IdsComplete");
 
 const {
   createDeepEqualSelector: createSelector
@@ -15,6 +17,9 @@ const {
 const {
   scaledDisplayedPageSelector
 } = require("../../../../stores/selectors/Html5Renderer");
+const {
+  globalObjectsIdsSelector
+} = require("../../../../stores/selectors/render");
 const { addObject } = require("../../../../stores/actions/project");
 const {
   activePageIdSelector
@@ -23,6 +28,7 @@ const {
 require("./Page.css");
 
 const Boxes = require("../Boxes/Boxes");
+const Line = require("../Boxes/Line");
 const centerPage = ({ width, height, containerWidth, containerHeight }) => {
   const marginTop = !(height > containerHeight)
     ? (containerHeight - height) / 2
@@ -86,22 +92,78 @@ class Page extends React.Component {
   }
 
   renderObjects() {
-    const { objectsOffsetList: objects, viewOnly, zoomScale } = this.props;
-    return Object.keys(objects).map(obKey => {
-      return (
-        <ObjectBlock
-          key={obKey}
-          id={obKey}
-          zoomScale={zoomScale}
-          {...objects[obKey]}
-          viewOnly={viewOnly}
-        />
-      );
-    });
+    const {
+      innerPages,
+      offset,
+      globalObjectsIds,
+      zoomScale,
+      activePage,
+      width,
+      height,
+      viewOnly
+    } = this.props;
+    let objectsOffset = [];
+    forEachObjIndexed((innerPage, pKey) => {
+      const parent = {
+        id: pKey,
+        uuid: pKey,
+        type: "page",
+        subType: "page",
+        width: width,
+        height: height,
+        offsetTop: offset.top,
+        offsetLeft: offset.left,
+        zoomScale,
+        level: 0,
+        innerPage: {
+          width: innerPage.width,
+          height: innerPage.height,
+          offset: {
+            top: innerPage.offset.top,
+            left: innerPage.offset.left
+          },
+          isDocumentFirstPage: innerPage.isDocumentFirstPage,
+          isDocumentLastPage: innerPage.isDocumentLastPage,
+          isGroupFirstPage: innerPage.isGroupFirstPage,
+          isGroupLastPage: innerPage.isGroupLastPage
+        },
+        parent: null
+      };
+
+      if (innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage) {
+        objIds = innerPage.objectsIds;
+      } else {
+        objIds = concat(
+          globalObjectsIds.before,
+          innerPage.objectsIds,
+          globalObjectsIds.after
+        );
+      }
+
+      objectsOffset = objIds.reduce(function(acc, cV, _) {
+        acc.push({
+          id: cV,
+          uuid: pKey + "-" + cV,
+          level: parent.level + 1,
+          offsetLeft: offset.left,
+          offsetTop: offset.top,
+          parent
+        });
+        return acc;
+      }, objectsOffset);
+    }, innerPages);
+
+    return (
+      <Objects
+        objects={objectsOffset}
+        zoomScale={zoomScale}
+        snapTolerance={activePage.snapTolerance}
+        middle={{ left: width / 2, top: height / 2 }}
+        viewOnly={viewOnly}
+      />
+    );
   }
-  getPageRef = () => {
-    return this.ref;
-  };
+
   render() {
     const { width, height, viewOnly } = this.props;
     const { marginLeft, marginTop } = centerPage(this.props);
@@ -113,28 +175,55 @@ class Page extends React.Component {
       backgroundColor: randomColor()
     };
     let boxes = null;
+    let snapBoxes = null;
     if (!viewOnly) {
       boxes = (
-        <Boxes
-          boxes={this.props.boxes}
-          width={this.props.width}
-          height={this.props.height}
-        />
+        <React.Fragment>
+          <Boxes
+            boxes={this.props.boxes}
+            width={this.props.width}
+            height={this.props.height}
+          />
+          <Boxes
+            boxes={this.props.magneticBoxes}
+            width={this.props.width}
+            height={this.props.height}
+            inlineClass={"drag_alignLines drag_alignLinesDynamic"}
+          />
+        </React.Fragment>
+      );
+      const classes = "snapLine boxLine drag_alignLines middle_snap";
+      const topStyle = {
+        width: this.props.width,
+        left: 0,
+        top: this.props.height / 2,
+        height: 1
+      };
+      const leftStyle = {
+        width: 1,
+        left: this.props.width / 2,
+        top: 0,
+        height: this.props.height
+      };
+
+      snapBoxes = (
+        <React.Fragment>
+          <Line {...topStyle} classes={classes + " horizontal"} />
+          <Line {...leftStyle} classes={classes + " vertical"} />
+        </React.Fragment>
       );
     }
 
     return this.props.connectDropTarget(
-      <div
-        ref={this.props.getPageRef}
-        style={pageStyle}
-        className="pageContainer page"
-      >
+      <div style={pageStyle} className="pageContainer page">
         {boxes}
+        {snapBoxes}
         {this.renderObjects()}
       </div>
     );
   }
 }
+
 const makeMapStateToProps = (state, props) => {
   const activePage = (_, props) => {
     return props.activePage;
@@ -149,28 +238,12 @@ const makeMapStateToProps = (state, props) => {
     zoomScale
   );
 
-  const getObjectsOffsetsList = createSelector(
-    getScaledDisplayedPageSelector,
-    scaledPage => {
-      let objectsOffset = {};
-      forEachObjIndexed((innerPage, pKey) => {
-        innerPage.objectsIds.map(oKey => {
-          objectsOffset[oKey] = {
-            offsetTop: scaledPage.offset.top + innerPage.offset.top,
-            offsetLeft: scaledPage.offset.left + innerPage.offset.left
-          };
-        });
-      }, scaledPage.innerPages);
-      return objectsOffset;
-    }
-  );
-
   const mapStateToProps = (state, props) => {
     const scaledPage = getScaledDisplayedPageSelector(state, props);
     return {
       ...scaledPage,
       activePageId: activePageIdSelector(state),
-      objectsOffsetList: getObjectsOffsetsList(state, props)
+      globalObjectsIds: globalObjectsIdsSelector(state)
     };
   };
   return mapStateToProps;

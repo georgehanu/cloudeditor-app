@@ -1,0 +1,18 @@
+.ui-rotatable-handle {
+  font-size: 10px;
+  background-color: #646464;
+  text-align: center;
+  border-radius: 50%;
+  line-height: 18px;
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  bottom: -10px;
+  left: -10px;
+  position: absolute;
+  z-index: 501 !important;
+}
+.ui-rotatable-handle.printqicon-rotate_handler {
+  color: #fff;
+  line-height: 18px;
+}

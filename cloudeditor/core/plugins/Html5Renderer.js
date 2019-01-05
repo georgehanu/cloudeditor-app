@@ -40,14 +40,21 @@ class Html5Renderer extends React.Component {
     const blurSelectors = this.getBlurSelectors();
     return (
       <div className="renderContainer">
-        {<Renderer blurSelectors={blurSelectors} />}
+        {
+          <Renderer
+            facingPages={this.props.pluginCfg["facingPages"]}
+            blurSelectors={blurSelectors}
+          />
+        }
       </div>
     );
   }
 }
 
 module.exports = {
-  Html5Renderer: assign(Html5Renderer),
+  Html5Renderer: assign(Html5Renderer, {
+    cfg: { facingPages: false }
+  }),
   reducers: {},
   epics: {}
 };

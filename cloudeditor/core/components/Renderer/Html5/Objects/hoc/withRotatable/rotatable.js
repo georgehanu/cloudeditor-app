@@ -8,6 +8,7 @@ const createRotatable = ($el, onStart, onRotate, onRotateStop, radians) => {
   if ($el.length) {
     $el.rotatable({
       angle: radians,
+      handle: $el.find(".printqicon-rotate_handler"),
       start: (event, ui) => {
         if (is(Function, onStart)) onStart(event, ui);
       },

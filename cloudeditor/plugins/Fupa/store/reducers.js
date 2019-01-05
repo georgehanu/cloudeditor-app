@@ -227,35 +227,27 @@ module.exports = handleActions(
       return changeSearchValue(state, action.payload);
     },
     [actionTypes.FETCH_CLUBS]: (state, action) => {
-      console.log("FETCH_CLUBS", action);
       return fetchClubs(state);
     },
     [actionTypes.FETCH_CLUBS_FULFILLED]: (state, action) => {
-      console.log("FETCH_CLUBS_FULFILLED", action);
       return updateClubs(state, action.payload);
     },
     [actionTypes.FETCH_CLUBS_FAILED]: (state, action) => {
-      console.log("FETCH_CLUBS_FAILED", action);
       return failUpdateClubs(state);
     },
     [actionTypes.CHANGE_CURRENT_CLUB]: (state, action) => {
-      console.log("CHANGE_CURRENT_CLUB", action);
       return changeCurrentClub(state, action.payload);
     },
     [actionTypes.FETCH_CLUB_TEAMS_FULFILLED]: (state, action) => {
-      console.log("FETCH_CLUB_TEAMS_FULFILLED", action);
       return updateClubTeams(state, action.payload);
     },
     [actionTypes.FETCH_CLUB_TEAMS_FAILED]: (state, action) => {
-      console.log("FETCH_CLUB_TEAMS_FAILED", action);
       return failUpdateClubTeams(state);
     },
     [actionTypes.CHANGE_CURRENT_TEAM]: (state, action) => {
-      console.log("CHANGE_CURRENT_TEAM", action);
       return changeCurrentTeam(state, action.payload.team);
     },
     [actionTypes.BACK_TO_SEARCH]: (state, action) => {
-      console.log("BACK_TO_SEARCH", action);
       return backToSearch(state);
     },
     [actionTypes.FETCH_TEAM_STANDINGS_FULFILLED]: (state, action) => {

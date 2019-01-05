@@ -104,6 +104,7 @@ module.exports = {
   ImageMenuPoptext,
   ImageMenuChangeBackground,
   ImageMenuChangeShape,
+  Duplicate,
   ColorSelectorBackground,
   ImageShapeMenuPoptext,
   SliderInlineImage,

@@ -158,6 +158,8 @@ class ImportModal extends React.Component {
             textSelected={this.textSelected}
             loading={this.state.loading}
             isText={this.props.isText}
+            onAddBlock={this.props.onAddBlock}
+            closeModal={this.props.closeModal}
             markFavourite={this.markFavouriteHandler}
           />
         ) : (

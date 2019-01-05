@@ -4,13 +4,7 @@ const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
 const UploadFile = require("../../core/components/UploadFile/UploadFile");
 
-const {
-  uploadedPdfsSelector,
-  uploadedPdfLoadingPdfSelector,
-  uploadedLoadingSelector
-} = require("./store/selectors");
-const { uploadPdfStart, removePdfFromGallery } = require("./store/actions");
-const ACCEPTED_FILES = "pdf";
+const ACCEPTED_FILES = ".pdf";
 const TYPE = "pdf";
 
 const Gallery = require("../../core/components/Gallery/Gallery");
@@ -26,9 +20,7 @@ class AddPdf extends React.Component {
         <Gallery
           items={this.props.uploadedPdfs}
           type={TYPE}
-          deleteImage={this.deleteImageHandler}
           selectImage={this.selectImageHandler}
-          loading={this.props.loading}
         />
       </div>
     );

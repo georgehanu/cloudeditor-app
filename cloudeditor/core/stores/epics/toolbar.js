@@ -1,6 +1,5 @@
 const Rx = require("rxjs");
-const { Observable } = require("rxjs");
-const { mapTo, map, switchMap } = require("rxjs/operators");
+const { map, switchMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const {

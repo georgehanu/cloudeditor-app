@@ -2,8 +2,19 @@ const React = require("react");
 const Line = require("./Line");
 require("./Box.css");
 const box = props => {
-  const { top, bottom, left, right, width, height, borderWidth, type } = props;
-  const classes = [type, "boxLine"].join(" ");
+  const {
+    top,
+    bottom,
+    left,
+    right,
+    width,
+    height,
+    borderWidth,
+    type,
+    inlineClass
+  } = props;
+
+  const classes = [type, "boxLine", inlineClass].join(" ");
   const topStyle = {
     top,
     width: width - (left + right) - borderWidth,

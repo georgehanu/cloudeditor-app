@@ -6,15 +6,15 @@ const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 const { getEmptyObject } = require("../../../core/utils/ProjectUtils");
 
-const { addObject } = require("../../../core/stores/actions/project");
+const { addTable } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
   type: "tinymce",
-  width: 300,
-  height: 300,
-  top: 10,
-  left: 10
+  width: 200,
+  height: 200,
+  left: 200,
+  top: 200
 });
 
 const tableStyle = {
@@ -45,19 +45,14 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       width = props.width ? props.width : tableDimensions.width;
 
-      props.addObject(
-        {
-          ...emptyTable,
-          tableContent: tableContent,
-          id: uuidv4(),
-          //width: tableDimensions.width + 4,
-          width,
-          height: tableDimensions.height,
-          left: 10,
-          top: 10
-        },
-        props.activePage
-      );
+      props.addTable({
+        ...emptyTable,
+        tableContent: tableContent,
+        id: uuidv4(),
+        //width: tableDimensions.width + 4,
+        width,
+        height: tableDimensions.height
+      });
     };
     render() {
       return (
@@ -91,9 +86,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    addObject: object => dispatch(addObject(object))
-  };
+  return { addTable: payload => dispatch(addTable(payload)) };
 };
 
 const withProduction = compose(

@@ -5,6 +5,12 @@ const SideBar = require("../../core/plugins/Sidebar/Sidebar");
 const AddImage = require("../../plugins/AddImage/AddImage");
 const Zoom = require("../../plugins/Zoom/Zoom");
 const AddPdf = require("../../plugins/AddPdf/AddPdf");
+const Fupa = require("../../plugins/Fupa/Fupa");
+const ProjectHeader = require("../../plugins/ProjectHeader/ProjectHeader");
+const ProjectMenu = require("../../plugins/ProjectMenu/ProjectMenu");
+const MenuItemMyProject = require("../../plugins/MenuItemMyProject/MenuItemMyProject");
+const MenuItemPages = require("../../plugins/MenuItemPages/MenuItemPages");
+const MenuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextImage");
 
 const plugins = {
   Html5Renderer,
@@ -13,7 +19,13 @@ const plugins = {
   SideBar,
   AddImage,
   Zoom,
-  AddPdf
+  AddPdf,
+  Fupa,
+  ProjectHeader,
+  ProjectMenu,
+  MenuItemMyProject,
+  MenuItemPages,
+  MenuItemTextImage
 };
 
 const requires = {};
