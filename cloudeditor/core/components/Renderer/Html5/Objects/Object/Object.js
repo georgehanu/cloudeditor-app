@@ -314,16 +314,20 @@ class ObjectBlock extends React.Component {
       let offsetLeft =
         props.parent.offsetLeft - props.parent.innerPage.offset.left;
 
-      const mirrored = props.parent.innerPage.isGroupLastPage ? 1 : 0;
+      //const mirrored = props.parent.innerPage.isGroupLastPage ? 1 : 0;
+      let mirrored = false;
+
       /* let offsetLeft =
         props.width -
         props.parent.offsetLeft -
         innerBlock.props.data.width * props.zoomScale; */
       switch (type) {
         case "header":
+          mirrored = props.mirroredHeader;
           offsetTop = props.offsetTop;
           break;
         case "footer":
+          mirrored = props.mirroredFooter;
           offsetTop = 0;
           break;
         default:

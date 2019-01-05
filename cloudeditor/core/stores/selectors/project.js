@@ -85,6 +85,14 @@ const showTrimboxSelector = state => {
     state
   );
 };
+
+const headerConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "header"], state);
+};
+
+const footerConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "footer"], state);
+};
 /* End Document Config Selectors */
 
 /* Start Pages Config Selectors */
@@ -318,6 +326,8 @@ module.exports = {
   includeBoxesSelector,
   useMagneticSelector,
   showTrimboxSelector,
+  headerConfigSelector,
+  footerConfigSelector,
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,

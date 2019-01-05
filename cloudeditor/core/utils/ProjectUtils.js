@@ -225,6 +225,22 @@ const getDocumentDefaults = cfg => {
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]
+      },
+      header: {
+        enabled: true,
+        mode: "read", // (read, edit)
+        activeOn: "all", //(all inner)
+        display: "before", // (before, after)
+        mirrored: true,
+        objectsIds: []
+      },
+      footer: {
+        enabled: true,
+        mode: "read", // (read, edit)
+        activeOn: "all", //(all inner)
+        display: "before", // (before, after),
+        mirrored: false,
+        objectsIds: []
       }
     },
     cfg || {}
@@ -576,11 +592,10 @@ const getRandomProject = cfg => {
     project.objects[footer.id] = footer;
     project.objects[textHeader.id] = textHeader;
     project.objects[textFooter.id] = textFooter;
-    project.globalObjectsIds = {
-      before: [header.id, footer.id],
-      after: []
-    };
   }
+
+  project.configs.document.header.objectsIds = [header.id];
+  project.configs.document.footer.objectsIds = [footer.id];
   return project;
 };
 

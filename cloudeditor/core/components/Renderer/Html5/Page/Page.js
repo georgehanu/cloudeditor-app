@@ -22,7 +22,9 @@ const {
 } = require("../../../../stores/selectors/render");
 const { addObject } = require("../../../../stores/actions/project");
 const {
-  activePageIdSelector
+  activePageIdSelector,
+  headerConfigSelector,
+  footerConfigSelector
 } = require("../../../../stores/selectors/project");
 
 require("./Page.css");
@@ -100,7 +102,9 @@ class Page extends React.Component {
       activePage,
       width,
       height,
-      viewOnly
+      viewOnly,
+      headerConfig,
+      footerConfig
     } = this.props;
     let objectsOffset = [];
     forEachObjIndexed((innerPage, pKey) => {
@@ -130,15 +134,50 @@ class Page extends React.Component {
         parent: null
       };
 
-      if (innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage) {
-        objIds = innerPage.objectsIds;
-      } else {
-        objIds = concat(
-          globalObjectsIds.before,
-          innerPage.objectsIds,
-          globalObjectsIds.after
-        );
+      let beforeObjIds = globalObjectsIds.before;
+      let afterObjIds = globalObjectsIds.after;
+
+      let mirroredHeader = false;
+      let mirroredFooter = false;
+
+      if (headerConfig.enabled) {
+        let headerObjIds = [];
+        if (headerConfig.activeOn === "all")
+          headerObjIds = headerConfig.objectsIds;
+        if (headerConfig.activeOn === "inner") {
+          if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
+            headerObjIds = headerConfig.objectsIds;
+        }
+        if (headerConfig.display === "before")
+          beforeObjIds = concat(beforeObjIds, headerObjIds);
+        if (headerConfig.display === "after")
+          afterObjIds = concat(afterObjIds, headerObjIds);
+
+        if (headerConfig.mirrored) {
+          mirroredHeader =
+            innerPage.isGroupLastPage && !innerPage.isDocumentFirstPage ? 1 : 0;
+        }
       }
+
+      if (footerConfig.enabled) {
+        let footerObjIds = [];
+        if (footerConfig.activeOn === "all")
+          footerObjIds = footerConfig.objectsIds;
+        if (footerConfig.activeOn === "inner") {
+          if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
+            footerObjIds = footerConfig.objectsIds;
+        }
+        if (footerConfig.display === "before")
+          beforeObjIds = concat(beforeObjIds, footerObjIds);
+        if (footerConfig.display === "after")
+          afterObjIds = concat(afterObjIds, footerObjIds);
+
+        if (footerConfig.mirrored)
+          mirroredFooter =
+            innerPage.isGroupLastPage && !innerPage.isDocumentFirstPage ? 1 : 0;
+      }
+
+      objIds = concat(beforeObjIds, innerPage.objectsIds, afterObjIds);
 
       objectsOffset = objIds.reduce(function(acc, cV, _) {
         acc.push({
@@ -147,6 +186,8 @@ class Page extends React.Component {
           level: parent.level + 1,
           offsetLeft: offset.left,
           offsetTop: offset.top,
+          mirroredHeader,
+          mirroredFooter,
           parent
         });
         return acc;
@@ -243,7 +284,9 @@ const makeMapStateToProps = (state, props) => {
     return {
       ...scaledPage,
       activePageId: activePageIdSelector(state),
-      globalObjectsIds: globalObjectsIdsSelector(state)
+      globalObjectsIds: globalObjectsIdsSelector(state),
+      headerConfig: headerConfigSelector(state),
+      footerConfig: footerConfigSelector(state)
     };
   };
   return mapStateToProps;
