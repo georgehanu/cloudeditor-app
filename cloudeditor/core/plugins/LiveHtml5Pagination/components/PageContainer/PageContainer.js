@@ -143,12 +143,23 @@ class PageContainer extends React.PureComponent {
     const { classes, mode } = this.props;
     // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
+    let { zoomScale } = this.state;
     let style = {};
     if (this.containerRef) {
       const activePageRaport =
         this.props.activePage.height / this.props.activePage.width;
-      const width = this.containerRef.offsetHeight * activePageRaport + 2;
+      const width = this.containerRef.offsetHeight / activePageRaport + 2;
       style = { width, minWidth: width };
+
+      const parent = {
+        width: width,
+        height: this.containerRef.offsetHeight
+      };
+      const child = {
+        width: this.props.activePage.width,
+        height: this.props.activePage.height
+      };
+      zoomScale = computeZoomScale(1, parent, child);
     }
 
     return this.props.connectDropTarget(
@@ -171,7 +182,7 @@ class PageContainer extends React.PureComponent {
             getContainerRef={this.getContainerReference}
             activePage={this.props.activePage}
             viewOnly={1}
-            zoomScale={this.state.zoomScale}
+            zoomScale={zoomScale}
             containerWidth={containerWidth}
             containerHeight={containerHeight}
             pageReady={pageReady}

@@ -164,13 +164,15 @@ class Page extends React.Component {
     return this.ref;
   };
   render() {
-    const { width, height, viewOnly } = this.props;
+    const { width, height, viewOnly, background } = this.props;
     const { marginLeft, marginTop } = centerPage(this.props);
     const pageStyle = {
       width,
       height,
       marginLeft,
-      marginTop
+      marginTop,
+      backgroundColor: "rgb(" + background.color.htmlRGB + ")",
+      backgroundImage: `url(${background.image_src})`
     };
     let boxes = null;
     let snapBoxes = null;

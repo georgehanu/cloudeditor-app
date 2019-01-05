@@ -43,7 +43,8 @@ const {
   useMagneticSelector,
   objectsDefaultConfigSelector,
   blockActionsPagesConfigSelector,
-  deletePagePagesConfigSelector
+  deletePagePagesConfigSelector,
+  showTrimboxSelector
 } = require("./project");
 
 const {
@@ -138,6 +139,7 @@ const displayedPageSelector = groupSelector => {
     activePageIdSelector,
     pagesOrderSelector,
     deletePagePagesConfigSelector,
+    showTrimboxSelector,
     (
       group,
       pages,
@@ -149,7 +151,8 @@ const displayedPageSelector = groupSelector => {
       useMagnetic,
       activePageId,
       pagesOrder,
-      allowDeletePage
+      allowDeletePage,
+      showTrimbox
     ) => {
       const innerPages = {};
       const activePage = pages[activePageId];
@@ -176,30 +179,31 @@ const displayedPageSelector = groupSelector => {
       let label = "";
       let shortLabel = "";
       let selectable = true;
+      let background = true;
       let lockPosition = true;
       let pagesLabels = [];
       forEach(page => {
         innerPages[page] = merge(pages[page], config);
         innerPages[page]["boxes"] = {
           trimbox: merge(
-            pathOr({}, [page, "boxes", "trimbox"], pages),
-            trimbox
+            trimbox,
+            pathOr({}, [page, "boxes", "trimbox"], pages)
           ),
-          bleed: merge(pathOr({}, [page, "boxes", "bleed"], pages), bleed)
+          bleed: merge(bleed, pathOr({}, [page, "boxes", "bleed"], pages))
         };
         innerPages[page]["boxesMagentic"] = {
-          magneticSnapEdge: { left: 1, top: 1, bottom: 1, right: 1 },
+          magneticSnapEdge: { left: -1, top: -1, bottom: -1, right: -1 },
           magneticSnap: {
-            left: pathOr(tolerance, [page, "tolerance"], pages),
-            top: pathOr(tolerance, [page, "tolerance"], pages),
-            bottom: pathOr(tolerance, [page, "tolerance"], pages),
-            right: pathOr(tolerance, [page, "tolerance"], pages)
+            left: pathOr(tolerance, [page, "snapTolerance"], pages),
+            top: pathOr(tolerance, [page, "snapTolerance"], pages),
+            bottom: pathOr(tolerance, [page, "snapTolerance"], pages),
+            right: pathOr(tolerance, [page, "snapTolerance"], pages)
           }
         };
         innerPages[page]["offset"] = { ...offset };
         innerPages[page]["snapTolerance"] = pathOr(
           tolerance,
-          [page, "tolerance"],
+          [page, "snapTolerance"],
           pages
         );
         offset["left"] += innerPages[page]["width"];
@@ -208,6 +212,7 @@ const displayedPageSelector = groupSelector => {
         shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
         selectable = innerPages[page]["selectable"];
+        background = innerPages[page]["background"];
       }, group);
 
       let boxes = {};
@@ -291,9 +296,10 @@ const displayedPageSelector = groupSelector => {
             ? getMaxProp(boxes, "top") + getMaxProp(boxes, "bottom")
             : 0),
         snapTolerance: getMaxProp(innerPages, "snapTolerance"),
-        boxes: boxes,
+        boxes: showTrimbox ? boxes : {},
         magneticBoxes: useMagnetic ? magneticBoxes : {},
         lockPosition: lockPosition,
+        background: background,
         label: label,
         selectable: selectable,
         pagesLabels,
@@ -302,7 +308,7 @@ const displayedPageSelector = groupSelector => {
         allowDeletePage: pathOr(
           allowDeletePage,
           ["allowDeletePage"],
-          activePage
+          pages[head(group)]
         ),
         prevPage,
         prevGroup,
@@ -347,11 +353,14 @@ const displayedPagesLabelsSelector = createSelector(
     let labels = [];
     forEach(el => {
       const page = pages[el];
+
       labels[el] = {
         longLabel: page["label"].replace("%no%", pageNumber),
         shortLabel: page["shortLabel"].replace("%no%", pageNumber)
       };
-      pageNumber++;
+      if (page["countInPagination"]) {
+        pageNumber++;
+      }
     }, pageOrder);
     return labels;
   }

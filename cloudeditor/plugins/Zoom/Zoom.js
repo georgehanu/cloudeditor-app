@@ -78,6 +78,5 @@ module.exports = {
       showMore: false,
       embedButtonPlugin: true
     }
-  }),
-  reducers: { ui: require("../../core/stores/reducers/ui") }
+  })
 };

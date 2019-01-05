@@ -68,7 +68,7 @@ class ImageBlock extends React.PureComponent {
           imageHeight={this.props.imageHeight}
           image_src={this.props.image_src}
           leftSlider={this.props.leftSlider}
-          alternateZoom={1}
+          alternateZoom={this.props.alternateZoom}
           width={this.props.width}
           height={this.props.height}
           viewOnly={this.props.viewOnly}

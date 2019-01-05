@@ -1,3 +1,6 @@
 .pageBlock.textflow .blockData {
   display: table-cell;
 }
+.pageBlock.text .blockData {
+  display: table-cell;
+}

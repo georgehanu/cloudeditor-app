@@ -1,6 +1,6 @@
 const React = require("react");
 
-const { Config } = require("../../ToolbarConfig/config");
+const Config = require("../../ToolbarConfig/config");
 const Types = require("../../ToolbarConfig/types");
 const SpecialEffectsItem = require("./SpecialEffectsItem/SpecialEffectsItem");
 const Button = require("../Button/Button");

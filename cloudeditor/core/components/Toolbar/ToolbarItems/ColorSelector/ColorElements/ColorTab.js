@@ -10,7 +10,7 @@ const ColorTab = props => {
     return (
       <li
         key={color.id}
-        style={{ backgroundColor: color.htmlRGB }}
+        style={{ backgroundColor: "rgb(" + color.htmlRGB + ")" }}
         className="ColorSquare"
         onClick={() => {
           const {

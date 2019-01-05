@@ -38,6 +38,7 @@
   top: -1px;
 }
 .pageBlock.editable.textflow .north,
+.pageBlock.editable.text .north,
 .pageBlock.editable.textline .north {
   display: table;
   width: 100%;

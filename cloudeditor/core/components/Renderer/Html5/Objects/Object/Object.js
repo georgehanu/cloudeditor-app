@@ -202,12 +202,12 @@ class ObjectBlock extends React.Component {
       left: left + offsetLeft,
       top: top + offsetTop,
       transform: "rotate(" + angle + "deg)",
-      backgroundColor: bgColor.htmlRGB
+      backgroundColor: "rgb(" + bgColor.htmlRGB + ")"
     };
     const styleBorderColor = {
       width: width + parseFloat(borderWidth),
       height: height + parseFloat(borderWidth),
-      borderColor: borderColor.htmlRGB,
+      borderColor: "rgb(" + borderColor.htmlRGB + ")",
       borderWidth: parseFloat(borderWidth),
       top: (-1 * parseFloat(borderWidth)) / 2,
       left: (-1 * parseFloat(borderWidth)) / 2
@@ -218,6 +218,7 @@ class ObjectBlock extends React.Component {
 
     switch (type) {
       case "textflow":
+      case "text":
       case "textline":
         element = this.renderText();
         break;

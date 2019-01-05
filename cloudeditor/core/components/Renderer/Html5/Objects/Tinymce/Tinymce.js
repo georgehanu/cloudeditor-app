@@ -70,7 +70,7 @@ class Tinymce extends React.Component {
   };
 
   componentDidUpdate() {
-    if (this.currentEditor) {
+    if (this.currentEditor && this.currentEditor.dom.doc) {
       var element = this.currentEditor.dom.doc.getElementsByClassName(
         "tableContainer"
       )[0];

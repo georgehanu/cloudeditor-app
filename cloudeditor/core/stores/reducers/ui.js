@@ -7,7 +7,9 @@ const {
 
 const { handleActions, combineActions } = require("redux-actions");
 const ProjectUtils = require("../../utils/ProjectUtils");
-const initialState = ProjectUtils.getEmptyUI();
+const ConfigUtils = require("../../utils/ConfigUtils");
+const config = ConfigUtils.getDefaults();
+const initialState = ProjectUtils.getEmptyUI(config.ui);
 const changeZoom = (state, payload) => {
   return {
     ...state,

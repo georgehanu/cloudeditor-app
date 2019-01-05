@@ -11,6 +11,7 @@ const ProjectMenu = require("../../plugins/ProjectMenu/ProjectMenu");
 const MenuItemMyProject = require("../../plugins/MenuItemMyProject/MenuItemMyProject");
 const MenuItemPages = require("../../plugins/MenuItemPages/MenuItemPages");
 const MenuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextImage");
+const Layouts = require("../../plugins/Layouts/Layouts");
 
 const plugins = {
   Html5Renderer,
@@ -25,7 +26,8 @@ const plugins = {
   ProjectMenu,
   MenuItemMyProject,
   MenuItemPages,
-  MenuItemTextImage
+  MenuItemTextImage,
+  Layouts
 };
 
 const requires = {};

@@ -181,6 +181,8 @@ class Toolbar extends React.Component {
       activeItem.type === "text" ||
       activeItem.type === "textbox" ||
       activeItem.type === "textflow" ||
+      activeItem.type === "textline" ||
+      activeItem.type === "text" ||
       activeItem.type === "tinymce"
     ) {
       toolbarType = textToolbar;

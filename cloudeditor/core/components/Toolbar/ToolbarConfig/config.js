@@ -133,7 +133,7 @@ const Config = {
     data: [
       {
         value: "Arial",
-        label: "Arial",
+        label: "Arial2",
         className: "Arial"
       },
       { value: "Dax", label: "Dax", className: "Dax" },

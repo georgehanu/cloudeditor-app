@@ -29,3 +29,12 @@
   padding-bottom: 45px;
   height: 100%;
 }
+#sidebar-wrapper .uploadGallery {
+  height: calc(100% - 76px);
+}
+#sidebar-wrapper .uploadGalleryUl {
+  overflow: auto;
+}
+.containerMaxZindex #sidebar-wrapper {
+  z-index: 5000;
+}

@@ -6,6 +6,7 @@ const { withNamespaces } = require("react-i18next");
 const TYPE = "layout";
 
 const Gallery = require("../../core/components/Gallery/Gallery");
+require("./Layouts.css");
 
 class Layouts extends React.Component {
   render() {

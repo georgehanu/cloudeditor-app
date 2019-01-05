@@ -36,7 +36,7 @@ class TextBlock extends React.Component {
       width: width,
       maxWidth: width,
       fontFamily: this.props.fontFamily,
-      color: this.props.fillColor,
+      color: "rgb(" + this.props.fillColor + ")",
       fontSize: this.props.fontSize,
       textAlign: this.props.textAlign,
       textDecoration: this.props.underline ? "underline" : "none",

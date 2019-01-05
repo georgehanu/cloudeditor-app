@@ -133,16 +133,13 @@ const getDocumentDefaults = cfg => {
     {
       facingPages: true,
       singleFirstLastPage: true,
-      groupSize: 2,
+      groupSize: 1,
       includeBoxes: true,
       includeMagentic: false,
       showTrimbox: false,
       useMagentic: true,
-      predefinedGroups: [2, 3], //or false
-      groups: {
-        group_1: ["page_1"],
-        group_3: ["page_4", "page_2", "page_3"]
-      }
+      predefinedGroups: false, //or false
+      groups: {}
     },
     cfg || {}
   );
@@ -165,16 +162,16 @@ const getPagesDefaults = cfg => {
       allowDeletePage: 1,
       boxes: {
         trimbox: {
-          top: 20,
-          right: 20,
-          bottom: 20,
-          left: 20
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
         },
         bleed: {
-          top: 10,
-          right: 10,
-          bottom: 10,
-          left: 10
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
         }
       }
     },
@@ -184,22 +181,24 @@ const getPagesDefaults = cfg => {
 };
 
 const getProjectTemplate = cfg => {
-  const project = {
-    title: pathOr("Empty Project", ["title", "document"], cfg),
-    pages: {},
-    activePage: null,
-    pagesOrder: [],
-    objects: {},
-    selectedObjectsIds: [],
-    activeSelection: null,
-    configs: {
-      document: getDocumentDefaults(pathOr({}, ["defaults", "document"], cfg)),
-      pages: getPagesDefaults(pathOr({}, ["defaults", "pages"], cfg)),
-      objects: getObjectsDefaults(pathOr({}, ["defaults", "objects"], cfg))
+  const project = mergeDeepRight(
+    {
+      title: "Empty Project",
+      pages: {},
+      activePage: "page_0",
+      pagesOrder: [],
+      objects: {},
+      selectedObjectsIds: [],
+      activeSelection: null,
+      configs: {
+        document: getDocumentDefaults({}),
+        pages: getPagesDefaults({}),
+        objects: getObjectsDefaults({})
+      },
+      ui: getEmptyUI()
     },
-    colors: {},
-    fonts: {}
-  };
+    cfg || {}
+  );
   return project;
 };
 
@@ -292,7 +291,7 @@ const getUIPermissionsTemplate = cfg => {
  * @param cfg
  * @returns {{title: (*|string), pages: {}, pagesOrder: Array, activePage: null, objects: {}, selectedObjectsIds: Array}}
  */
-const getEmptyProject = cfg => {
+const getEmptyProjectMerged = cfg => {
   let project = getProjectTemplate(cfg);
   const emptyPage = getEmptyPage(cfg);
   return {
@@ -304,6 +303,9 @@ const getEmptyProject = cfg => {
     activePage: emptyPage.id,
     selectedPage: emptyPage.id
   };
+};
+const getEmptyProject = cfg => {
+  return getProjectTemplate(cfg);
 };
 
 const getRandomProject = cfg => {
@@ -1528,43 +1530,39 @@ const getEmptyObject = cfg => {
 };
 
 const getEmptyUI = cfg => {
-  const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });
-  const color2 = getEmptyColor({ id: 2, label: "red", htmlRGB: "#f00" });
-  const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
-  const font2 = getEmptyFont({ label: "Arial", id: 2 });
-  return {
-    rerenderId: null,
-    fonts: {},
-    fontMetrics: {},
-    colors: {
-      [color1.id]: color1,
-      [color2.id]: color2
-    },
-    workArea: {
-      zoom: 1,
-      scale: 1,
-      pageOffset: {
-        x: 0,
-        y: 0
+  return mergeDeepRight(
+    {
+      rerenderId: null,
+      fonts: {},
+      fontMetrics: {},
+      colors: {},
+      workArea: {
+        zoom: 1,
+        scale: 1,
+        pageOffset: {
+          x: 0,
+          y: 0
+        },
+        offsetCanvasContainer: {
+          x: 0,
+          y: 0
+        },
+        canvas: {
+          workingWidth: 0,
+          workingHeight: 0
+        }
       },
-      offsetCanvasContainer: {
-        x: 0,
-        y: 0
-      },
-      canvas: {
-        workingWidth: 0,
-        workingHeight: 0
-      }
+      permissions: getUIPermissionsTemplate(cfg)
     },
-    permissions: getUIPermissionsTemplate(cfg)
-  };
+    cfg || {}
+  );
 };
 
 const getRandomUI = cfg => {
   const ui = getEmptyUI(cfg);
   const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });
   const color2 = getEmptyColor({ id: 2, label: "red", htmlRGB: "#f00" });
-  const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
+  const font1 = getEmptyFont({ label: "Helve3333tica", id: 1 });
   const font2 = getEmptyFont({ label: "Arial", id: 2 });
 
   return {

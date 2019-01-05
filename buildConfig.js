@@ -154,7 +154,11 @@ const build = config => {
       )
     ],
     devServer: {
-      port: config.port
+      port: config.port,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
+      }
     },
     stats: "none" //https://webpack.js.org/configuration/stats/
   };

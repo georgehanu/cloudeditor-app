@@ -209,12 +209,11 @@ const removeActionSelection = (state, payload) => {
 };
 
 const config = ConfigUtils.getDefaults();
-const emptyProject = ProjectUtils.getRandomProject(config.project);
-//const emptyProject = ProjectUtils.getEmptyProject(config.project);
+//const emptyProject = ProjectUtils.getRandomProject(config.project);
+const emptyProject = ProjectUtils.getEmptyProject(config.project);
 
 const initialState = {
-  ...emptyProject,
-  ui: ProjectUtils.getEmptyUI()
+  ...emptyProject
 };
 
 const swap = (index1, index2, list) => {
@@ -239,8 +238,8 @@ addObjectMiddle = (state, action) => {
   const pageId = state.activePage;
   const page = state.pages[pageId];
   const { width, height } = page;
-  const blockWidth = width / 6;
-  const blockHeight = blockWidth * (height / width);
+  let blockWidth = width / 6;
+  let blockHeight = blockWidth * (height / width);
   if (width > height) {
     blockHeight = height / 6;
     blockWidth = blockHeight * (width / height);
