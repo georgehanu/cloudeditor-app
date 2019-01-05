@@ -111,30 +111,42 @@ class Page extends React.Component {
         subType: "page",
         width: width,
         height: height,
-        top: offset.top,
-        left: offset.left,
+        offsetTop: offset.top,
+        offsetLeft: offset.left,
         zoomScale,
+        level: 0,
         innerPage: {
           width: innerPage.width,
           height: innerPage.height,
           offset: {
             top: innerPage.offset.top,
             left: innerPage.offset.left
-          }
+          },
+          isDocumentFirstPage: innerPage.isDocumentFirstPage,
+          isDocumentLastPage: innerPage.isDocumentLastPage,
+          isGroupFirstPage: innerPage.isGroupFirstPage,
+          isGroupLastPage: innerPage.isGroupLastPage
         },
         parent: null
       };
 
-      objIds = concat(
-        globalObjectsIds.before,
-        innerPage.objectsIds,
-        globalObjectsIds.after
-      );
+      if (innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage) {
+        objIds = innerPage.objectsIds;
+      } else {
+        objIds = concat(
+          globalObjectsIds.before,
+          innerPage.objectsIds,
+          globalObjectsIds.after
+        );
+      }
 
       objectsOffset = objIds.reduce(function(acc, cV, _) {
         acc.push({
           id: cV,
           uuid: pKey + "-" + cV,
+          level: parent.level + 1,
+          offsetLeft: offset.left,
+          offsetTop: offset.top,
           parent
         });
         return acc;

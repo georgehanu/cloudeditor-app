@@ -187,12 +187,17 @@ const makeMapStateToProps = (state, props) => {
   const activePage = (state, props) => {
     return props.page_id;
   };
+
   const pageSelector = createSelector(
     activePage,
     page_id => {
       return [page_id];
     }
   );
+
+  const groupSelector = (state, props) => {
+    return props.group;
+  };
 
   const includeBoxesSelector = (_, props) => {
     return props.includeBoxes;
@@ -203,7 +208,9 @@ const makeMapStateToProps = (state, props) => {
   };
 
   const getDisplayedPageSelector = displayedPageSelector(
-    pageSelector,
+    () => 1, //displayOnePage
+    groupSelector,
+    activePage,
     includeBoxesSelector,
     useMagneticSelector
   );

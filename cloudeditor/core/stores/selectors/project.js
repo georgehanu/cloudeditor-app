@@ -32,6 +32,14 @@ const titleSelector = state =>
   pathOr("Empty project", ["project", "title"], state);
 
 /* Start Document Config Selectors */
+
+const displayOnePageSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "displayOnePage"],
+    state
+  );
+};
 const facingPagesSelector = state => {
   return pathOr(
     false,
@@ -302,6 +310,7 @@ module.exports = {
   groupsSelector,
   selectedPageIdSelector,
 
+  displayOnePageSelector,
   facingPagesSelector,
   singleFirstLastPageSelector,
   groupSizeSelector,

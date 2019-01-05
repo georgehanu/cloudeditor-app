@@ -14,14 +14,18 @@ const withResizable = WrappedComponent => {
       this.el = null;
     }
     changePropsOnDragHandler = (ui, resizing) => {
-      const { zoomScale, id, offsetTop, offsetLeft } = this.props;
+      const { zoomScale, id, offsetTop, offsetLeft, parent } = this.props;
       this.props.onUpdatePropsHandler({
         id,
         props: {
           width: ui.size.width / zoomScale,
           height: ui.size.height / zoomScale,
-          top: (ui.position.top - offsetTop) / zoomScale,
-          left: (ui.position.left - offsetLeft) / zoomScale,
+          top:
+            (ui.position.top - offsetTop - parent.innerPage.offset.top) /
+            zoomScale,
+          left:
+            (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
+            zoomScale,
           resizing
         }
       });

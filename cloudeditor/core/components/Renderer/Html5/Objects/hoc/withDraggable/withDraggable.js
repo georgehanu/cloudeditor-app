@@ -14,14 +14,41 @@ const withDraggable = WrappedComponent => {
       this.enableUI = false;
     }
     changePropsOnDragHandler = (ui, dragging) => {
-      const { offsetLeft, offsetTop, zoomScale, id } = this.props;
+      const {
+        offsetLeft,
+        offsetTop,
+        zoomScale,
+        id,
+        parent,
+        width,
+        mirrored
+      } = this.props;
+
+      let newProps = {
+        top:
+          (ui.position.top - offsetTop - parent.innerPage.offset.top) /
+          zoomScale,
+        left:
+          (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
+          zoomScale,
+        dragging
+      };
+
+      if (mirrored) {
+        newProps["left"] =
+          parent.width / zoomScale -
+          newProps["left"] -
+          width / zoomScale -
+          (2 * parent.offsetLeft) / zoomScale;
+        /*  offsetLeft +
+            parent.innerPage.offset.left -
+            ui.position.left -
+            width) /
+          zoomScale; */
+      }
       this.props.onUpdatePropsHandler({
         id,
-        props: {
-          top: (ui.position.top - offsetTop) / zoomScale,
-          left: (ui.position.left - offsetLeft) / zoomScale,
-          dragging
-        }
+        props: newProps
       });
     };
     onDragStartHandler = (event, ui) => {

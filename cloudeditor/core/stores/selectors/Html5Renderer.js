@@ -3,6 +3,8 @@ const {
   createDeepEqualSelector: createSelector
 } = require("../../rewrites/reselect/createSelector");
 
+const createCachedSelector = require("re-reselect").default;
+
 const {
   head,
   any,
@@ -28,7 +30,7 @@ const {
   pagesSelector,
   pagesOrderSelector,
   activePageIdSelector,
-  facingPagesSelector,
+  displayOnePageSelector,
   singleFirstLastPageSelector,
   groupSizeSelector,
   predefinedGroupsSelector,
@@ -117,11 +119,14 @@ const activeGroupSelector = groupsSelector =>
   );
 
 const displayedPageSelector = (
+  displayOnePageSelector,
   groupSelector,
+  activePageIdSelector,
   includeBoxesSelector,
   useMagneticSelector
 ) => {
   return createSelector(
+    displayOnePageSelector,
     groupSelector,
     pagesSelector,
     pagesDefaultConfigSelector,
@@ -134,6 +139,7 @@ const displayedPageSelector = (
     pagesOrderSelector,
     deletePagePagesConfigSelector,
     (
+      displayOnePage,
       group,
       pages,
       config,
@@ -172,10 +178,16 @@ const displayedPageSelector = (
       let selectable = true;
       let lockPosition = true;
       let pagesLabels = [];
-      let innerPagesCounter = 0;
-      forEach(page => {
+      const addInnerPage = (page, groupIndex) => {
         innerPages[page] = merge(pages[page], config);
-        innerPages[page]["order"] = innerPagesCounter;
+        innerPages[page]["isDocumentFirstPage"] =
+          pagesOrder.indexOf(page) === 0;
+        innerPages[page]["isDocumentLastPage"] =
+          pagesOrder.indexOf(page) === pagesOrder.length - 1;
+
+        innerPages[page]["isGroupFirstPage"] = group.indexOf(page) === 0;
+        innerPages[page]["isGroupLastPage"] =
+          group.indexOf(page) === group.length - 1;
         innerPages[page]["boxes"] = {
           trimbox: merge(
             pathOr({}, [page, "boxes", "trimbox"], pages),
@@ -204,8 +216,18 @@ const displayedPageSelector = (
         shortLabel = innerPages[page]["shortLabel"];
         lockPosition = innerPages[page]["lockPosition"];
         selectable = innerPages[page]["selectable"];
-        innerPagesCounter++;
-      }, group);
+      };
+
+      for (let p = 0; p < group.length; p++) {
+        if (displayOnePage) {
+          if (group[p] === activePageId) {
+            addInnerPage(activePageId, p);
+            break;
+          }
+        } else {
+          addInnerPage(group[p], p);
+        }
+      }
 
       let boxes = {};
       let magneticBoxes = {};
@@ -310,7 +332,7 @@ const displayedPageSelector = (
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
         },
         innerPages,
-        totalInnerPages: innerPagesCounter
+        group: group
       };
     }
   );
@@ -492,6 +514,63 @@ const getDisplayedPageBlockActions = createSelector(
   }
 );
 
+const displayedMergedObjectCachedSelector = createCachedSelector(
+  (state, bUuid, blocksData) => blocksData,
+  objectsDefaultConfigSelector,
+  (object, defaults) => {
+    return mergeAll([
+      defaults.generalCfg,
+      defaults[object.subType + "Cfg"],
+      object,
+      {
+        active: false
+      }
+    ]);
+  }
+)((state, bUuid, blocksData) => `displayedMerged${bUuid}`);
+
+const scaledDisplayedObjectCachedSelector = createCachedSelector(
+  (state, bUuid, block, scale) => block,
+  (state, bUuid, block, scale) => scale,
+  (block, zoomScale) => {
+    let scaledBlock = clone(block);
+    if (zoomScale === 1) return scaledBlock;
+
+    const defaultPaths = [
+      ["width"],
+      ["height"],
+      ["top"],
+      ["left"],
+      ["fontSize"]
+    ];
+
+    scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
+
+    return scaledBlock;
+  }
+)((state, bUuid, block, scale) => `scaledDisplayedMerged${bUuid}${scale}`);
+
+const activeScaledDisplayedObjectCachedSelector = createCachedSelector(
+  (state, bUuid, block, scale) => block,
+  (state, bUuid, block, scale) => scale,
+  (block, zoomScale) => {
+    let scaledBlock = clone(block);
+    if (zoomScale === 1) return scaledBlock;
+
+    const defaultPaths = [
+      ["width"],
+      ["height"],
+      ["top"],
+      ["left"],
+      ["fontSize"]
+    ];
+
+    scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
+
+    return scaledBlock;
+  }
+)((state, bUuid, block, scale) => `scaledDisplayedMerged${bUuid}${scale}`);
+
 registerSelectors({
   totalPages,
   groupsSelector,
@@ -519,5 +598,7 @@ module.exports = {
   getSelectedObjectsLengthSelector,
   displayedPageLabelsSelector,
   displayedPagesLabelsSelector,
-  getDisplayedPageBlockActions
+  getDisplayedPageBlockActions,
+  displayedMergedObjectCachedSelector,
+  scaledDisplayedObjectCachedSelector
 };

@@ -133,6 +133,7 @@ class LiveHtml5Pagination extends React.Component {
         const classes = className.join(" ");
         return (
           <PageContainer
+            group={group}
             classes={classes}
             page_id={page}
             key={page}

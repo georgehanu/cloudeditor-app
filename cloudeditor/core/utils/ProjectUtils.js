@@ -213,6 +213,7 @@ const getObjectsDefaults = cfg => {
 const getDocumentDefaults = cfg => {
   const defaults = merge(
     {
+      displayOnePage: true,
       facingPages: true,
       singleFirstLastPage: true,
       groupSize: 2,
@@ -220,7 +221,7 @@ const getDocumentDefaults = cfg => {
       includeMagentic: false,
       showTrimbox: false,
       useMagentic: true,
-      predefinedGroups: [2, 3], //or false
+      predefinedGroups: [2, 2], //or false
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]
@@ -514,8 +515,8 @@ const getRandomProject = cfg => {
     subType: "textflow",
     width: 100,
     height: 100,
-    left: 500,
-    top: 20,
+    left: 0,
+    top: 0,
     value: "Header text here",
     fontFamily: "Dax",
     fontSize: 20,
@@ -527,8 +528,8 @@ const getRandomProject = cfg => {
     subType: "textflow",
     width: 100,
     height: 100,
-    left: 150,
-    top: 60,
+    left: 0,
+    top: 0,
     value: "Footer text here",
     fontFamily: "Dax",
     fontSize: 20,
@@ -553,7 +554,7 @@ const getRandomProject = cfg => {
   for (i = 0; i < 5; i++) {
     let page = getEmptyPage();
     let j;
-    for (j = 0; j < 2; j++) {
+    for (j = 0; j < 5; j++) {
       let object = getEmptyObject({
         type: "text",
         subType: "textflow",
@@ -563,8 +564,7 @@ const getRandomProject = cfg => {
         top: Math.random() * 300,
         value: "Enter text here",
         fontFamily: "Dax",
-        fontSize: 5 + Math.random() * 50,
-        fill: "red"
+        fontSize: 5 + Math.random() * 50
       });
       page.objectsIds.push(object.id);
       project.objects[object.id] = object;

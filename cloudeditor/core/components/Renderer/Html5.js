@@ -170,14 +170,19 @@ const mapDispatchToProps = dispatch => {
 
 const makeMapStateToProps = (state, props) => {
   const facingPagesSelector = (state, props) => {
-    return facingPagesSelector.facingPages || 0;
+    return props.facingPages || 1;
+  };
+  const displayOnePageSelector = (state, props) => {
+    return props.displayOnePage || 1;
   };
 
   const getGroupsSelector = groupsSelector(facingPagesSelector);
   const getActiveGroupSelector = activeGroupSelector(getGroupsSelector);
 
   const getDisplayedPageSelector = displayedPageSelector(
+    displayOnePageSelector,
     getActiveGroupSelector,
+    activePageIdSelector,
     includeBoxesSelector,
     useMagneticSelector
   );

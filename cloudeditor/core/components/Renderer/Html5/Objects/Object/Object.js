@@ -19,7 +19,9 @@ const {
   displayedObjectSelector,
   displayedMergedObjectSelector,
   scaledDisplayedObjectSelector,
-  selectedObjectsIdsSelector
+  selectedObjectsIdsSelector,
+  displayedMergedObjectCachedSelector,
+  scaledDisplayedObjectCachedSelector
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
@@ -42,6 +44,7 @@ class ObjectBlock extends React.Component {
     this.el = null;
     this.$el = null;
   }
+
   componentDidUpdate() {
     if (this.editable) {
       this.editable.setFocus();
@@ -182,7 +185,9 @@ class ObjectBlock extends React.Component {
       borderColor,
       borderWidth,
       type,
-      subType
+      subType,
+      mirrored,
+      parent
     } = props;
 
     const classes = [
@@ -196,11 +201,15 @@ class ObjectBlock extends React.Component {
     const style = {
       width,
       height,
-      left: left + offsetLeft,
-      top: top + offsetTop,
+      left: left + offsetLeft + parent.innerPage.offset.left,
+      top: top + offsetTop + parent.innerPage.offset.top,
       transform: "rotate(" + (angle || 0) + "deg)",
       backgroundColor: bgColor.htmlRGB
     };
+
+    if (mirrored) {
+      style["left"] = parent.width - style["left"] - width;
+    }
     const styleBorderColor = {
       width: width + parseFloat(borderWidth),
       height: height + parseFloat(borderWidth),
@@ -240,7 +249,7 @@ class ObjectBlock extends React.Component {
     }
     return (
       <div
-        onMouseEnter={() => {
+        /* onMouseEnter={() => {
           this.props.onUpdatePropsHandler({
             id: this.props.id,
             props: {
@@ -255,7 +264,7 @@ class ObjectBlock extends React.Component {
               checkSnap: 0
             }
           });
-        }}
+        }} */
         onClick={this.onClickBlockHandler}
         className={classes}
         style={style}
@@ -276,12 +285,20 @@ class ObjectBlock extends React.Component {
 
   renderHeaderFooter(type) {
     const props = { ...this.props };
-    props.width = props.parent.innerPage.width + 2 * props.parent.left;
-    props.left = -props.parent.left;
-    if (type === "header") props.top = -props.parent.top;
+
+    const classes = [
+      "pageBlock",
+      props.type,
+      props.subType,
+      props.active && !props.viewOnly ? "active" : ""
+    ].join(" ");
+    props.width = props.parent.innerPage.width + 2 * props.parent.offsetLeft;
+
+    props.left = -props.parent.offsetLeft + props.parent.innerPage.offset.left;
+    if (type === "header") props.top = -props.parent.offsetTop;
     if (type === "footer")
       props.top =
-        props.parent.innerPage.height + props.parent.top - props.height;
+        props.parent.innerPage.height + props.parent.offsetTop - props.height;
 
     const style = {
       width: props.width,
@@ -289,12 +306,49 @@ class ObjectBlock extends React.Component {
       left: props.left + props.offsetLeft,
       top: props.top + props.offsetTop,
       transform: "rotate(" + (props.angle || 0) + "deg)",
-      backgroundColor: "red",
-      position: "absolute",
-      border: "1px dotted green",
-      opacity: "0.5"
+      position: "absolute"
     };
-    return <div style={style}>{this.props.children}</div>;
+
+    const innerBlocks = React.Children.map(this.props.children, innerBlock => {
+      let offsetTop = 0;
+      let offsetLeft =
+        props.parent.offsetLeft - props.parent.innerPage.offset.left;
+
+      const mirrored = props.parent.innerPage.isGroupLastPage ? 1 : 0;
+      /* let offsetLeft =
+        props.width -
+        props.parent.offsetLeft -
+        innerBlock.props.data.width * props.zoomScale; */
+      switch (type) {
+        case "header":
+          offsetTop = props.offsetTop;
+          break;
+        case "footer":
+          offsetTop = 0;
+          break;
+        default:
+          break;
+      }
+
+      //parent.width - style["left"] - width
+
+      return React.cloneElement(innerBlock, {
+        key: innerBlock.props.uuid,
+        offsetLeft,
+        offsetTop,
+        mirrored,
+        parent: {
+          ...innerBlock.props.parent,
+          width: props.width,
+          height: props.height
+        }
+      });
+    });
+    return (
+      <div className={classes} style={style}>
+        {innerBlocks}
+      </div>
+    );
   }
 
   render() {
@@ -375,6 +429,34 @@ ObjectBlock.defaultProps = {
   active: 0,
   editable: 1
 };
+
+const mapStateToProps = (state, props) => {
+  const displayedMergedObject = displayedMergedObjectCachedSelector(
+    state,
+    props.uuid,
+    props.data
+  );
+
+  const scaledObject = scaledDisplayedObjectCachedSelector(
+    state,
+    props.uuid,
+    displayedMergedObject,
+    props.zoomScale
+  );
+
+  const getActivePropSelector = createSelector(
+    (_, props) => {
+      return props.id;
+    },
+    selectedObjectsIdsSelector,
+    (cBlockId, selectedIds) => {
+      return includes(cBlockId, selectedIds);
+    }
+  );
+
+  return { ...scaledObject, active: getActivePropSelector(state, props) };
+};
+
 const makeMapStateToProps = (state, props) => {
   const zoomScale = (_, props) => {
     return props.zoomScale;
@@ -383,13 +465,10 @@ const makeMapStateToProps = (state, props) => {
     return props.id;
   };
 
-  const activeBlockSelector = createSelector(
-    objectsSelector,
-    getBlockId,
-    (objects, blockId) => {
-      return objects[blockId];
-    }
-  );
+  const activeBlockSelector = (_, props) => {
+    return props.data;
+  };
+
   const getActivePropSelector = createSelector(
     getBlockId,
     selectedObjectsIdsSelector,
@@ -397,6 +476,7 @@ const makeMapStateToProps = (state, props) => {
       return includes(cBlockId, selectedIds);
     }
   );
+
   const getDisplayedBlockSelector = displayedObjectSelector(
     activeBlockSelector
   );
@@ -409,10 +489,24 @@ const makeMapStateToProps = (state, props) => {
     zoomScale
   );
 
+  const displayedMergedObject = displayedMergedObjectCachedSelector(
+    state,
+    props.uuid,
+    props.data
+  );
+
+  const scaledObject = scaledDisplayedObjectCachedSelector(
+    state,
+    props.uuid,
+    displayedMergedObject,
+    props.zoomScale
+  );
+
   const mapStateToProps = (state, props) => {
     const scaledBlock = getScaledDisplayedBlockSelector(state, props);
     return { ...scaledBlock };
   };
+
   return mapStateToProps;
 };
 const mapDispatchToProps = dispatch => {
@@ -425,7 +519,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 module.exports = connect(
-  makeMapStateToProps,
+  mapStateToProps,
   mapDispatchToProps
 )(
   compose(

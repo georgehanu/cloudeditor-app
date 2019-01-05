@@ -1,57 +1,10 @@
 const React = require("react");
 const { connect } = require("react-redux");
 const { propEq, find, clone, pathOr, pick, omit } = require("ramda");
-const objectAssign = require("object-assign");
 var now = require("performance-now");
 const isEqual = require("react-fast-compare");
 
 const ObjectBlock = require("./Object");
-
-const flattenIds = (ids, objectsData, parents, parent) => {
-  if (Array.isArray(ids)) {
-    return ids.reduce(function(done, curr) {
-      let elementData = find(propEq("uuid", curr), parents);
-      if (parent) {
-        elementData = clone(parent);
-        elementData["id"] = curr;
-        elementData["uuid"] = parent["uuid"] + "-" + curr;
-      }
-      const cId = elementData.id;
-
-      if (objectsData[cId].hasOwnProperty("objectsIds"))
-        return done.concat(
-          [{ ...elementData }].concat(
-            flattenIds(
-              objectsData[cId].objectsIds,
-              objectsData,
-              parents,
-              elementData
-            )
-          )
-        );
-
-      return done.concat({ ...elementData });
-    }, []);
-  } else {
-    return ids;
-  }
-};
-
-function getPageBlocks(ids, objectsData) {
-  if (Array.isArray(ids)) {
-    return ids.reduce(function(done, cId) {
-      if (objectsData[cId].hasOwnProperty("objectsIds"))
-        return objectAssign(
-          done,
-          getPageBlocks(objectsData[cId].objectsIds, objectsData)
-        );
-
-      return pick(ids, objectsData);
-    }, {});
-  }
-
-  return {};
-}
 
 function getPageBlocksIds(arr, data) {
   if (Array.isArray(arr)) {
@@ -72,7 +25,7 @@ class Blocks extends React.Component {
     pageBlocksData: {}
   };
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const ids = nextProps.objects.map(function(obj) {
       return obj.id;
     });
@@ -82,7 +35,7 @@ class Blocks extends React.Component {
     pageBlocksData = pick(pageBlocksIds, nextProps.objectsData);
     const end = now();
 
-    console.log("getPageBlocks1", (end - start).toFixed(15), pageBlocksData);
+    //console.log("getPageBlocks", (end - start).toFixed(15), pageBlocksData);
     return { pageBlocksData };
   }
 
@@ -105,54 +58,42 @@ class Blocks extends React.Component {
       const obj = find(propEq("uuid", bUuid), objects);
       const bId = obj.id;
       const objectData = objectsData[bId];
-      obj["offsetLeft"] = obj.parent.left + obj.parent.innerPage.offset.left;
-      obj["offsetTop"] = obj.parent.top + obj.parent.innerPage.offset.top;
 
-      const objectsIds = pathOr([], ["objectsIds"], objectsData);
+      obj["type"] = objectData["type"];
+      obj["subType"] = objectData["subType"];
+      obj["zoomScale"] = zoomScale;
+      obj["innerPage"] = clone(obj.parent.innerPage);
+
+      const objectsIds = pathOr([], ["objectsIds"], objectData);
       if (objectsIds.length) {
         let newObjects = [];
 
-        let parent = {
-          id: bId,
-          uuid: bUuid,
-          width: objectData.width,
-          height: objectData.height,
-          top: objectData.top,
-          left: objectData.left,
-          innerPage: obj.parent.innerPage,
-          parent: obj.parent
-        };
-
-        // if (includes(obj.subType, ["header", "footer"])) {
-        //   parent["width"] = obj.parent.width + 2 * obj.parent.left;
-        // }
-
-        objIds = objectsData[bId]["objectsIds"];
+        objIds = objectsIds;
 
         newObjects = objIds.reduce(function(acc, cV, _) {
           acc.push({
             id: cV,
             uuid: obj["uuid"] + "-" + cV,
-            parent
+            level: obj.parent.level + 1,
+            parent: obj
           });
           return acc;
         }, newObjects);
 
         return (
-          <React.Fragment>
-            <ObjectBlock
-              key={bUuid}
-              id={bId}
-              uuid={bUuid}
-              zoomScale={zoomScale}
-              snapTolerance={snapTolerance}
-              middle={middle}
-              viewOnly={viewOnly}
-              {...obj}
-            >
-              {that.recursiveRenderBlocks(newObjects)}
-            </ObjectBlock>
-          </React.Fragment>
+          <ObjectBlock
+            key={bUuid}
+            id={bId}
+            uuid={bUuid}
+            zoomScale={zoomScale}
+            snapTolerance={snapTolerance}
+            middle={middle}
+            viewOnly={viewOnly}
+            data={objectData}
+            {...obj}
+          >
+            {that.recursiveRenderBlocks(newObjects, objectsData)}
+          </ObjectBlock>
         );
       }
 
@@ -165,6 +106,7 @@ class Blocks extends React.Component {
           snapTolerance={snapTolerance}
           middle={middle}
           viewOnly={viewOnly}
+          data={objectData}
           {...obj}
         />
       );
@@ -181,7 +123,7 @@ class Blocks extends React.Component {
     );
     const end1 = now();
 
-    console.log("recursiveRenderBlocks", (end1 - start1).toFixed(15));
+    //console.log("recursiveRenderBlocks", (end1 - start1).toFixed(15));
 
     return render;
     //const newObjects = flattenIds(ids, this.props.objectsData, objects, null);
@@ -190,8 +132,7 @@ class Blocks extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    objectsData: state.project.objects,
-    configs: state.project.configs.objects
+    objectsData: state.project.objects
   };
 };
 
