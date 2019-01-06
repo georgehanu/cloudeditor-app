@@ -5,7 +5,6 @@
   padding-top: 90px;
   height: 100%;
   background-color: white;
-  z-index: 520;
 }
 
 .projectPreviewContainer {
@@ -13,6 +12,14 @@
   height: 100%;
   padding-bottom: 150px;
   /* should depend also on pagination height */
+}
+
+.pageSelectorExtended .projectPreviewContainer {
+  padding-bottom: 300px;
+}
+
+.pageSelectorMinimized .projectPreviewContainer {
+  padding-bottom: 25px;
 }
 
 .showPrintPreview .projectPreviewContainer {
@@ -55,6 +62,8 @@
   position: relative;
   text-align: center;
   display: flex;
+  z-index: 520;
+  background-color: white;
 }
 
 .magnifier {
@@ -66,4 +75,41 @@
   margin: 0 auto;
   display: inline-block;
   margin: auto auto;
+}
+
+.showPrintPreview #sidebar-wrapper .sidebarButton,
+.showPrintPreview #sidebar-wrapper .zoom {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.showPrintPreview.containerPrintPreviewMaxZindex .previewImagecontainer {
+  z-index: 5000;
+}
+
+.showPrintPreview.showHeaderFooter #sidebar-wrapper {
+  padding-top: 0px;
+}
+
+.showPrintPreview .renderContainer .zoomContainer,
+.showPrintPreview .helperLinesContainer {
+  display: none;
+}
+
+.magnifier-image {
+  /*max-height: -webkit-fill-available;
+  max-width: -webkit-fill-available;*/
+  /*max-height: inherit;*/
+}
+
+.previewImagecontainer {
+}
+
+.showPrintPreview .paneContainer,
+.showPrintPreview .rightTriangle {
+  display: none;
+}
+
+#container.showPrintPreview.sidebarContainerExpand .pageSelectorContainer {
+  padding-left: 100px;
 }

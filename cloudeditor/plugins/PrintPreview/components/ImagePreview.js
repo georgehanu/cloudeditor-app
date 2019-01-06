@@ -4,7 +4,11 @@ const Magnifier = require("react-magnifier").default;
 
 const imagePreview = props => {
   return (
-    <div className="previewImagecontainer">
+    <div
+      className="previewImagecontainer"
+      onMouseEnter={props.onMouseEnterHandler}
+      onMouseLeave={props.onMouseLeaveHandler}
+    >
       {props.imgSrc && (
         <Magnifier
           src={props.imgSrc}

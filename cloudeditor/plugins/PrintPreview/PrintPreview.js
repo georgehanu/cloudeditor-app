@@ -11,6 +11,15 @@ const {
 } = require("./store/selectors");
 
 class PrintPreview extends React.Component {
+  onMouseEnterHandler = () => {
+    this.props.addContainerClasses("PrintPreviewMagnifier", [
+      "containerPrintPreviewMaxZindex"
+    ]);
+  };
+  onMouseLeaveHandler = () => {
+    this.props.addContainerClasses("PrintPreviewMagnifier", []);
+  };
+
   render() {
     return (
       <div className="projectPreviewContainer">
@@ -19,6 +28,8 @@ class PrintPreview extends React.Component {
             <ImagePreview
               imgSrc={this.props.previewPageUrl}
               loading={this.props.loading}
+              onMouseEnterHandler={this.onMouseEnterHandler}
+              onMouseLeaveHandler={this.onMouseLeaveHandler}
             />
           )}
         </div>
