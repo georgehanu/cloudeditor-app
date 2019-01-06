@@ -1,6 +1,5 @@
 const { pathOr, filter, values, includes, head } = require("ramda");
 const { default: createCachedSelector } = require("re-reselect");
-const { registerSelectors } = require("reselect-tools");
 const {
   createDeepEqualSelector: createSelector
 } = require("../../rewrites/reselect/createSelector");

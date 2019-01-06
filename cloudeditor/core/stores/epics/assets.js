@@ -1,5 +1,4 @@
 const {
-  UPLOAD_ASSET_START,
   UPLOAD_ASSET_SUCCESS,
   UPLOAD_ASSET_FAILED
 } = require("../actionTypes/assets");

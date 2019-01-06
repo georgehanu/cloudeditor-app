@@ -2,7 +2,12 @@ const React = require("react");
 const { merge } = require("ramda");
 const $ = require("jquery");
 const { equals } = require("ramda");
+const { connect } = require("react-redux");
+const { hot } = require("react-hot-loader");
 require("./CropperImage.css");
+const {
+  activePageIdSelector
+} = require("../../../../stores/selectors/project");
 class CropperImage extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +34,8 @@ class CropperImage extends React.Component {
       image_src: "",
       resizing: 0
     };
+    this.initializeDimensions();
+    this.setZoom();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -36,6 +43,7 @@ class CropperImage extends React.Component {
       this.initializeDimensions();
       this.setZoom();
     }
+
     if (equals(nextProps, this.props)) return false;
     return true;
   }
@@ -54,6 +62,7 @@ class CropperImage extends React.Component {
       this.props.viewOnly ||
       this.props.zoomScale != this.options.zoomScale ||
       this.props.image_src != this.options.image_src ||
+      this.props.activePageId != this.options.activePageId ||
       this.props.resizing
     ) {
       this.options = merge(
@@ -61,7 +70,8 @@ class CropperImage extends React.Component {
         {
           zoomScale: this.props.zoomScale,
           resizing: this.props.resizing,
-          image_src: this.props.image_src
+          image_src: this.props.image_src,
+          active_page: this.props.activePageId
         }
       );
       this.initializeDimensions();
@@ -319,7 +329,8 @@ class CropperImage extends React.Component {
               { ...this.options },
               {
                 zoomScale: this.props.zoomScale,
-                image_src: this.props.image_src
+                image_src: this.props.image_src,
+                active_page: this.props.activePageId
               }
             );
             this.initializeDimensions();
@@ -334,4 +345,9 @@ class CropperImage extends React.Component {
     );
   }
 }
-module.exports = CropperImage;
+const mapStateToProps = (state, props) => {
+  return {
+    activePageId: activePageIdSelector(state)
+  };
+};
+module.exports = hot(module)(connect(mapStateToProps)(CropperImage));

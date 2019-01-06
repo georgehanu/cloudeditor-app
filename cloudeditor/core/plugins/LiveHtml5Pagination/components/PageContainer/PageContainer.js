@@ -1,15 +1,13 @@
 const React = require("react");
-const assign = require("object-assign");
 const { debounce } = require("underscore");
 const { hot } = require("react-hot-loader");
+const { compose } = require("redux");
 const { connect } = require("react-redux");
-const randomColor = require("randomcolor");
 const { DragSource, DropTarget } = require("react-dnd");
 const PAGES = "PAGES";
-const {
-  /*  createSelectorWithDependencies: createSelector, */
-  registerSelectors
-} = require("reselect-tools");
+
+const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
+
 const {
   createDeepEqualSelector: createSelector
 } = require("../../../../rewrites/reselect/createSelector");
@@ -140,7 +138,7 @@ class PageContainer extends React.PureComponent {
     }
   };
   render() {
-    const { classes, mode } = this.props;
+    const { classes } = this.props;
     // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let { zoomScale } = this.state;
@@ -200,13 +198,33 @@ const makeMapStateToProps = (state, props) => {
   const activePage = (state, props) => {
     return props.page_id;
   };
+
   const pageSelector = createSelector(
     activePage,
     page_id => {
       return [page_id];
     }
   );
-  const getDisplayedPageSelector = displayedPageSelector(pageSelector);
+
+  const groupSelector = (state, props) => {
+    return props.group;
+  };
+
+  const includeBoxesSelector = (_, props) => {
+    return props.includeBoxes;
+  };
+
+  const useMagneticSelector = (_, props) => {
+    return props.useMagentic;
+  };
+
+  const getDisplayedPageSelector = displayedPageSelector(
+    () => 1, //displayOnePage
+    groupSelector,
+    activePage,
+    includeBoxesSelector,
+    useMagneticSelector
+  );
   const getDisplayedPageLabelsSelector = displayedPageLabelsSelector(
     activePage
   );
@@ -226,12 +244,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 module.exports = hot(module)(
-  connect(
-    makeMapStateToProps,
-    mapDispatchToProps
-  )(
-    DropTarget(PAGES, PageTarget, collectDrop)(
-      DragSource(PAGES, PageSource, collectDrag)(PageContainer)
-    )
-  )
+  compose(
+    withPageGroups,
+    connect(
+      makeMapStateToProps,
+      mapDispatchToProps
+    ),
+    DropTarget(PAGES, PageTarget, collectDrop),
+    DragSource(PAGES, PageSource, collectDrag)
+  )(PageContainer)
 );

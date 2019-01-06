@@ -64,7 +64,7 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
                 ) : props.tooltip.imageSrc ? (
                   <React.Fragment>
                     <div>
-                      <img src={props.tooltip.imageSrc} />
+                      <img src={props.tooltip.imageSrc} alt="" />
                     </div>
                   </React.Fragment>
                 ) : (

@@ -3,6 +3,8 @@ const {
   createDeepEqualSelector: createSelector
 } = require("../../rewrites/reselect/createSelector");
 
+const createCachedSelector = require("re-reselect").default;
+
 const {
   head,
   any,
@@ -12,7 +14,6 @@ const {
   pathOr,
   pluck,
   pick,
-  add,
   values,
   compose,
   last,
@@ -20,8 +21,6 @@ const {
   lensPath,
   set,
   view,
-  concat,
-  equals,
   mergeAll,
   forEachObjIndexed,
   clone
@@ -31,7 +30,7 @@ const {
   pagesSelector,
   pagesOrderSelector,
   activePageIdSelector,
-  facingPagesSelector,
+  displayOnePageSelector,
   singleFirstLastPageSelector,
   groupSizeSelector,
   predefinedGroupsSelector,
@@ -39,21 +38,13 @@ const {
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
   tolerancePagesConfigSelector,
-  includeBoxesSelector,
-  useMagneticSelector,
   objectsDefaultConfigSelector,
   blockActionsPagesConfigSelector,
   deletePagePagesConfigSelector,
   showTrimboxSelector
 } = require("./project");
 
-const {
-  getMaxProp,
-  getHeadProp,
-  getLastProp,
-  addProps
-} = require("../../utils/UtilUtils");
-const { zoomSelector, scaleSelector } = require("./ui");
+const { getMaxProp, addProps } = require("../../utils/UtilUtils");
 
 const totalPages = createSelector(
   pagesOrderSelector,
@@ -62,72 +53,81 @@ const totalPages = createSelector(
   }
 );
 
-const groupsSelector = createSelector(
-  facingPagesSelector,
-  singleFirstLastPageSelector,
-  groupSizeSelector,
-  predefinedGroupsSelector,
-  pagesOrderSelector,
-  (fp, sp, gs, pg, pagesOrder) => {
-    //no facing pages return groups of one page [[page-1],[page-2]]
-    const pages = [...pagesOrder];
+const groupsSelector = facingPagesSelector =>
+  createSelector(
+    facingPagesSelector,
+    singleFirstLastPageSelector,
+    groupSizeSelector,
+    predefinedGroupsSelector,
+    pagesOrderSelector,
+    (fp, sp, gs, pg, pagesOrder) => {
+      //no facing pages return groups of one page [[page-1],[page-2]]
+      const pages = [...pagesOrder];
 
-    if (!fp) {
-      return pages.map(page => {
-        return [page];
-      });
-    } else {
-      let groups = [];
-      if (sp) {
-        //first/last page must be single [[f-page],[group],...[group],[l-page]]
-        groups.push([pages.shift()]);
-      }
+      if (!fp) {
+        return pages.map(page => {
+          return [page];
+        });
+      } else {
+        let groups = [];
+        if (sp) {
+          //first/last page must be single [[f-page],[group],...[group],[l-page]]
+          groups.push([pages.shift()]);
+        }
 
-      let tmp = [];
-      let counter = 0;
-      let pgIndex = 0;
-      let pgLength = pg ? pg.length : 0;
+        let tmp = [];
+        let counter = 0;
+        let pgIndex = 0;
+        let pgLength = pg ? pg.length : 0;
 
-      while (pages.length >= 1) {
-        counter++;
-        tmp.push(pages.shift());
-        if (pgIndex < pgLength) {
-          if (counter === pg[pgIndex]) {
-            pgIndex++;
-            counter = 0;
-            groups.push(tmp);
-            tmp = [];
-          }
-        } else {
-          if (counter === gs) {
-            counter = 0;
-            groups.push(tmp);
-            tmp = [];
+        while (pages.length >= 1) {
+          counter++;
+          tmp.push(pages.shift());
+          if (pgIndex < pgLength) {
+            if (counter === pg[pgIndex]) {
+              pgIndex++;
+              counter = 0;
+              groups.push(tmp);
+              tmp = [];
+            }
+          } else {
+            if (counter === gs) {
+              counter = 0;
+              groups.push(tmp);
+              tmp = [];
+            }
           }
         }
+
+        if (tmp.length) groups.push(tmp);
+        return groups;
       }
-
-      if (tmp.length) groups.push(tmp);
-
-      return groups;
     }
-  }
-);
-const activeGroupSelector = createSelector(
-  activePageIdSelector,
-  groupsSelector,
-  (pageId, groups) => {
-    const result = groups.filter(group => {
-      return any(page => {
-        return pageId === page;
-      })(group);
-    });
+  );
+const activeGroupSelector = groupsSelector =>
+  createSelector(
+    activePageIdSelector,
+    groupsSelector,
+    (pageId, groups) => {
+      const result = groups.filter(group => {
+        return any(page => {
+          return pageId === page;
+        })(group);
+      });
 
-    return flatten(result);
-  }
-);
-const displayedPageSelector = groupSelector => {
+      return flatten(result);
+    }
+  );
+
+const displayedPageSelector = (
+  displayOnePageSelector,
+  groupSelector,
+  activePageIdSelector,
+  includeBoxesSelector,
+  useMagneticSelector
+) => {
   return createSelector(
+    displayOnePageSelector,
     groupSelector,
     pagesSelector,
     pagesDefaultConfigSelector,
@@ -141,6 +141,7 @@ const displayedPageSelector = groupSelector => {
     deletePagePagesConfigSelector,
     showTrimboxSelector,
     (
+      displayOnePage,
       group,
       pages,
       config,
@@ -177,13 +178,20 @@ const displayedPageSelector = groupSelector => {
       }
       const offset = { left: 0, top: 0 };
       let label = "";
-      let shortLabel = "";
       let selectable = true;
       let background = true;
       let lockPosition = true;
       let pagesLabels = [];
-      forEach(page => {
+      const addInnerPage = (page, groupIndex) => {
         innerPages[page] = merge(pages[page], config);
+        innerPages[page]["isDocumentFirstPage"] =
+          pagesOrder.indexOf(page) === 0;
+        innerPages[page]["isDocumentLastPage"] =
+          pagesOrder.indexOf(page) === pagesOrder.length - 1;
+
+        innerPages[page]["isGroupFirstPage"] = group.indexOf(page) === 0;
+        innerPages[page]["isGroupLastPage"] =
+          group.indexOf(page) === group.length - 1;
         innerPages[page]["boxes"] = {
           trimbox: merge(
             trimbox,
@@ -213,7 +221,18 @@ const displayedPageSelector = groupSelector => {
         lockPosition = innerPages[page]["lockPosition"];
         selectable = innerPages[page]["selectable"];
         background = innerPages[page]["background"];
-      }, group);
+      };
+
+      for (let p = 0; p < group.length; p++) {
+        if (displayOnePage) {
+          if (group[p] === activePageId) {
+            addInnerPage(activePageId, p);
+            break;
+          }
+        } else {
+          addInnerPage(group[p], p);
+        }
+      }
 
       let boxes = {};
       let magneticBoxes = {};
@@ -249,6 +268,7 @@ const displayedPageSelector = groupSelector => {
               )(box)
             };
           }
+          return bKey;
         });
       }, pagesBoxes);
       forEachObjIndexed((pageBoxesMagnetic, pKey) => {
@@ -279,6 +299,7 @@ const displayedPageSelector = groupSelector => {
               )(box)
             };
           }
+          return false;
         });
       }, pagesBoxesMagnetic);
 
@@ -316,7 +337,8 @@ const displayedPageSelector = groupSelector => {
           left: includeBoxes ? getMaxProp(boxes, "left") : 0,
           top: includeBoxes ? getMaxProp(boxes, "top") : 0
         },
-        innerPages
+        innerPages,
+        group: group
       };
     }
   );
@@ -334,7 +356,7 @@ const displayedPageLabelsSelector = pageIdSelector => {
         if (el === pageIdSelector) {
           found = true;
         }
-        if (el != pageIdSelector && !found && pages[el]["countInPagination"]) {
+        if (el !== pageIdSelector && !found && pages[el]["countInPagination"]) {
           pageNumber++;
         }
       }, pageOrder);
@@ -443,7 +465,7 @@ const displayedMergedObjectSelector = (
     (object, defaults, active) => {
       return mergeAll([
         defaults.generalCfg,
-        defaults[object.type + "Cfg"],
+        defaults[object.subType + "Cfg"],
         object,
         {
           active
@@ -501,6 +523,63 @@ const getDisplayedPageBlockActions = createSelector(
   }
 );
 
+const displayedMergedObjectCachedSelector = createCachedSelector(
+  (state, bUuid, blocksData) => blocksData,
+  objectsDefaultConfigSelector,
+  (object, defaults) => {
+    return mergeAll([
+      defaults.generalCfg,
+      defaults[object.subType + "Cfg"],
+      object,
+      {
+        active: false
+      }
+    ]);
+  }
+)((state, bUuid, blocksData) => `displayedMerged${bUuid}`);
+
+const scaledDisplayedObjectCachedSelector = createCachedSelector(
+  (state, bUuid, block, scale) => block,
+  (state, bUuid, block, scale) => scale,
+  (block, zoomScale) => {
+    let scaledBlock = clone(block);
+    if (zoomScale === 1) return scaledBlock;
+
+    const defaultPaths = [
+      ["width"],
+      ["height"],
+      ["top"],
+      ["left"],
+      ["fontSize"]
+    ];
+
+    scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
+
+    return scaledBlock;
+  }
+)((state, bUuid, block, scale) => `scaledDisplayedMerged${bUuid}${scale}`);
+
+const activeScaledDisplayedObjectCachedSelector = createCachedSelector(
+  (state, bUuid, block, scale) => block,
+  (state, bUuid, block, scale) => scale,
+  (block, zoomScale) => {
+    let scaledBlock = clone(block);
+    if (zoomScale === 1) return scaledBlock;
+
+    const defaultPaths = [
+      ["width"],
+      ["height"],
+      ["top"],
+      ["left"],
+      ["fontSize"]
+    ];
+
+    scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
+
+    return scaledBlock;
+  }
+)((state, bUuid, block, scale) => `scaledDisplayedMerged${bUuid}${scale}`);
+
 registerSelectors({
   totalPages,
   groupsSelector,
@@ -528,5 +607,7 @@ module.exports = {
   getSelectedObjectsLengthSelector,
   displayedPageLabelsSelector,
   displayedPagesLabelsSelector,
-  getDisplayedPageBlockActions
+  getDisplayedPageBlockActions,
+  displayedMergedObjectCachedSelector,
+  scaledDisplayedObjectCachedSelector
 };

@@ -1,0 +1,211 @@
+.submenuItemHeaderFooter {
+  width: 100%;
+  background-color: white;
+  position: absolute;
+  left: 0;
+  height: 30px;
+  border-top: 1px solid #dcdee1;
+  border-bottom: 1px solid #dcdee1;
+}
+
+.showHeaderFooter #sidebar-wrapper {
+  padding-top: 30px;
+}
+
+.showHeaderFooter .canvasContainer {
+  /*padding-top: 110px;*/
+}
+/*
+.canvasContainer {
+  -webkit-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}*/
+
+#sidebar-wrapper {
+  transition: none !important;
+}
+
+.submenuItemHeaderFooterEdit span,
+.submenuItemHeaderFooterLayoutMirror span,
+.submenuItemHeaderFooterInsert span,
+.submenuItemHeaderFooterActive span,
+.submenuItemHeaderFooterHeight span,
+.submenuLayoutContainer span {
+  font-weight: 400;
+  outline: none !important;
+  color: #737373;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  padding: 10px 5px 10px 4px;
+  vertical-align: middle;
+  line-height: 28px;
+}
+
+.submenuPoptextContainer ul li {
+  font-weight: bold;
+  outline: none !important;
+  color: #737373;
+  font-size: 13px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  vertical-align: middle;
+}
+
+.submenuItemHeaderFooterEdit {
+  padding-left: 10px;
+}
+
+.submenuPoptextContainer,
+.submenuLayoutContainer {
+  display: inline-block;
+}
+
+.submenuPoptextContainer .activeItem {
+  font-weight: bold;
+}
+
+.submenuPoptextContainer {
+  cursor: pointer;
+}
+
+.submenuLayoutContainer .activeItemContainer {
+  cursor: pointer;
+}
+
+.submenuPoptextContainer ul {
+  list-style: none;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.submenuPoptextContainer,
+.submenuLayoutContainer {
+  background-color: white;
+  position: absolute;
+}
+
+.submenuItemHeaderFooterEdit {
+  width: 130px;
+  position: relative;
+  float: left;
+}
+
+.submenuItemHeaderFooterLayoutMirror,
+.submenuItemHeaderFooterInsert,
+.submenuItemHeaderFooterActive,
+.submenuItemHeaderFooterHeight,
+.submenuLayoutContainer {
+  position: relative;
+  float: left;
+  padding-left: 10px;
+}
+
+.submenuItemHeaderFooterLayoutMirror {
+  width: 210px;
+}
+
+.submenuItemHeaderFooterInsert {
+  width: 150px;
+}
+.submenuLayoutContainer {
+  width: 105px;
+}
+
+.submenuItemHeaderFooterActive {
+  width: 160px;
+}
+.submenuSepatator {
+  color: #737373;
+  vertical-align: middle;
+  float: left;
+}
+
+.submenuItemHeaderFooterClose {
+  float: right;
+}
+
+.submenuItemHeaderFooterClose button {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+  white-space: nowrap;
+  font-size: 14px;
+  height: 100%;
+  display: inline-block;
+  border-style: solid;
+  border-width: 0;
+  cursor: pointer;
+  font-weight: normal;
+  line-height: 26px;
+  /* margin: 0 0 1.25rem; */
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  display: inline-block;
+  padding-right: 1.125rem;
+  padding-left: 1.125rem;
+  color: #666666;
+  -webkit-transition: background 200ms ease-in-out 0s;
+  -o-transition: background 200ms ease-in-out 0s;
+  transition: background 200ms ease-in-out 0s;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  outline: none;
+  background-color: white;
+}
+
+.projectMenuButtonSubMenuOpened .projectMenuButton {
+  background-color: #c30c15;
+  color: white;
+}
+.projectMenuButtonSubMenuOpened .projectMenuButton .icon {
+  color: white;
+}
+
+.submenuItemHeaderFooterHeight input {
+  width: 46px;
+}
+
+.projectMenuContainer
+  .buttonMenuItemHeaderFooter
+  .projectMenuButtonLink
+  .projectMenuButton
+  .buttonIcon {
+  display: inline-block;
+}
+
+.submenuLayoutContainer ul {
+  list-style: none;
+  height: 100%;
+  overflow-y: auto;
+  padding-left: 0px;
+  padding-top: 15px;
+  width: 450px;
+  background-color: white;
+  margin-left: -10px;
+}
+
+.submenuLayoutContainer img {
+  width: 100%;
+  height: 100px;
+  box-shadow: 3px 2px 6px 0px #bebebe;
+  -moz-box-shadow: 3px 2px 6px 0px #bebebe;
+  -webkit-box-shadow: 3px 2px 6px 0px #bebebe;
+  background-color: white;
+  position: relative;
+}
+
+.submenuLayoutContainer .importImageItem {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  display: block;
+  width: 150px;
+  float: left;
+  outline: none;
+}
+
+.submenuLayoutContainer li img {
+  cursor: pointer;
+}

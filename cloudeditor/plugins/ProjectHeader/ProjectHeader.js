@@ -4,8 +4,30 @@ const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 
 const { titleSelector } = require("../../core/stores/selectors/project");
+const {
+  previewLoadPage,
+  previewDisableMode
+} = require("../PrintPreview/store/actions");
+
 require("./ProjectHeader.css");
 class ProjectHeader extends React.Component {
+  state = {
+    preview: false
+  };
+  showPrintPreview = () => {
+    this.props.addContainerClasses("PrintPreview", [
+      this.state.preview === false ? "showPrintPreview" : ""
+    ]);
+
+    if (this.state.preview === false) {
+      this.props.previewLoadPage(0);
+    } else {
+      this.props.previewDisableMode();
+    }
+
+    this.setState({ preview: !this.state.preview });
+  };
+
   render() {
     return (
       <div className="projectHeaderContainer">
@@ -16,9 +38,16 @@ class ProjectHeader extends React.Component {
           </span>
           <span className="projectHeaderName">{this.props.projectTitle}</span>
           <span className="projectHeaderSeparator">|</span>
-          <span className="projectHeaderPrint">
-            {this.props.t("Print preview")}
-          </span>
+          <div className="printPreviewButtonContainer">
+            <button
+              className="printPreviewButton"
+              onClick={this.showPrintPreview}
+            >
+              {this.state.preview === false
+                ? this.props.t("Print preview")
+                : this.props.t("Back to editor")}
+            </button>
+          </div>
         </div>
         <div className="projectHeaderRight">
           <div className="projectRighInfo">
@@ -46,9 +75,16 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    previewLoadPage: pageNo => dispatch(previewLoadPage(pageNo)),
+    previewDisableMode: () => dispatch(previewDisableMode())
+  };
+};
+
 const ProjectHeaderPlugin = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNamespaces("projectHeader")(ProjectHeader));
 
 module.exports = {

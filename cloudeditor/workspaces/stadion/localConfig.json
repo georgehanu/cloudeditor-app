@@ -21,6 +21,7 @@
       "AddPdf",
       "Layouts",
       "Zoom",
+      "PrintPreview",
       "ProjectHeader",
       "ProjectMenu",
       "MenuItemMyProject",
@@ -28,7 +29,9 @@
       "MenuItemTextImage",
       "MenuItemUndoRedo",
       "MenuItemCancel",
-      "MenuItemManual"
+      "MenuItemManual",
+      "MenuItemHeaderFooter",
+      "HelperLines"
     ]
   },
   "Layout": {

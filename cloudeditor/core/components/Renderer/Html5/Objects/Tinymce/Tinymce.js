@@ -29,7 +29,7 @@ class Tinymce extends React.Component {
 
     var observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
-        if (mutation.type == "attributes") {
+        if (mutation.type === "attributes") {
           const targetBounding = mutation.target.getBoundingClientRect();
           this.props.onUpdateProps({
             width: targetBounding.width,

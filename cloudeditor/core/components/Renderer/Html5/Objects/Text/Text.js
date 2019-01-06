@@ -1,5 +1,4 @@
 const React = require("react");
-const randomColor = require("randomcolor");
 const PropTypes = require("prop-types");
 const ContentEditable = require("../ContentEditable/ContentEditable");
 
@@ -31,7 +30,7 @@ class TextBlock extends React.Component {
   componentDidMount() {}
 
   render() {
-    const { width, ...otherProps } = this.props;
+    const { width } = this.props;
     const style = {
       width: width,
       maxWidth: width,

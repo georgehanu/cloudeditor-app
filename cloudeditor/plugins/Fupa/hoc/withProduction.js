@@ -11,6 +11,7 @@ const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
   type: "tinymce",
+  subType: "tinymce",
   width: 200,
   height: 200,
   left: 200,

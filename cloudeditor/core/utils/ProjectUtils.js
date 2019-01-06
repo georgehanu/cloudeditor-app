@@ -1,6 +1,6 @@
 const uuidv4 = require("uuid/v4");
 const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
-const randomcolor = require("randomcolor");
+const randomColor = require("randomColor");
 
 const getObjectColorTemplate = cfg => {
   return merge(
@@ -18,9 +18,24 @@ const getObjectColorTemplate = cfg => {
 };
 
 const getObjectsDefaults = cfg => {
-  const { general, image, text, pdf, qr, ...custom } = cfg || {};
+  const {
+    general,
+    image,
+    text,
+    textline,
+    textflow,
+    pdf,
+    qr,
+    section,
+    footer,
+    header,
+    ...custom
+  } = cfg || {};
   const generalCfg = merge(
     {
+      id: null,
+      type: "none",
+      subType: "none", //specifies what is the real type of the block(image, pdf, qr, )
       editable: 1, //user can edit a block
       ignoreOnRest: 0, //this block will be ignored on rest
       onTop: 0, //specify if a block is on top
@@ -34,12 +49,17 @@ const getObjectsDefaults = cfg => {
       visible: 1, //if false, a block is NOT visible in the editor, but visible in PDF
       orientate: "north", //PDFLIB orientation - not used
       opacity: 1, // opacity of the block
-      realType: null, //specifies what is the real type of the block(image, pdf, qr, )
       width: 0,
       height: 0,
       left: 0,
       top: 0,
-
+      value: null,
+      ispSnap: 0,
+      orientation: "north",
+      rotate: 0,
+      dragging: 0,
+      rotating: 0,
+      resizing: 0,
       bgColor: getObjectColorTemplate((general && general.bgColor) || {}),
       borderColor: getObjectColorTemplate(
         (general && general.borderColor) || {}
@@ -52,7 +72,7 @@ const getObjectsDefaults = cfg => {
   const imageCfg = merge(
     {
       type: "image",
-      realType: "image",
+      subType: "image",
       alternateZoom: 0,
       backgroundBlock: 0,
       borderWidth: 0,
@@ -68,22 +88,30 @@ const getObjectsDefaults = cfg => {
       localImages: 0,
       selectBox: 0,
       filter: "",
-      image_src: ""
+      image_src: "",
+      cropH: 0,
+      cropX: 0,
+      cropY: 0,
+      cropW: 0,
+      ratio: 1,
+      brightness: 0,
+      imageWidth: 0,
+      imageHeight: 0
     },
     image || {}
   );
   const pdfCfg = mergeAll([
-    image,
+    imageCfg,
     {
-      realType: "pdf"
+      subType: "pdf"
     },
     pdf || {}
   ]);
 
   const qrCfg = mergeAll([
-    image,
+    imageCfg,
     {
-      realType: "qr"
+      subType: "qr"
     },
     qr || {}
   ]);
@@ -116,6 +144,55 @@ const getObjectsDefaults = cfg => {
     text || {}
   );
 
+  const textlineCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textline"
+    },
+    textline || {}
+  ]);
+
+  const textflowCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textflow"
+    },
+    textflow || {}
+  ]);
+
+  const sectionCfg = merge(
+    {
+      type: "section",
+      global: false,
+      objectsIds: [],
+      movable: 0,
+      resizable: 0,
+      rotatable: 0,
+      rotateAngle: 0
+    },
+    section || {}
+  );
+
+  const headerCfg = mergeAll([
+    sectionCfg,
+    {
+      subType: "header",
+      mirror: true,
+      global: true
+    },
+    header || {}
+  ]);
+
+  const footerCfg = mergeAll([
+    sectionCfg,
+    {
+      subType: "footer",
+      mirror: true,
+      global: true
+    },
+    footer || {}
+  ]);
+
   const customCfg = custom || {};
 
   return {
@@ -124,6 +201,11 @@ const getObjectsDefaults = cfg => {
     pdfCfg,
     qrCfg,
     textCfg,
+    textflowCfg,
+    textlineCfg,
+    sectionCfg,
+    headerCfg,
+    footerCfg,
     ...customCfg
   };
 };
@@ -131,6 +213,7 @@ const getObjectsDefaults = cfg => {
 const getDocumentDefaults = cfg => {
   const defaults = merge(
     {
+      displayOnePage: true,
       facingPages: true,
       singleFirstLastPage: true,
       groupSize: 1,
@@ -138,8 +221,27 @@ const getDocumentDefaults = cfg => {
       includeMagentic: false,
       showTrimbox: false,
       useMagentic: true,
-      predefinedGroups: false, //or false
-      groups: {}
+      predefinedGroups: [2, 2], //or false
+      groups: {
+        group_1: ["page_1"],
+        group_3: ["page_4", "page_2", "page_3"]
+      },
+      header: {
+        enabled: true,
+        mode: "read", // (read, edit)
+        activeOn: "all", //(all inner)
+        display: "before", // (before, after)
+        mirrored: true,
+        objectsIds: []
+      },
+      footer: {
+        enabled: true,
+        mode: "read", // (read, edit)
+        activeOn: "inner", //(all inner)
+        display: "before", // (before, after),
+        mirrored: false,
+        objectsIds: []
+      }
     },
     cfg || {}
   );
@@ -205,7 +307,7 @@ const getProjectTemplate = cfg => {
 const getProjectPageTemplate = cfg => {
   const background = {
     type: "color",
-    color: randomcolor()
+    color: randomColor()
   };
   return {
     id: pathOr(uuidv4(), ["id"], cfg),
@@ -308,152 +410,68 @@ const getEmptyProject = cfg => {
   return getProjectTemplate(cfg);
 };
 
-const getRandomProject = cfg => {
-  const defaultImages = [
-    "http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
-    "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350",
-    //"http://www.flexibleproduction.com/wp-content/uploads/2017/06/test-intelligenza-sociale.jpg",
-    "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg",
-    //"https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
-    "https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2018/04/jonathan-martin-brunate-lead-image_0.jpg",
-    "https://www.evoke-landscape-design.co.uk/wp-content/uploads/home-tree.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnln4X6Wha8vlaJMTkL3KEK2_v3Hxov3RqLJ5EZgJc3LbS47IG",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-XeKxMs9AQOlzv0IxEF3mjc9wkGw0HNMPmCq8Scf9JHZcxqL7hQ"
-  ];
+const getRandomProject1 = cfg => {
   let project = getProjectTemplate(cfg);
   let page1 = getProjectPageTemplate(cfg);
   let page2 = getProjectPageTemplate(cfg);
   let page3 = getProjectPageTemplate(cfg);
   let page4 = getProjectPageTemplate(cfg);
 
-  let img1 = getEmptyObject({
-    type: "image",
-    width: 343.16999999999996,
-    height: 921.4480733944953,
-    left: 0,
-    orientation: "north",
-    top: 0,
-    image_src:
-      "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
-  });
-
-  let img3 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
-    top: Math.random() * 500,
-    orientation: "north",
-    image_src: defaultImages[0]
-  });
-  let img4 = getEmptyObject({
-    type: "image",
-    width: Math.random() * 500,
-    height: Math.random() * 500,
-    left: Math.random() * 500,
-    top: Math.random() * 500,
-    orientation: "north",
-    image_src: defaultImages[parseInt(Math.random() * defaultImages.length)]
-  });
-  let img5 = getEmptyObject({
-    type: "image",
-    width: 500,
-    height: 1000,
-    left: 20,
-    orientation: "north",
-    top: 20,
-    leftSlider: 0,
-    image_src:
-      "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
-  });
-  let text6 = getEmptyObject({
-    type: "textflow",
-    width: 123,
-    height: 343,
-    left: 34,
-    orientation: "north",
-    fontFamily: "Dax",
-    top: 120,
-    value: "this is a default value for text"
-  });
-  let text1 = getEmptyObject({
-    type: "textflow",
+  const text1 = getEmptyObject({
+    id: "text1",
+    type: "text",
+    subType: "textflow",
     width: 400,
     height: 100,
     left: 0,
     top: 0,
-    text: "Enter text here",
+    value: "Enter text here",
     fontFamily: "Dax",
     fontSize: 50,
     fill: "red"
   });
-  let text2 = getEmptyObject({
-    type: "textflow",
-    width: 200,
-    height: 200,
-    left: 100,
-    top: 200,
-    text: "Enter text number 2 here",
-    fontFamily: "Dax",
-    fill: "red"
-  });
-  let text3 = getEmptyObject({
-    type: "textflow",
-    width: 200,
-    height: 200,
-    left: 300,
-    top: 300,
-    text: "Enter text number 2 here",
-    fontFamily: "Dax",
-    fill: "red"
-  });
-  let text4 = getEmptyObject({
-    type: "textflow",
-    width: 220,
-    height: 200,
-    left: 400,
-    top: 400,
-    text: "Enter text number 2 here",
-    fontFamily: "Dax",
-    fill: "red"
-  });
-  let text5 = getEmptyObject({
-    id: "14adb525-49bc-4da4-b497-922a6aebbb3a",
-    type: "textflow",
-    width: 210,
-    height: 200,
+
+  const textHeader = getEmptyObject({
+    id: "textHeader",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
     left: 500,
-    angle: 45,
-    top: 500,
-    text: "Enter text number 2 here",
+    top: 20,
+    value: "Header text here",
     fontFamily: "Dax",
+    fontSize: 20,
     fill: "red"
   });
-  let text7 = getEmptyObject({
-    type: "textflow",
-    width: 210,
-    height: 200,
-    left: 700,
-    top: 70,
-    text: "Enter text number 2 here",
+  const textFooter = getEmptyObject({
+    id: "textFooter",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
+    left: 150,
+    top: 60,
+    value: "Footer text here",
     fontFamily: "Dax",
+    fontSize: 20,
     fill: "red"
-  });
-  let table = getEmptyObject({
-    type: "tinymce",
-    width: 600,
-    height: 600,
-    left: 20,
-    top: 70
   });
 
-  let graphics = getEmptyObject({
-    type: "graphics",
-    width: Math.random() * 500,
-    height: 400,
-    left: 150,
-    top: 200,
-    image_src: "http://localhost:8080/alfa006_top.svg"
+  const header = getEmptyObject({
+    id: "header",
+    type: "section",
+    subType: "header",
+    objectsIds: [textHeader.id],
+    height: 200
+  });
+
+  const footer = getEmptyObject({
+    id: "footer",
+    type: "section",
+    subType: "footer",
+    objectsIds: [textFooter.id],
+    height: 200
   });
 
   page1 = {
@@ -490,36 +508,80 @@ const getRandomProject = cfg => {
     },
     objects: {
       [text1.id]: text1,
-      [text2.id]: text2,
-      [text3.id]: text3,
-      [text4.id]: text4,
-      [text5.id]: text5,
-      [text6.id]: text6,
-      [text7.id]: text7,
-      [img5.id]: img5
+      [header.id]: header,
+      [footer.id]: footer,
+      [textHeader.id]: textHeader,
+      [textFooter.id]: textFooter
     },
-    pagesOrder: [...project.pagesOrder, page2.id, page3.id, page4.id, page1.id],
+    globalObjectsIds: {
+      ...project.globalObjectsIds,
+      before: [header.id, footer.id],
+      after: []
+    },
+    pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id, page4.id],
     activePage: page3.id
   };
 };
 
-const getRandomProject2 = cfg => {
+const getRandomProject = cfg => {
   let project = getEmptyProject();
   let i;
-  for (i = 0; i < 50; i++) {
+  const textHeader = getEmptyObject({
+    id: "textHeader",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
+    left: 0,
+    top: 0,
+    value: "Header text here",
+    fontFamily: "Dax",
+    fontSize: 20,
+    fill: "red"
+  });
+  const textFooter = getEmptyObject({
+    id: "textFooter",
+    type: "text",
+    subType: "textflow",
+    width: 100,
+    height: 100,
+    left: 0,
+    top: 0,
+    value: "Footer text here",
+    fontFamily: "Dax",
+    fontSize: 20,
+    fill: "red"
+  });
+
+  const header = getEmptyObject({
+    id: "header",
+    type: "section",
+    subType: "header",
+    objectsIds: [textHeader.id],
+    height: 200
+  });
+
+  const footer = getEmptyObject({
+    id: "footer",
+    type: "section",
+    subType: "footer",
+    objectsIds: [textFooter.id],
+    height: 200
+  });
+  for (i = 0; i < 5; i++) {
     let page = getEmptyPage();
     let j;
-    for (j = 0; j < 10; j++) {
+    for (j = 0; j < 5; j++) {
       let object = getEmptyObject({
-        type: "textflow",
+        type: "text",
+        subType: "textflow",
         width: 100 + Math.random() * 500,
         height: 100 + Math.random() * 500,
-        left: Math.random() * 1000,
-        top: Math.random() * 1000,
-        text: "Enter text here",
+        left: Math.random() * 300,
+        top: Math.random() * 300,
+        value: "Enter text here",
         fontFamily: "Dax",
-        fontSize: 5 + Math.random() * 50,
-        fill: "red"
+        fontSize: 5 + Math.random() * 50
       });
       page.objectsIds.push(object.id);
       project.objects[object.id] = object;
@@ -527,7 +589,14 @@ const getRandomProject2 = cfg => {
     project.pages[page.id] = page;
     project.pagesOrder.push(page.id);
     project.activePage = page.id;
+    project.objects[header.id] = header;
+    project.objects[footer.id] = footer;
+    project.objects[textHeader.id] = textHeader;
+    project.objects[textFooter.id] = textFooter;
   }
+
+  project.configs.document.header.objectsIds = [header.id];
+  project.configs.document.footer.objectsIds = [footer.id];
   return project;
 };
 
@@ -543,7 +612,8 @@ const getEmptyPage = cfg => {
 const getEmptyObject = cfg => {
   let object = {
     id: cfg.id || uuidv4(),
-    type: cfg.type || false,
+    type: cfg.type || "none",
+    subType: cfg.type || "none",
     width: cfg.width || 500,
     height: cfg.height || 500,
     left: cfg.left,
@@ -566,7 +636,7 @@ const getEmptyObject = cfg => {
   };
 
   if (cfg && cfg.type) {
-    switch (cfg.type) {
+    switch (cfg.subType) {
       case "image":
         return {
           ...object,
@@ -1588,7 +1658,8 @@ const ProjectUtils = {
   getEmptyUI,
   getRandomUI,
   getEmptyColor,
-  getEmptyFont
+  getEmptyFont,
+  getFontMetricTemplate
 };
 
 module.exports = ProjectUtils;

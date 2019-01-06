@@ -15,6 +15,9 @@ const MenuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextI
 const MenuItemUndoRedo = require("../../plugins/MenuItemUndoRedo/MenuItemUndoRedo");
 const MenuItemManual = require("../../plugins/MenuItemManual/MenuItemManual");
 const MenuItemCancel = require("../../plugins/MenuItemCancel/MenuItemCancel");
+const MenuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuItemHeaderFooter");
+const HelperLines = require("../../plugins/HelperLines/HelperLines");
+const PrintPreview = require("../../plugins/PrintPreview/PrintPreview");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -32,8 +35,11 @@ const plugins = {
   MenuItemPages,
   MenuItemTextImage,
   MenuItemUndoRedo,
+  MenuItemHeaderFooter,
   MenuItemManual,
-  MenuItemCancel
+  MenuItemCancel,
+  HelperLines,
+  PrintPreview
 };
 
 const requires = {};

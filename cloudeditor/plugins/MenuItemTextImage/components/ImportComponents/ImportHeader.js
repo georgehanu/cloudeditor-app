@@ -41,6 +41,7 @@ const importHeader = props => {
         onPageChange={props.handlePageClick}
         containerClassName={"pagination"}
         activeClassName={"activePagination"}
+        forcePage={props.pageSelected}
       />
 
       <a

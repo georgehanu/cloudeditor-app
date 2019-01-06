@@ -1,4 +1,3 @@
-const path = require("path");
 const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -24,6 +23,7 @@ const build = config => {
   } = config;
   return {
     entry,
+    context: config.contentBase,
     output: {
       path: paths.dist,
       publicPath,

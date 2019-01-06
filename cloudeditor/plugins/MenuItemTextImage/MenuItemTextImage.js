@@ -92,7 +92,8 @@ module.exports = {
     ProjectMenu: {
       position: 3,
       priority: 1,
-      text: "Text/Image insert"
+      text: "Text/Image insert",
+      menuItemClass: "menuItemTextImage"
     }
   })
 };

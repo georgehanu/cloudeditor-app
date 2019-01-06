@@ -11,7 +11,7 @@ const submenuImage = props => {
         </p>
         <p
           onClick={() => {
-            props.onAddBlock({ type: "image" });
+            props.onAddBlock({ type: "image", subType: "image" });
           }}
           className={[
             "submenuItem",

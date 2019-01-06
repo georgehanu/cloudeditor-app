@@ -1,8 +1,8 @@
 const withSpinner = require("../../../../core/hoc/withSpinner/withSpinner");
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
-const { isEmpty, filter, propEq, map, pipe, pathOr, slice } = require("ramda");
-const { classes } = require("./clubTeams.css");
+const { map, pipe, pathOr, slice } = require("ramda");
+require("./clubTeams.css");
 
 const Error = require("../../UI/Error/Error");
 const Back = require("../../UI/Back/Back");

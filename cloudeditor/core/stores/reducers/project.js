@@ -29,13 +29,15 @@ const {
   ADD_OBJECT,
   ADD_TABLE,
   ADD_OBJECT_MIDDLE,
-  DELETE_PAGE
+  DELETE_PAGE,
+
+  UPDATE_HEADERCONFIG_PROPS,
+  UPDATE_FOOTERCONFIG_PROPS
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
-const $ = require("jquery");
 const uuidv4 = require("uuid/v4");
 
 const addPages = (state, action) => {
@@ -171,6 +173,7 @@ const addObjectIdToSelected = (state, payload) => {
 const addObjectIdActionSelected = (state, payload) => {
   return { ...state, selectedActionObjectsIds: [payload] };
 };
+
 const updateObjectProps = (state, payload) => {
   return {
     ...state,
@@ -180,6 +183,38 @@ const updateObjectProps = (state, payload) => {
     }
   };
 };
+const updateHeaderConfigProps = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        header: {
+          ...state.configs.document.header,
+          [payload.prop]: payload.value
+        }
+      }
+    }
+  };
+};
+
+const updateFooterConfigProps = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        footer: {
+          ...state.configs.document.footer,
+          [payload.prop]: payload.value
+        }
+      }
+    }
+  };
+};
+
 const removeSelection = (state, payload) => {
   let objectsChanges = [];
   if (payload.objectProps) {
@@ -294,7 +329,6 @@ module.exports = handleActions(
       return changeGroups(state, action.payload);
     },
     [CHANGE_PAGE]: (state, action) => {
-      console.log(action, "ACTION");
       return changePage(state, action.payload);
     },
     [ADD_OBJECT_TO_PAGE]: (state, action) => {
@@ -308,6 +342,12 @@ module.exports = handleActions(
     },
     [UPDATE_OBJECT_PROPS]: (state, action) => {
       return updateObjectProps(state, action.payload);
+    },
+    [UPDATE_HEADERCONFIG_PROPS]: (state, action) => {
+      return updateHeaderConfigProps(state, action.payload);
+    },
+    [UPDATE_FOOTERCONFIG_PROPS]: (state, action) => {
+      return updateFooterConfigProps(state, action.payload);
     },
     [REMOVE_SELECTION]: (state, action) => {
       return removeSelection(state, action.payload);

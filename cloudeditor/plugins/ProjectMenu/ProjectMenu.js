@@ -10,7 +10,12 @@ class ProjectMenu extends React.Component {
   };
 
   render() {
-    return <ProjectMenuContainer tools={this.getTools()} />;
+    return (
+      <ProjectMenuContainer
+        tools={this.getTools()}
+        addContainerClasses={this.props.addContainerClasses}
+      />
+    );
   }
 }
 

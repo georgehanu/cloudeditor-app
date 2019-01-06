@@ -1,11 +1,10 @@
-const { updateObject } = require("../../utils/UtilUtils");
 const {
   CHANGE_ZOOM,
   CHANGE_WORKAREA_PROPS,
   CHANGE_RERENDER_ID
 } = require("../actionTypes/ui");
 
-const { handleActions, combineActions } = require("redux-actions");
+const { handleActions } = require("redux-actions");
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const config = ConfigUtils.getDefaults();

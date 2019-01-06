@@ -11,7 +11,6 @@ const {
   pipe,
   assocPath,
   takeLast,
-  values,
   head,
   keys,
   forEach,
@@ -33,6 +32,14 @@ const titleSelector = state =>
   pathOr("Empty project", ["project", "title"], state);
 
 /* Start Document Config Selectors */
+
+const displayOnePageSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "displayOnePage"],
+    state
+  );
+};
 const facingPagesSelector = state => {
   return pathOr(
     false,
@@ -77,6 +84,14 @@ const showTrimboxSelector = state => {
     ["project", "configs", "document", "showTrimbox"],
     state
   );
+};
+
+const headerConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "header"], state);
+};
+
+const footerConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "footer"], state);
 };
 /* End Document Config Selectors */
 
@@ -146,7 +161,7 @@ let getObjectsInGroup = (pageObjectsIds, allObjects, activePage) => {
   let result = {};
   result = pick(pageObjectsIds, allObjects);
   forEachObjIndexed(obj => {
-    if (obj.type == "group") {
+    if (obj.type === "group") {
       obj._elements = getObjectsInGroup(
         obj._objectsIds,
         allObjects,
@@ -171,7 +186,6 @@ const getPagesWithObjects = (
   activeGroupId,
   selectedPageId
 ) => {
-  const firstPage = pages[head(activeGroupPages)];
   let activePage = {
     id: activeGroupId,
     width: useTrimbox ? boxes["trimbox"]["left"] : 0,
@@ -198,7 +212,7 @@ const getPagesWithObjects = (
       objects: merge(activePage.objects, pageObjects),
       overlays: activePage.overlays
     };
-    if (currentPageId != selectedPageId) {
+    if (currentPageId !== selectedPageId) {
       const overlay = {
         group_id: activeGroupId,
         id: currentPageId,
@@ -207,7 +221,7 @@ const getPagesWithObjects = (
           ? boxes["trimbox"]["top"] + lastPage.height + activePage.height
           : lastPage.height + activePage.height,
         width:
-          lastPageId == currentPageId && useTrimbox
+          lastPageId === currentPageId && useTrimbox
             ? page.width + boxes["trimbox"]["right"]
             : page.width + initialWidth
       };
@@ -304,6 +318,7 @@ module.exports = {
   groupsSelector,
   selectedPageIdSelector,
 
+  displayOnePageSelector,
   facingPagesSelector,
   singleFirstLastPageSelector,
   groupSizeSelector,
@@ -311,6 +326,8 @@ module.exports = {
   includeBoxesSelector,
   useMagneticSelector,
   showTrimboxSelector,
+  headerConfigSelector,
+  footerConfigSelector,
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,

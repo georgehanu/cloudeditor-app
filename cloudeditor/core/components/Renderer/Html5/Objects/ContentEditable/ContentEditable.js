@@ -165,17 +165,17 @@ class ContentEditable extends React.Component {
 
   _onBlur = ev => {
     return;
-    const { sanitise } = this.props;
-    const rawValue = this._element.innerText;
-    const value = sanitise ? this.sanitiseValue(rawValue) : rawValue;
+    // const { sanitise } = this.props;
+    // const rawValue = this._element.innerText;
+    // const value = sanitise ? this.sanitiseValue(rawValue) : rawValue;
 
-    // We finally set the state to the sanitised version (rather than the `rawValue`) because we're blurring the field.
-    this.setState({ value }, () => {
-      this.props.onChange(ev, value);
-      this.forceUpdate();
-    });
+    // // We finally set the state to the sanitised version (rather than the `rawValue`) because we're blurring the field.
+    // this.setState({ value }, () => {
+    //   this.props.onChange(ev, value);
+    //   this.forceUpdate();
+    // });
 
-    this.props.onBlur(ev);
+    // this.props.onBlur(ev);
   };
 
   _onKeyDown = ev => {

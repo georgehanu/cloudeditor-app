@@ -10,7 +10,7 @@ const SpecialEffectsItem = props => {
   return (
     <React.Fragment>
       <div className="SpecialEffectsImageContainer">
-        <img className={className} src={props.image} />
+        <img className={className} src={props.image} alt="" />
         <div className="SpecialEffectsActions">
           <span
             className="SpecialEffectsOK pic select icon printqicon-ok"

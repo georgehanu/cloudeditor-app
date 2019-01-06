@@ -125,6 +125,9 @@ require("webpack-jquery-ui/resizable");
               case "n":
               case "s":
                 if (h > st * 2) return;
+                break;
+              default:
+                break;
             }
           } else if (md === "inner") {
             switch (axis) {
@@ -135,6 +138,9 @@ require("webpack-jquery-ui/resizable");
               case "n":
               case "s":
                 if (h < st * 2) return;
+                break;
+              default:
+                break;
             }
           }
 
@@ -167,11 +173,15 @@ require("webpack-jquery-ui/resizable");
                 hs.push(val);
                 coords.snapping = true;
               }
+              break;
+            default:
+              break;
           }
         });
       });
 
       inst.snapping = false;
+      var n = null;
 
       if (hs.length) {
         inst.size.height += getN(hs);
@@ -188,7 +198,7 @@ require("webpack-jquery-ui/resizable");
         inst.snapping = true;
       }
       if (ls.length) {
-        var n = getN(ls);
+        n = getN(ls);
         inst.position.left += n;
         inst.size.width -= n;
         if (inst._aspectRatio || event.shiftKey) {
@@ -197,7 +207,7 @@ require("webpack-jquery-ui/resizable");
         inst.snapping = true;
       }
       if (ts.length) {
-        var n = getN(ts);
+        n = getN(ts);
         inst.position.top += n;
         inst.size.height -= n;
         if (inst._aspectRatio || event.shiftKey) {
@@ -264,14 +274,14 @@ require("webpack-jquery-ui/resizable");
 
   var p = $.ui.resizable.prototype.plugins.resize;
   $.each(p, function(k, v) {
-    if (v[0] == "ghost") {
+    if (v[0] === "ghost") {
       p.splice(k, 1);
       return false;
     }
   });
 
   $.each($.ui.resizable.prototype.plugins.start, function(k, v) {
-    if (v[0] == "ghost") {
+    if (v[0] === "ghost") {
       var fn = v[1];
       v[1] = function() {
         fn.apply(this, arguments);
@@ -317,10 +327,10 @@ $(document).ready(function() {
     var new_height = init_h + delta_h;
 
     //Get position after rotation with new size
-    var x = -new_width / 2;
-    var y = new_height / 2;
-    var new_x = y * _sin + x * _cos;
-    var new_y = y * _cos - x * _sin;
+    x = -new_width / 2;
+    y = new_height / 2;
+    new_x = y * _sin + x * _cos;
+    new_y = y * _cos - x * _sin;
     var diff2 = { left: new_x - x, top: new_y - y };
 
     //Get the difference between the two positions
@@ -404,7 +414,6 @@ $(document).ready(function() {
 
   $.ui.resizable.prototype._mouseDrag = function(event) {
     var data,
-      el = this.helper,
       props = {},
       smp = this.originalMousePosition,
       a = this.axis,
@@ -448,7 +457,7 @@ $(document).ready(function() {
     // plugins callbacks need to be called first
     this._propagate("resize", event);
 
-    if (!this.snapping && this.isRotate != 0) {
+    if (!this.snapping && this.isRotate !== 0) {
       //patch: revert to old position
       this.position = { left: oldPosition.left, top: oldPosition.top };
 
@@ -522,7 +531,7 @@ $(document).ready(function() {
       st.getPropertyValue("-o-transform") ||
       st.getPropertyValue("transform") ||
       null;
-    if (tr && tr != "none") {
+    if (tr && tr !== "none") {
       var values = tr.split("(")[1];
       values = values.split(")")[0];
       values = values.split(",");

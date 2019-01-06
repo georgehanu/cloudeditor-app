@@ -42,7 +42,8 @@ module.exports = {
     ProjectMenu: {
       position: 3,
       priority: 1,
-      text: "Edit action"
+      text: "Edit action",
+      menuItemClass: "menuItemUndoRedo"
     }
   })
 };

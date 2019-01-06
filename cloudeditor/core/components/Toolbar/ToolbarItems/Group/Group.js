@@ -80,6 +80,7 @@ const Group = props => {
       );
     else if (item.baseType === Types.SIMPLE_ICON)
       return <SimpleIcon {...item} key={idx} />;
+    return null;
   });
 
   return <div className={className}>{items}</div>;

@@ -1,6 +1,5 @@
 const React = require("react");
 const PropTypes = require("prop-types");
-const randomColor = require("randomcolor");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
 const { includes, equals } = require("ramda");
@@ -20,13 +19,14 @@ const {
   displayedObjectSelector,
   displayedMergedObjectSelector,
   scaledDisplayedObjectSelector,
-  selectedObjectsIdsSelector
+  selectedObjectsIdsSelector,
+  displayedMergedObjectCachedSelector,
+  scaledDisplayedObjectCachedSelector
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
 require("./Object.css");
 
-const Draggable = require("./Draggable");
 const TextBlock = require("../Text/Text");
 const ImageBlock = require("../Image/Image");
 const GraphicBlock = require("../Graphic/Graphic");
@@ -44,6 +44,7 @@ class ObjectBlock extends React.Component {
     this.el = null;
     this.$el = null;
   }
+
   componentDidUpdate() {
     if (this.editable) {
       this.editable.setFocus();
@@ -111,7 +112,8 @@ class ObjectBlock extends React.Component {
       editableRef: this.getEditableReference,
       contentEditable
     };
-    return <TextBlock {...textProps} />;
+    const block = <TextBlock {...textProps} />;
+    return this.renderBaseBlock(props, block);
   };
   renderImage = () => {
     const props = { ...this.props };
@@ -140,7 +142,8 @@ class ObjectBlock extends React.Component {
       workingPercent: this.props.workingPercent
     };
 
-    return <ImageBlock {...imageProps} />;
+    const block = <ImageBlock {...imageProps} />;
+    return this.renderBaseBlock(props, block);
   };
   renderGraphic = () => {
     const props = { ...this.props };
@@ -155,10 +158,13 @@ class ObjectBlock extends React.Component {
       image_src: props.image_src
     };
 
-    return <GraphicBlock {...graphicProps} />;
+    const block = <GraphicBlock {...graphicProps} />;
+    return this.renderBaseBlock(props, block);
   };
+
   renderTable = () => {
-    return (
+    const props = { ...this.props };
+    const block = (
       <Tinymce
         key={this.props.id}
         id={this.props.id}
@@ -170,8 +176,11 @@ class ObjectBlock extends React.Component {
         tableContent={this.props.tableContent}
       />
     );
+
+    return this.renderBaseBlock(block);
   };
-  render() {
+
+  renderBaseBlock(props, block) {
     const {
       width,
       height,
@@ -186,12 +195,16 @@ class ObjectBlock extends React.Component {
       bgColor,
       borderColor,
       borderWidth,
-      type
-    } = this.props;
+      type,
+      subType,
+      mirrored,
+      parent
+    } = props;
 
     const classes = [
       "pageBlock",
       type,
+      subType,
       active && !viewOnly ? "active" : "",
       editable ? "editable" : ""
     ].join(" ");
@@ -204,6 +217,10 @@ class ObjectBlock extends React.Component {
       transform: "rotate(" + angle + "deg)",
       backgroundColor: "rgb(" + bgColor.htmlRGB + ")"
     };
+
+    if (mirrored) {
+      style["left"] = parent.width - style["left"] - width;
+    }
     const styleBorderColor = {
       width: width + parseFloat(borderWidth),
       height: height + parseFloat(borderWidth),
@@ -212,59 +229,9 @@ class ObjectBlock extends React.Component {
       top: (-1 * parseFloat(borderWidth)) / 2,
       left: (-1 * parseFloat(borderWidth)) / 2
     };
-    let element = null;
     let styleNorth = {};
     let tinyMceResizable = null;
 
-    switch (type) {
-      case "textflow":
-      case "text":
-      case "textline":
-        element = this.renderText();
-        break;
-      case "image":
-        element = this.renderImage();
-        break;
-      case "graphics":
-        element = this.renderGraphic();
-        break;
-      case "tinymce":
-        element = this.renderTable();
-        styleNorth = { width: width + 16, height: height + 16 };
-        tinyMceResizable = (
-          <React.Fragment>
-            <div className="ui-resizable-handle ui-resizable-se ui-icon" />
-            <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
-            <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
-            <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
-          </React.Fragment>
-        );
-        break;
-
-      case "tinymce":
-        element = (
-          <Tinymce
-            tableContent={this.props.tableContent}
-            height={this.props.height}
-            width={this.props.width}
-            underline={this.props.underline}
-            bold={this.props.bold}
-            italic={this.props.italic}
-            id={this.props.id}
-            textAlign={this.props.textAlign}
-            fontFamily={this.props.fontFamily}
-            fontSize={this.props.fontSize}
-            zoomScale={this.props.zoomScale}
-            bgColor={this.props.bgColor}
-            fillColor={this.props.fillColor}
-            toolbarUpdate={this.props.toolbarUpdate}
-          />
-        );
-        break;
-
-      default:
-        break;
-    }
     let resizableHandle = null;
     if (this.props.resizable && !viewOnly) {
       resizableHandle = (
@@ -301,7 +268,7 @@ class ObjectBlock extends React.Component {
         ref={this.getReference}
       >
         <div style={styleNorth} className={"north"}>
-          {element}
+          {block}
         </div>
         <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
@@ -311,6 +278,145 @@ class ObjectBlock extends React.Component {
         {deleteHandle}
       </div>
     );
+  }
+
+  renderHeaderFooter(type) {
+    const props = { ...this.props };
+
+    const classes = [
+      "pageBlock",
+      props.type,
+      props.subType,
+      props.active && !props.viewOnly ? "active" : ""
+    ].join(" ");
+    props.width = props.parent.innerPage.width + 2 * props.parent.offsetLeft;
+
+    props.left = -props.parent.offsetLeft + props.parent.innerPage.offset.left;
+    if (type === "header") props.top = -props.parent.offsetTop;
+    if (type === "footer")
+      props.top =
+        props.parent.innerPage.height + props.parent.offsetTop - props.height;
+
+    const style = {
+      width: props.width,
+      height: props.height,
+      left: props.left + props.offsetLeft,
+      top: props.top + props.offsetTop,
+      transform: "rotate(" + (props.angle || 0) + "deg)",
+      position: "absolute"
+    };
+
+    const innerBlocks = React.Children.map(this.props.children, innerBlock => {
+      let offsetTop = 0;
+      let offsetLeft =
+        props.parent.offsetLeft - props.parent.innerPage.offset.left;
+
+      //const mirrored = props.parent.innerPage.isGroupLastPage ? 1 : 0;
+      let mirrored = false;
+
+      /* let offsetLeft =
+        props.width -
+        props.parent.offsetLeft -
+        innerBlock.props.data.width * props.zoomScale; */
+      switch (type) {
+        case "header":
+          mirrored = props.mirroredHeader;
+          offsetTop = props.offsetTop;
+          break;
+        case "footer":
+          mirrored = props.mirroredFooter;
+          offsetTop = 0;
+          break;
+        default:
+          break;
+      }
+
+      //parent.width - style["left"] - width
+
+      return React.cloneElement(innerBlock, {
+        key: innerBlock.props.uuid,
+        offsetLeft,
+        offsetTop,
+        mirrored,
+        parent: {
+          ...innerBlock.props.parent,
+          width: props.width,
+          height: props.height
+        }
+      });
+    });
+    return (
+      <div className={classes} style={style}>
+        {innerBlocks}
+      </div>
+    );
+  }
+
+  render() {
+    let element = null;
+    switch (this.props.subType) {
+      case "textflow":
+      case "text":
+      case "textline":
+        element = this.renderText();
+        break;
+      case "image":
+        element = this.renderImage();
+        break;
+      case "graphics":
+        element = this.renderGraphic();
+        break;
+      case "tinymce":
+        element = this.renderTable();
+        styleNorth = { width: width + 16, height: height + 16 };
+        tinyMceResizable = (
+          <React.Fragment>
+            <div className="ui-resizable-handle ui-resizable-se ui-icon" />
+            <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
+            <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
+            <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
+          </React.Fragment>
+        );
+        break;
+
+      case "tinymce_miky":
+        element = (
+          <Tinymce
+            tableContent={this.props.tableContent}
+            height={this.props.height}
+            width={this.props.width}
+            underline={this.props.underline}
+            bold={this.props.bold}
+            italic={this.props.italic}
+            id={this.props.id}
+            textAlign={this.props.textAlign}
+            fontFamily={this.props.fontFamily}
+            fontSize={this.props.fontSize}
+            zoomScale={this.props.zoomScale}
+            bgColor={this.props.bgColor}
+            fillColor={this.props.fillColor}
+            toolbarUpdate={this.props.toolbarUpdate}
+          />
+        );
+        break;
+
+      default:
+        element = null;
+        break;
+    }
+
+    if (this.props.type === "section") {
+      switch (this.props.subType) {
+        case "header":
+        case "footer":
+          element = this.renderHeaderFooter(this.props.subType);
+          break;
+        default:
+          break;
+      }
+    }
+
+    return element;
   }
 }
 
@@ -325,6 +431,34 @@ ObjectBlock.defaultProps = {
   active: 0,
   editable: 1
 };
+
+const mapStateToProps = (state, props) => {
+  const displayedMergedObject = displayedMergedObjectCachedSelector(
+    state,
+    props.uuid,
+    props.data
+  );
+
+  const scaledObject = scaledDisplayedObjectCachedSelector(
+    state,
+    props.uuid,
+    displayedMergedObject,
+    props.zoomScale
+  );
+
+  const getActivePropSelector = createSelector(
+    (_, props) => {
+      return props.id;
+    },
+    selectedObjectsIdsSelector,
+    (cBlockId, selectedIds) => {
+      return includes(cBlockId, selectedIds);
+    }
+  );
+
+  return { ...scaledObject, active: getActivePropSelector(state, props) };
+};
+
 const makeMapStateToProps = (state, props) => {
   const zoomScale = (_, props) => {
     return props.zoomScale;
@@ -333,13 +467,10 @@ const makeMapStateToProps = (state, props) => {
     return props.id;
   };
 
-  const activeBlockSelector = createSelector(
-    objectsSelector,
-    getBlockId,
-    (objects, blockId) => {
-      return objects[blockId];
-    }
-  );
+  const activeBlockSelector = (_, props) => {
+    return props.data;
+  };
+
   const getActivePropSelector = createSelector(
     getBlockId,
     selectedObjectsIdsSelector,
@@ -347,6 +478,7 @@ const makeMapStateToProps = (state, props) => {
       return includes(cBlockId, selectedIds);
     }
   );
+
   const getDisplayedBlockSelector = displayedObjectSelector(
     activeBlockSelector
   );
@@ -359,11 +491,24 @@ const makeMapStateToProps = (state, props) => {
     zoomScale
   );
 
+  const displayedMergedObject = displayedMergedObjectCachedSelector(
+    state,
+    props.uuid,
+    props.data
+  );
+
+  const scaledObject = scaledDisplayedObjectCachedSelector(
+    state,
+    props.uuid,
+    displayedMergedObject,
+    props.zoomScale
+  );
+
   const mapStateToProps = (state, props) => {
-    const displayedBlock = getDisplayedBlockSelector(state, props);
     const scaledBlock = getScaledDisplayedBlockSelector(state, props);
     return { ...scaledBlock };
   };
+
   return mapStateToProps;
 };
 const mapDispatchToProps = dispatch => {
@@ -376,7 +521,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 module.exports = connect(
-  makeMapStateToProps,
+  mapStateToProps,
   mapDispatchToProps
 )(
   compose(

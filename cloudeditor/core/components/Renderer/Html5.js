@@ -1,9 +1,9 @@
 const React = require("react");
-const PropTypes = require("prop-types");
-const randomColor = require("randomcolor");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
+
+const withPageGroups = require("../../hoc/renderer/withPageGroups");
 
 const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
@@ -12,11 +12,16 @@ const { changeWorkareaProps } = require("../../stores/actions/ui");
 const { removeSelection, changePage } = require("../../stores/actions/project");
 const {
   displayedPageSelector,
+  groupsSelector,
   activeGroupSelector,
   getSelectedObjectsLengthSelector,
   displayedPagesLabelsSelector
 } = require("../../stores/selectors/Html5Renderer");
-const { activePageIdSelector } = require("../../stores/selectors/project");
+const {
+  activePageIdSelector,
+  includeBoxesSelector,
+  useMagneticSelector
+} = require("../../stores/selectors/project");
 const {
   canvasSelector,
   zoomSelector,
@@ -74,7 +79,7 @@ class Html5 extends React.Component {
     forEach(blurselector => {
       const elements = document.getElementsByClassName(blurselector);
       forEach(element => {
-        if (element == target) {
+        if (element === target) {
           isBlur = false;
         }
         if (element.contains(target)) {
@@ -117,7 +122,7 @@ class Html5 extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.zoom != this.props.zoom) {
+    if (prevProps.zoom !== this.props.zoom) {
       this.updateContainerDimensions();
     }
   }
@@ -165,7 +170,23 @@ const mapDispatchToProps = dispatch => {
 };
 
 const makeMapStateToProps = (state, props) => {
-  const getDisplayedPageSelector = displayedPageSelector(activeGroupSelector);
+  const facingPagesSelector = (state, props) => {
+    return props.facingPages || 1;
+  };
+  const displayOnePageSelector = (state, props) => {
+    return props.displayOnePage || 1;
+  };
+
+  const getGroupsSelector = groupsSelector(facingPagesSelector);
+  const getActiveGroupSelector = activeGroupSelector(getGroupsSelector);
+
+  const getDisplayedPageSelector = displayedPageSelector(
+    displayOnePageSelector,
+    getActiveGroupSelector,
+    activePageIdSelector,
+    includeBoxesSelector,
+    useMagneticSelector
+  );
 
   const mapStateToProps = (state, props) => {
     return {
@@ -185,5 +206,5 @@ module.exports = hot(module)(
   connect(
     makeMapStateToProps,
     mapDispatchToProps
-  )(Html5)
+  )(withPageGroups(Html5))
 );

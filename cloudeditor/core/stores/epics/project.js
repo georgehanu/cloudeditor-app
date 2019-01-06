@@ -1,4 +1,3 @@
-const { Observable } = require("rxjs");
 const { mapTo } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { ADD_IMAGE_FROM_BUTTON } = require("../actionTypes/addButton");

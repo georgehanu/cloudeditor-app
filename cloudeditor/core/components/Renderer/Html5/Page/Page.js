@@ -1,12 +1,14 @@
 const React = require("react");
-const ObjectBlock = require("../Objects/Object/Object");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
-const { forEachObjIndexed, forEach } = require("ramda");
+const { forEachObjIndexed, pathOr, concat } = require("ramda");
 
 const type = ["image", "text"];
+const ObjectBlock = require("../Objects/Object/Object");
+const Objects = require("../Objects/Object/Objects");
+//const Ids = require("../Objects/Object/Test/IdsComplete");
 
 const {
   createDeepEqualSelector: createSelector
@@ -14,9 +16,14 @@ const {
 const {
   scaledDisplayedPageSelector
 } = require("../../../../stores/selectors/Html5Renderer");
+const {
+  globalObjectsIdsSelector
+} = require("../../../../stores/selectors/render");
 const { addObject } = require("../../../../stores/actions/project");
 const {
-  activePageIdSelector
+  activePageIdSelector,
+  headerConfigSelector,
+  footerConfigSelector
 } = require("../../../../stores/selectors/project");
 const BlockMessage = require("../BlockMesage/BlockMessage");
 
@@ -129,21 +136,116 @@ class Page extends React.Component {
     this.setState({ errorMessages });
   };
   renderObjects() {
-    const { objectsOffsetList: objects, viewOnly, zoomScale } = this.props;
-    return Object.keys(objects).map(obKey => {
-      return (
-        <ObjectBlock
-          key={obKey}
-          id={obKey}
-          zoomScale={zoomScale}
-          snapTolerance={this.props.activePage.snapTolerance}
-          middle={{ left: this.props.width / 2, top: this.props.height / 2 }}
-          {...objects[obKey]}
-          checkErrorMessages={this.checkErrorMessages}
-          viewOnly={viewOnly}
-        />
-      );
-    });
+    const {
+      innerPages,
+      offset,
+      globalObjectsIds,
+      zoomScale,
+      activePage,
+      width,
+      height,
+      viewOnly,
+      headerConfig,
+      footerConfig
+    } = this.props;
+    let objectsOffset = [];
+    forEachObjIndexed((innerPage, pKey) => {
+      const parent = {
+        id: pKey,
+        uuid: pKey,
+        type: "page",
+        subType: "page",
+        width: width,
+        height: height,
+        offsetTop: offset.top,
+        offsetLeft: offset.left,
+        zoomScale,
+        level: 0,
+        innerPage: {
+          width: innerPage.width,
+          height: innerPage.height,
+          offset: {
+            top: innerPage.offset.top,
+            left: innerPage.offset.left
+          },
+          isDocumentFirstPage: innerPage.isDocumentFirstPage,
+          isDocumentLastPage: innerPage.isDocumentLastPage,
+          isGroupFirstPage: innerPage.isGroupFirstPage,
+          isGroupLastPage: innerPage.isGroupLastPage
+        },
+        parent: null
+      };
+
+      let beforeObjIds = globalObjectsIds.before;
+      let afterObjIds = globalObjectsIds.after;
+
+      let mirroredHeader = false;
+      let mirroredFooter = false;
+
+      if (headerConfig.enabled) {
+        let headerObjIds = [];
+        if (headerConfig.activeOn === "all")
+          headerObjIds = headerConfig.objectsIds;
+        if (headerConfig.activeOn === "inner") {
+          if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
+            headerObjIds = headerConfig.objectsIds;
+        }
+        if (headerConfig.display === "before")
+          beforeObjIds = concat(beforeObjIds, headerObjIds);
+        if (headerConfig.display === "after")
+          afterObjIds = concat(afterObjIds, headerObjIds);
+
+        if (headerConfig.mirrored) {
+          mirroredHeader =
+            innerPage.isGroupLastPage && !innerPage.isDocumentFirstPage ? 1 : 0;
+        }
+      }
+
+      if (footerConfig.enabled) {
+        let footerObjIds = [];
+        if (footerConfig.activeOn === "all")
+          footerObjIds = footerConfig.objectsIds;
+        if (footerConfig.activeOn === "inner") {
+          if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
+            footerObjIds = footerConfig.objectsIds;
+        }
+        if (footerConfig.display === "before")
+          beforeObjIds = concat(beforeObjIds, footerObjIds);
+        if (footerConfig.display === "after")
+          afterObjIds = concat(afterObjIds, footerObjIds);
+
+        if (footerConfig.mirrored)
+          mirroredFooter =
+            innerPage.isGroupLastPage && !innerPage.isDocumentFirstPage ? 1 : 0;
+      }
+
+      objIds = concat(beforeObjIds, innerPage.objectsIds, afterObjIds);
+
+      objectsOffset = objIds.reduce(function(acc, cV, _) {
+        acc.push({
+          id: cV,
+          uuid: pKey + "-" + cV,
+          level: parent.level + 1,
+          offsetLeft: offset.left,
+          offsetTop: offset.top,
+          mirroredHeader,
+          mirroredFooter,
+          parent
+        });
+        return acc;
+      }, objectsOffset);
+    }, innerPages);
+
+    return (
+      <Objects
+        objects={objectsOffset}
+        zoomScale={zoomScale}
+        snapTolerance={activePage.snapTolerance}
+        middle={{ left: width / 2, top: height / 2 }}
+        checkErrorMessages={this.checkErrorMessages}
+        viewOnly={viewOnly}
+      />
+    );
   }
   renderErrorMessages = () => {
     const { errorMessages } = this.state;
@@ -163,6 +265,7 @@ class Page extends React.Component {
   getPageRef = () => {
     return this.ref;
   };
+
   render() {
     const { width, height, viewOnly, background } = this.props;
     const { marginLeft, marginTop } = centerPage(this.props);
@@ -228,6 +331,7 @@ class Page extends React.Component {
     );
   }
 }
+
 const makeMapStateToProps = (state, props) => {
   const activePage = (_, props) => {
     return props.activePage;
@@ -241,7 +345,6 @@ const makeMapStateToProps = (state, props) => {
     activePage,
     zoomScale
   );
-
   const getObjectsOffsetsList = createSelector(
     getScaledDisplayedPageSelector,
     scaledPage => {
@@ -263,6 +366,9 @@ const makeMapStateToProps = (state, props) => {
     return {
       ...scaledPage,
       activePageId: activePageIdSelector(state),
+      globalObjectsIds: globalObjectsIdsSelector(state),
+      headerConfig: headerConfigSelector(state),
+      footerConfig: footerConfigSelector(state),
       objectsOffsetList: getObjectsOffsetsList(state, props)
     };
   };
