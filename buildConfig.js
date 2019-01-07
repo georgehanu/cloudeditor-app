@@ -150,6 +150,10 @@ const build = config => {
           {
             from: "./" + namespace + "/core/assets/tinymce",
             to: "./tinymce"
+          },
+          {
+            from: "./" + namespace + "/core/assets/chromoselector",
+            to: "./chromoselector"
           }
         ],
         { debug: prod ? "" : "" }

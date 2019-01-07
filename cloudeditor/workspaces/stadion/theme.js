@@ -16,6 +16,7 @@ const menuItemUndoRedo = require("../../plugins/MenuItemUndoRedo/MenuItemUndoRed
 const menuItemManual = require("../../plugins/MenuItemManual/MenuItemManual.css");
 const menuItemCancel = require("../../plugins/MenuItemCancel/MenuItemCancel.css");
 const menuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuItemHeaderFooter.css");
+const chromoselector = require("../../core/assets/chromoselector/chromoselector.css");
 
 module.exports = {
   stadion,
@@ -35,5 +36,6 @@ module.exports = {
   menuItemUndoRedo,
   menuItemManual,
   menuItemCancel,
-  menuItemHeaderFooter
+  menuItemHeaderFooter,
+  chromoselector
 };
