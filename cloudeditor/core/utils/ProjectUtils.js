@@ -96,7 +96,8 @@ const getObjectsDefaults = cfg => {
       ratio: 1,
       brightness: 0,
       imageWidth: 0,
-      imageHeight: 0
+      imageHeight: 0,
+      flip: ""
     },
     image || {}
   );
@@ -651,7 +652,7 @@ const getEmptyObject = cfg => {
           ratio: 1,
           brightness: 0,
           contrast: 0,
-          filter: cfg.leftSlider || "",
+          filter: cfg.filter || "",
           imageWidth: cfg.imageWidth || 0,
           imageHeight: cfg.imageHeight || 0,
           workingPercent: 0,

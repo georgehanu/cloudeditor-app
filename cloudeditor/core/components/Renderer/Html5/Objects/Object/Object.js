@@ -131,6 +131,7 @@ class ObjectBlock extends React.Component {
       cropY: props.cropY,
       cropW: props.cropW,
       filter: props.filter,
+      flip: props.flip,
       cropH: props.cropH,
       onUpdateProps: props.onUpdatePropsHandler,
       image_src: props.image_src,
@@ -139,7 +140,9 @@ class ObjectBlock extends React.Component {
       alternateZoom: props.alternate_zoom,
       resizing: props.resizing,
       zoomScale: this.props.zoomScale,
-      workingPercent: this.props.workingPercent
+      workingPercent: this.props.workingPercent,
+      brightness: this.props.brightness,
+      contrast: this.props.contrast
     };
 
     const block = <ImageBlock {...imageProps} />;

@@ -17,7 +17,7 @@ const BrightnessSlider = props => {
           className="Slider"
           type="range"
           defaultValue={props.startValue}
-          onChange={event => debounce(props.handleSlider(event.target.value))}
+          onChange={event => props.handleSlider(event.target.value)}
           min="-100"
           max="100"
           step="1"
@@ -33,6 +33,7 @@ const enhance = compose(
   withHandlers({
     handleSlider: props => value => {
       props.setSliderValue(parseInt(value));
+
       props.handler(props.text, value);
     }
   })

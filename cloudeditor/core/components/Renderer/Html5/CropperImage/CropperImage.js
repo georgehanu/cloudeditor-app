@@ -298,9 +298,15 @@ class CropperImage extends React.Component {
     };
     let filterString = "";
     let flipStyle = "";
+    const decBrightness = parseFloat(this.props.brightness) / 100 + 1;
+    const decContrast = parseFloat(this.props.contrast) / 100 + 1;
+
     if (this.props.filter.length) {
       filterString = this.props.filter + "(1)";
     }
+    filterString +=
+      " brightness(" + decBrightness + ") contrast(" + decContrast + ") ";
+
     switch (this.props.flip) {
       case "flip_horizontal":
         flipStyle = "scaleX(-1)";
@@ -310,6 +316,8 @@ class CropperImage extends React.Component {
         break;
       case "flip_both":
         flipStyle = "scale(-1)";
+        break;
+      default:
         break;
     }
     const { leftImage, topImage, widthImage } = this.options;

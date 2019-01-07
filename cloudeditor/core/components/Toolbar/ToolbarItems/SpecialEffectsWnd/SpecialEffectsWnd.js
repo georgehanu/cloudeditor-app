@@ -42,6 +42,8 @@ const SpecialEffectsWnd = props => {
         brightnessFilter={props.itemData.brightnessFilter}
         brightnessValue={props.itemData.brightnessValue}
         contrastValue={props.itemData.contrastValue}
+        filter={props.itemData.filter}
+        flip={props.itemData.flip}
         handler={props.handler}
         ToolbarHandler={props.ToolbarHandler}
       />
@@ -56,6 +58,8 @@ const SpecialEffectsWnd = props => {
         brightnessFilter={props.itemData.brightnessFilter}
         brightnessValue={props.itemData.brightnessValue}
         contrastValue={props.itemData.contrastValue}
+        filter={props.itemData.filter}
+        flip={props.itemData.flip}
         handler={props.handler}
         ToolbarHandler={props.ToolbarHandler}
       />

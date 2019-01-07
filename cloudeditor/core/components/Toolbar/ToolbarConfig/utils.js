@@ -98,17 +98,15 @@ const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
 
 const LoadImageAdditionalInfo = activeItem => {
   return {
-    [Types.CHANGE_SHAPE_WND]: { image: activeItem.src, startValue: 180 },
+    [Types.CHANGE_SHAPE_WND]: { image: activeItem.image_src, startValue: 180 },
     [Types.SPECIAL_EFFECTS_WND]: {
-      image: activeItem.src,
-      brightnessValue: -20,
-      contrastValue: 80,
-      brightnessClass: "flip_horizontal",
-      brightnessFilter: "grayscale(1)"
+      image: activeItem.image_src,
+      brightnessValue: activeItem.brightness,
+      contrastValue: activeItem.contrast,
+      filter: activeItem.filter,
+      flip: activeItem.flip
     },
-    [Types.SLIDER_OPACITY_WND]: {
-      defaultValue: 75
-    }
+    [Types.SLIDER_OPACITY_WND]: { defaultValue: activeItem.imge_src }
   };
 };
 
@@ -242,7 +240,18 @@ const CreatePayload = (activeitem, itemPayload) => {
       attrs = { fontSize: parseFloat(itemPayload.value) };
       break;
 
+    case "Brightness":
+      attrs = { brightness: parseFloat(itemPayload.value) };
+      break;
+
+    case "Contrast":
+      attrs = { contrast: parseFloat(itemPayload.value) };
+      break;
+
     case Types.POPTEXT_FONT:
+      attrs = { fontFamily: itemPayload.value };
+      break;
+    case Types.brightness:
       attrs = { fontFamily: itemPayload.value };
       break;
 
@@ -267,8 +276,6 @@ const CreatePayload = (activeitem, itemPayload) => {
       }
     case Types.SLIDER_INLINE_IMAGE:
       attrs = { leftSlider: itemPayload.value };
-      const resizeEvent = new Event("cropperUpdate");
-      document.dispatchEvent(resizeEvent);
       break;
     default:
       break;

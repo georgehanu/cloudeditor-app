@@ -76,6 +76,9 @@ class ImageBlock extends React.PureComponent {
           resizing={this.props.resizing}
           active={this.props.active}
           filter={this.props.filter}
+          flip={this.props.flip}
+          contrast={this.props.contrast}
+          brightness={this.props.brightness}
           workingPercent={this.props.workingPercent}
           onUpdateProps={this.props.onUpdateProps}
         />
