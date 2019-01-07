@@ -3,12 +3,11 @@ const withSpinner = require("../../../core/hoc/withSpinner/withSpinner");
 const Magnifier = require("react-magnifier").default;
 
 const imagePreview = props => {
+  if (props.previewPageUrl === null) {
+    return null;
+  }
   return (
-    <div
-      className="previewImagecontainer"
-      onMouseEnter={props.onMouseEnterHandler}
-      onMouseLeave={props.onMouseLeaveHandler}
-    >
+    <React.Fragment>
       {props.imgSrc && (
         <Magnifier
           src={props.imgSrc}
@@ -16,9 +15,11 @@ const imagePreview = props => {
           mgHeight={300}
           mgBorderWidth={10}
           zoomFactor={0.5}
+          height={props.height}
+          width={props.width}
         />
       )}
-    </div>
+    </React.Fragment>
   );
 };
 

@@ -21,6 +21,9 @@ class ProjectMenuContainer extends React.Component {
 
   onSetSubWndHandler = value => {
     this.setState({ subWndOpened: value });
+    if (value === false) {
+      this.setState({ menuItemActive: null });
+    }
   };
 
   renderTools = () => {

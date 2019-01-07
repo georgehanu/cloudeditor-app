@@ -24,7 +24,10 @@ class ProjectHeader extends React.Component {
       this.props.previewDisableMode();
     }
 
-    this.setState({ preview: !this.state.preview });
+    this.setState({ preview: !this.state.preview }, () => {
+      const event = new Event("resizePage");
+      window.dispatchEvent(event);
+    });
   };
 
   render() {
