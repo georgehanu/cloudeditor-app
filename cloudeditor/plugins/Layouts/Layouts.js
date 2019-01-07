@@ -40,7 +40,7 @@ module.exports = {
       position: 4,
       priority: 1,
       text: "Layouts",
-      icon: "printqicon-layouts",
+      icon: "fupa-layout",
       showMore: true,
       tooltip: { title: "Layouts", description: "Layouts" }
     }
