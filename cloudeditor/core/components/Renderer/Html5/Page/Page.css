@@ -1,11 +1,8 @@
 .pageContainer {
   display: block;
-  background-color: rebeccapurple;
+  background-color: transparent;
   position: relative;
   margin: 0 auto;
-  background-image: url("https://www.freedomtreks.co.uk/sites/default/files/grand-canal-rialto-bridge-venice-italy.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 .pageNameContainer {
   margin-left: 150px;

@@ -59,11 +59,43 @@
   cursor: default;
 }
 
-.pageBlock.header {
-  border-bottom: 1px dashed black;
+.pageContainer.header {
+  border-bottom: 1px solid #97bdff;
 }
-.pageBlock.footer {
-  border-top: 1px dashed black;
+.pageContainer.footer {
+  border-top: 1px solid #97bdff;
+}
+
+.pageContainer.headerFooter.active {
+  z-index: 99999;
+}
+
+.pageContainer.headerFooter .helperName {
+  position: absolute;
+  background: #d8e8f5;
+  padding: 5px;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  height: 25px;
+  font-size: 14px;
+  border: 1px solid #a0c3fd;
+  bottom: -25px;
+  left: 10%;
+  display: none;
+}
+
+.pageContainer.footer .helperName {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  top: -25px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  top: -25px;
+}
+
+.pageContainer.headerFooter.active .helperName {
+  display: block;
 }
 
 .deleteBlockHandler {
@@ -94,5 +126,22 @@
 .pageBlock.active:hover .ui-resizable-handle,
 .pageBlock.active:hover .deleteBlockHandler,
 .pageBlock.active:hover .ui-rotatable-handle {
+  display: none !important;
+}
+
+.pageContainer.headerFooter .pageBlock:hover .ui-resizable-handle,
+.pageContainer.headerFooter .pageBlock:hover .deleteBlockHandler,
+.pageContainer.headerFooter .pageBlock:hover .ui-rotatable-handle {
+  display: none !important;
+}
+.pageContainer.headerFooter.active .pageBlock:hover .ui-resizable-handle,
+.pageContainer.headerFooter.active .pageBlock:hover .deleteBlockHandler,
+.pageContainer.headerFooter.active .pageBlock:hover .ui-rotatable-handle {
+  display: block !important;
+}
+
+.pageContainer.headerFooter .pageBlock.active:hover .ui-resizable-handle,
+.pageContainer.headerFooter .pageBlock.active:hover .deleteBlockHandler,
+.pageContainer.headerFooter .pageBlock.active:hover .ui-rotatable-handle {
   display: none !important;
 }

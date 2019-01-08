@@ -30,10 +30,10 @@ class Blocks extends React.Component {
       return obj.id;
     });
 
-    const start = now();
+    //const start = now();
     let pageBlocksIds = getPageBlocksIds(ids, nextProps.objectsData);
     pageBlocksData = pick(pageBlocksIds, nextProps.objectsData);
-    const end = now();
+    //const end = now();
 
     //console.log("getPageBlocks", (end - start).toFixed(15), pageBlocksData);
     return { pageBlocksData };

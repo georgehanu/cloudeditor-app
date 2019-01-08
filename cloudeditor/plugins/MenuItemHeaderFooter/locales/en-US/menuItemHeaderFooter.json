@@ -17,5 +17,7 @@
   "all": "All",
   "inner": "Inside",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "header": "Header",
+  "footer": "Footer"
 }

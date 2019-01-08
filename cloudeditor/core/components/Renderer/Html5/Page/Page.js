@@ -7,7 +7,6 @@ const { forEachObjIndexed, includes, concat } = require("ramda");
 
 const type = ["image", "text"];
 const Objects = require("../Objects/Object/Objects");
-//const Ids = require("../Objects/Object/Test/IdsComplete");
 
 const {
   createDeepEqualSelector: createSelector

@@ -2,7 +2,8 @@ const React = require("react");
 const PropTypes = require("prop-types");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
-const { includes, equals } = require("ramda");
+const { includes, equals, omit } = require("ramda");
+const { withNamespaces } = require("react-i18next");
 const $ = require("jquery");
 
 const withDraggable = require("../hoc/withDraggable/withDraggable");
@@ -59,9 +60,13 @@ class ObjectBlock extends React.Component {
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
-    if (equals(nextProps, this.props)) {
+    const list = [];
+    const nProps = omit(list, nextProps);
+    const cProps = omit(list, this.props);
+    if (equals(nProps, cProps)) {
       return false;
     }
+    console.log("update?", this.props.id, nProps, cProps);
     return true;
   }
   getEditableReference = ref => {
@@ -264,6 +269,8 @@ class ObjectBlock extends React.Component {
         <div
           onClick={event => {
             event.preventDefault();
+
+            //if (this.props.parent)
             this.props.onDeleteObjectHandler({
               id: this.props.id
             });
@@ -296,13 +303,19 @@ class ObjectBlock extends React.Component {
   }
 
   renderHeaderFooter(type) {
+    console.log("footers");
     const props = { ...this.props };
 
+    const typeText = type.replace(/^\w/, c => c.toUpperCase());
+
     const classes = [
-      "pageBlock",
+      "pageContainer headerFooter",
       props.type,
       props.subType,
-      props.active && !props.viewOnly ? "active" : ""
+      (props.modeHeader === "edit" || props.modeFooter === "edit") &&
+      !props.viewOnly
+        ? "active"
+        : ""
     ].join(" ");
     props.width = props.parent.innerPage.width + 2 * props.parent.offsetLeft;
 
@@ -310,12 +323,6 @@ class ObjectBlock extends React.Component {
     if (type === "header") {
       props.height = props.heightHeader * 2.83465 * props.zoomScale;
       props.top = -props.parent.offsetTop;
-      if (props.modeHeader === "read") {
-        props.movable = 0;
-        props.editable = 0;
-        props.resizable = 0;
-        props.rotatable = 0;
-      }
     }
     if (type === "footer") {
       props.height = props.heightFooter * 2.83465 * props.zoomScale;
@@ -337,27 +344,35 @@ class ObjectBlock extends React.Component {
       let offsetLeft =
         props.parent.offsetLeft - props.parent.innerPage.offset.left;
 
-      //const mirrored = props.parent.innerPage.isGroupLastPage ? 1 : 0;
       let mirrored = false;
+      let childViewOnly = innerBlock.props.viewOnly;
 
-      /* let offsetLeft =
-        props.width -
-        props.parent.offsetLeft -
-        innerBlock.props.data.width * props.zoomScale; */
       switch (type) {
         case "header":
           mirrored = props.mirroredHeader;
           offsetTop = props.offsetTop;
+          if (props.modeHeader === "read") {
+            childViewOnly = 1;
+          }
+          if (props.modeHeader === "edit") {
+            childViewOnly = 0;
+          }
           break;
         case "footer":
           mirrored = props.mirroredFooter;
           offsetTop = 0;
+          if (props.modeFooter === "read") {
+            childViewOnly = 1;
+          }
+          if (props.modeFooter === "edit") {
+            childViewOnly = 0;
+          }
           break;
         default:
           break;
       }
 
-      //parent.width - style["left"] - width
+      if (props.viewOnly) childViewOnly = 1;
 
       return React.cloneElement(innerBlock, {
         key: innerBlock.props.uuid,
@@ -370,23 +385,24 @@ class ObjectBlock extends React.Component {
           height: props.height
         },
         data: {
-          ...innerBlock.props.data,
-          movable: 0,
-          editable: 0,
-          resizable: 0,
-          rotatable: 0
-        }
+          ...innerBlock.props.data
+        },
+        viewOnly: childViewOnly
       });
     });
     return (
       <div className={classes} style={style}>
         {innerBlocks}
+        <div className="helperName">{this.props.t(typeText)}</div>
       </div>
     );
   }
 
   render() {
     let element = null;
+
+    console.log("render", this.props.id);
+
     switch (this.props.subType) {
       case "textflow":
       case "text":
@@ -462,58 +478,6 @@ const mapStateToProps = (state, props) => {
   return { ...scaledObject, active: getActivePropSelector(state, props) };
 };
 
-const makeMapStateToProps = (state, props) => {
-  const zoomScale = (_, props) => {
-    return props.zoomScale;
-  };
-  const getBlockId = (_, props) => {
-    return props.id;
-  };
-
-  const activeBlockSelector = (_, props) => {
-    return props.data;
-  };
-
-  const getActivePropSelector = createSelector(
-    getBlockId,
-    selectedObjectsIdsSelector,
-    (cBlockId, selectedIds) => {
-      return includes(cBlockId, selectedIds);
-    }
-  );
-
-  const getDisplayedBlockSelector = displayedObjectSelector(
-    activeBlockSelector
-  );
-  const getDisplayedMergedBlockSelector = displayedMergedObjectSelector(
-    getDisplayedBlockSelector,
-    getActivePropSelector
-  );
-  const getScaledDisplayedBlockSelector = scaledDisplayedObjectSelector(
-    getDisplayedMergedBlockSelector,
-    zoomScale
-  );
-
-  const displayedMergedObject = displayedMergedObjectCachedSelector(
-    state,
-    props.uuid,
-    props.data
-  );
-
-  const scaledObject = scaledDisplayedObjectCachedSelector(
-    state,
-    props.uuid,
-    displayedMergedObject,
-    props.zoomScale
-  );
-
-  const mapStateToProps = (state, props) => {
-    const scaledBlock = getScaledDisplayedBlockSelector(state, props);
-    return { ...scaledBlock };
-  };
-
-  return mapStateToProps;
-};
 const mapDispatchToProps = dispatch => {
   return {
     onSetActiveBlockHandler: payload =>
@@ -528,6 +492,7 @@ module.exports = connect(
   mapDispatchToProps
 )(
   compose(
+    withNamespaces("translate"),
     withDraggable,
     withResizable,
     withRotatable,

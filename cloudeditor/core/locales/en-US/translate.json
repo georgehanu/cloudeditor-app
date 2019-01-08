@@ -1,4 +1,8 @@
 {
   "title": "main title",
-  "test": "test default"
+  "test": "test default",
+  "header": "Header",
+  "footer": "Footer",
+  "Header": "Header",
+  "Footer": "Footer"
 }

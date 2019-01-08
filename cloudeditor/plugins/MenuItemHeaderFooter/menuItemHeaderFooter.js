@@ -241,16 +241,27 @@ class MenuItemHeaderFooter extends React.Component {
     }
   };
 
-  toggleMenuHandler = show => {
-    if (this.state.submenuOpened === false) {
-      this.props.addContainerClasses("submenuHeaderFooter", [
-        "showHeaderFooter"
-      ]);
-    } else {
-      this.closePoptext();
-      this.props.addContainerClasses("submenuHeaderFooter", []);
-    }
-    this.setState({ submenuOpened: !this.state.submenuOpened });
+  toggleMenuHandler = () => {
+    const show = !this.state.submenuOpened;
+
+    this.setState({ submenuOpened: show }, () => {
+      if (this.state.submenuOpened !== false) {
+        this.props.addContainerClasses("submenuHeaderFooter", [
+          "showHeaderFooter"
+        ]);
+      } else {
+        this.closePoptext();
+        this.props.addContainerClasses("submenuHeaderFooter", []);
+      }
+
+      payload = {
+        prop: "mode",
+        value: this.state.submenuOpened ? "edit" : "read"
+      };
+
+      this.props.onUpdateHeaderConfigHandler(payload);
+      this.props.onUpdateFooterConfigHandler(payload);
+    });
   };
 
   render() {
@@ -371,7 +382,7 @@ class MenuItemHeaderFooter extends React.Component {
             </div>
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterClose">
-              <button onClick={this.toggleMenuHandler}>
+              <button onClick={() => this.toggleMenuHandler(false)}>
                 {this.props.t("Close menu")}
               </button>
             </div>
