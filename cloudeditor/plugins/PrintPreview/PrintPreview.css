@@ -89,7 +89,7 @@
 }
 
 .showPrintPreview.showHeaderFooter #sidebar-wrapper {
-  padding-top: 0px;
+  padding-top: 100px;
 }
 
 .showPrintPreview .renderContainer .zoomContainer,
