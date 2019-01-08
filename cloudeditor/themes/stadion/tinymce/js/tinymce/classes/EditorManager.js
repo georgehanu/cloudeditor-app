@@ -18,6 +18,7 @@
  * @mixes tinymce.util.Observable
  * @static
  */
+
 define("tinymce/EditorManager", [
 	"tinymce/Editor",
 	"tinymce/dom/DomQuery",

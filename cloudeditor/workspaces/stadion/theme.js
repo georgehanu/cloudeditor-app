@@ -25,7 +25,6 @@ module.exports = {
   editor_icons,
   addImage,
   addPdf,
-  layouts,
   zoom,
   toolbar,
   projectHeader,

@@ -224,7 +224,8 @@ class ObjectBlock extends React.Component {
       left: left + offsetLeft,
       top: top + offsetTop,
       transform: "rotate(" + angle + "deg)",
-      backgroundColor: "rgb(" + bgColor.htmlRGB + ")"
+      backgroundColor:
+        subType != "tinymce" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
 
     if (mirrored) {
@@ -233,8 +234,9 @@ class ObjectBlock extends React.Component {
     const styleBorderColor = {
       width: width + parseFloat(borderWidth),
       height: height + parseFloat(borderWidth),
-      borderColor: "rgb(" + borderColor.htmlRGB + ")",
-      borderWidth: parseFloat(borderWidth),
+      borderColor:
+        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
       top: (-1 * parseFloat(borderWidth)) / 2,
       left: (-1 * parseFloat(borderWidth)) / 2
     };
@@ -410,6 +412,7 @@ class ObjectBlock extends React.Component {
         element = this.renderText();
         break;
       case "image":
+      case "pdf":
         element = this.renderImage();
         break;
       case "graphics":

@@ -100,6 +100,8 @@ const getObjectsDefaults = cfg => {
       brightness: 0,
       imageWidth: 0,
       imageHeight: 0,
+      ratioWidth: 0,
+      ratioHeight: 0,
       flip: ""
     },
     image || {}
@@ -122,7 +124,7 @@ const getObjectsDefaults = cfg => {
 
   const textCfg = merge(
     {
-      alignment: "center",
+      textAlign: "center",
       bold: 0,
       charSpacing: 0,
       circleText: 0,
@@ -141,9 +143,13 @@ const getObjectsDefaults = cfg => {
       sufix: "",
       type: "text",
       underline: 0,
-      vAlignment: "middle",
+      vAlign: "middle",
       wordSpacing: "normal",
-      value: "Edit Text Here"
+      fontFamily: "",
+      prefix: "",
+      value: "Edit Text Here",
+      firstlinedist: "ascender",
+      lastlinedist: 0
     },
     text || {}
   );
@@ -390,6 +396,9 @@ const getFontMetricTemplate = cfg => {
     },
     cfg || {}
   );
+};
+const getEmptySelection = cfg => {
+  return cfg;
 };
 
 const getUIPermissionsTemplate = cfg => {
@@ -1638,6 +1647,7 @@ const ProjectUtils = {
   getRandomUI,
   getEmptyColor,
   getEmptyFont,
+  getEmptySelection,
   getFontMetricTemplate
 };
 
