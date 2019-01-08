@@ -8,6 +8,7 @@ const qs = require("qs");
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
+const { head } = require("ramda");
 
 const PRINT_PREVIEW_URL =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/previewCloudeditor";
@@ -30,7 +31,7 @@ module.exports = {
               if (data.status === "success") {
                 obs.next({
                   type: PREVIEW_LOAD_PAGE_SUCCESS,
-                  payload: data.page
+                  payload: head(data.images)
                 });
               } else {
                 obs.next({
