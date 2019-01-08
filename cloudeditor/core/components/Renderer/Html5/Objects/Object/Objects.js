@@ -115,20 +115,12 @@ class Blocks extends React.Component {
     });
   }
   render() {
-    //return null;
-    //const { objects, zoomScale, snapTolerance, middle, viewOnly } = this.props;
-
-    const start1 = now();
     const render = this.recursiveRenderBlocks(
       this.props.objects,
       this.state.pageBlocksData
     );
-    const end1 = now();
-
-    //console.log("recursiveRenderBlocks", (end1 - start1).toFixed(15));
 
     return render;
-    //const newObjects = flattenIds(ids, this.props.objectsData, objects, null);
   }
 }
 

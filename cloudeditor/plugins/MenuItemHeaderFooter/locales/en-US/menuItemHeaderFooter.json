@@ -3,7 +3,7 @@
   "Edit": "Edit",
   "Header": "Header",
   "Footer": "Footer",
-  "Layout mirror": "Layout mirror",
+  "Mirror Layout": "Mirror Layout",
   "Close menu": "Close menu",
   "Left page": "Left page",
   "Right page": "Right page",
@@ -13,5 +13,9 @@
   "Inside": "Inside",
   "Height": "Height",
   "mm": "mm",
-  "All": "All"
+  "All": "All",
+  "all": "All",
+  "inner": "Inside",
+  "yes": "Yes",
+  "no": "No"
 }

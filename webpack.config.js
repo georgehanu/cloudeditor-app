@@ -46,8 +46,8 @@ if (workspace === "designAndGo")
   });
 else {
   config["copyFrom"].push({
-    from: "./" + namespace + "/themes/" + workspace + "/tinymce/",
-    to: "./tinymce/"
+    from: "./" + namespace + "/themes/" + workspace + "/tinymce/js/",
+    to: "./tinymce/js"
   });
 }
 module.exports = require("./buildConfig")(config);

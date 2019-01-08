@@ -8,12 +8,16 @@ const { withNamespaces } = require("react-i18next");
 const URL = "http://work.cloudlab.at:9012/ig/uploads/";
 const uuidv4 = require("uuid/v4");
 const axios = require("axios");
+const { createSelector } = require("reselect");
+const { head } = require("ramda");
+const { debounce } = require("underscore");
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
 const {
   headerConfigSelector,
-  footerConfigSelector
+  footerConfigSelector,
+  objectsSelector
 } = require("../../core/stores/selectors/project");
 
 const {
@@ -26,22 +30,21 @@ class MenuItemHeaderFooter extends React.Component {
     submenuOpened: false,
     poptextEdit: {
       items: ["Footer", "Header"],
-      active: "Footer",
-      open: false
-    },
-    poptextLayoutMirror: {
-      items: ["Right page", "Left page"],
-      active: "Right page",
+      active: "Header",
       open: false
     },
     poptextInsert: {
-      items: ["Choose", "Option", "Option 2", "Option 3-3-3"],
-      active: "Choose",
+      items: ["yes", "no"],
+      open: false
+    },
+    poptextLayoutMirror: {
+      items: ["yes", "no"],
+      active: "yes",
       open: false
     },
     poptextActive: {
-      items: ["Inside", "All"],
-      active: "Inside",
+      items: ["inner", "all"],
+      active: "inner",
       open: false
     },
     poptextLayouts: {
@@ -51,47 +54,7 @@ class MenuItemHeaderFooter extends React.Component {
     }
   };
 
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  //   return {
-  //     poptextActive: {
-  //       ...prevState.poptextActive,
-  //       active:
-  //         nextProps.headerCfg.activeOn.charAt(0).toUpperCase() +
-  //         nextProps.headerCfg.activeOn.slice(1)
-  //     }
-  //   };
-  // }
-
-  translate = poptext => {
-    const items = poptext.items.map((el, index) => {
-      return this.props.t(el);
-    });
-    return {
-      active: this.props.t(poptext.active),
-      items
-    };
-  };
-
   componentDidMount() {
-    this.setState({
-      poptextEdit: {
-        ...this.state.poptextEdit,
-        ...this.translate(this.state.poptextEdit)
-      },
-      poptextLayoutMirror: {
-        ...this.state.poptextLayoutMirror,
-        ...this.translate(this.state.poptextLayoutMirror)
-      },
-      poptextInsert: {
-        ...this.state.poptextInsert,
-        ...this.translate(this.state.poptextInsert)
-      },
-      poptextActive: {
-        ...this.state.poptextActive,
-        ...this.translate(this.state.poptextActive)
-      }
-    });
-
     this.loadLayouts();
   }
 
@@ -122,8 +85,8 @@ class MenuItemHeaderFooter extends React.Component {
   closePoptext = () => {
     this.setState({
       poptextEdit: { ...this.state.poptextEdit, open: false },
-      poptextLayoutMirror: { ...this.state.poptextLayoutMirror, open: false },
       poptextInsert: { ...this.state.poptextInsert, open: false },
+      poptextLayoutMirror: { ...this.state.poptextLayoutMirror, open: false },
       poptextActive: { ...this.state.poptextActive, open: false },
       poptextLayouts: { ...this.state.poptextLayouts, open: false }
     });
@@ -141,6 +104,16 @@ class MenuItemHeaderFooter extends React.Component {
           open: !this.state.poptextEdit.open
         }
       });
+    } else if (type === "insert") {
+      if (this.state.poptextInsert.open === false) {
+        this.closePoptext();
+      }
+      this.setState({
+        poptextInsert: {
+          ...this.state.poptextInsert,
+          open: !this.state.poptextInsert.open
+        }
+      });
     } else if (type === "layoutMirror") {
       if (this.state.poptextLayoutMirror.open === false) {
         this.closePoptext();
@@ -150,16 +123,6 @@ class MenuItemHeaderFooter extends React.Component {
         poptextLayoutMirror: {
           ...this.state.poptextLayoutMirror,
           open: !this.state.poptextLayoutMirror.open
-        }
-      });
-    } else if (type === "insert") {
-      if (this.state.poptextInsert.open === false) {
-        this.closePoptext();
-      }
-      this.setState({
-        poptextInsert: {
-          ...this.state.poptextInsert,
-          open: !this.state.poptextInsert.open
         }
       });
     } else if (type === "active") {
@@ -188,53 +151,93 @@ class MenuItemHeaderFooter extends React.Component {
   toggleSelectPoptext = (type, value) => {
     const target = this.state.poptextEdit.active;
 
-    if (type === "edit") {
-      this.setState({
-        poptextEdit: {
-          ...this.state.poptextEdit,
-          open: false,
-          active: value
-        }
-      });
-    } else if (type === "layoutMirror") {
-      this.setState({
-        poptextLayoutMirror: {
-          ...this.state.poptextLayoutMirror,
-          open: false,
-          active: value
-        }
-      });
-    } else if (type === "insert") {
-      this.setState({
-        poptextInsert: {
-          ...this.state.poptextInsert,
-          open: false,
-          active: value
-        }
-      });
-    } else if (type === "active") {
-      this.setState({
-        poptextActive: {
-          ...this.state.poptextActive,
-          open: false
-          //active: value
-        }
-      });
+    let payload = {};
 
-      if (value === "All") value = "all";
-      if (value === "Inside") value = "inner";
+    switch (type) {
+      case "edit":
+        this.setState({
+          poptextEdit: {
+            ...this.state.poptextEdit,
+            open: false,
+            active: value
+          }
+        });
+        break;
+      case "insert":
+        this.setState({
+          poptextInsert: {
+            ...this.state.poptextInsert,
+            open: false
+          }
+        });
 
-      const payload = {
-        prop: "activeOn",
-        value: value
-      };
+        payload = {
+          prop: "enabled",
+          value: value === "yes" ? true : false
+        };
 
-      if (target === "Header") {
-        this.props.onUpdateHeaderConfigHandler(payload);
-      }
-      if (target === "Footer") {
-        this.props.onUpdateFooterConfigHandler(payload);
-      }
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
+        }
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
+        }
+        break;
+      case "layoutMirror":
+        this.setState({
+          poptextLayoutMirror: {
+            ...this.state.poptextLayoutMirror,
+            open: false
+          }
+        });
+
+        payload = {
+          prop: "mirrored",
+          value: value === "yes" ? true : false
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
+        }
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
+        }
+        break;
+      case "active":
+        this.setState({
+          poptextActive: {
+            ...this.state.poptextActive,
+            open: false
+          }
+        });
+
+        payload = {
+          prop: "activeOn",
+          value: value
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
+        }
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
+        }
+        break;
+      case "height":
+        payload = {
+          prop: "height",
+          value: value
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
+        }
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
+        }
+        break;
+      default:
+        break;
     }
   };
 
@@ -259,21 +262,27 @@ class MenuItemHeaderFooter extends React.Component {
 
     const target = this.state.poptextEdit.active;
 
+    let enabled = "no";
     let activeOn = "";
+    let mirrored = "no";
+    let height = 0;
 
     switch (target) {
       case "Header":
+        enabled = headerCfg.enabled ? "yes" : "no";
         activeOn = headerCfg.activeOn;
+        mirrored = headerCfg.mirrored ? "yes" : "no";
+        height = headerCfg.height;
         break;
       case "Footer":
+        enabled = footerCfg.enabled ? "yes" : "no";
         activeOn = footerCfg.activeOn;
+        mirrored = footerCfg.mirrored ? "yes" : "no";
+        height = footerCfg.height;
         break;
       default:
         break;
     }
-
-    if (activeOn === "all") activeOn = "All";
-    if (activeOn === "inner") activeOn = "Inside";
 
     return (
       <React.Fragment>
@@ -299,6 +308,18 @@ class MenuItemHeaderFooter extends React.Component {
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
+            <div className="submenuItemHeaderFooterInsert">
+              <span>{this.props.t("Enabled")}:</span>
+              <SubmenuPoptext
+                activeItem={enabled}
+                togglePoptext={this.togglePoptextHandler}
+                toggleSelectPoptext={this.toggleSelectPoptext}
+                poptextName="insert"
+                items={this.state.poptextInsert.items}
+                open={this.state.poptextInsert.open}
+              />
+            </div>
+            <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterLayouts">
               <SubmenuLayout
                 activeItem={this.state.poptextLayouts.active}
@@ -311,26 +332,14 @@ class MenuItemHeaderFooter extends React.Component {
             </div>
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterLayoutMirror">
-              <span>{this.props.t("Layout mirror")}:</span>
+              <span>{this.props.t("Mirror Layout")}:</span>
               <SubmenuPoptext
-                activeItem={this.state.poptextLayoutMirror.active}
+                activeItem={mirrored}
                 togglePoptext={this.togglePoptextHandler}
                 toggleSelectPoptext={this.toggleSelectPoptext}
                 poptextName="layoutMirror"
                 items={this.state.poptextLayoutMirror.items}
                 open={this.state.poptextLayoutMirror.open}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterInsert">
-              <span>{this.props.t("Insert")}:</span>
-              <SubmenuPoptext
-                activeItem={this.state.poptextInsert.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="insert"
-                items={this.state.poptextInsert.items}
-                open={this.state.poptextInsert.open}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -348,7 +357,16 @@ class MenuItemHeaderFooter extends React.Component {
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterHeight">
               <span>{this.props.t("Height")}:</span>
-              <input type="number" />
+              <input
+                type="number"
+                value={height}
+                onChange={event =>
+                  debounce(
+                    this.toggleSelectPoptext("height", event.target.value),
+                    300
+                  )
+                }
+              />
               <span>{this.props.t("mm")}</span>
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -365,9 +383,26 @@ class MenuItemHeaderFooter extends React.Component {
 }
 
 const mapStateToProps = state => {
+  // const getObjectCallback = (cfg, objects) => {
+  //   return objects[head(cfg.objectsIds)];
+  // };
+  // const headerBlockSelector = createSelector(
+  //   headerConfigSelector,
+  //   objectsSelector,
+  //   getObjectCallback
+  // );
+
+  // const footerBlockSelector = createSelector(
+  //   footerConfigSelector,
+  //   objectsSelector,
+  //   getObjectCallback
+  // );
+
   return {
     headerCfg: headerConfigSelector(state),
     footerCfg: footerConfigSelector(state)
+    // headerBlock: headerBlockSelector(state),
+    // footerBlock: footerBlockSelector(state)
   };
 };
 

@@ -68,12 +68,13 @@ class ObjectBlock extends React.Component {
     this.editable = ref;
   };
   onClickBlockHandler = event => {
+    const { id, viewOnly, editable } = this.props;
+    if (viewOnly || !editable) return;
     event.preventDefault();
     if ($(event.target).hasClass("deleteBlockHandler")) {
       return false;
     }
-    const { id, viewOnly } = this.props;
-    if (viewOnly) return false;
+
     this.props.handleDraggableUi(this.$el, false);
     const boundingObject = this.el.getBoundingClientRect();
     const { width, height, left, top } = boundingObject;
@@ -282,10 +283,9 @@ class ObjectBlock extends React.Component {
         style={style}
         ref={this.getReference}
       >
-        <div style={styleNorth} className={"north"}>
+        <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
 
         {tinyMceResizable}
@@ -307,10 +307,21 @@ class ObjectBlock extends React.Component {
     props.width = props.parent.innerPage.width + 2 * props.parent.offsetLeft;
 
     props.left = -props.parent.offsetLeft + props.parent.innerPage.offset.left;
-    if (type === "header") props.top = -props.parent.offsetTop;
-    if (type === "footer")
+    if (type === "header") {
+      props.height = props.heightHeader * 2.83465 * props.zoomScale;
+      props.top = -props.parent.offsetTop;
+      if (props.modeHeader === "read") {
+        props.movable = 0;
+        props.editable = 0;
+        props.resizable = 0;
+        props.rotatable = 0;
+      }
+    }
+    if (type === "footer") {
+      props.height = props.heightFooter * 2.83465 * props.zoomScale;
       props.top =
         props.parent.innerPage.height + props.parent.offsetTop - props.height;
+    }
 
     const style = {
       width: props.width,
@@ -357,6 +368,13 @@ class ObjectBlock extends React.Component {
           ...innerBlock.props.parent,
           width: props.width,
           height: props.height
+        },
+        data: {
+          ...innerBlock.props.data,
+          movable: 0,
+          editable: 0,
+          resizable: 0,
+          rotatable: 0
         }
       });
     });

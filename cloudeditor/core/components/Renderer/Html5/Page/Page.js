@@ -3,10 +3,9 @@ const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
-const { forEachObjIndexed, pathOr, concat } = require("ramda");
+const { forEachObjIndexed, includes, concat } = require("ramda");
 
 const type = ["image", "text"];
-const ObjectBlock = require("../Objects/Object/Object");
 const Objects = require("../Objects/Object/Objects");
 //const Ids = require("../Objects/Object/Test/IdsComplete");
 
@@ -223,16 +222,27 @@ class Page extends React.Component {
       objIds = concat(beforeObjIds, innerPage.objectsIds, afterObjIds);
 
       objectsOffset = objIds.reduce(function(acc, cV, _) {
-        acc.push({
+        let newObj = {
           id: cV,
           uuid: containerUuid + "--" + pKey + "--" + cV,
           level: parent.level + 1,
           offsetLeft: offset.left,
           offsetTop: offset.top,
           mirroredHeader,
-          mirroredFooter,
           parent
-        });
+        };
+
+        if (headerConfig.enabled && includes(cV, headerConfig.objectsIds)) {
+          newObj["mirroredHeader"] = mirroredHeader;
+          newObj["heightHeader"] = headerConfig.height;
+          newObj["modeHeader"] = headerConfig.mode;
+        }
+        if (footerConfig.enabled && includes(cV, footerConfig.objectsIds)) {
+          newObj["mirroredFooter"] = mirroredFooter;
+          newObj["heightFooter"] = footerConfig.height;
+          newObj["modeFooter"] = footerConfig.mode;
+        }
+        acc.push(newObj);
         return acc;
       }, objectsOffset);
     }, innerPages);

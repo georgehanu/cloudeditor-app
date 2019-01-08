@@ -246,6 +246,7 @@ const getDocumentDefaults = cfg => {
         activeOn: "all", //(all inner)
         display: "before", // (before, after)
         mirrored: true,
+        height: 60,
         objectsIds: []
       },
       footer: {
@@ -254,6 +255,7 @@ const getDocumentDefaults = cfg => {
         activeOn: "inner", //(all inner)
         display: "before", // (before, after),
         mirrored: false,
+        height: 45,
         objectsIds: []
       }
     },
