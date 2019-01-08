@@ -2,8 +2,13 @@ const { updateObject } = require("../../utils/UtilUtils");
 const {
   CHANGE_ZOOM,
   CHANGE_WORKAREA_PROPS,
-  CHANGE_RERENDER_ID
+  CHANGE_RERENDER_ID,
+  UI_ADD_COLOR,
+  UI_ADD_LAST_USED_COLOR
 } = require("../actionTypes/ui");
+const uuidv4 = require("uuid/v4");
+
+const LAST_USED_COLORS_COUNTER = 5;
 
 const { handleActions, combineActions } = require("redux-actions");
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -32,6 +37,44 @@ const changeWorkAreaProps = (state, payload) => {
     }
   };
 };
+
+const addColor = (state, color, activeTab) => {
+  // check if color alreay exists ???
+  const newColor = {
+    id: uuidv4(),
+    htmlRGB: color.htmlRGB,
+    RGB: color.RGB,
+    CMYK: color.CMYK,
+    type: [activeTab]
+  };
+  return {
+    ...state,
+    colors: {
+      ...state.colors,
+      [newColor.id]: newColor
+    }
+  };
+};
+
+const addLastUsedColor = (state, payload) => {
+  if (state.lastUsedColors.includes(payload)) return state;
+
+  let newUsedColors = [];
+  if (state.lastUsedColors.length === LAST_USED_COLORS_COUNTER) {
+    newUsedColors = [
+      payload,
+      ...state.lastUsedColors.slice(0, LAST_USED_COLORS_COUNTER - 1)
+    ];
+  } else {
+    newUsedColors = [payload, ...state.lastUsedColors];
+  }
+
+  return {
+    ...state,
+    lastUsedColors: newUsedColors
+  };
+};
+
 module.exports = handleActions(
   {
     [CHANGE_ZOOM]: (state, action) => {
@@ -42,6 +85,12 @@ module.exports = handleActions(
     },
     [CHANGE_RERENDER_ID]: (state, action) => {
       return changeRerenderId(state, action.payload);
+    },
+    [UI_ADD_COLOR]: (state, action) => {
+      return addColor(state, action.payload.color, action.payload.activeTab);
+    },
+    [UI_ADD_LAST_USED_COLOR]: (state, action) => {
+      return addLastUsedColor(state, action.payload);
     }
   },
   initialState

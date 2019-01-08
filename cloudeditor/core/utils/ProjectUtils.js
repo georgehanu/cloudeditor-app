@@ -625,7 +625,7 @@ const getEmptyObject = cfg => {
 };
 
 const getEmptyUI = cfg => {
-  const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });
+  const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#ffffff" });
   const color2 = getEmptyColor({ id: 2, label: "red", htmlRGB: "#f00" });
   const font1 = getEmptyFont({ label: "Helvetica", id: 1 });
   const font2 = getEmptyFont({ label: "Arial", id: 2 });
@@ -637,6 +637,7 @@ const getEmptyUI = cfg => {
       [color1.id]: color1,
       [color2.id]: color2
     },
+    lastUsedColors: [color2.id],
     workArea: {
       zoom: 1,
       scale: 1,

@@ -79,7 +79,7 @@ const text = {
     }
   ],
   style: {
-    backgroundColor: "green"
+    backgroundColor: "white"
   }
 };
 

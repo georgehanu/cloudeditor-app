@@ -26,7 +26,12 @@ class Html5Renderer extends React.Component {
   state = {
     scale: 1,
     componentReady: false,
-    blurSelectors: ["pageBlock active", "ToolbarContainer", "Toolbar"]
+    blurSelectors: [
+      "pageBlock active",
+      "ToolbarContainer",
+      "Toolbar",
+      "SettingsWnd"
+    ]
   };
 
   constructor(props) {

@@ -5,7 +5,9 @@ const {
   UPDATE_ZOOM,
   CHANGE_ZOOM,
   CHANGE_WORKAREA_PROPS,
-  CHANGE_RERENDER_ID
+  CHANGE_RERENDER_ID,
+  UI_ADD_COLOR,
+  UI_ADD_LAST_USED_COLOR
 } = require("../actionTypes/ui");
 const { createActions } = require("redux-actions");
 
@@ -16,7 +18,9 @@ const {
   updateZoom,
   changeZoom,
   changeWorkareaProps,
-  changeRerenderId
+  changeRerenderId,
+  uiAddColor,
+  uiAddLastUsedColor
 } = createActions(
   UI_UPDATE_WORK_AREA_OFFSET_PAGE_OFSSET,
   UI_UPDATE_CONTAINER_CANVAS_OFFSET,
@@ -24,7 +28,9 @@ const {
   UPDATE_ZOOM,
   CHANGE_ZOOM,
   CHANGE_WORKAREA_PROPS,
-  CHANGE_RERENDER_ID
+  CHANGE_RERENDER_ID,
+  UI_ADD_COLOR,
+  UI_ADD_LAST_USED_COLOR
 );
 
 module.exports = {
@@ -34,5 +40,7 @@ module.exports = {
   updateZoom,
   changeZoom,
   changeWorkareaProps,
-  changeRerenderId
+  changeRerenderId,
+  uiAddColor,
+  uiAddLastUsedColor
 };

@@ -2,9 +2,15 @@ const React = require("react");
 const { connect } = require("react-redux");
 const {
   colorTabSelector,
-  getActiveBlockColors
+  getActiveBlockColors,
+  lastUsedColorsSelector
 } = require("./../../../../../stores/selectors/ui");
 const ColorPicker = require("./ColorPicker");
+
+const {
+  uiAddColor,
+  uiAddLastUsedColor
+} = require("./../../../../../stores/actions/ui");
 
 class ColorTab extends React.Component {
   state = {
@@ -22,8 +28,12 @@ class ColorTab extends React.Component {
     return null;
   }
 
-  pickerWndHandler = value => {
-    this.setState({ showPickerWnd: !this.state.showPickerWnd });
+  togglePickerWnd = showPickerWnd => {
+    this.setState({ showPickerWnd });
+  };
+
+  closePickerWnd = () => {
+    this.togglePickerWnd(false);
   };
 
   render() {
@@ -32,7 +42,10 @@ class ColorTab extends React.Component {
         <li
           key={color.id}
           style={{ backgroundColor: color.htmlRGB }}
-          className="ColorSquare"
+          className={
+            "ColorSquare " +
+            (color.htmlRGB === "#ffffff" ? "whiteColorSquare" : "")
+          }
           onClick={() => {
             const {
               htmlRGB,
@@ -42,6 +55,7 @@ class ColorTab extends React.Component {
               separationColorSpace,
               separationColor
             } = color;
+            this.props.uiAddLastUsedColor(color.id);
             this.props.selectColor({
               mainHandler: true,
               payloadMainHandler: {
@@ -70,17 +84,65 @@ class ColorTab extends React.Component {
         key={-1}
         className="ColorSquare AddColor"
         onClick={() => {
-          this.pickerWndHandler(true);
+          this.togglePickerWnd(true);
         }}
         id="newColor"
       >
         {"+"}
       </li>
     );
+
+    lastUsedColors = this.props.lastUsedColors.map((color, index) => {
+      return (
+        <li
+          key={color.id + " " + index}
+          style={{ backgroundColor: color.htmlRGB }}
+          className={
+            "ColorSquare " +
+            (color.htmlRGB === "#ffffff" ? "whiteColorSquare" : "")
+          }
+          onClick={() => {
+            const {
+              htmlRGB,
+              RGB,
+              CMYK,
+              separation,
+              separationColorSpace,
+              separationColor
+            } = color;
+            this.props.uiAddLastUsedColor(color.id);
+            this.props.selectColor({
+              mainHandler: true,
+              payloadMainHandler: {
+                type: this.props.type,
+                value: {
+                  htmlRGB,
+                  RGB,
+                  CMYK,
+                  separation,
+                  separationColorSpace,
+                  separationColor
+                }
+              }
+            });
+          }}
+        />
+      );
+    });
     return (
       <div className="ColorTabColorContainer">
-        <ul className="">{colors}</ul>
-        {this.state.showPickerWnd && <ColorPicker />}
+        <ul className="ColorTabColorContainerUl">{colors}</ul>
+        <div className="colorTabLastUsedContainer">
+          <div className="colorTabLastUsedText">Last used colors</div>
+          <ul className="colorTabLastUsedUl">{lastUsedColors}</ul>
+        </div>
+        <ColorPicker
+          closePickerWnd={this.closePickerWnd}
+          uiAddColorHandler={this.props.uiAddColor}
+          tabType={this.props.type}
+          activeColor={this.props.activeColors[this.props.activeTab]}
+          visible={this.state.showPickerWnd}
+        />
       </div>
     );
   }
@@ -89,10 +151,19 @@ class ColorTab extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     colors: colorTabSelector(state, props),
-    activeColors: getActiveBlockColors(state, props)
+    activeColors: getActiveBlockColors(state, props),
+    lastUsedColors: lastUsedColorsSelector(state, props)
   };
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    uiAddColor: payload => dispatch(uiAddColor(payload)),
+    uiAddLastUsedColor: payload => dispatch(uiAddLastUsedColor(payload))
+  };
+};
+
 module.exports = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(ColorTab);
