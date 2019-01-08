@@ -218,15 +218,30 @@ const CreatePayload = (activeitem, itemPayload) => {
       break;
 
     case Types.COLOR_TAB_FG:
-      attrs = { fillColor: itemPayload.value };
+      attrs = {
+        fillColor: {
+          colorSpace: activeitem.fillColor.colorSpace,
+          ...itemPayload.value
+        }
+      };
       break;
 
     case Types.COLOR_TAB_BG:
-      attrs = { bgColor: itemPayload.value };
+      attrs = {
+        bgColor: {
+          colorSpace: activeitem.bgColor.colorSpace,
+          ...itemPayload.value
+        }
+      };
       break;
 
     case Types.COLOR_TAB_BORDER_COLOR:
-      attrs = { borderColor: itemPayload.value };
+      attrs = {
+        borderColor: {
+          colorSpace: activeitem.bgColor.colorSpace,
+          ...itemPayload.value
+        }
+      };
       break;
 
     case Types.SLIDER_FONT_WND:

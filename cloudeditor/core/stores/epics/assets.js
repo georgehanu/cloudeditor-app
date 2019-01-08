@@ -8,7 +8,8 @@ const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-const URL = "http://work.cloudlab.at:9012/pa/asgard/public/api/editor/upload";
+const URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/editorUpload";
 
 module.exports = {
   onEpicFile: (action$, state$) =>

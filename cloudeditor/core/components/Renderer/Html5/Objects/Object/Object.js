@@ -180,7 +180,7 @@ class ObjectBlock extends React.Component {
       />
     );
 
-    return this.renderBaseBlock(block);
+    return this.renderBaseBlock(props, block);
   };
 
   renderBaseBlock(props, block) {
@@ -218,7 +218,8 @@ class ObjectBlock extends React.Component {
       left: left + offsetLeft,
       top: top + offsetTop,
       transform: "rotate(" + angle + "deg)",
-      backgroundColor: "rgb(" + bgColor.htmlRGB + ")"
+      backgroundColor:
+        subType != "tinymce" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
 
     if (mirrored) {
@@ -227,8 +228,9 @@ class ObjectBlock extends React.Component {
     const styleBorderColor = {
       width: width + parseFloat(borderWidth),
       height: height + parseFloat(borderWidth),
-      borderColor: "rgb(" + borderColor.htmlRGB + ")",
-      borderWidth: parseFloat(borderWidth),
+      borderColor:
+        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
       top: (-1 * parseFloat(borderWidth)) / 2,
       left: (-1 * parseFloat(borderWidth)) / 2
     };
@@ -364,6 +366,7 @@ class ObjectBlock extends React.Component {
         element = this.renderText();
         break;
       case "image":
+      case "pdf":
         element = this.renderImage();
         break;
       case "graphics":
@@ -371,7 +374,10 @@ class ObjectBlock extends React.Component {
         break;
       case "tinymce":
         element = this.renderTable();
-        styleNorth = { width: width + 16, height: height + 16 };
+        styleNorth = {
+          width: this.props.width + 16,
+          height: this.props.height + 16
+        };
         tinyMceResizable = (
           <React.Fragment>
             <div className="ui-resizable-handle ui-resizable-se ui-icon" />

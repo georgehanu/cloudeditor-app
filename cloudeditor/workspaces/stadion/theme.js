@@ -4,7 +4,7 @@ const theme = require("../../themes/stadion/theme.scss");
 const editor_icons = require("../../themes/stadion/editor_icons.css");
 const addImage = require("../../themes/stadion/addImage.scss");
 const addPdf = require("../../themes/stadion/addPdf.scss");
-const layouts = require("../../plugins/Layouts/Layouts.scss");
+///const layouts = require("../../plugins/Layouts/Layouts.scss");
 const zoom = require("../../plugins/Zoom/Zoom.css");
 const toolbar = require("../../themes/default/toolbar/plugin.scss");
 const projectHeader = require("../../plugins/ProjectHeader/ProjectHeader.css");
@@ -24,7 +24,6 @@ module.exports = {
   editor_icons,
   addImage,
   addPdf,
-  layouts,
   zoom,
   toolbar,
   projectHeader,

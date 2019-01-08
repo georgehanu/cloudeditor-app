@@ -10,7 +10,7 @@ const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const PRINT_PREVIEW_URL =
-  "http://work.cloudlab.at:9012/ig/tests/printPreview.php";
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/previewCloudeditor";
 
 module.exports = {
   onEpicPreview: (action$, state$) =>
@@ -18,7 +18,11 @@ module.exports = {
       ofType(PREVIEW_LOAD_PAGE),
       mergeMap(action$ =>
         Observable.create(obs => {
-          const serverData = { pageNo: action$.payload };
+          console.log(state$, "this is my state in preview");
+          const serverData = {
+            project: { ...state$.value.project },
+            selection: state$.value.selection
+          };
           axios
             .post(PRINT_PREVIEW_URL, qs.stringify(serverData))
             .then(resp => resp.data)

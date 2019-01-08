@@ -6,7 +6,8 @@ const type = "image";
 const PageSource = {
   beginDrag(props) {
     return {
-      type,
+      type: type,
+      subType: props.type,
       image_src: props.image_src,
       imagePath: props.image_path,
       imageWidth: props.imageWidth,

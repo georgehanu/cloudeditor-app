@@ -97,6 +97,8 @@ const getObjectsDefaults = cfg => {
       brightness: 0,
       imageWidth: 0,
       imageHeight: 0,
+      ratioWidth: 0,
+      ratioHeight: 0,
       flip: ""
     },
     image || {}
@@ -119,7 +121,7 @@ const getObjectsDefaults = cfg => {
 
   const textCfg = merge(
     {
-      alignment: "center",
+      textAlign: "center",
       bold: 0,
       charSpacing: 0,
       circleText: 0,
@@ -138,9 +140,13 @@ const getObjectsDefaults = cfg => {
       sufix: "",
       type: "text",
       underline: 0,
-      vAlignment: "middle",
+      vAlign: "middle",
       wordSpacing: "normal",
-      value: "Edit Text Here"
+      fontFamily: "",
+      prefix: "",
+      value: "Edit Text Here",
+      firstlinedist: "ascender",
+      lastlinedist: 0
     },
     text || {}
   );
@@ -375,6 +381,9 @@ const getFontMetricTemplate = cfg => {
     },
     cfg || {}
   );
+};
+const getEmptySelection = cfg => {
+  return cfg;
 };
 
 const getUIPermissionsTemplate = cfg => {
@@ -614,7 +623,7 @@ const getEmptyObject = cfg => {
   let object = {
     id: cfg.id || uuidv4(),
     type: cfg.type || "none",
-    subType: cfg.type || "none",
+    subType: cfg.subType || "none",
     width: cfg.width || 500,
     height: cfg.height || 500,
     left: cfg.left,
@@ -642,6 +651,7 @@ const getEmptyObject = cfg => {
         return {
           ...object,
           image_src: cfg.image_src,
+          imagePath: cfg.imagePath,
           cropH: cfg.cropH || 0,
           cropX: cfg.cropX || 0,
           workingPercent: 0,
@@ -656,7 +666,28 @@ const getEmptyObject = cfg => {
           imageWidth: cfg.imageWidth || 0,
           imageHeight: cfg.imageHeight || 0,
           workingPercent: 0,
-          initialRestore: 0
+          initialRestore: 0,
+          ratioWidth: cfg.ratioWidth || 1,
+          ratioHeight: cfg.ratioHeight || 1
+        };
+      case "pdf":
+        return {
+          ...object,
+          image_src: cfg.image_src,
+          imagePath: cfg.imagePath,
+          cropH: cfg.cropH || 0,
+          cropX: cfg.cropX || 0,
+          workingPercent: 0,
+          cropY: cfg.cropY || 0,
+          cropW: cfg.cropW || 0,
+          cropH: cfg.cropH || 0,
+          leftSlider: cfg.leftSlider || 0,
+          imageWidth: cfg.imageWidth || 0,
+          imageHeight: cfg.imageHeight || 0,
+          workingPercent: 0,
+          initialRestore: 0,
+          ratioWidth: cfg.ratioWidth || 1,
+          ratioHeight: cfg.ratioHeight || 1
         };
       case "graphics":
         return {
@@ -689,12 +720,13 @@ const getEmptyObject = cfg => {
         };
         break;
       case "text":
+      case "textline":
       case "textflow":
         return {
           ...object,
           font: cfg.font || "Arial",
-          textAlign: cfg.textAlign || "left",
-          vAlign: cfg.vAlign || "top",
+          textAlign: cfg.textAlign || "center",
+          vAlign: cfg.vAlign || "middler",
           fontSize: cfg.fontSize || 12,
           bold: cfg.bold || false,
           underline: cfg.underline || false,
@@ -708,10 +740,12 @@ const getEmptyObject = cfg => {
       case "tinymce":
         return {
           ...object,
+          subType: "tinymce",
           width: 379,
           height: 506,
           left: cfg.left || 100,
           top: cfg.top || 100,
+
           tableContent:
             cfg.tableContent ||
             `<table style="width: 100%; border-spacing: 0px; color: black;">
@@ -1660,6 +1694,7 @@ const ProjectUtils = {
   getRandomUI,
   getEmptyColor,
   getEmptyFont,
+  getEmptySelection,
   getFontMetricTemplate
 };
 
