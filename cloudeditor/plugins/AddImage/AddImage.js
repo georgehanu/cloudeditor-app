@@ -42,7 +42,7 @@ module.exports = {
       position: 3,
       priority: 1,
       text: "Add Image",
-      icon: "printqicon-newimage",
+      icon: "fupa-foto",
       showMore: true,
       tooltip: { title: "Add Image", description: "Add a new image block" }
     }

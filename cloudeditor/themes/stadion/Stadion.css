@@ -223,3 +223,120 @@
 .InsertInProductionContainer {
   height: 12px;
 }
+
+@font-face {
+  font-family: "fupa";
+  src: url("assets/fupa_fonts/fupa.eot");
+  src: url("assets/fupa_fonts/fupa.woff") format("woff");
+  src: url("assets/fupa_fonts/fupa.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}
+
+.icon.fupa-layout:before {
+  font-family: "fupa" !important;
+  content: "\e90b";
+}
+
+.icon.fupa-add-pages:before {
+  font-family: "fupa" !important;
+  content: "\e902";
+}
+
+.icon.fupa-info:before {
+  font-family: "fupa" !important;
+  content: "\e909";
+}
+
+.icon.fupa-advertise:before {
+  font-family: "fupa" !important;
+  content: "\e900";
+  border: 1px solid;
+}
+
+.icon.fupa-asistent:before {
+  font-family: "fupa" !important;
+  content: "\e903";
+}
+
+.icon.fupa-background:before {
+  font-family: "fupa" !important;
+  content: "\e904";
+}
+
+.icon.fupa-settings:before {
+  font-family: "fupa" !important;
+  content: "\e905";
+}
+
+.icon.fupa-foto:before {
+  font-family: "fupa" !important;
+  content: "\e906";
+}
+
+.icon.fupa-icon:before {
+  font-family: "fupa" !important;
+  content: "\e907";
+}
+
+.icon.fupa-graphics:before {
+  font-family: "fupa" !important;
+  content: "\e908";
+}
+
+.icon.fupa-content:before {
+  font-family: "fupa" !important;
+  content: "\e90a";
+}
+
+@font-face {
+  font-family: "Porto-Regular";
+  src: url("assets/porto_fonts/Porto-Regular.woff") format("woff");
+  src: url("assets/porto_fonts/Porto-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}
+
+.icon.porto-up:before {
+  font-family: "Porto-Regular" !important;
+  content: "\E82B";
+}
+
+.icon.porto-down:before {
+  font-family: "Porto-Regular" !important;
+  content: "\E82A";
+}
+
+.icon.porto-left:before {
+  font-family: "Porto-Regular" !important;
+  content: "\E84F";
+}
+
+@font-face {
+  font-family: "FontAwesome";
+  src: url("assets/awesome_fonts/FontAwesome5FreeSolid.woff") format("woff");
+  src: url("assets/awesome_fonts/FontAwesome5FreeSolid.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}
+
+.icon.awesome-plus:before {
+  font-family: "FontAwesome" !important;
+  content: "\F00E";
+}
+
+.icon.awesome-minus:before {
+  font-family: "FontAwesome" !important;
+  content: "\F010";
+}
+
+@font-face {
+  font-family: "ArialMT";
+  src: url("assets/arialmt_fonts/arialmt.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-smooth: always;
+}

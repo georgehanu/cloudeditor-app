@@ -17,7 +17,7 @@ const Zoom = props => {
     <div className="zoom">
       <SidebarButton clicked={props.zoomIn}>
         <div className="iconContainer">
-          <div className="icon printqicon-zoom_in" />
+          <div className="icon awesome-plus" />
         </div>
         <div className="iconTitle">{"Zoom In"}</div>
       </SidebarButton>
@@ -29,7 +29,7 @@ const Zoom = props => {
 
       <SidebarButton clicked={props.zoomOut}>
         <div className="iconContainer">
-          <div className="icon printqicon-zoom_out" />
+          <div className="icon awesome-minus" />
         </div>
         <div className="iconTitle">{"Zoom Out"}</div>
       </SidebarButton>

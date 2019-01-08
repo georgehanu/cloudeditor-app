@@ -31,7 +31,13 @@
       "MenuItemCancel",
       "MenuItemManual",
       "MenuItemHeaderFooter",
-      "HelperLines"
+      "HelperLines",
+      "Background",
+      "Content",
+      "Advertising",
+      "Asistent",
+      "GraphicElements",
+      "Settings"
     ]
   },
   "Layout": {

@@ -1,7 +1,7 @@
 const React = require("react");
 
 const backButton = props => {
-  const icon = "icon printqicon-cancel";
+  const icon = "icon porto-left";
 
   return (
     <div className="backButtonContainer">

@@ -49,3 +49,11 @@
 .zoomButtons button:hover {
   background-color: #c30c15;
 }
+
+.zoom .iconTitle {
+  display: none;
+}
+
+#sidebar-wrapper-container .zoom .sidebarButton {
+  height: 40px;
+}

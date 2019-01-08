@@ -1584,6 +1584,7 @@ const getEmptyUI = cfg => {
       fonts: {},
       fontMetrics: {},
       colors: {},
+      lastUsedColors: [],
       workArea: {
         zoom: 1,
         scale: 1,

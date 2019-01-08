@@ -4,5 +4,9 @@
   "header": "Header",
   "footer": "Footer",
   "Header": "Header",
-  "Footer": "Footer"
+  "Footer": "Footer",
+  "OK": "OK",
+  "Cancel": "Cancel",
+  "Change CMYK": "Change CMYK",
+  "Change RGB": "Change RGB"
 }

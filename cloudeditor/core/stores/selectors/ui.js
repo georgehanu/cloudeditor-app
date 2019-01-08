@@ -55,6 +55,25 @@ const colorTabSelector = createCachedSelector(
 )((state, props) => props.activeTab);
 const rerenderIdSelector = state => pathOr("null"["rerenderId"], state);
 
+const lastUsedColorsIdSelector = state => {
+  return values(pathOr([], ["ui", "lastUsedColors"], state));
+};
+
+const lastUsedColorsSelector = createSelector(
+  lastUsedColorsIdSelector,
+  colorsSelector,
+  (usedIds, colors) => {
+    let usedColors = [];
+    for (let id in usedIds) {
+      const index = colors.findIndex(el => {
+        return el.id == usedIds[id];
+      });
+      usedColors.push(colors[index]);
+    }
+    return usedColors;
+  }
+);
+
 module.exports = {
   zoomSelector,
   scaleSelector,
@@ -62,5 +81,6 @@ module.exports = {
   colorsSelector,
   colorTabSelector,
   getActiveBlockColors,
-  rerenderIdSelector
+  rerenderIdSelector,
+  lastUsedColorsSelector
 };

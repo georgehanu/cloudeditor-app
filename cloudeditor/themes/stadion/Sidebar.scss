@@ -323,3 +323,91 @@
 #sidebar-wrapper .SidebarButtonSelected {
   background-color: #ebedf0;
 }
+
+/* for fupa */
+#sidebar-wrapper-container .sidebarButtonContainer .iconTitle {
+  font-family: Arial;
+  font-size: 9px;
+  color: #000000;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .icon.printqicon-zoom_in,
+#sidebar-wrapper-container .sidebarButtonContainer .icon.printqicon-zoom_out {
+  font-size: 22px;
+  color: #666666;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .zoomValue {
+  font-family: Arial;
+  font-size: 14px;
+  color: #666666;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .zoomButtons button {
+  background: #666666;
+  font-family: Arial;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .zoomButtons button:hover {
+  background-color: #c30c15;
+}
+
+.pageSelector .stadion-up.stadion-icon,
+.pageSelector .stadion-down.stadion-icon {
+  background: #ffffff;
+  border: 1 solid #cccccc;
+  border-radius: 3px;
+  font-family: Porto-Regular;
+  font-size: 16px;
+  color: #666666;
+}
+
+.pageSelector .pageHeaderButtonExtend,
+.pageSelector .pageHeaderButtonMinimize {
+  width: 38px;
+  height: 24px;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  background: #ffffff;
+}
+
+.pageSelector .pageHeaderButtonMinimize {
+  margin-left: 12px;
+}
+
+#container.pageSelectorMinimized .pageSelector .pageHeaderButtonExtend {
+  top: 1px;
+}
+
+.pageSelector .pageHeaderButtonExtend .icon,
+.pageSelector .pageHeaderButtonMinimize .icon {
+  font-family: Porto-Regular;
+  font-size: 16px;
+  color: #666666;
+}
+
+.backButtonContainer button {
+  width: 28px;
+  height: 32px;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  font-family: Porto-Regular;
+  font-size: 16px;
+  color: #666666;
+  margin-top: 0px;
+}
+
+.backButtonContainer {
+  height: 34px;
+}
+
+#sidebar-wrapper-container .paneContainer {
+  background-color: #f9fafc;
+}
+
+#sidebar-wrapper-container ul .uploadGalleryUl {
+  border-right: none;
+}
