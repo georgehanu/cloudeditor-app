@@ -252,7 +252,7 @@ const getDocumentDefaults = cfg => {
         activeOn: "all", //(all inner)
         display: "before", // (before, after)
         mirrored: true,
-        height: 60,
+        height: 12,
         objectsIds: []
       },
       footer: {
@@ -261,7 +261,7 @@ const getDocumentDefaults = cfg => {
         activeOn: "inner", //(all inner)
         display: "before", // (before, after),
         mirrored: false,
-        height: 45,
+        height: 10,
         objectsIds: []
       }
     },
@@ -439,12 +439,12 @@ const getEmptyProject = cfg => {
     type: "text",
     subType: "textflow",
     width: 100,
-    height: 100,
-    left: 0,
-    top: 0,
+    height: 10,
+    left: 10,
+    top: 10,
     value: "Header text here",
     fontFamily: "Dax",
-    fontSize: 20,
+    fontSize: 10,
     fill: "red"
   });
   const textFooter = getEmptyObject({
@@ -452,12 +452,12 @@ const getEmptyProject = cfg => {
     type: "text",
     subType: "textflow",
     width: 100,
-    height: 100,
-    left: 0,
-    top: 0,
+    height: 10,
+    left: 10,
+    top: 10,
     value: "Footer text here",
     fontFamily: "Dax",
-    fontSize: 20,
+    fontSize: 10,
     fill: "red"
   });
 
@@ -465,16 +465,14 @@ const getEmptyProject = cfg => {
     id: "header",
     type: "section",
     subType: "header",
-    objectsIds: [textHeader.id],
-    height: 200
+    objectsIds: [textHeader.id]
   });
 
   const footer = getEmptyObject({
     id: "footer",
     type: "section",
     subType: "footer",
-    objectsIds: [textFooter.id],
-    height: 200
+    objectsIds: [textFooter.id]
   });
 
   const table = getEmptyObject({
