@@ -26,7 +26,11 @@ const importItem = props => {
               <i />
               <span
                 onClick={() => {
-                  props.onAddBlock({ type: "text", value: props.text });
+                  props.onAddBlock({
+                    type: "text",
+                    subType: "textflow",
+                    value: props.text
+                  });
                   props.closeModal();
                 }}
               >

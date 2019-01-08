@@ -73,7 +73,7 @@ class Blocks extends React.Component {
         newObjects = objIds.reduce(function(acc, cV, _) {
           acc.push({
             id: cV,
-            uuid: obj["uuid"] + "-" + cV,
+            uuid: obj["uuid"] + "--" + cV,
             level: obj.parent.level + 1,
             parent: obj
           });

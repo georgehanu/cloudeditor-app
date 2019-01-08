@@ -176,6 +176,7 @@ class PageContainer extends React.PureComponent {
             x
           </a>
           <Canvas
+            containerUuid={this.props.uuid}
             getCanvasRef={this.getCanvasReference}
             getContainerRef={this.getContainerReference}
             activePage={this.props.activePage}

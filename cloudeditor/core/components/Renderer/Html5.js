@@ -139,6 +139,7 @@ class Html5 extends React.Component {
     const { pageReady } = this.state;
     return (
       <Canvas
+        containerUuid={this.props.uuid}
         getCanvasRef={this.getCanvasReference}
         getContainerRef={this.getContainerReference}
         activePage={this.props.activePage}

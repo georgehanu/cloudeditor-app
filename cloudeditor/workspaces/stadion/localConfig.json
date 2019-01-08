@@ -43,5 +43,9 @@
     "component": "div",
     "id": "container",
     "className": "container"
+  },
+  "translations": {
+    "publicPath": "/",
+    "basePath": "locales"
   }
 }

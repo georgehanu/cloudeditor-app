@@ -146,7 +146,8 @@ class Page extends React.Component {
       height,
       viewOnly,
       headerConfig,
-      footerConfig
+      footerConfig,
+      containerUuid
     } = this.props;
     let objectsOffset = [];
     forEachObjIndexed((innerPage, pKey) => {
@@ -224,7 +225,7 @@ class Page extends React.Component {
       objectsOffset = objIds.reduce(function(acc, cV, _) {
         acc.push({
           id: cV,
-          uuid: pKey + "-" + cV,
+          uuid: containerUuid + "--" + pKey + "--" + cV,
           level: parent.level + 1,
           offsetLeft: offset.left,
           offsetTop: offset.top,

@@ -1,4 +1,5 @@
 const React = require("react");
+const uuidv4 = require("uuid/v4");
 const assign = require("object-assign");
 const { hot } = require("react-hot-loader");
 const { connect } = require("react-redux");
@@ -33,7 +34,8 @@ class LiveHtml5Pagination extends React.Component {
       hoverId: null,
       showAddPages: false,
       nrPagesToInsert: props.groupSize,
-      location: "after"
+      location: "after",
+      uuid: uuidv4()
     };
   }
   renderGroups() {
@@ -145,6 +147,7 @@ class LiveHtml5Pagination extends React.Component {
             useMagentic={0}
             switchPages={this.switchPages}
             highlightHoverPage={this.highlightHoverPage}
+            uuid={this.state.uuid}
           >
             {page}
           </PageContainer>

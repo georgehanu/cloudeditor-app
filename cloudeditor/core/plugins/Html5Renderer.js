@@ -2,10 +2,14 @@ const React = require("react");
 const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
 const { flatten } = require("ramda");
+const uuidv4 = require("uuid/v4");
 
 require("./Html5Renderer/Html5Renderer.css");
 
 class Html5Renderer extends React.Component {
+  state = {
+    uuid: uuidv4()
+  };
   getTools = () => {
     return this.props.items.sort((a, b) => a.position - b.position);
   };
@@ -44,6 +48,7 @@ class Html5Renderer extends React.Component {
           <Renderer
             facingPages={this.props.pluginCfg["facingPages"]}
             blurSelectors={blurSelectors}
+            uuid={this.state.uuid}
           />
         }
       </div>

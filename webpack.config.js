@@ -44,8 +44,10 @@ if (workspace === "designAndGo")
     from: "./" + namespace + "/themes/" + workspace + "/images/*",
     to: "./editorImages/[name].[ext]"
   });
-config["copyFrom"].push({
-  from: "./" + namespace + "/themes/" + workspace + "/tinymce/",
-  to: "./tinymce/"
-});
+else {
+  config["copyFrom"].push({
+    from: "./" + namespace + "/themes/" + workspace + "/tinymce/",
+    to: "./tinymce/"
+  });
+}
 module.exports = require("./buildConfig")(config);

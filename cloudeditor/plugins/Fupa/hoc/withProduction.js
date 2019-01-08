@@ -10,8 +10,8 @@ const { addTable } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
-  type: "tinymce",
-  subType: "tinymce",
+  type: "tinymceTable",
+  subType: "tinymceTable",
   width: 200,
   height: 200,
   left: 200,

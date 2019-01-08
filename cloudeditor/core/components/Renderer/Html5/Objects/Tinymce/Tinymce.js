@@ -1,11 +1,7 @@
 const React = require("react");
 const TinyMCE = require("react-tinymce");
-const withDraggable = require("../hoc/withDraggable/withDraggable");
-const withRotatable = require("../hoc/withRotatable/withRotatable");
-const { compose } = require("redux");
 require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
-const { updateObjectProps } = require("../../../../../stores/actions/project");
 const { connect } = require("react-redux");
 
 class Tinymce extends React.Component {
@@ -31,9 +27,9 @@ class Tinymce extends React.Component {
       mutations.forEach(mutation => {
         if (mutation.type === "attributes") {
           const targetBounding = mutation.target.getBoundingClientRect();
-          this.props.onUpdateProps({
-            width: targetBounding.width,
-            height: targetBounding.height
+          console.log({
+            width: targetBounding.width / this.props.zoomScale,
+            height: targetBounding.height / this.props.zoomScale
           });
           this.props.onUpdateProps({
             id: this.props.id,
@@ -91,6 +87,20 @@ class Tinymce extends React.Component {
       );
     }
   }
+
+  initCallbackHandler = editor => {
+    this.currentEditor = editor;
+    var table = this.currentEditor.dom.doc.getElementsByClassName(
+      "mce-item-table"
+    )[0];
+    this.props.onUpdateProps({
+      id: this.props.id,
+      props: {
+        height: table.offsetHeight
+      }
+    });
+  };
+
   render() {
     return (
       <TinyMCE
@@ -112,19 +122,7 @@ class Tinymce extends React.Component {
           resize: true,
           object_resizing: true,
           body_class: "TinymceContainer",
-
-          init_instance_callback: editor => {
-            this.currentEditor = editor;
-            var table = this.currentEditor.dom.doc.getElementsByClassName(
-              "mce-item-table"
-            )[0];
-            this.props.onUpdateProps({
-              id: this.props.id,
-              props: {
-                height: table.offsetHeight
-              }
-            });
-          }
+          init_instance_callback: this.initCallbackHandler
         }}
         ref={node => (this.tinyEditor = node)}
         init={{
@@ -135,27 +133,10 @@ class Tinymce extends React.Component {
         onObjectResizeStart={this.onObjectResizeHandler}
         onObjectResized={this.onObjectResizedHandler}
         onChange={this.onChangeHandler}
-        onClick={this.onClickHandler}
-        id={"Tiny" + this.props.id}
+        id={"Tiny" + this.props.uuid}
       />
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateObjectProps: payload => {
-      dispatch(updateObjectProps(payload));
-    }
-  };
-};
-
-module.exports = compose(
-  withDraggable,
-  withRotatable
-)(
-  connect(
-    null,
-    mapDispatchToProps
-  )(Tinymce)
-);
+module.exports = Tinymce;

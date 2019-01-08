@@ -171,16 +171,16 @@ class ObjectBlock extends React.Component {
       <Tinymce
         key={this.props.id}
         id={this.props.id}
+        uuid={this.props.uuid}
         tableContent={this.props.tableContent}
         height={this.props.height}
         width={this.props.width}
         onUpdateProps={this.props.onUpdatePropsHandler}
         zoomScale={this.props.zoomScale}
-        tableContent={this.props.tableContent}
       />
     );
 
-    return this.renderBaseBlock(block);
+    return this.renderBaseBlock(props, block);
   };
 
   renderBaseBlock(props, block) {
@@ -234,6 +234,18 @@ class ObjectBlock extends React.Component {
     };
     let styleNorth = {};
     let tinyMceResizable = null;
+
+    if (subType === "tinymceTable") {
+      styleNorth = { width: width + 16, height: height + 16 };
+      tinyMceResizable = (
+        <React.Fragment>
+          <div className="ui-resizable-handle ui-resizable-se ui-icon" />
+          <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
+          <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
+          <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
+        </React.Fragment>
+      );
+    }
 
     let resizableHandle = null;
     if (this.props.resizable && !viewOnly) {
@@ -369,38 +381,8 @@ class ObjectBlock extends React.Component {
       case "graphics":
         element = this.renderGraphic();
         break;
-      case "tinymce":
+      case "tinymceTable":
         element = this.renderTable();
-        styleNorth = { width: width + 16, height: height + 16 };
-        tinyMceResizable = (
-          <React.Fragment>
-            <div className="ui-resizable-handle ui-resizable-se ui-icon" />
-            <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
-            <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
-            <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
-          </React.Fragment>
-        );
-        break;
-
-      case "tinymce_miky":
-        element = (
-          <Tinymce
-            tableContent={this.props.tableContent}
-            height={this.props.height}
-            width={this.props.width}
-            underline={this.props.underline}
-            bold={this.props.bold}
-            italic={this.props.italic}
-            id={this.props.id}
-            textAlign={this.props.textAlign}
-            fontFamily={this.props.fontFamily}
-            fontSize={this.props.fontSize}
-            zoomScale={this.props.zoomScale}
-            bgColor={this.props.bgColor}
-            fillColor={this.props.fillColor}
-            toolbarUpdate={this.props.toolbarUpdate}
-          />
-        );
         break;
 
       default:
