@@ -49,5 +49,18 @@ else {
     from: "./" + namespace + "/themes/" + workspace + "/tinymce/js/",
     to: "./tinymce/js"
   });
+  config["copyFrom"].push({
+    from:
+      "./" +
+      namespace +
+      "/themes/" +
+      workspace +
+      "/tinymce/resetTinyMceTable.css",
+    to: "./tinymce/resetTinyMceTable.css"
+  });
+  config["copyFrom"].push({
+    from: "./" + namespace + "/core/assets/chromoselector",
+    to: "./chromoselector"
+  });
 }
 module.exports = require("./buildConfig")(config);

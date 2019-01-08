@@ -1,5 +1,5 @@
 const React = require("react");
-//const { withNamespaces } = require("react-i18next");
+const { withNamespaces } = require("react-i18next");
 
 const PageHeader = props => {
   return (
