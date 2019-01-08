@@ -7,7 +7,12 @@ const PageHeader = props => {
       <div className="pageHeaderText">
         <div className="pageHeaderTextTitleContainer">
           <span className="icon fupa-add-pages" />
-          <span className="pageHeaderTextTitle">{props.t("Add pages")}</span>
+          <button
+            className="pageHeaderButtonAddPages"
+            onClick={props.showAddPages}
+          >
+            {props.t("Add pages")}
+          </button>
         </div>
         <div className="pageHeaderTextInfoContainer">
           <span className="icon fupa-info" />
