@@ -145,7 +145,6 @@ module.exports = {
             return Rx.of(actions.fetchTeamMatchesFailed());
           }),
           catchError(error => {
-            console.log(error, "ERROR");
             return Rx.of(actions.fetchTeamMatchesFailed());
           })
         );
@@ -169,12 +168,9 @@ module.exports = {
             if (data.errors === false)
               return Rx.of(actions.fetchTeamPlayersFulfilled(data.data));
 
-            console.log(data);
-
             return Rx.of(actions.fetchTeamPlayersFailed());
           }),
           catchError(error => {
-            console.log(error);
             return Rx.of(actions.fetchTeamPlayersFulfilled());
           })
         );

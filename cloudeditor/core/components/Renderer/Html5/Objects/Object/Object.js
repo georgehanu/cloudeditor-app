@@ -66,7 +66,6 @@ class ObjectBlock extends React.Component {
     if (equals(nProps, cProps)) {
       return false;
     }
-    console.log("update?", this.props.id, nProps, cProps);
     return true;
   }
   getEditableReference = ref => {
@@ -305,7 +304,6 @@ class ObjectBlock extends React.Component {
   }
 
   renderHeaderFooter(type) {
-    console.log("footers");
     const props = { ...this.props };
 
     const typeText = type.replace(/^\w/, c => c.toUpperCase());
@@ -402,8 +400,6 @@ class ObjectBlock extends React.Component {
 
   render() {
     let element = null;
-
-    console.log("render", this.props.id);
 
     switch (this.props.subType) {
       case "textflow":

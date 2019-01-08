@@ -19,7 +19,6 @@ module.exports = {
       ofType(PREVIEW_LOAD_PAGE),
       mergeMap(action$ =>
         Observable.create(obs => {
-          console.log(state$, "this is my state in preview");
           const serverData = {
             project: { ...state$.value.project },
             selection: state$.value.selection

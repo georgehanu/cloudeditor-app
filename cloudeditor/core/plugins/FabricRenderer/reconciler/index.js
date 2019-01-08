@@ -191,9 +191,7 @@ FabricRenderer.injectIntoDevTools({
   bundleType: process.env.NODE_ENV !== "production" ? 1 : 0,
   version: React.version || 16,
   rendererPackageName: "react-fabric",
-  getInspectorDataForViewTag: (...args) => {
-    console.log(args);
-  }
+  getInspectorDataForViewTag: (...args) => {}
 });
 
 module.exports = FabricRenderer;

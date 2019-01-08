@@ -27,10 +27,6 @@ class Tinymce extends React.Component {
       mutations.forEach(mutation => {
         if (mutation.type === "attributes") {
           const targetBounding = mutation.target.getBoundingClientRect();
-          console.log({
-            width: targetBounding.width / this.props.zoomScale,
-            height: targetBounding.height / this.props.zoomScale
-          });
           this.props.onUpdateProps({
             id: this.props.id,
             props: {

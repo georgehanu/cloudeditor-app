@@ -91,7 +91,6 @@ class ImportModal extends React.Component {
       .post(this.props.isText ? TEXT_URL : IMAGE_URL, qs.stringify(serverData))
       .then(resp => resp.data)
       .then(data => {
-        console.log(data, "OK?");
         if (data.errors === false) {
           this.setState({
             page: data.data.data,
@@ -105,7 +104,6 @@ class ImportModal extends React.Component {
         this.setState({ loading: false });
       })
       .catch(error => {
-        console.log(data, "error");
         this.setState({ loading: false, pageCount: 0 });
       });
   };
@@ -127,7 +125,6 @@ class ImportModal extends React.Component {
         this.setState({ loading: false });
       })
       .catch(error => {
-        console.log(data, "error");
         this.setState({ loading: false });
       });
   };

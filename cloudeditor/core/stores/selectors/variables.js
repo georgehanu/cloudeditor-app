@@ -10,7 +10,6 @@ const variablesConfigsSelector = state =>
   pathOr({}, ["variables", "configs"], state);
 
 const variablesVariableSelector = (state, varName) => {
-  console.log("variablesVariableSelector", varName);
   return pathOr({}, ["variables", "variables", varName], state);
 };
 
@@ -18,7 +17,6 @@ const getCompleteVariableByName = createCachedSelector(
   variablesVariableSelector,
   variablesConfigsSelector,
   (variable, configs) => {
-    console.log("getCompleteVariableByName");
     return getCompleteVariable(variable, configs);
   }
 )((state, varName) => varName);

@@ -1,7 +1,6 @@
 const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
-const { withNamespaces } = require("react-i18next");
 
 const TYPE = "layout";
 
@@ -33,7 +32,7 @@ const mapDispatchToProps = dispatch => {
 const LayoutsPlugin = connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNamespaces("layouts")(Layouts));
+)(Layouts);
 
 module.exports = {
   Layouts: assign(LayoutsPlugin, {

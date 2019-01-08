@@ -198,7 +198,6 @@ class Fabric extends React.Component {
     }
   };
   onObjectPropChangedHandler = args => {
-    console.log("onObjectPropChangedHandler", args);
     if (args && args.target) {
       if (args.target.type === "activeSelection") {
         let activeSelectionData = {
@@ -225,7 +224,6 @@ class Fabric extends React.Component {
     }
   };
   designerCallbacks = () => {
-    console.log("designerCallback");
     return {
       updateCropParams: this.props.updateCropParams,
       updateObjectProps: this.props.updateObjectProps

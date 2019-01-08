@@ -42,4 +42,4 @@ const PageHeader = props => {
   );
 };
 
-module.exports = withNamespaces("liveHtml5Pagination")(PageHeader);
+module.exports = withNamespaces("LiveHtml5Pagination")(PageHeader);
