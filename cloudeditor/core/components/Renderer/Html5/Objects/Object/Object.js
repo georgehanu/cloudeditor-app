@@ -294,6 +294,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
+        <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
 
         {tinyMceResizable}
