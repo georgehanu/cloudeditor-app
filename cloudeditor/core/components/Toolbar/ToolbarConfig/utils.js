@@ -110,7 +110,7 @@ const LoadImageAdditionalInfo = activeItem => {
   };
 };
 
-const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
+const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
   for (let groupIndex in toolbar.groups) {
     let group = toolbar.groups[groupIndex];
     for (let itemIndex in group.items) {
@@ -143,6 +143,15 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
         item.fontSize = activeItem.fontSize;
       } else if (item.type === Types.POPTEXT_FONT) {
         item.value = activeItem.fontFamily;
+        item.operation = Operation.NEW_DATA;
+        item.newData = fonts.map((el, index) => {
+          return {
+            value: el,
+            label: el,
+            className: "",
+            fontFamily: el
+          };
+        });
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
