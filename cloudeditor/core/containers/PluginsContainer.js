@@ -29,7 +29,11 @@ class PluginsContainer extends React.Component {
     } else {
       newClasses[index] = { pluginName, pluginClasses: newClassesArray };
     }
-    this.setState({ additionalClasses: newClasses });
+    /* Change to have an additional param */
+    this.setState({ additionalClasses: newClasses }, () => {
+      var event = new Event("resizePage");
+      window.dispatchEvent(event);
+    });
   };
 
   renderPlugins = plugins => {
