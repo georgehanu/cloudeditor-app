@@ -125,6 +125,9 @@ class Html5 extends React.Component {
     if (prevProps.zoom !== this.props.zoom) {
       this.updateContainerDimensions();
     }
+    if (prevProps.rerenderId !== this.props.rerenderId) {
+      this.updateContainerDimensions();
+    }
   }
 
   componentDidMount() {

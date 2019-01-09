@@ -13,9 +13,7 @@ const AddPagesHeader = props => {
             e.preventDefault();
             props.modalClosed();
           }}
-        >
-          close
-        </a>
+        />
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ const importItem = props => {
           type="radio"
           className="importTextItemRadio"
           id={"label_" + props.id}
+          name={"test"}
           defaultChecked={props.checked}
           onChange={() => props.textSelected(props.id)}
         />

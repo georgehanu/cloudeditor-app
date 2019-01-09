@@ -3,6 +3,8 @@
   background-color: transparent;
   position: relative;
   margin: 0 auto;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 .pageNameContainer {
   margin-left: 150px;

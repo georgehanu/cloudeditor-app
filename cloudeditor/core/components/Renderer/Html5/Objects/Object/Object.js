@@ -192,7 +192,7 @@ class ObjectBlock extends React.Component {
     const {
       width,
       height,
-      angle,
+      rotateAngle,
       top,
       left,
       active,
@@ -222,7 +222,7 @@ class ObjectBlock extends React.Component {
       height,
       left: left + offsetLeft,
       top: top + offsetTop,
-      transform: "rotate(" + angle + "deg)",
+      transform: "rotate(" + rotateAngle + "deg)",
       backgroundColor:
         subType != "tinymce" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };

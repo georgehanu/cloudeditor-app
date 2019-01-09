@@ -53,7 +53,8 @@ const colorTabSelector = createCachedSelector(
     }, colors);
   }
 )((state, props) => props.activeTab);
-const rerenderIdSelector = state => pathOr("null"["rerenderId"], state);
+
+const rerenderIdSelector = state => pathOr("null", ["rerenderId"], state);
 
 const lastUsedColorsIdSelector = state => {
   return values(pathOr([], ["ui", "lastUsedColors"], state));
