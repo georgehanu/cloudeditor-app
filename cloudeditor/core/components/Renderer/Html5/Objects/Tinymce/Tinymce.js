@@ -23,15 +23,27 @@ class Tinymce extends React.Component {
       "mce-clonedresizable"
     )[0];
 
+    const tableScale = this.props.width / this.props.tableWidth;
+    element.style = "transform:scale(" + tableScale + ")";
+
     var observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         if (mutation.type === "attributes") {
           const targetBounding = mutation.target.getBoundingClientRect();
+
           this.props.onUpdateProps({
             id: this.props.id,
             props: {
-              width: targetBounding.width / this.props.zoomScale,
-              height: targetBounding.height / this.props.zoomScale
+              width:
+                (this.props.width * mutation.target.offsetWidth) /
+                this.props.tableWidth /
+                this.props.zoomScale,
+              height:
+                (this.props.height * mutation.target.offsetHeight) /
+                this.props.tableHeight /
+                this.props.zoomScale,
+              tableWidth: mutation.target.offsetWidth,
+              tableHeight: mutation.target.offsetHeight
             }
           });
         }
@@ -47,22 +59,39 @@ class Tinymce extends React.Component {
   onObjectResizedHandler = event => {
     event.target.parentElement.classList.remove("hideTableResize");
     event.target.parentElement.parentElement.classList.remove("hideResize");
-    var table = this.currentEditor.dom.doc.getElementsByClassName(
-      "mce-item-table"
-    )[0];
-    table.setAttribute(
-      "style",
-      "width:" +
-        this.props.width / this.props.zoomScale +
-        "px;height:" +
-        this.props.height / this.props.zoomScale +
-        "px;"
-    );
-    table.removeAttribute("data-mce-style");
+    // var table = this.currentEditor.dom.doc.getElementsByClassName(
+    //   "mce-item-table"
+    // )[0];
+
+    // const tableOffsetWidth = table.offsetWidth;
+    // table.setAttribute(
+    //   "style",
+    //   "width:" +
+    //     this.props.width / this.props.zoomScale +
+    //     "px;height:" +
+    //     this.props.height / this.props.zoomScale +
+    //     "px;" +
+    //     "transform-origin: top left; " +
+    //     "transform: scale(" +
+    //     this.props.width / this.props.zoomScale / tableOffsetWidth +
+    //     "); "
+    // );
+    // table.removeAttribute("data-mce-style");
   };
 
   componentDidUpdate() {
     if (this.currentEditor && this.currentEditor.dom.doc) {
+      var table = this.currentEditor.dom.doc.getElementsByClassName(
+        "mce-item-table"
+      )[0];
+      table.style =
+        "width:" +
+        this.props.tableWidth +
+        "px; height:" +
+        this.props.tableHeight +
+        "px;";
+    }
+    /* if (this.currentEditor && this.currentEditor.dom.doc) {
       var element = this.currentEditor.dom.doc.getElementsByClassName(
         "tableContainer"
       )[0];
@@ -75,13 +104,20 @@ class Tinymce extends React.Component {
           this.props.zoomScale +
           ");width:" +
           this.props.width / this.props.zoomScale +
-          "px;"
+          "px; height:0;"
       );
-      table.setAttribute(
-        "style",
-        "width:" + this.props.width / this.props.zoomScale + "px;"
-      );
-    }
+
+      const tableOffsetWidth = table.offsetWidth;
+      console.log("tableOffsetWidth1", tableOffsetWidth);
+      table.style =
+        "width:" +
+        this.props.width / this.props.zoomScale +
+        "px;" +
+        "transform-origin: top left; " +
+        "transform: scale(" +
+        this.props.width / this.props.zoomScale / tableOffsetWidth +
+        "); ";
+    } */
   }
 
   initCallbackHandler = editor => {
@@ -89,48 +125,51 @@ class Tinymce extends React.Component {
     var table = this.currentEditor.dom.doc.getElementsByClassName(
       "mce-item-table"
     )[0];
-    this.props.onUpdateProps({
-      id: this.props.id,
-      props: {
-        height: table.offsetHeight
-      }
-    });
+    table.style =
+      "width:" +
+      this.props.tableWidth +
+      "px; height:" +
+      this.props.tableHeight +
+      "px;";
   };
 
   render() {
+    const tableScale = this.props.width / this.props.tableWidth;
     return (
-      <TinyMCE
-        content={
-          "<div class='tableContainer' style='transform:scale(" +
-          this.props.zoomScale +
-          ");width:" +
-          this.props.width / this.props.zoomScale +
-          "px;" +
-          ");'>" +
-          this.props.tableContent +
-          "</div>" //key={uuidv4()}
-        }
-        config={{
-          plugins: "table autoresize",
-          toolbar: "table",
-          content_css: "/tinymce/resetTinyMceTable.css",
-          menubar: false,
-          resize: true,
-          object_resizing: true,
-          body_class: "TinymceContainer",
-          init_instance_callback: this.initCallbackHandler
-        }}
-        ref={node => (this.tinyEditor = node)}
-        init={{
-          setup: editor => {
-            this.setState({ activeEditor: editor });
+      <React.Fragment>
+        <TinyMCE
+          content={
+            "<div class='tableContainer' style='transform:scale(" +
+            tableScale +
+            ");width:" +
+            this.props.width +
+            "px; height:0;" +
+            "'>" +
+            this.props.tableContent +
+            "</div>" //key={uuidv4()}
           }
-        }}
-        onObjectResizeStart={this.onObjectResizeHandler}
-        onObjectResized={this.onObjectResizedHandler}
-        onChange={this.onChangeHandler}
-        id={"Tiny" + this.props.uuid}
-      />
+          config={{
+            plugins: "table autoresize",
+            toolbar: "table",
+            content_css: "/tinymce/resetTinyMceTable.css",
+            menubar: false,
+            resize: true,
+            object_resizing: true,
+            body_class: "TinymceContainer",
+            init_instance_callback: this.initCallbackHandler
+          }}
+          ref={node => (this.tinyEditor = node)}
+          init={{
+            setup: editor => {
+              this.setState({ activeEditor: editor });
+            }
+          }}
+          onObjectResizeStart={this.onObjectResizeHandler}
+          onObjectResized={this.onObjectResizedHandler}
+          onChange={this.onChangeHandler}
+          id={"Tiny" + this.props.uuid}
+        />
+      </React.Fragment>
     );
   }
 }

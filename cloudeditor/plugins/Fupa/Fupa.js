@@ -28,9 +28,9 @@ module.exports = {
     },
     cfg: {
       tableSizes: {
-        Standings: { width: 378 },
-        Matches: { width: 400 },
-        Players: { width: 500 }
+        Standings: { width: 75 },
+        Matches: { width: 75 },
+        Players: { width: 75 }
       }
     }
   }),
