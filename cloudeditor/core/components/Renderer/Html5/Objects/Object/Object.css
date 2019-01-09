@@ -25,6 +25,11 @@
   right: 0;
   top: -1px;
 }
+.pageBlock.editable.textflow,
+.pageBlock.editable.text,
+.pageBlock.editable.textline {
+  color: #000;
+}
 .pageBlock.editable.textflow .north,
 .pageBlock.editable.text .north,
 .pageBlock.editable.textline .north {

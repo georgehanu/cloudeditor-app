@@ -163,7 +163,7 @@
 }
 
 #container.pageSelectorExtended .singlePageContainer {
-  height: 235px;
+  height: 234px;
 }
 
 .singlePageCenter {
@@ -264,4 +264,11 @@
 .pageHeaderTextTitleContainer {
   width: 170px;
   text-align: left;
+}
+.pageSelectorNormal .html5LivePaginationContainer {
+  padding: 14px 0px 7px 0px;
+}
+
+.pageSelectorNormal .html5LivePaginationContainer .paginationPage {
+  height: 82px;
 }

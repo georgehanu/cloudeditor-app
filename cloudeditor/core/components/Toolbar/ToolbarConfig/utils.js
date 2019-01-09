@@ -135,7 +135,7 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
       } else if (item.type === Types.COLOR_SELECTOR) {
         //item.color = activeItem.fill;
         item.color = activeItem.fillColor
-          ? activeItem.fillColor.htmlRGB
+          ? "rgb(" + activeItem.fillColor.htmlRGB + ")"
           : activeItem.fill;
       } else if (item.type === Types.SLIDER_TEXT_SPACEING) {
         item.defaultValue = parseInt(activeItem.charSpacing);
@@ -172,7 +172,7 @@ const LoadTextAdditionalInfo = activeItem => {
         [Types.COLOR_TAB_FG]: 0,
         [Types.COLOR_TAB_BG]: 2,
         [Types.COLOR_TAB_BORDER_COLOR]: null,
-        [Types.COLOR_TAB_BORDER_WIDTH]: 80
+        [Types.COLOR_TAB_BORDER_WIDTH]: activeItem.borderWidth || 0
       }
     }
   };
