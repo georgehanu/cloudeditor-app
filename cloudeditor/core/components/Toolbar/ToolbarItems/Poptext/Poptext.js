@@ -69,6 +69,7 @@ const Poptext = props => {
       return (
         <li
           key={index}
+          style={{ fontFamily: el.fontFamily }}
           className={el.className + " ItemList"}
           onClick={() => props.handleClick(el.value)}
         >

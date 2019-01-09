@@ -74,6 +74,10 @@ const lastUsedColorsSelector = createSelector(
   }
 );
 
+const uiFontsSelector = state => {
+  return pathOr([], ["ui", "fonts"], state);
+};
+
 module.exports = {
   zoomSelector,
   scaleSelector,
@@ -82,5 +86,6 @@ module.exports = {
   colorTabSelector,
   getActiveBlockColors,
   rerenderIdSelector,
-  lastUsedColorsSelector
+  lastUsedColorsSelector,
+  uiFontsSelector
 };
