@@ -54,7 +54,7 @@
   top: 0;
   opacity: 0.7;
   background: #fff;
-  z-index: 502;
+  z-index: 1001;
 }
 .singlePageContainer.singlePageSelected {
   border: 1px solid red;

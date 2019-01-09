@@ -5,7 +5,8 @@ const {
   reduce,
   insertAll,
   merge,
-  without
+  without,
+  head
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -46,8 +47,14 @@ const addPages = (state, action) => {
   const { nrPagesToInsert, location } = action;
   let newIds = [];
   let newOrder = clone(pagesOrder);
+  const firstPage = newPages[head(pagesOrder)];
+  const firstPageWidth = firstPage["width"];
+  const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
-    const emptyPage = ProjectUtils.getEmptyPage();
+    const emptyPage = ProjectUtils.getEmptyPage({
+      width: firstPageWidth,
+      height: firstPageHeight
+    });
     const { id } = emptyPage;
     newPages[id] = emptyPage;
     newIds.push(id);

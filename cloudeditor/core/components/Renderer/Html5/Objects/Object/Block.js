@@ -170,7 +170,7 @@ class ObjectBlock extends React.Component {
     const {
       width,
       height,
-      angle,
+      rotateAngle,
       top,
       left,
       active,

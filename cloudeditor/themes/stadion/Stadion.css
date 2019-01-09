@@ -340,3 +340,29 @@
   font-style: normal;
   font-smooth: always;
 }
+.closeMenu {
+  position: absolute;
+  right: 32px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.closeMenu:hover {
+  opacity: 1;
+}
+.closeMenu:before,
+.closeMenu:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+.closeMenu:before {
+  transform: rotate(45deg);
+}
+.closeMenu:after {
+  transform: rotate(-45deg);
+}

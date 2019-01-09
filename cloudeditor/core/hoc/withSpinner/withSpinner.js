@@ -5,7 +5,7 @@ const { NamespacesConsumer } = require("react-i18next");
 const withSpinner = WrappedComponent => props => {
   if (props.loading) {
     return (
-      <NamespacesConsumer ns="hoc">
+      <NamespacesConsumer ns="fupa">
         {(t, { i18n, ready }) => (
           <div className="loader">
             <span className="spinnerText">{t("Loading...")}</span>

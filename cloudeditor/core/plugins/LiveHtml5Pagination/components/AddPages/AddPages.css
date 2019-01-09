@@ -20,7 +20,7 @@
   font-size: 20px;
   color: #58595b;
 }
-
+/* 
 .addPagesModal .closeMenu {
   position: absolute;
   right: 32px;
@@ -46,7 +46,7 @@
 }
 .addPagesModal .closeMenu:after {
   transform: rotate(-45deg);
-}
+} */
 
 .addPagesFooter {
   margin-top: 0;
