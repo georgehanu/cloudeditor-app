@@ -249,9 +249,6 @@ class ObjectBlock extends React.Component {
       tinyMceResizable = (
         <React.Fragment>
           <div className="ui-resizable-handle ui-resizable-se ui-icon" />
-          {/* <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-nw ui-icon" /> */}
         </React.Fragment>
       );
     }
