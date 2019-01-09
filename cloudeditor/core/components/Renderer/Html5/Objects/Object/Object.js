@@ -180,6 +180,8 @@ class ObjectBlock extends React.Component {
         tableContent={this.props.tableContent}
         height={this.props.height}
         width={this.props.width}
+        tableHeight={this.props.tableHeight}
+        tableWidth={this.props.tableWidth}
         onUpdateProps={this.props.onUpdatePropsHandler}
         zoomScale={this.props.zoomScale}
       />
@@ -224,7 +226,7 @@ class ObjectBlock extends React.Component {
       top: top + offsetTop,
       transform: "rotate(" + angle + "deg)",
       backgroundColor:
-        subType != "tinymce" ? "rgb(" + bgColor.htmlRGB + ")" : ""
+        subType !== "tinymceTable" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
 
     if (mirrored) {
@@ -234,8 +236,8 @@ class ObjectBlock extends React.Component {
       width: width + parseFloat(borderWidth),
       height: height + parseFloat(borderWidth),
       borderColor:
-        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
+        subType !== "tinymceTable" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+      borderWidth: subType !== "tinymceTable" ? parseFloat(borderWidth) : "",
       top: (-1 * parseFloat(borderWidth)) / 2,
       left: (-1 * parseFloat(borderWidth)) / 2
     };
@@ -247,9 +249,9 @@ class ObjectBlock extends React.Component {
       tinyMceResizable = (
         <React.Fragment>
           <div className="ui-resizable-handle ui-resizable-se ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
+          {/* <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
           <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
+          <div className="ui-resizable-handle ui-resizable-nw ui-icon" /> */}
         </React.Fragment>
       );
     }

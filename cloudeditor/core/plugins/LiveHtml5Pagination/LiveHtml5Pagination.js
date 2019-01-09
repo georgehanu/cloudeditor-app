@@ -143,7 +143,7 @@ class LiveHtml5Pagination extends React.Component {
             hoverId={page}
             selectedId={page}
             mode={this.state.size}
-            includeBoxes={0}
+            includeBoxes={1}
             useMagentic={0}
             switchPages={this.switchPages}
             highlightHoverPage={this.highlightHoverPage}

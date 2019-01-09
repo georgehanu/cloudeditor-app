@@ -12,14 +12,13 @@ const { compose } = require("redux");
 const emptyTable = getEmptyObject({
   type: "tinymceTable",
   subType: "tinymceTable",
-  width: 200,
-  height: 200,
-  left: 200,
-  top: 200
+  width: 100,
+  height: 100,
+  left: 50,
+  top: 50
 });
 
 const tableStyle = {
-  //width: "calc(100% - 4px)",
   width: "100%",
   borderSpacing: "0",
   color: "black"
@@ -27,7 +26,7 @@ const tableStyle = {
 
 const tbodyStyle = {
   fontFamily: "Arial",
-  fontSize: "12pt"
+  fontSize: "12px"
 };
 
 const withProductionHoc = (WrappedComponent, TableName) => props => {
@@ -38,7 +37,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
     handleClick = () => {
       let tableContent = document
         .getElementById(this.state.tabelId)
-        .innerHTML.replace(new RegExp("px", "g"), "pt");
+        .innerHTML.replace(new RegExp("pt", "g"), "px");
 
       const tableDimensions = document
         .getElementById(this.state.tabelId)
@@ -50,9 +49,10 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
         ...emptyTable,
         tableContent: tableContent,
         id: uuidv4(),
-        //width: tableDimensions.width + 4,
-        width,
-        height: tableDimensions.height
+        width: 100,
+        height: (tableDimensions.height * 100) / tableDimensions.width,
+        tableWidth: tableDimensions.width,
+        tableHeight: tableDimensions.height
       });
     };
     render() {
