@@ -12,7 +12,7 @@ const initialState = {
   loggedIn: false,
   userName: null,
   loading: false,
-  errorMessage: false
+  errorMessage: null
 };
 
 module.exports = handleActions(

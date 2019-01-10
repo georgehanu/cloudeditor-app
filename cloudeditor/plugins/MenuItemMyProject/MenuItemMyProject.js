@@ -16,6 +16,13 @@ class MenuItemMyProject extends React.Component {
       return {
         showLoginWnd: false
       };
+
+    if (nextProps.loggedIn === true) {
+      nextProps.onSetSubWndHandler(false);
+      return {
+        showLoginWnd: false
+      };
+    }
     return prevState;
   }
 
@@ -48,12 +55,14 @@ class MenuItemMyProject extends React.Component {
       );
     }
 
+    const showLoginWnd = this.state.showLoginWnd;
+
     return (
       <React.Fragment>
-        {this.state.showLoginWnd && (
+        {showLoginWnd && (
           <LoginWnd show={true} modalClosed={this.closeLoginWnd} />
         )}
-        {!this.state.showLoginWnd && (
+        {!showLoginWnd && (
           <div className="menuItemMyProjectContainer projectMenuItem">
             <div className="projectMenuItemHeader" />
             <div className="projectMenuItemContent">

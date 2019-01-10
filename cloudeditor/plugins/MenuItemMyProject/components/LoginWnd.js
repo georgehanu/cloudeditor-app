@@ -10,7 +10,8 @@ const { withNamespaces } = require("react-i18next");
 
 const {
   authLoadingSelector,
-  authErrorMessageSelector
+  authErrorMessageSelector,
+  authLoggedInSelector
 } = require("../../ProjectMenu/store/selectors");
 
 const {
@@ -72,6 +73,9 @@ class LoginWnd extends React.Component {
       this.state.invalidMessage !== null
         ? this.state.invalidMessage
         : this.props.errorMessage;
+
+    if (this.props.loggedIn) return null;
+
     return (
       <React.Fragment>
         <div className="loginContainer">
@@ -125,7 +129,8 @@ class LoginWnd extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: authLoadingSelector(state),
-    errorMessage: authErrorMessageSelector(state)
+    errorMessage: authErrorMessageSelector(state),
+    loggedIn: authLoggedInSelector(state)
   };
 };
 
