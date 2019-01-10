@@ -497,7 +497,6 @@ module.exports = handleActions(
       };
     },
     [PROJ_SAVE_SUCCESS]: (state, action) => {
-      console.log("action", action);
       return {
         ...state,
         save: {
@@ -506,7 +505,8 @@ module.exports = handleActions(
           errorMessage: "Project saved"
         },
         title: action.name,
-        description: action.description
+        description: action.description,
+        projectId: state.projectId !== null ? state.projectId : action.projectId
       };
     },
     [PROJ_SAVE_FAILED]: (state, action) => {
