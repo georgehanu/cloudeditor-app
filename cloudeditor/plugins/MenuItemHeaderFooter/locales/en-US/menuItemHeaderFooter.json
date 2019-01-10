@@ -19,5 +19,10 @@
   "yes": "Yes",
   "no": "No",
   "header": "Header",
-  "footer": "Footer"
+  "footer": "Footer",
+  "None": "None",
+  "Layout 1 Page": "Layout 1 Page",
+  "Layout 2 Pages": "Layout 2 Pages",
+  "Layout 3 Pages": "Layout 3 Pages",
+  "Layout 4 Pages": "Layout 4 Pages"
 }

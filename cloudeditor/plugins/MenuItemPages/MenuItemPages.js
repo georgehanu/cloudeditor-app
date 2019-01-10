@@ -89,8 +89,7 @@ module.exports = {
     ProjectMenu: {
       position: 2,
       priority: 1,
-      text: "Pages",
-      tooltip: { title: "Fupa", description: "Fupa.net" }
+      text: "Pages"
     }
   })
 };

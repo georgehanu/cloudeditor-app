@@ -146,21 +146,41 @@ class PageSelector extends React.Component {
 
   extend = () => {
     if (this.state.size === "Normal") {
-      this.props.addContainerClasses("PageSelector", ["PageSelectorExtended"]);
-      this.setState({ size: "Extended" });
+      this.setState({ size: "Extended" }, () => {
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["PageSelectorExtended"],
+          true
+        );
+      });
     } else {
-      this.props.addContainerClasses("PageSelector", ["PageSelectorNormal"]);
-      this.setState({ size: "Normal" });
+      this.setState({ size: "Normal" }, () => {
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["PageSelectorNormal"],
+          true
+        );
+      });
     }
   };
 
   minimize = () => {
     if (this.state.size === "Normal") {
-      this.props.addContainerClasses("PageSelector", ["PageSelectorMinimized"]);
-      this.setState({ size: "Minimized" });
+      this.setState({ size: "Minimized" }, () => {
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["PageSelectorMinimized"],
+          true
+        );
+      });
     } else {
-      this.props.addContainerClasses("PageSelector", ["PageSelectorNormal"]);
-      this.setState({ size: "Normal" });
+      this.setState({ size: "Normal" }, () => {
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["PageSelectorNormal"],
+          true
+        );
+      });
     }
   };
 
