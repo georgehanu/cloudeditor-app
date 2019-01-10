@@ -33,7 +33,15 @@ const {
   DELETE_PAGE,
 
   UPDATE_HEADERCONFIG_PROPS,
-  UPDATE_FOOTERCONFIG_PROPS
+  UPDATE_FOOTERCONFIG_PROPS,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -478,6 +486,47 @@ module.exports = handleActions(
     },
     [DELETE_PAGE]: (state, action) => {
       return deletePage(state, action.payload);
+    },
+    [PROJ_SAVE_START]: (state, action) => {
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          loading: true
+        }
+      };
+    },
+    [PROJ_SAVE_SUCCESS]: (state, action) => {
+      console.log("action", action);
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          loading: false,
+          errorMessage: "Project saved"
+        },
+        title: action.name,
+        description: action.description
+      };
+    },
+    [PROJ_SAVE_FAILED]: (state, action) => {
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          loading: false,
+          errorMessage: action.payload
+        }
+      };
+    },
+    [PROJ_SAVE_CLEAR_MESSAGE]: (state, action) => {
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          errorMessage: null
+        }
+      };
     }
   },
   initialState

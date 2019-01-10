@@ -108,14 +108,14 @@ class LoginWnd extends React.Component {
                 />
               </div>
               <div className="loginWndButtons">
-                <button onClick={this.onSignInButton}>
+                <button onClick={this.props.modalClosed}>
                   {this.props.t("Register")}
                 </button>
                 <button onClick={this.onLoginButton}>
                   {this.props.t("Login")}
                 </button>
                 <button onClick={this.props.modalClosed}>
-                  {this.props.t("Cancel")}
+                  {this.props.t("Close")}
                 </button>
               </div>
             </div>
