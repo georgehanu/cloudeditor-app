@@ -71,8 +71,9 @@ class LoadWnd extends React.Component {
 
           <SweetAlert
             show={this.state.showAlert}
-            title=""
-            html={this.props.t("Are you sure you want to delete")}
+            type="warning"
+            title={this.props.t("Warning")}
+            text={this.props.t("Are you sure you want to delete the project ?")}
             showCancelButton={true}
             onConfirm={() => this.confirmtSweetAlert()}
             onCancel={() => this.setState({ showAlert: false })}
