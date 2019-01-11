@@ -23,6 +23,7 @@ module.exports = (
     variables: require("../stores/reducers/variables"),
     selection: require("../stores/reducers/selection"),
     productInformation: require("../stores/reducers/productinformation"),
+    auth: require("../../plugins/ProjectMenu/store/reducers"),
     undoHistory: undoHistoryReducer
   });
 

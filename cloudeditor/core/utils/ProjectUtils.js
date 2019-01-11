@@ -311,7 +311,7 @@ const getProjectTemplate = cfg => {
       description: "Project description",
       projectId: null,
       save: { loading: false, errorMessage: null },
-      load: { loading: false, errorMessage: null },
+      load: { loading: false, errorMessage: null, loadedProjects: [] },
       pages: {},
       activePage: "page_0",
       pagesOrder: [],
@@ -730,6 +730,17 @@ const getEmptyUI = cfg => {
     cfg || {}
   );
 };
+const getEmptyAuth = cfg => {
+  return mergeDeepRight(
+    {
+      loggedIn: false,
+      userName: null,
+      loading: false,
+      errorMessage: null
+    },
+    cfg || {}
+  );
+};
 const getEmptyAssets = cfg => {
   return mergeDeepRight(
     {
@@ -797,7 +808,8 @@ const ProjectUtils = {
   getEmptySelection,
   getFontMetricTemplate,
   getEmptyProductInformation,
-  getEmptyAssets
+  getEmptyAssets,
+  getEmptyAuth
 };
 
 module.exports = ProjectUtils;

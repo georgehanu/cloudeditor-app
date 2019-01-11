@@ -272,3 +272,7 @@
 .pageSelectorNormal .html5LivePaginationContainer .paginationPage {
   height: 82px;
 }
+
+.pageHeaderTextTitle {
+  cursor: pointer;
+}

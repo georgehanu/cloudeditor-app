@@ -18,6 +18,8 @@ const {
 
 const SAVE_PROJ =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/save";
+const LOAD_PROJ =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/getAllProjects";
 
 const dispachEvent = () => {
   setTimeout(() => {
@@ -58,17 +60,18 @@ module.exports = {
             .post(SAVE_PROJ, serverData)
             .then(resp => resp.data)
             .then(data => {
-              if (data.succe) {
+              if (data.success) {
                 obs.next({
                   type: PROJ_SAVE_SUCCESS,
                   name: action$.payload.name,
                   description: action$.payload.description,
-                  projectId: data.projectId
+                  projectId: data.projectId,
+                  message: data.message
                 });
               } else {
                 obs.next({
                   type: PROJ_SAVE_FAILED,
-                  payload: data.error_message
+                  payload: data.message
                 });
               }
               obs.complete();
@@ -76,6 +79,44 @@ module.exports = {
             .catch(error => {
               obs.next({
                 type: PROJ_SAVE_FAILED,
+                payload: "Error message: " + error.message
+              });
+              obs.complete();
+            });
+        })
+      )
+    ),
+
+  onEpicLoad: (action$, state$) =>
+    action$.pipe(
+      ofType(PROJ_LOAD_START),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          let serverData = new FormData();
+          serverData.append("userId", action$.payload.userId);
+          serverData.append("productId", action$.payload.productId);
+          serverData.append("templateId", action$.payload.templateId);
+
+          axios
+            .post(LOAD_PROJ, serverData)
+            .then(resp => resp.data)
+            .then(data => {
+              if (data.success) {
+                obs.next({
+                  type: PROJ_LOAD_SUCCESS,
+                  data: data.projects
+                });
+              } else {
+                obs.next({
+                  type: PROJ_LOAD_FAILED,
+                  payload: data.message
+                });
+              }
+              obs.complete();
+            })
+            .catch(error => {
+              obs.next({
+                type: PROJ_LOAD_FAILED,
                 payload: "Error message: " + error.message
               });
               obs.complete();

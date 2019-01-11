@@ -357,6 +357,14 @@ addObjectMiddle = (state, action) => {
   };
 };
 
+handleLoad = (state, loadData) => {
+  return { ...state, load: { ...state.load, ...loadData } };
+};
+
+handleSave = (state, saveData) => {
+  return { ...state, save: { ...state.save, ...saveData } };
+};
+
 module.exports = handleActions(
   {
     [CHANGE_PROJECT_TITLE]: (state, action) => {
@@ -534,13 +542,9 @@ module.exports = handleActions(
       return restorePages(state, action.payload);
     },
     [PROJ_SAVE_START]: (state, action) => {
-      return {
-        ...state,
-        save: {
-          ...state.save,
-          loading: true
-        }
-      };
+      return handleSave(state, {
+        loading: true
+      });
     },
     [PROJ_SAVE_SUCCESS]: (state, action) => {
       return {
@@ -548,7 +552,7 @@ module.exports = handleActions(
         save: {
           ...state.save,
           loading: false,
-          errorMessage: "Project saved"
+          errorMessage: action.message
         },
         title: action.name,
         description: action.description,
@@ -556,23 +560,32 @@ module.exports = handleActions(
       };
     },
     [PROJ_SAVE_FAILED]: (state, action) => {
-      return {
-        ...state,
-        save: {
-          ...state.save,
-          loading: false,
-          errorMessage: action.payload
-        }
-      };
+      return handleSave(state, {
+        loading: false,
+        errorMessage: action.payload
+      });
     },
     [PROJ_SAVE_CLEAR_MESSAGE]: (state, action) => {
-      return {
-        ...state,
-        save: {
-          ...state.save,
-          errorMessage: null
-        }
-      };
+      return handleSave(state, { errorMessage: null });
+    },
+    [PROJ_LOAD_START]: (state, action) => {
+      return handleLoad(state, { loading: true });
+    },
+    [PROJ_LOAD_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loading: false,
+        errorMessage: null,
+        loadedProjects: action.data
+      });
+    },
+    [PROJ_LOAD_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loading: false,
+        errorMessage: action.payload
+      });
+    },
+    [PROJ_LOAD_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessage: null });
     }
   },
   initialState

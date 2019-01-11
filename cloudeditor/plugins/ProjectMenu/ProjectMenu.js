@@ -26,6 +26,5 @@ const ProjectHeaderPlugin = connect(
 
 module.exports = {
   ProjectMenu: assign(ProjectHeaderPlugin),
-  reducers: { auth: require("./store/reducers") },
   epics: require("./store/epics")
 };

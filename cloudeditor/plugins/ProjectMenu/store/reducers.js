@@ -7,13 +7,12 @@ const {
   AUTH_SIGNIN_CLEAR_MESSAGE
 } = require("./actionTypes");
 
-const initialState = {
-  userId: null,
-  loggedIn: false,
-  userName: null,
-  loading: false,
-  errorMessage: null
-};
+const ProjectUtils = require("../../../core/utils/ProjectUtils");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+
+const config = ConfigUtils.getDefaults();
+
+const initialState = ProjectUtils.getEmptyAuth(config.auth);
 
 module.exports = handleActions(
   {
