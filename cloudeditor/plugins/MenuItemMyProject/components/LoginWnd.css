@@ -66,7 +66,7 @@
   -o-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
   padding: 0px;
-  width: 600px;
+  width: 530px;
   -webkit-box-shadow: black 0px 0px 14px;
   box-shadow: black 0px 0px 14px;
   margin-top: 5%;
@@ -92,7 +92,8 @@
   margin-bottom: 5px;
 }
 
-.loginWnd .inputLabelContent input {
+.loginWnd .inputLabelContent input,
+.loginWnd .inputLabelContent textarea {
   padding: 8px 15px;
   line-height: 20px;
   border: 0;
@@ -107,6 +108,7 @@
   position: relative;
   min-width: 250px;
   outline: none;
+  width: 100%;
 }
 
 .loginWnd .loginWndButtons {
@@ -136,8 +138,8 @@
   border-radius: 0px;
   /* float: left; */
   outline: none;
-  margin-left: 10px;
-  margin-right: 12px;
+  margin-left: 11px;
+  margin-right: 11px;
 }
 
 .loginWnd .titleMenu {
@@ -171,4 +173,16 @@
 
 .loginWnd .loader .spinnerText {
   display: none;
+}
+
+.loginWnd .closeMenu {
+  right: 20px;
+}
+
+.loginWnd.saveWnd {
+  height: 350px;
+}
+
+.textareaLabelContent textarea {
+  resize: none;
 }

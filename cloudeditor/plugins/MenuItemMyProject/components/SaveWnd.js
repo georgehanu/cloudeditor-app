@@ -2,6 +2,7 @@ const React = require("react");
 const HeaderWnd = require("./HeaderWnd");
 const { connect } = require("react-redux");
 const Input = require("./Input");
+const Textarea = require("./Textarea");
 const Backdrop = require("../../../core/components/Backdrop/Backdrop");
 const InvalidForm = require("./InvalidForm");
 
@@ -78,7 +79,7 @@ class SaveWnd extends React.Component {
       <React.Fragment>
         <div className="loginContainer">
           <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
-          <div className="loginWnd">
+          <div className="loginWnd saveWnd">
             <div className="loginWndContainer">
               <HeaderWnd
                 modalClosed={this.props.modalClosed}
@@ -91,7 +92,7 @@ class SaveWnd extends React.Component {
                   text={this.state.projectName}
                   name="projectName"
                 />
-                <Input
+                <Textarea
                   label={this.props.t("Project description")}
                   onInputChange={this.onInputChange}
                   text={this.state.projectDescription}
