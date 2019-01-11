@@ -5,12 +5,14 @@ const { authLoggedInSelector } = require("../ProjectMenu/store/selectors");
 const { connect } = require("react-redux");
 const LoginWnd = require("./components/LoginWnd");
 const SaveWnd = require("./components/SaveWnd");
+const LoadWnd = require("./components/LoadWnd");
 
 require("./MenuItemMyProject.css");
 class MenuItemMyProject extends React.Component {
   state = {
     showLoginWnd: false,
     showSaveWnd: false,
+    showLoadWnd: false,
     loginMode: false
   };
 
@@ -19,7 +21,8 @@ class MenuItemMyProject extends React.Component {
       return {
         ...prevState,
         showLoginWnd: false,
-        showSaveWnd: false
+        showSaveWnd: false,
+        showLoadWnd: false
       };
 
     if (nextProps.loggedIn === true || prevState.loginMode === false) {
@@ -38,8 +41,12 @@ class MenuItemMyProject extends React.Component {
     this.props.onSetSubWndHandler(true);
   };
 
-  closeLoginWnd = () => {
-    this.setState({ showLoginWnd: false });
+  closeWnd = () => {
+    this.setState({
+      showLoginWnd: false,
+      showSaveWnd: false,
+      showLoadWnd: false
+    });
     this.props.onSetSubWndHandler(false);
   };
 
@@ -48,9 +55,9 @@ class MenuItemMyProject extends React.Component {
     this.props.onSetSubWndHandler(true);
   };
 
-  closeSaveWnd = () => {
-    this.setState({ showSaveWnd: false });
-    this.props.onSetSubWndHandler(false);
+  showLoadWnd = () => {
+    this.setState({ showLoadWnd: true });
+    this.props.onSetSubWndHandler(true);
   };
 
   render() {
@@ -66,7 +73,9 @@ class MenuItemMyProject extends React.Component {
           <li className="submenuItem" onClick={this.showSaveWnd}>
             {this.props.t("Save")}
           </li>
-          <li className="submenuItem">{this.props.t("Load")}</li>
+          <li className="submenuItem" onClick={this.showLoadWnd}>
+            {this.props.t("Load")}
+          </li>
           <li className="submenuItem">
             {this.props.t("Send draft by e-mail")}
           </li>
@@ -75,15 +84,20 @@ class MenuItemMyProject extends React.Component {
     }
 
     const showSubmenu =
-      this.state.showLoginWnd === false && this.state.showSaveWnd === false;
+      this.state.showLoginWnd === false &&
+      this.state.showSaveWnd === false &&
+      this.state.showLoadWnd === false;
 
     return (
       <React.Fragment>
         {this.state.showLoginWnd && (
-          <LoginWnd show={true} modalClosed={this.closeLoginWnd} />
+          <LoginWnd show={true} modalClosed={this.closeWnd} />
         )}
         {this.state.showSaveWnd && (
-          <SaveWnd show={true} modalClosed={this.closeSaveWnd} />
+          <SaveWnd show={true} modalClosed={this.closeWnd} />
+        )}
+        {this.state.showLoadWnd && (
+          <LoadWnd show={true} modalClosed={this.closeWnd} />
         )}
         {showSubmenu && (
           <div className="menuItemMyProjectContainer projectMenuItem">
@@ -100,7 +114,7 @@ class MenuItemMyProject extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: authLoggedInSelector(state)
+    loggedIn: true //authLoggedInSelector(state)
   };
 };
 

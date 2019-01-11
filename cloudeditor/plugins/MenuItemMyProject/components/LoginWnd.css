@@ -118,7 +118,8 @@
   position: absolute;
 }
 
-.loginWnd .loginWndButtons button {
+.loginWnd .loginWndButtons button,
+.loadWnd .loadProjectsContainer button {
   font-family: "PORTO", Arial, Helvetica, sans-serif;
   font-size: 13px;
   text-decoration: none;
@@ -140,6 +141,7 @@
   outline: none;
   margin-left: 11px;
   margin-right: 11px;
+  cursor: pointer;
 }
 
 .loginWnd .titleMenu {
@@ -185,4 +187,85 @@
 
 .textareaLabelContent textarea {
   resize: none;
+}
+
+.loginWnd.loadWnd {
+  height: 500px;
+  width: 1000px;
+}
+
+.loadProjectsContainer {
+  padding-top: 10px;
+  height: 370px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.loadProjectsContainer ul {
+  list-style: none;
+  /*border: 1px solid #dcdee1;*/
+  padding-left: 0px;
+}
+
+.loadProjectsContainer li div {
+  display: inline-block;
+  height: auto;
+  padding: 5px;
+}
+
+.loadProjectsContainer li {
+  border: 1px solid #dcdee1;
+  border-bottom: none;
+  display: flex;
+}
+
+.loadProjectsContainer .projIndex {
+  text-align: center;
+  width: 5%;
+  border-right: 1px solid #dcdee1;
+}
+
+.loadProjectsContainer .projName {
+  text-align: left;
+  width: 20%;
+  border-right: 1px solid #dcdee1;
+}
+.loadProjectsContainer .projDescription {
+  text-align: left;
+  width: 30%;
+  border-right: 1px solid #dcdee1;
+}
+.loadProjectsContainer .projDate {
+  width: 9%;
+  border-right: 1px solid #dcdee1;
+  text-align: center;
+}
+.loadProjectsContainer .projLoad {
+  width: 18%;
+  border-right: 1px solid #dcdee1;
+}
+.loadProjectsContainer .projDelete {
+  width: 18%;
+  border-right: 1px solid #dcdee1;
+}
+
+.loadWnd .loadProjectsContainer .projLoad button,
+.loadWnd .loadProjectsContainer .projDelete button {
+  margin: 0px;
+}
+
+.loadProjectsContainer li:last-child {
+  border-bottom: 1px solid #dcdee1;
+}
+
+.loadWnd.loginWnd .loader {
+  left: 400px;
+}
+
+.loadWnd.loginWnd .loginWndButtons {
+  bottom: 20px;
+}
+
+.loadProjectsContainer {
+  overflow: auto;
 }

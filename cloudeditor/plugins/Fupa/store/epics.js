@@ -51,7 +51,7 @@ module.exports = {
             .get("/teams", {
               params: {
                 club: payload,
-                additionalFields: "competition,currentRank"
+                additionalFields: "competition"
               }
             })
             .then(res => res.data)

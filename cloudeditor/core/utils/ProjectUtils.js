@@ -311,7 +311,7 @@ const getProjectTemplate = cfg => {
       description: "Project description",
       projectId: null,
       save: { loading: false, errorMessage: null },
-      load: { loading: false, errorMessage: null },
+      load: { loading: false, errorMessage: null, loadedProjects: [] },
       pages: {},
       activePage: "page_0",
       pagesOrder: [],

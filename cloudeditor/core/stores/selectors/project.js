@@ -323,6 +323,9 @@ const projLoadLoadingSelector = state =>
 const projLoadErrorMessageSelector = state =>
   pathOr(null, ["project", "load", "errorMessage"], state);
 
+const projLoadLoadedProjectsSelector = state =>
+  pathOr(null, ["project", "load", "loadedProjects"], state);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -359,5 +362,6 @@ module.exports = {
   projSaveLoadingSelector,
   projSaveErrorMessageSelector,
   projLoadLoadingSelector,
-  projLoadErrorMessageSelector
+  projLoadErrorMessageSelector,
+  projLoadLoadedProjectsSelector
 };
