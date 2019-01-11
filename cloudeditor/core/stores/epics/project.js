@@ -91,7 +91,6 @@ module.exports = {
             .post(LOAD_PROJ, serverData)
             .then(resp => resp.data)
             .then(data => {
-              console.log(data, "DATA");
               if (data.status !== "failure") {
                 obs.next({
                   type: PROJ_LOAD_SUCCESS,
