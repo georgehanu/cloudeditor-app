@@ -114,7 +114,7 @@ class MenuItemMyProject extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: true //authLoggedInSelector(state)
+    loggedIn: authLoggedInSelector(state)
   };
 };
 
