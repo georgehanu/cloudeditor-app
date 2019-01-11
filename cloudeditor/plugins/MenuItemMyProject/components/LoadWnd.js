@@ -4,6 +4,8 @@ const { connect } = require("react-redux");
 const Backdrop = require("../../../core/components/Backdrop/Backdrop");
 const { withNamespaces } = require("react-i18next");
 const LoadProjects = require("./LoadProjects");
+const SweetAlert = require("sweetalert-react").default;
+require("sweetalert/dist/sweetalert.css");
 
 const {
   projProjectIdSelector,
@@ -19,7 +21,9 @@ const {
 const { authUserIdSelector } = require("../../ProjectMenu/store/selectors");
 
 class LoadWnd extends React.Component {
-  state = {};
+  state = {
+    showAlert: false
+  };
 
   componentDidMount() {
     this.loadProjects();
@@ -33,7 +37,11 @@ class LoadWnd extends React.Component {
 
   loadProjectHandler = projectId => {};
 
-  deleteProjectHandler = projectId => {};
+  deleteProjectHandler = projectId => {
+    this.setState({ showAlert: true });
+  };
+
+  confirmtSweetAlert() {}
 
   render() {
     return (
@@ -60,6 +68,15 @@ class LoadWnd extends React.Component {
               </div>
             </div>
           </div>
+
+          <SweetAlert
+            show={this.state.showAlert}
+            title=""
+            html={this.props.t("Are you sure you want to delete")}
+            showCancelButton={true}
+            onConfirm={() => this.confirmtSweetAlert()}
+            onCancel={() => this.setState({ showAlert: false })}
+          />
         </div>
       </React.Fragment>
     );

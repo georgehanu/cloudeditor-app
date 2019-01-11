@@ -268,4 +268,9 @@
 
 .loadProjectsContainer {
   overflow: auto;
+  color: #777;
+}
+
+body.swal2-height-auto.swal2-shown {
+  height: inherit !important;
 }
