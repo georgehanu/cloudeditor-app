@@ -18,19 +18,19 @@ class ProjectHeader extends React.Component {
     preview: false
   };
   showPrintPreview = () => {
-    this.props.addContainerClasses("PrintPreview", [
-      this.state.preview === false ? "showPrintPreview" : ""
-    ]);
-
-    if (this.state.preview === false) {
+    const oldPreview = this.state.preview;
+    if (oldPreview === false) {
       this.props.previewLoadPage(0);
     } else {
       this.props.previewDisableMode();
     }
 
     this.setState({ preview: !this.state.preview }, () => {
-      const event = new Event("resizePage");
-      window.dispatchEvent(event);
+      this.props.addContainerClasses(
+        "PrintPreview",
+        [oldPreview === false ? "showPrintPreview" : ""],
+        true
+      );
     });
   };
 

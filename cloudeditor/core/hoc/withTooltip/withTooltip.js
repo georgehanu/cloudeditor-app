@@ -44,12 +44,16 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
               place={position}
               afterShow={() => {
                 if (props.tooltip.imageSrc) {
-                  props.addContainerClasses("Tooltip", ["containerMaxZindex"]);
+                  props.addContainerClasses(
+                    "Tooltip",
+                    ["containerMaxZindex"],
+                    false
+                  );
                 }
               }}
               afterHide={() => {
                 if (props.tooltip.imageSrc) {
-                  props.addContainerClasses("Tooltip", []);
+                  props.addContainerClasses("Tooltip", [], false);
                 }
               }}
             >

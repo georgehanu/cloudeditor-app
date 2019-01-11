@@ -23,7 +23,16 @@ const {
   UPDATE_HEADERCONFIG_PROPS,
   CHANGE_MODE_HEADER_FOOTER,
   UPDATE_FOOTERCONFIG_PROPS,
-  RESTORE_PAGES
+  RESTORE_PAGES,
+  UPDATE_FOOTERCONFIG_PROPS,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -52,7 +61,17 @@ const {
   updateHeaderconfigProps,
   changeModeHeaderFooter,
   updateFooterconfigProps,
-  restorePages
+  restorePages,
+  updateFooterconfigProps,
+
+  projSaveStart,
+  projSaveSuccess,
+  projSaveFailed,
+  projSaveClearMessage,
+  projLoadStart,
+  projLoadSuccess,
+  projLoadFailed,
+  projLoadClearMessage
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -77,9 +96,21 @@ const {
   ADD_OBJECT_MIDDLE,
   DELETE_PAGE,
   UPDATE_HEADERCONFIG_PROPS,
+<<<<<<< HEAD
   CHANGE_MODE_HEADER_FOOTER,
   UPDATE_FOOTERCONFIG_PROPS,
   RESTORE_PAGES
+=======
+  UPDATE_FOOTERCONFIG_PROPS,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE
+>>>>>>> origin/ig-mas
 );
 
 module.exports = {
@@ -105,7 +136,18 @@ module.exports = {
   deletePage,
   updateHeaderconfigProps,
   updateFooterconfigProps,
+<<<<<<< HEAD
   changeModeHeaderFooter,
   updateObjectPropsNoUndoRedo,
   restorePages
+=======
+  projSaveStart,
+  projSaveSuccess,
+  projSaveFailed,
+  projSaveClearMessage,
+  projLoadStart,
+  projLoadSuccess,
+  projLoadFailed,
+  projLoadClearMessage
+>>>>>>> origin/ig-mas
 };

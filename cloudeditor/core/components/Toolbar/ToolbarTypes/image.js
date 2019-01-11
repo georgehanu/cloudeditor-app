@@ -49,7 +49,7 @@ const image = {
     }
   ],
   style: {
-    backgroundColor: "green",
+    //backgroundColor: "green",
     marginTop: "0px"
   }
 };

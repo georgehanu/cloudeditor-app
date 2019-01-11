@@ -305,6 +305,24 @@ const selectedObjectSelector = createSelector(
   }
 );
 
+const projDescriptionSelector = state =>
+  pathOr("Project description", ["project", "description"], state);
+
+const projProjectIdSelector = state =>
+  pathOr(null, ["project", "projectId"], state);
+
+const projSaveLoadingSelector = state =>
+  pathOr(false, ["project", "save", "loading"], state);
+
+const projSaveErrorMessageSelector = state =>
+  pathOr(null, ["project", "save", "errorMessage"], state);
+
+const projLoadLoadingSelector = state =>
+  pathOr(false, ["project", "load", "loading"], state);
+
+const projLoadErrorMessageSelector = state =>
+  pathOr(null, ["project", "load", "errorMessage"], state);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -335,5 +353,11 @@ module.exports = {
   objectsDefaultConfigSelector,
   titleSelector,
   blockActionsPagesConfigSelector,
-  deletePagePagesConfigSelector
+  deletePagePagesConfigSelector,
+  projDescriptionSelector,
+  projProjectIdSelector,
+  projSaveLoadingSelector,
+  projSaveErrorMessageSelector,
+  projLoadLoadingSelector,
+  projLoadErrorMessageSelector
 };

@@ -308,6 +308,10 @@ const getProjectTemplate = cfg => {
   const project = mergeDeepRight(
     {
       title: "Empty Project",
+      description: "Project description",
+      projectId: null,
+      save: { loading: false, errorMessage: null },
+      load: { loading: false, errorMessage: null },
       pages: {},
       activePage: "page_0",
       pagesOrder: [],

@@ -1,5 +1,14 @@
 {
   "Save": "Save",
   "Load": "Load",
-  "Send draft by e-mail": "Send draft by e-mail"
+  "Send draft by e-mail": "Send draft by e-mail",
+  "Login": "Login",
+  "Email": "Email",
+  "Password": "Password",
+  "Register": "Register",
+  "Cancel": "Cancel",
+  "Close": "Close",
+  "Please fill the password field": "Please fill the password field",
+  "Please fill the email field": "Please fill the email field",
+  "Invalid email field": "Invalid email field"
 }

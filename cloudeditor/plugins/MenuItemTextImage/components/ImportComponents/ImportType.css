@@ -323,3 +323,13 @@ input.importTextItemRadio[type="radio"]:checked + label:before {
   text-align: center;
   margin-top: 20px;
 }
+
+.importBackdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 502;
+  background-color: rgba(0, 0, 0, 0.5);
+}

@@ -16,7 +16,7 @@ class HelperLines extends React.Component {
         "None"
       ],
 
-      active: "1 Page",
+      active: "Layout 1 Page",
       open: false
     }
   };

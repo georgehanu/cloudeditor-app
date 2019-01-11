@@ -88,7 +88,7 @@ const ZoomPlugin = connect(
 module.exports = {
   Zoom: assign(ZoomPlugin, {
     SideBar: {
-      position: 5,
+      position: 12,
       priority: 1,
       text: "zoom In",
       icon: "printqicon-zoom_in",
