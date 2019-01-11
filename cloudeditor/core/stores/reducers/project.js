@@ -17,6 +17,7 @@ const {
   REMOVE_ACTION_SELECTION,
   UPDATE_SELECTION_OBJECTS_COORDS,
   UPDATE_OBJECT_PROPS,
+  UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
   UPDATE_ACTIVE_SELECTION_PROPS,
   UPDATE_LAYER_PROP,
   DUPLICATE_OBJ,
@@ -33,7 +34,9 @@ const {
   DELETE_PAGE,
 
   UPDATE_HEADERCONFIG_PROPS,
-  UPDATE_FOOTERCONFIG_PROPS
+  CHANGE_MODE_HEADER_FOOTER,
+  UPDATE_FOOTERCONFIG_PROPS,
+  RESTORE_PAGES
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -82,6 +85,17 @@ const addPages = (state, action) => {
     pagesOrder: newOrder
   };
 };
+
+const restorePages = (state, action) => {
+  return {
+    ...state,
+    pages: {
+      ...action.pages
+    },
+    pagesOrder: [...action.pagesOrder],
+    activePage: action.activePage
+  };
+};
 const deletePage = (state, action) => {
   const { page_id } = action;
   const { pages, pagesOrder } = state;
@@ -101,7 +115,11 @@ const changeProjectTitle = (state, action) => {
 };
 
 const changePagesOrder = (state, action) => {
-  return { ...state, pagesOrder: action.pages, activePage: action.page_id };
+  return {
+    ...state,
+    pagesOrder: [...action.pages],
+    activePage: action.page_id
+  };
 };
 
 const addObject = (state, action) => {
@@ -143,7 +161,7 @@ const addTable = (state, action) => {
 const changePage = (state, payload) => {
   return {
     ...state,
-    activePage: payload.page_id
+    ["activePage"]: payload.page_id
   };
 };
 const changeRandomPage = (state, payload) => {
@@ -199,6 +217,25 @@ const updateHeaderConfigProps = (state, payload) => {
         ...state.configs.document,
         header: {
           ...state.configs.document.header,
+          [payload.prop]: payload.value
+        }
+      }
+    }
+  };
+};
+const updateHeaderFooterConfigProps = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        header: {
+          ...state.configs.document.header,
+          [payload.prop]: payload.value
+        },
+        footer: {
+          ...state.configs.document.footer,
           [payload.prop]: payload.value
         }
       }
@@ -350,8 +387,14 @@ module.exports = handleActions(
     [UPDATE_OBJECT_PROPS]: (state, action) => {
       return updateObjectProps(state, action.payload);
     },
+    [UPDATE_OBJECT_PROPS_NO_UNDO_REDO]: (state, action) => {
+      return updateObjectProps(state, action.payload);
+    },
     [UPDATE_HEADERCONFIG_PROPS]: (state, action) => {
       return updateHeaderConfigProps(state, action.payload);
+    },
+    [CHANGE_MODE_HEADER_FOOTER]: (state, action) => {
+      return updateHeaderFooterConfigProps(state, action.payload);
     },
     [UPDATE_FOOTERCONFIG_PROPS]: (state, action) => {
       return updateFooterConfigProps(state, action.payload);
@@ -478,6 +521,9 @@ module.exports = handleActions(
     },
     [DELETE_PAGE]: (state, action) => {
       return deletePage(state, action.payload);
+    },
+    [RESTORE_PAGES]: (state, action) => {
+      return restorePages(state, action.payload);
     }
   },
   initialState

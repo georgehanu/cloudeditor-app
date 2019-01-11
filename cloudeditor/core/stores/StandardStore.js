@@ -2,6 +2,7 @@ const { combineReducers, combineEpics } = require("../utils/PluginsUtils");
 const { createDebugStore } = require("../utils/DebugUtils");
 const projectEpics = require("../stores/epics/project");
 const assetsEpics = require("../stores/epics/assets");
+const { undoHistoryReducer } = require("redux-undo-redo");
 
 const standardEpics = {
   ...projectEpics,
@@ -20,7 +21,9 @@ module.exports = (
     ui: require("../stores/reducers/ui"),
     assets: require("../stores/reducers/assets"),
     variables: require("../stores/reducers/variables"),
-    selection: require("../stores/reducers/selection")
+    selection: require("../stores/reducers/selection"),
+    productInformation: require("../stores/reducers/productinformation"),
+    undoHistory: undoHistoryReducer
   });
 
   const rootEpic = combineEpics(plugins, { ...appEpics, ...standardEpics });

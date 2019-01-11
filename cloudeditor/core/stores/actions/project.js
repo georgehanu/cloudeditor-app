@@ -7,6 +7,7 @@ const {
   REMOVE_ACTION_SELECTION,
   UPDATE_SELECTION_OBJECTS_COORDS,
   UPDATE_OBJECT_PROPS,
+  UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
   CHANGE_PAGE,
   CHANGE_GROUPS,
   UPDATE_CROP_PARAMS,
@@ -19,9 +20,10 @@ const {
   DELETE_OBJ,
   ADD_OBJECT_MIDDLE,
   DELETE_PAGE,
-
   UPDATE_HEADERCONFIG_PROPS,
-  UPDATE_FOOTERCONFIG_PROPS
+  CHANGE_MODE_HEADER_FOOTER,
+  UPDATE_FOOTERCONFIG_PROPS,
+  RESTORE_PAGES
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -34,6 +36,7 @@ const {
   removeActionSelection,
   updateSelectionObjectsCoords,
   updateObjectProps,
+  updateObjectPropsNoUndoRedo,
   changePage,
   updateCropParams,
   changeGroups,
@@ -46,9 +49,10 @@ const {
   deleteObj,
   addObjectMiddle,
   deletePage,
-
   updateHeaderconfigProps,
-  updateFooterconfigProps
+  changeModeHeaderFooter,
+  updateFooterconfigProps,
+  restorePages
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -58,6 +62,8 @@ const {
   REMOVE_ACTION_SELECTION,
   UPDATE_SELECTION_OBJECTS_COORDS,
   UPDATE_OBJECT_PROPS,
+  UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
+
   CHANGE_PAGE,
   UPDATE_CROP_PARAMS,
   CHANGE_GROUPS,
@@ -70,9 +76,10 @@ const {
   DELETE_OBJ,
   ADD_OBJECT_MIDDLE,
   DELETE_PAGE,
-
   UPDATE_HEADERCONFIG_PROPS,
-  UPDATE_FOOTERCONFIG_PROPS
+  CHANGE_MODE_HEADER_FOOTER,
+  UPDATE_FOOTERCONFIG_PROPS,
+  RESTORE_PAGES
 );
 
 module.exports = {
@@ -97,5 +104,8 @@ module.exports = {
   addObjectMiddle,
   deletePage,
   updateHeaderconfigProps,
-  updateFooterconfigProps
+  updateFooterconfigProps,
+  changeModeHeaderFooter,
+  updateObjectPropsNoUndoRedo,
+  restorePages
 };

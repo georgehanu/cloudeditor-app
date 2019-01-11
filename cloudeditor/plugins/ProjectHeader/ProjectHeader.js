@@ -5,6 +5,9 @@ const assign = require("object-assign");
 
 const { titleSelector } = require("../../core/stores/selectors/project");
 const {
+  getProductNameSelector
+} = require("../../core/stores/selectors/productinformation");
+const {
   previewLoadPage,
   previewDisableMode
 } = require("../PrintPreview/store/actions");
@@ -58,7 +61,7 @@ class ProjectHeader extends React.Component {
               25 {this.props.t("pieces")} 48.92 €
             </div>
             <div className="projectRrightDescription">
-              Stadionzeitun DIN A5, 16 {this.props.t("pages")}
+              {this.props.productName}, 16 {this.props.t("pages")}
             </div>
           </div>
           <div className="projectRightAddContainer">
@@ -74,7 +77,8 @@ class ProjectHeader extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    projectTitle: titleSelector(state)
+    projectTitle: titleSelector(state),
+    productName: getProductNameSelector(state)
   };
 };
 

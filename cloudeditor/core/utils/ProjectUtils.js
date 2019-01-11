@@ -726,6 +726,38 @@ const getEmptyUI = cfg => {
     cfg || {}
   );
 };
+const getEmptyAssets = cfg => {
+  return mergeDeepRight(
+    {
+      layout: {
+        items: []
+      },
+      pdf: {
+        loading: false,
+        loadingFiles: 0,
+        uploadedFiles: []
+      },
+      image: {
+        loading: false,
+        loadingFiles: 0,
+        uploadedFiles: []
+      }
+    },
+    cfg || {}
+  );
+};
+
+const getEmptyProductInformation = cfg => {
+  return mergeDeepRight(
+    {
+      name: "",
+      productId: null,
+      qty: 1,
+      productOptions: {}
+    },
+    cfg || {}
+  );
+};
 
 const getRandomUI = cfg => {
   const ui = getEmptyUI(cfg);
@@ -759,7 +791,9 @@ const ProjectUtils = {
   getEmptyColor,
   getEmptyFont,
   getEmptySelection,
-  getFontMetricTemplate
+  getFontMetricTemplate,
+  getEmptyProductInformation,
+  getEmptyAssets
 };
 
 module.exports = ProjectUtils;

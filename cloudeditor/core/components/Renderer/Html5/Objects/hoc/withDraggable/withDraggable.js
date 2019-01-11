@@ -13,7 +13,7 @@ const withDraggable = WrappedComponent => {
       this.$el = null; //jquery Element
       this.enableUI = false;
     }
-    changePropsOnDragHandler = (ui, dragging) => {
+    changePropsOnDragHandler = (ui, dragging, undoRedo) => {
       const {
         offsetLeft,
         offsetTop,
@@ -46,13 +46,20 @@ const withDraggable = WrappedComponent => {
             width) /
           zoomScale; */
       }
-      this.props.onUpdatePropsHandler({
-        id,
-        props: newProps
-      });
+      if (undoRedo) {
+        this.props.onUpdatePropsHandler({
+          id,
+          props: newProps
+        });
+      } else {
+        this.props.onUpdateNoUndoRedoPropsHandler({
+          id,
+          props: newProps
+        });
+      }
     };
     onDragStartHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 1);
+      this.changePropsOnDragHandler(ui, 1, 0);
       const draggable = $(event.target).data("ui-draggable");
       draggable.options.snapToleranceDynamic =
         this.props.snapTolerance * this.props.zoomScale;
@@ -62,10 +69,10 @@ const withDraggable = WrappedComponent => {
     onDragHandler = (event, ui) => {
       const draggable = $(event.target).data("ui-draggable");
       ui = addSnapElements(event, ui, draggable.snapElements, draggable);
-      this.changePropsOnDragHandler(ui, 1);
+      //    this.changePropsOnDragHandler(ui, 1, 0);
     };
     onDragStopHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 0);
+      this.changePropsOnDragHandler(ui, 0, 1);
       removeSnapClass();
     };
 
