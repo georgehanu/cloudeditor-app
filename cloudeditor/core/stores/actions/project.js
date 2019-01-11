@@ -24,7 +24,6 @@ const {
   CHANGE_MODE_HEADER_FOOTER,
   UPDATE_FOOTERCONFIG_PROPS,
   RESTORE_PAGES,
-  UPDATE_FOOTERCONFIG_PROPS,
   PROJ_SAVE_START,
   PROJ_SAVE_SUCCESS,
   PROJ_SAVE_FAILED,
@@ -62,7 +61,6 @@ const {
   changeModeHeaderFooter,
   updateFooterconfigProps,
   restorePages,
-  updateFooterconfigProps,
 
   projSaveStart,
   projSaveSuccess,
@@ -96,12 +94,9 @@ const {
   ADD_OBJECT_MIDDLE,
   DELETE_PAGE,
   UPDATE_HEADERCONFIG_PROPS,
-<<<<<<< HEAD
   CHANGE_MODE_HEADER_FOOTER,
   UPDATE_FOOTERCONFIG_PROPS,
-  RESTORE_PAGES
-=======
-  UPDATE_FOOTERCONFIG_PROPS,
+  RESTORE_PAGES,
   PROJ_SAVE_START,
   PROJ_SAVE_SUCCESS,
   PROJ_SAVE_FAILED,
@@ -110,7 +105,6 @@ const {
   PROJ_LOAD_SUCCESS,
   PROJ_LOAD_FAILED,
   PROJ_LOAD_CLEAR_MESSAGE
->>>>>>> origin/ig-mas
 );
 
 module.exports = {
@@ -136,11 +130,9 @@ module.exports = {
   deletePage,
   updateHeaderconfigProps,
   updateFooterconfigProps,
-<<<<<<< HEAD
   changeModeHeaderFooter,
   updateObjectPropsNoUndoRedo,
-  restorePages
-=======
+  restorePages,
   projSaveStart,
   projSaveSuccess,
   projSaveFailed,
@@ -149,5 +141,4 @@ module.exports = {
   projLoadSuccess,
   projLoadFailed,
   projLoadClearMessage
->>>>>>> origin/ig-mas
 };

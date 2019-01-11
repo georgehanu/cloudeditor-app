@@ -9,7 +9,8 @@ const { Observable } = require("rxjs");
 const { mapTo, map, mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-const LOGIN_URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/login.php";
+const LOGIN_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditor/logincustomer";
 
 module.exports = {
   onEpicLogin: (action$, state$) =>
@@ -24,7 +25,7 @@ module.exports = {
             .post(LOGIN_URL, serverData)
             .then(resp => resp.data)
             .then(data => {
-              if (data.status !== "failure") {
+              if (data.success) {
                 obs.next({
                   type: AUTH_SIGNIN_SUCCESS,
                   email: action$.payload.email,
@@ -33,7 +34,7 @@ module.exports = {
               } else {
                 obs.next({
                   type: AUTH_SIGNIN_FAILED,
-                  payload: data.error_message
+                  payload: data.message
                 });
               }
               obs.complete();

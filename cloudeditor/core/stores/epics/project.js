@@ -16,7 +16,8 @@ const {
   PROJ_LOAD_FAILED
 } = require("../actionTypes/project");
 
-const SAVE_PROJ = "http://work.cloudlab.at:9012/ig/designAndGoUpload/save.php";
+const SAVE_PROJ =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/save";
 
 const dispachEvent = () => {
   setTimeout(() => {
@@ -41,16 +42,23 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           let serverData = new FormData();
-          serverData.append("userId", action$.payload.userId);
           serverData.append("name", action$.payload.name);
           serverData.append("description", action$.payload.description);
-          serverData.append("projectId", action$.payload.projectId);
-
+          //  serverData.append("projectId", action$.payload.projectId);
+          serverData.append("projectId", 0);
+          serverData.append(
+            "projectData",
+            JSON.stringify({
+              pages: state$.value.project.pages,
+              pagesOrder: state$.value.project.pagesOrder,
+              objects: state$.value.project.objects
+            })
+          );
           axios
             .post(SAVE_PROJ, serverData)
             .then(resp => resp.data)
             .then(data => {
-              if (data.status !== "failure") {
+              if (data.succe) {
                 obs.next({
                   type: PROJ_SAVE_SUCCESS,
                   name: action$.payload.name,
