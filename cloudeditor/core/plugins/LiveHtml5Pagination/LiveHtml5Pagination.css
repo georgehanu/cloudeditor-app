@@ -276,3 +276,7 @@
 .pageHeaderTextTitle {
   cursor: pointer;
 }
+
+.pageHeaderButtonsContainer {
+  text-align: center;
+}
