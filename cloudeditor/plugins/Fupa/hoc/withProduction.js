@@ -27,7 +27,7 @@ const tableStyle = {
 
 const tbodyStyle = {
   fontFamily: "Arial",
-  fontSize: "12pt"
+  fontSize: "12px"
 };
 
 const withProductionHoc = (WrappedComponent, TableName) => props => {

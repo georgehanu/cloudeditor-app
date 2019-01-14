@@ -326,6 +326,18 @@ const projLoadErrorMessageSelector = state =>
 const projLoadLoadedProjectsSelector = state =>
   pathOr(null, ["project", "load", "loadedProjects"], state);
 
+const projLoadLoadingDeleteSelector = state =>
+  pathOr(false, ["project", "load", "loadingDelete"], state);
+
+const projLoadErrorMessageDeleteSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageDelete"], state);
+
+const projLoadLoadingProjectSelector = state =>
+  pathOr(false, ["project", "load", "loadingProject"], state);
+
+const projLoadErrorMessageProjectSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageProject"], state);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -363,5 +375,9 @@ module.exports = {
   projSaveErrorMessageSelector,
   projLoadLoadingSelector,
   projLoadErrorMessageSelector,
-  projLoadLoadedProjectsSelector
+  projLoadLoadedProjectsSelector,
+  projLoadLoadingDeleteSelector,
+  projLoadErrorMessageDeleteSelector,
+  projLoadLoadingProjectSelector,
+  projLoadErrorMessageProjectSelector
 };

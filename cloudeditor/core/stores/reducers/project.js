@@ -44,7 +44,15 @@ const {
   PROJ_LOAD_START,
   PROJ_LOAD_SUCCESS,
   PROJ_LOAD_FAILED,
-  PROJ_LOAD_CLEAR_MESSAGE
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -586,6 +594,50 @@ module.exports = handleActions(
     },
     [PROJ_LOAD_CLEAR_MESSAGE]: (state, action) => {
       return handleLoad(state, { errorMessage: null });
+    },
+    [PROJ_LOAD_DELETE_START]: (state, action) => {
+      return handleLoad(state, { loadingDelete: true });
+    },
+    [PROJ_LOAD_DELETE_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadedProjects: state.load.loadedProjects.filter(function(project) {
+          return project.projectId !== action.projectId;
+        })
+      });
+    },
+    [PROJ_LOAD_DELETE_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: action.payload
+      });
+    },
+    [PROJ_LOAD_DELETE_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageDelete: null });
+    },
+    [PROJ_LOAD_PROJECT_START]: (state, action) => {
+      return handleLoad(state, { loadingProject: true });
+    },
+    [PROJ_LOAD_PROJECT_SUCCESS]: (state, action) => {
+      return {
+        ...state,
+        load: {
+          ...state.load,
+          loadingProject: false,
+          errorMessageProject: null
+        },
+        projectId: action.projectId
+      };
+    },
+    [PROJ_LOAD_PROJECT_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingProject: false,
+        errorMessageProject: action.payload
+      });
+    },
+    [PROJ_LOAD_PROJECT_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageProject: null });
     }
   },
   initialState

@@ -157,11 +157,11 @@
   cursor: pointer;
 }
 
-.loginWnd .invalidForm {
+.loginWnd .messageForm {
   height: 20px;
 }
 
-.invalidForm {
+.messageForm {
   color: #737373;
   font-family: "PORTO", Arial, Helvetica, sans-serif;
 }
@@ -173,7 +173,7 @@
   /* margin-top: 1px; */
   position: absolute;
   z-index: 700;
-  left: 200px;
+  left: 165px;
   top: 20%;
 }
 
@@ -200,9 +200,10 @@
 
 .loadProjectsContainer {
   padding-top: 10px;
-  height: 370px;
+  height: 350px;
   padding-left: 20px;
   padding-right: 20px;
+  margin-bottom: 10px;
 }
 
 .loadProjectsContainer ul {
@@ -272,4 +273,9 @@
 
 .loadProjectsContainer {
   overflow: auto;
+  color: #777;
+}
+
+body.swal2-height-auto.swal2-shown {
+  height: inherit !important;
 }

@@ -13,13 +13,25 @@ const {
   PROJ_SAVE_FAILED,
   PROJ_LOAD_START,
   PROJ_LOAD_SUCCESS,
-  PROJ_LOAD_FAILED
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED
 } = require("../actionTypes/project");
 
 const SAVE_PROJ =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/save";
 const LOAD_PROJ =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/getAllProjects";
+
+const DELETE_PROJ =
+  "http://work.cloudlab.at:9012/ig/designAndGoUpload/delete.php";
+
+const LOAD_ONE_PROJ =
+  "http://work.cloudlab.at:9012/ig/designAndGoUpload/one.php";
 
 const dispachEvent = () => {
   setTimeout(() => {
@@ -93,10 +105,8 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           let serverData = new FormData();
-          serverData.append("userId", action$.payload.userId);
+          serverData.append("projectId", action$.payload.projectId);
           serverData.append("productId", action$.payload.productId);
-          serverData.append("templateId", action$.payload.templateId);
-
           axios
             .post(LOAD_PROJ, serverData)
             .then(resp => resp.data)
@@ -117,6 +127,81 @@ module.exports = {
             .catch(error => {
               obs.next({
                 type: PROJ_LOAD_FAILED,
+                payload: "Error message: " + error.message
+              });
+              obs.complete();
+            });
+        })
+      )
+    ),
+
+  onEpicDelete: (action$, state$) =>
+    action$.pipe(
+      ofType(PROJ_LOAD_DELETE_START),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          let serverData = new FormData();
+          serverData.append("projectId", action$.payload.projectId);
+          serverData.append("productId", action$.payload.productId);
+
+          axios
+            .post(DELETE_PROJ, serverData)
+            .then(resp => resp.data)
+            .then(data => {
+              if (data.success) {
+                obs.next({
+                  type: PROJ_LOAD_DELETE_SUCCESS,
+                  projectId: action$.payload.projectId
+                });
+              } else {
+                obs.next({
+                  type: PROJ_LOAD_DELETE_FAILED,
+                  payload: data.message
+                });
+              }
+              obs.complete();
+            })
+            .catch(error => {
+              obs.next({
+                type: PROJ_LOAD_DELETE_FAILED,
+                payload: "Error message: " + error.message
+              });
+              obs.complete();
+            });
+        })
+      )
+    ),
+
+  onEpicLoadOneProject: (action$, state$) =>
+    action$.pipe(
+      ofType(PROJ_LOAD_PROJECT_START),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          let serverData = new FormData();
+          serverData.append("projectId", action$.payload.projectId);
+          serverData.append("productId", action$.payload.productId);
+
+          axios
+            .post(LOAD_ONE_PROJ, serverData)
+            .then(resp => resp.data)
+            .then(data => {
+              if (data.success) {
+                obs.next({
+                  type: PROJ_LOAD_PROJECT_SUCCESS,
+                  data: data.projects,
+                  projectId: action$.payload.projectId
+                });
+              } else {
+                obs.next({
+                  type: PROJ_LOAD_PROJECT_FAILED,
+                  payload: data.message
+                });
+              }
+              obs.complete();
+            })
+            .catch(error => {
+              obs.next({
+                type: PROJ_LOAD_PROJECT_FAILED,
                 payload: "Error message: " + error.message
               });
               obs.complete();

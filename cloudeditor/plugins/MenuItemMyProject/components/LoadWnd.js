@@ -4,38 +4,84 @@ const { connect } = require("react-redux");
 const Backdrop = require("../../../core/components/Backdrop/Backdrop");
 const { withNamespaces } = require("react-i18next");
 const LoadProjects = require("./LoadProjects");
+const SweetAlert = require("sweetalert-react").default;
+const MessageForm = require("./MessageForm");
+
+require("sweetalert/dist/sweetalert.css");
 
 const {
   projProjectIdSelector,
   projLoadLoadingSelector,
   projLoadErrorMessageSelector,
-  projLoadLoadedProjectsSelector
+  projLoadLoadedProjectsSelector,
+  projLoadLoadingDeleteSelector,
+  projLoadErrorMessageDeleteSelector,
+  projLoadLoadingProjectSelector,
+  projLoadErrorMessageProjectSelector
 } = require("../../../core/stores/selectors/project");
 
 const {
   projLoadStart,
-  projLoadClearMessage
+  projLoadClearMessage,
+  projLoadDeleteStart,
+  projLoadDeleteClearMessage,
+  projLoadProjectStart,
+  projLoadProjectClearMessage
 } = require("../../../core/stores/actions/project");
-const { authUserIdSelector } = require("../../ProjectMenu/store/selectors");
+const {
+  getProductIdSelector
+} = require("../../../core/stores/selectors/productinformation");
 
 class LoadWnd extends React.Component {
-  state = {};
+  state = {
+    showAlert: false,
+    projectId: null,
+    action: null
+  };
 
   componentDidMount() {
     this.loadProjects();
   }
 
   loadProjects = () => {
-    this.props.projLoadStart(this.props.userId, "", "");
+    this.props.projLoadStart("", "");
   };
 
   onOkButton = () => {};
 
-  loadProjectHandler = projectId => {};
+  loadProjectHandler = projectId => {
+    this.setState({ showAlert: true, projectId, action: "load" });
+  };
 
-  deleteProjectHandler = projectId => {};
+  deleteProjectHandler = projectId => {
+    this.setState({ showAlert: true, projectId, action: "delete" });
+  };
+
+  confirmtSweetAlert() {
+    this.setState({ showAlert: false });
+    if (this.state.action === "delete") {
+      this.props.deleteStart(this.state.projectId, this.props.productId);
+    } else if (this.state.action === "load") {
+      this.props.projectLoadStart(this.state.projectId, this.props.productId);
+    }
+  }
 
   render() {
+    const actionError =
+      this.props.errorMessageDelete || this.props.errorMessageProject;
+    const actionLoading = this.props.loadingDelete || this.props.loadingProject;
+
+    let saTitle = this.props.t("Warning");
+    let saType = "warning";
+    let saText = "";
+    if (this.state.action === "delete") {
+      saText = this.props.t("Are you sure you want to delete the project ?");
+    } else if (this.state.action === "load") {
+      saText = this.props.t(
+        "Are you sure you want to load the project ?\nCurrent changes will be lost"
+      );
+    }
+
     return (
       <React.Fragment>
         <div className="loginContainer">
@@ -53,6 +99,14 @@ class LoadWnd extends React.Component {
                 loadedProjects={this.props.loadedProjects}
                 errorMessage={this.props.errorMessage}
               />
+
+              <div className="messageForm">
+                <MessageForm
+                  errorMessage={actionError}
+                  loading={actionLoading}
+                />
+              </div>
+
               <div className="loginWndButtons">
                 <button onClick={this.props.modalClosed}>
                   {this.props.t("Close")}
@@ -60,6 +114,16 @@ class LoadWnd extends React.Component {
               </div>
             </div>
           </div>
+
+          <SweetAlert
+            show={this.state.showAlert}
+            type={saType}
+            title={saTitle}
+            text={saText}
+            showCancelButton={true}
+            onConfirm={() => this.confirmtSweetAlert()}
+            onCancel={() => this.setState({ showAlert: false })}
+          />
         </div>
       </React.Fragment>
     );
@@ -71,16 +135,26 @@ const mapStateToProps = state => {
     loading: projLoadLoadingSelector(state),
     errorMessage: projLoadErrorMessageSelector(state),
     projectId: projProjectIdSelector(state),
-    userId: authUserIdSelector(state),
-    loadedProjects: projLoadLoadedProjectsSelector(state)
+    productId: getProductIdSelector(state),
+    loadedProjects: projLoadLoadedProjectsSelector(state),
+    loadingDelete: projLoadLoadingDeleteSelector(state),
+    errorMessageDelete: projLoadErrorMessageDeleteSelector(state),
+    loadingProject: projLoadLoadingProjectSelector(state),
+    errorMessageProject: projLoadErrorMessageProjectSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    projLoadStart: (userId, productId, templateId) =>
-      dispatch(projLoadStart({ userId, productId, templateId })),
-    projLoadClearMessage: () => dispatch(projLoadClearMessage())
+    projLoadStart: (productId, templateId) =>
+      dispatch(projLoadStart({ productId, templateId })),
+    projLoadClearMessage: () => dispatch(projLoadClearMessage()),
+    deleteStart: (projectId, productId) =>
+      dispatch(projLoadDeleteStart({ projectId, productId })),
+    deleteClearMessage: () => dispatch(projLoadDeleteClearMessage()),
+    projectLoadStart: (projectId, productId) =>
+      dispatch(projLoadProjectStart({ projectId, productId })),
+    projectClearMessage: () => dispatch(projLoadProjectClearMessage())
   };
 };
 

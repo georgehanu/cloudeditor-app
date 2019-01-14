@@ -3,7 +3,7 @@ const HeaderWnd = require("./HeaderWnd");
 const { connect } = require("react-redux");
 const Input = require("./Input");
 const Backdrop = require("../../../core/components/Backdrop/Backdrop");
-const InvalidForm = require("./InvalidForm");
+const MessageForm = require("./MessageForm");
 
 require("./LoginWnd.css");
 const { withNamespaces } = require("react-i18next");
@@ -101,8 +101,8 @@ class LoginWnd extends React.Component {
                   name="password"
                 />
               </div>
-              <div className="invalidForm">
-                <InvalidForm
+              <div className="messageForm">
+                <MessageForm
                   errorMessage={errorMessage}
                   loading={this.props.loading}
                 />

@@ -2,6 +2,10 @@ const React = require("react");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
 const { authLoggedInSelector } = require("../ProjectMenu/store/selectors");
+const {
+  projProjectIdSelector
+} = require("../../core/stores/selectors/project");
+
 const { connect } = require("react-redux");
 const LoginWnd = require("./components/LoginWnd");
 const SaveWnd = require("./components/SaveWnd");
@@ -13,7 +17,8 @@ class MenuItemMyProject extends React.Component {
     showLoginWnd: false,
     showSaveWnd: false,
     showLoadWnd: false,
-    loginMode: false
+    loginMode: false,
+    projectId: null
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -25,12 +30,20 @@ class MenuItemMyProject extends React.Component {
         showLoadWnd: false
       };
 
-    if (nextProps.loggedIn === true || prevState.loginMode === false) {
+    if (nextProps.loggedIn === true && prevState.loginMode === false) {
       nextProps.onSetSubWndHandler(false);
       return {
         ...prevState,
         showLoginWnd: false,
         loginMode: true
+      };
+    }
+    if (nextProps.projectId !== prevState.projectId) {
+      nextProps.onSetSubWndHandler(false);
+      return {
+        ...prevState,
+        showLoadWnd: false,
+        projectId: nextProps.projectId
       };
     }
     return prevState;
@@ -114,7 +127,8 @@ class MenuItemMyProject extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: authLoggedInSelector(state)
+    loggedIn: authLoggedInSelector(state),
+    projectId: projProjectIdSelector(state)
   };
 };
 

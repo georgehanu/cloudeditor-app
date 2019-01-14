@@ -31,7 +31,15 @@ const {
   PROJ_LOAD_START,
   PROJ_LOAD_SUCCESS,
   PROJ_LOAD_FAILED,
-  PROJ_LOAD_CLEAR_MESSAGE
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -69,7 +77,15 @@ const {
   projLoadStart,
   projLoadSuccess,
   projLoadFailed,
-  projLoadClearMessage
+  projLoadClearMessage,
+  projLoadDeleteStart,
+  projLoadDeleteSuccess,
+  projLoadDeleteFailed,
+  projLoadDeleteClearMessage,
+  projLoadProjectStart,
+  projLoadProjectSuccess,
+  projLoadProjectFailed,
+  projLoadProjectClearMessage
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -104,7 +120,15 @@ const {
   PROJ_LOAD_START,
   PROJ_LOAD_SUCCESS,
   PROJ_LOAD_FAILED,
-  PROJ_LOAD_CLEAR_MESSAGE
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
 );
 
 module.exports = {
@@ -140,5 +164,13 @@ module.exports = {
   projLoadStart,
   projLoadSuccess,
   projLoadFailed,
-  projLoadClearMessage
+  projLoadClearMessage,
+  projLoadDeleteStart,
+  projLoadDeleteSuccess,
+  projLoadDeleteFailed,
+  projLoadDeleteClearMessage,
+  projLoadProjectStart,
+  projLoadProjectSuccess,
+  projLoadProjectFailed,
+  projLoadProjectClearMessage
 };

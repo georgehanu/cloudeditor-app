@@ -4,7 +4,7 @@ const { connect } = require("react-redux");
 const Input = require("./Input");
 const Textarea = require("./Textarea");
 const Backdrop = require("../../../core/components/Backdrop/Backdrop");
-const InvalidForm = require("./InvalidForm");
+const MessageForm = require("./MessageForm");
 
 const { withNamespaces } = require("react-i18next");
 
@@ -99,8 +99,8 @@ class SaveWnd extends React.Component {
                   name="projectDescription"
                 />
               </div>
-              <div className="invalidForm">
-                <InvalidForm
+              <div className="messageForm">
+                <MessageForm
                   errorMessage={errorMessage}
                   loading={this.props.loading}
                 />
