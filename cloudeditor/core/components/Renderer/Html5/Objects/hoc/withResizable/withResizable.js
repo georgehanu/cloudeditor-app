@@ -58,7 +58,7 @@ const withResizable = WrappedComponent => {
     onResizeHandler = (event, ui) => {
       var resizable = $(event.target).data("ui-resizable");
       ui = addSnapElements(event, ui, resizable.coords, resizable);
-      //    this.changePropsOnDragHandler(ui, 1);
+      this.changePropsOnDragHandler(ui, 1);
     };
     onResizeStopHandler = (event, ui) => {
       this.changePropsOnDragHandler(ui, 0, 1);
@@ -79,7 +79,7 @@ const withResizable = WrappedComponent => {
         !this.props.active &&
         !this.props.viewOnly &&
         this.props.resizable &&
-        this.props.type !== "tinymceTable";
+        this.props.type !== "tinymceTable1";
       this.$el = $(this.el);
       handleUI(
         this.$el,

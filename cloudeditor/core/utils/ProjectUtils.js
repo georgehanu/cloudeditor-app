@@ -497,7 +497,7 @@ const getEmptyProject = cfg => {
     tableHeight: 506,
     left: 30,
     top: 30,
-    tableContent: `<table style="width: 100%; border-spacing: 0px; color: black;">
+    tableContent: `<table style="border-spacing: 0px; color: black;">
 <tbody>
   <tr>
       <td style="padding: 4px 0px; margin: 0px; border: none; text-align: center; font-size: 12px; line-height: 12px; background-color: white;"></td>
