@@ -53,8 +53,6 @@ class Tinymce extends React.Component {
         content
       }
     });
-
-    console.log("onChangeHandler", content);
   };
 
   onClickHandler = event => {
@@ -177,8 +175,6 @@ class Tinymce extends React.Component {
 
   render() {
     const globalConfig = ConfigUtils.getDefaults();
-
-    console.log("globalConfig", globalConfig);
 
     const tableScale = this.props.width / this.props.tableWidth;
 

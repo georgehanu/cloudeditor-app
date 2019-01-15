@@ -1,4 +1,4 @@
-a.submenuItemHeaderFooter {
+.submenuItemHeaderFooter {
   width: 100%;
   background-color: white;
   position: absolute;
@@ -11,16 +11,6 @@ a.submenuItemHeaderFooter {
 .showHeaderFooter #sidebar-wrapper {
   padding-top: 120px;
 }
-
-.showHeaderFooter .canvasContainer {
-  /*padding-top: 110px;*/
-}
-/*
-.canvasContainer {
-  -webkit-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-}*/
 
 #sidebar-wrapper {
   transition: none !important;
