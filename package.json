@@ -97,7 +97,7 @@
     "object-assign": "^4.1.1",
     "performance-now": "^2.1.0",
     "prop-types": "^15.6.2",
-    "query-string": "^6.2.0",
+    "query-string": "^5.1.1",
     "ramda": "^0.26.1",
     "random-color": "^1.0.1",
     "randomcolor": "^0.5.3",
