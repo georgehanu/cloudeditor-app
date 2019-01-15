@@ -184,6 +184,8 @@ class ObjectBlock extends React.Component {
         tableWidth={this.props.tableWidth}
         onUpdateProps={this.props.onUpdatePropsHandler}
         zoomScale={this.props.zoomScale}
+        viewOnly={this.props.viewOnly}
+        active={this.props.active}
       />
     );
 
@@ -242,25 +244,15 @@ class ObjectBlock extends React.Component {
       left: (-1 * parseFloat(borderWidth)) / 2
     };
     let styleNorth = {};
-    let tinyMceResizable = null;
 
     if (subType === "tinymceTable") {
       styleNorth = { width: width + 16, height: height + 16 };
-      tinyMceResizable = (
-        <React.Fragment>
-          <div className="ui-resizable-handle ui-resizable-se ui-icon" />
-        </React.Fragment>
-      );
     }
 
-    let resizableHandle = null;
-    if (this.props.resizable && !viewOnly) {
-      resizableHandle = (
-        <div
-          className={
-            "ui-rotatable-handle icon printqicon-rotate_handler ui-draggable"
-          }
-        />
+    let rotatableHandle = null;
+    if (this.props.rotatable && !viewOnly) {
+      rotatableHandle = (
+        <div className={"ui-rotatable-handle icon printqicon-rotate_handler"} />
       );
     }
     let deleteHandle = null;
@@ -295,8 +287,7 @@ class ObjectBlock extends React.Component {
         </div>
         <u style={{ width, height }} />
 
-        {tinyMceResizable}
-        {resizableHandle}
+        {rotatableHandle}
         {deleteHandle}
       </div>
     );

@@ -4,6 +4,13 @@ html {
 body {
   padding: 0px !important;
   overflow-x: hidden !important;
+  width: 10000px;
+  height: 10000px;
+  overflow: hidden;
+}
+table {
+  width: auto;
+  height: auto;
 }
 body,
 td,
@@ -67,7 +74,11 @@ div.mce-edit-area {
 }
 
 .tableContainer {
-  background: red;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
 }
 .hideResize .mce-resizehandle {
   display: none !important;
@@ -84,4 +95,11 @@ html body {
 }
 .mce-content-body .mce-clonedresizable {
   transform-origin: left top;
+}
+
+.mce-resizehandle {
+  border-radius: 50% !important;
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #646464 !important;
 }

@@ -55,10 +55,10 @@ define("tinymce/dom/ControlSelection", [
 			e: [1, 0.5, 1, 0],
 			s: [0.5, 1, 0, 1],
 			w: [0, 0.5, -1, 0],*/
-			nw: [0, 0, -1, -1],
-			ne: [1, 0, 1, -1],
-			se: [1, 1, 1, 1],
-			sw: [0, 1, -1, 1]
+			/* nw: [0, 0, -1, -1],
+			ne: [1, 0, 1, -1], */
+			se: [1, 1, 1, 1]
+			/* sw: [0, 1, -1, 1] */
 		};
 
 		// Add CSS for resize handles, cloned element and selected

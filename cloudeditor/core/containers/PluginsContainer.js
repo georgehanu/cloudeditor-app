@@ -2,12 +2,13 @@ const React = require("react");
 const PropTypes = require("prop-types");
 const { componentFromProp } = require("recompose");
 const PluginsUtils = require("../utils/PluginsUtils");
-const logger = require("../utils/LoggerUtils");
 const { hot } = require("react-hot-loader");
+const { ReactReduxContext } = require("react-redux");
 
 const Component = componentFromProp("component");
 
 class PluginsContainer extends React.Component {
+  static contextType = ReactReduxContext;
   state = {
     additionalClasses: []
   };
@@ -137,10 +138,6 @@ PluginsContainer.defaultProps = {
   style: {},
   className: "pluginsContainer",
   defaultMode: "desktop"
-};
-
-PluginsContainer.contextTypes = {
-  store: PropTypes.object
 };
 
 module.exports = hot(module)(PluginsContainer);
