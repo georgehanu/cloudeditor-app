@@ -110,8 +110,11 @@
 .pageHeaderButtonMinimize {
   width: 30px;
   height: 16px;
-  position: absolute;
+  position: relative;
   top: 9px;
+}
+
+.pageHeaderButtonExtend {
   margin-left: 5px;
 }
 
