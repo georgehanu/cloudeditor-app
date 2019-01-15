@@ -2,10 +2,12 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DragSource } = require("react-dnd");
+const uuidv4 = require("uuid/v4");
 const type = "image";
 const PageSource = {
   beginDrag(props) {
     return {
+      id: uuidv4(),
       type: type,
       subType: props.type,
       image_src: props.image_src,

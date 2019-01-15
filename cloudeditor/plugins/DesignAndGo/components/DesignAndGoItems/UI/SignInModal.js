@@ -113,7 +113,7 @@ class SignInModal extends React.Component {
                 name="password"
               />
             </div>
-            <div className="InvalidForm">{errorMessage}</div>
+            <div className="MessageForm">{errorMessage}</div>
             <div className="SingInButton">
               <button onClick={this.onSignInButton}>
                 {this.props.t("Log In")}

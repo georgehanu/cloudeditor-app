@@ -1,6 +1,7 @@
 const React = require("react");
 const assign = require("object-assign");
 const { connect } = require("react-redux");
+const { actions } = require("redux-undo-redo");
 
 const { withNamespaces } = require("react-i18next");
 
@@ -11,10 +12,10 @@ class MenuItemUndoRedo extends React.Component {
         <div className="projectMenuItemHeader" />
         <div className="projectMenuItemContent">
           <ul>
-            <li key={0} className="submenuItem">
+            <li onClick={this.props.onUndo} key={0} className="submenuItem">
               {this.props.t("Undo")}
             </li>
-            <li key={1} className="submenuItem">
+            <li onClick={this.props.onRedo} key={1} className="submenuItem">
               {this.props.t("Redo")}
             </li>
           </ul>
@@ -28,10 +29,10 @@ const mapStateToProps = state => {
   return {};
 };
 
-const mapDispatchToProps = dispatch => {
-  return {};
+const mapDispatchToProps = {
+  onUndo: actions.undo,
+  onRedo: actions.redo
 };
-
 const MenuItemUndoRedoPlugin = connect(
   mapStateToProps,
   mapDispatchToProps

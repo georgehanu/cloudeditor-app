@@ -80,7 +80,8 @@ class ImageBlock extends React.PureComponent {
           contrast={this.props.contrast}
           brightness={this.props.brightness}
           workingPercent={this.props.workingPercent}
-          onUpdateProps={this.props.onUpdateProps}
+          onUpdatePropsHandler={this.props.onUpdateProps}
+          onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
         />
       );
     }

@@ -201,7 +201,7 @@ class CropperImage extends React.Component {
         cropH: Math.round(targetHeight / workingPercent),
         workingPercent
       };
-      this.props.onUpdateProps({
+      this.props.onUpdateNoUndoRedoPropsHandler({
         id: this.props.id,
         props: result
       });
@@ -262,7 +262,6 @@ class CropperImage extends React.Component {
   handleMouseUp = () => {
     const isDragging = false;
     this.options = merge({ ...this.options }, { isDragging });
-    //this.updateResult();
   };
   setZoom = () => {
     let {

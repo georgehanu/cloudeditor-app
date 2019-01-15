@@ -47,7 +47,7 @@ class ColorTab extends React.Component {
           style={{ backgroundColor: colorCode }}
           className={
             "ColorSquare " +
-            (color.htmlRGB === "#ffffff" ? "whiteColorSquare" : "")
+            (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
             const {
@@ -105,7 +105,7 @@ class ColorTab extends React.Component {
           style={{ backgroundColor: colorCode1 }}
           className={
             "ColorSquare " +
-            (color.htmlRGB === "#ffffff" ? "whiteColorSquare" : "")
+            (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
             const {

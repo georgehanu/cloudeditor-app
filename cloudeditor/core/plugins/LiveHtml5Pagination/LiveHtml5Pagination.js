@@ -69,27 +69,39 @@ class LiveHtml5Pagination extends React.Component {
   };
   minimize = () => {
     if (this.state.size === "normal") {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorMinimized"]);
       this.setState({ size: "minimized" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorMinimized"],
+          true
+        );
       });
     } else {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorNormal"]);
       this.setState({ size: "normal" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorNormal"],
+          true
+        );
       });
     }
   };
   extend = () => {
     if (this.state.size === "normal") {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorExtended"]);
       this.setState({ size: "extended" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorExtended"],
+          true
+        );
       });
     } else {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorNormal"]);
       this.setState({ size: "normal" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorNormal"],
+          true
+        );
       });
     }
   };

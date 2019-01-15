@@ -22,7 +22,8 @@ const {
 
 const {
   updateHeaderconfigProps,
-  updateFooterconfigProps
+  updateFooterconfigProps,
+  changeModeHeaderFooter
 } = require("../../core/stores/actions/project");
 require("./menuItemHeaderFooter.css");
 class MenuItemHeaderFooter extends React.Component {
@@ -246,12 +247,14 @@ class MenuItemHeaderFooter extends React.Component {
 
     this.setState({ submenuOpened: show }, () => {
       if (this.state.submenuOpened !== false) {
-        this.props.addContainerClasses("submenuHeaderFooter", [
-          "showHeaderFooter"
-        ]);
+        this.props.addContainerClasses(
+          "submenuHeaderFooter",
+          ["showHeaderFooter"],
+          true
+        );
       } else {
         this.closePoptext();
-        this.props.addContainerClasses("submenuHeaderFooter", []);
+        this.props.addContainerClasses("submenuHeaderFooter", [], true);
       }
 
       payload = {
@@ -259,8 +262,7 @@ class MenuItemHeaderFooter extends React.Component {
         value: this.state.submenuOpened ? "edit" : "read"
       };
 
-      this.props.onUpdateHeaderConfigHandler(payload);
-      this.props.onUpdateFooterConfigHandler(payload);
+      this.props.onUpdateHeaderFooterConfigPropsHandler(payload);
     });
   };
 
@@ -419,6 +421,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onUpdateHeaderFooterConfigPropsHandler: payload =>
+      dispatch(changeModeHeaderFooter(payload)),
     onUpdateHeaderConfigHandler: payload =>
       dispatch(updateHeaderconfigProps(payload)),
     onUpdateFooterConfigHandler: payload =>

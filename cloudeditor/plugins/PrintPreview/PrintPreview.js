@@ -25,12 +25,14 @@ class PrintPreview extends React.Component {
   }
 
   onMouseEnterHandler = () => {
-    this.props.addContainerClasses("PrintPreviewMagnifier", [
-      "containerPrintPreviewMaxZindex"
-    ]);
+    this.props.addContainerClasses(
+      "PrintPreviewMagnifier",
+      ["containerPrintPreviewMaxZindex"],
+      false
+    );
   };
   onMouseLeaveHandler = () => {
-    this.props.addContainerClasses("PrintPreviewMagnifier", []);
+    this.props.addContainerClasses("PrintPreviewMagnifier", [], false);
   };
 
   componentDidMount() {

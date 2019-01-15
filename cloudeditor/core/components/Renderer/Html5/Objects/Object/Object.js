@@ -35,6 +35,7 @@ const GraphicBlock = require("../Graphic/Graphic");
 const {
   updateObjectProps,
   addObjectIdToSelected,
+  updateObjectPropsNoUndoRedo,
   deleteObj
 } = require("../../../../../stores/actions/project");
 
@@ -113,6 +114,7 @@ class ObjectBlock extends React.Component {
       bgColor: props.bgColor.htmlRGB,
       borderColor: props.borderColor.htmlRGB,
       onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       onTextChange: props.onTextChange,
       editableRef: this.getEditableReference,
       contentEditable
@@ -139,6 +141,7 @@ class ObjectBlock extends React.Component {
       flip: props.flip,
       cropH: props.cropH,
       onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       image_src: props.image_src,
       leftSlider: props.leftSlider,
       initialRestore: props.initialRestore,
@@ -183,6 +186,7 @@ class ObjectBlock extends React.Component {
         tableHeight={this.props.tableHeight}
         tableWidth={this.props.tableWidth}
         onUpdateProps={this.props.onUpdatePropsHandler}
+        onUpdatePropsNoUndoRedo={this.props.onUpdateNoUndoRedoPropsHandler}
         zoomScale={this.props.zoomScale}
       />
     );
@@ -293,6 +297,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
+        <div className={"blockBorder"} style={styleBorderColor} />
         <u style={{ width, height }} />
 
         {tinyMceResizable}
@@ -481,6 +486,8 @@ const mapDispatchToProps = dispatch => {
     onSetActiveBlockHandler: payload =>
       dispatch(addObjectIdToSelected(payload)),
     onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload)),
+    onUpdateNoUndoRedoPropsHandler: payload =>
+      dispatch(updateObjectPropsNoUndoRedo(payload)),
     onDeleteObjectHandler: payload => dispatch(deleteObj(payload))
   };
 };

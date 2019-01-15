@@ -1,4 +1,7 @@
 .pageBlock.textflow .blockData {
+  white-space: pre-wrap;
+}
+.pageBlock.textflow .blockData {
   display: table-cell;
 }
 .pageBlock.text .blockData {

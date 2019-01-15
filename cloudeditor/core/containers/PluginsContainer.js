@@ -19,7 +19,7 @@ class PluginsContainer extends React.Component {
       plugin
     );
   };
-  addContainerClasses = (pluginName, newClassesArray) => {
+  addContainerClasses = (pluginName, newClassesArray, resizePageEvent) => {
     let newClasses = [...this.state.additionalClasses];
     let index = newClasses.findIndex((el, index) => {
       return el.pluginName === pluginName;
@@ -31,8 +31,10 @@ class PluginsContainer extends React.Component {
     }
     /* Change to have an additional param */
     this.setState({ additionalClasses: newClasses }, () => {
-      var event = new Event("resizePage");
-      window.dispatchEvent(event);
+      if (resizePageEvent) {
+        var event = new Event("resizePage");
+        window.dispatchEvent(event);
+      }
     });
   };
 

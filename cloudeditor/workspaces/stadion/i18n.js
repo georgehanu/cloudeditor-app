@@ -20,7 +20,7 @@ const i18nFunc = config => {
         fallbackNS: "translate",
         ns: "translate",
         defaultNS: "translate",
-        debug: true,
+        debug: false,
         load: "currentOnly",
         interpolation: {
           escapeValue: false

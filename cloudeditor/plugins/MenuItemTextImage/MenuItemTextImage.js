@@ -7,6 +7,7 @@ const SubmenuText = require("./components/SubmenuData/SubmenuText");
 const SubmenuImage = require("./components/SubmenuData/SubmenuImage");
 const ImportType = require("./components/ImportComponents/ImportType");
 const { addObjectMiddle } = require("../../core/stores/actions/project");
+const uuidv4 = require("uuid/v4");
 const {
   getDisplayedPageBlockActions
 } = require("../../core/stores/selectors/Html5Renderer");
@@ -38,7 +39,8 @@ class MenuItemTextImage extends React.Component {
     return prevState;
   }
   onClickAddBlock = params => {
-    this.props.onClickAddBlockHandler(params);
+    const newParams = { ...params, id: uuidv4() };
+    this.props.onClickAddBlockHandler(newParams);
   };
 
   render() {

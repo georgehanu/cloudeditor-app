@@ -308,6 +308,18 @@ const getProjectTemplate = cfg => {
   const project = mergeDeepRight(
     {
       title: "Empty Project",
+      description: "Project description",
+      projectId: null,
+      save: { loading: false, errorMessage: null },
+      load: {
+        loading: false,
+        errorMessage: null,
+        loadedProjects: [],
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadingProject: false,
+        errorMessageProject: null
+      },
       pages: {},
       activePage: "page_0",
       pagesOrder: [],
@@ -1615,6 +1627,49 @@ const getEmptyUI = cfg => {
     cfg || {}
   );
 };
+const getEmptyAuth = cfg => {
+  return mergeDeepRight(
+    {
+      loggedIn: false,
+      userName: null,
+      loading: false,
+      errorMessage: null
+    },
+    cfg || {}
+  );
+};
+const getEmptyAssets = cfg => {
+  return mergeDeepRight(
+    {
+      layout: {
+        items: []
+      },
+      pdf: {
+        loading: false,
+        loadingFiles: 0,
+        uploadedFiles: []
+      },
+      image: {
+        loading: false,
+        loadingFiles: 0,
+        uploadedFiles: []
+      }
+    },
+    cfg || {}
+  );
+};
+
+const getEmptyProductInformation = cfg => {
+  return mergeDeepRight(
+    {
+      name: "",
+      productId: null,
+      qty: 1,
+      productOptions: {}
+    },
+    cfg || {}
+  );
+};
 
 const getRandomUI = cfg => {
   const ui = getEmptyUI(cfg);
@@ -1648,7 +1703,10 @@ const ProjectUtils = {
   getEmptyColor,
   getEmptyFont,
   getEmptySelection,
-  getFontMetricTemplate
+  getFontMetricTemplate,
+  getEmptyProductInformation,
+  getEmptyAssets,
+  getEmptyAuth
 };
 
 module.exports = ProjectUtils;
