@@ -96,7 +96,7 @@
   margin-top: 15px;
 }
 .printPreviewButtonContainer {
-  display: contents;
+  display: inline-block;
 }
 
 .printPreviewButton {
