@@ -8,16 +8,14 @@ const { withNamespaces } = require("react-i18next");
 const URL = "http://work.cloudlab.at:9012/ig/uploads/";
 const uuidv4 = require("uuid/v4");
 const axios = require("axios");
-const { createSelector } = require("reselect");
-const { head, equals } = require("ramda");
+const { equals } = require("ramda");
 const { debounce } = require("underscore");
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
 const {
   headerConfigSelector,
-  footerConfigSelector,
-  objectsSelector
+  footerConfigSelector
 } = require("../../core/stores/selectors/project");
 
 const {
