@@ -6,6 +6,8 @@ require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 
+const ConfigUtils = require("../../../../../utils/ConfigUtils");
+
 class Tinymce extends React.Component {
   constructor(props) {
     super(props);
@@ -174,6 +176,10 @@ class Tinymce extends React.Component {
   };
 
   render() {
+    const globalConfig = ConfigUtils.getDefaults();
+
+    console.log("globalConfig", globalConfig);
+
     const tableScale = this.props.width / this.props.tableWidth;
 
     let disableCover = null;
@@ -221,7 +227,10 @@ class Tinymce extends React.Component {
           init={{
             plugins: "table autoresize",
             toolbar: false,
-            content_css: "http://localhost:8081/tinymce/resetTinyMceTable.css",
+            content_css:
+              globalConfig.baseUrl +
+              globalConfig.publicPath +
+              "tinymce/resetTinyMceTable.css",
             menubar: false,
             resize: !this.props.viewOnly,
             object_resizing: !this.props.viewOnly,

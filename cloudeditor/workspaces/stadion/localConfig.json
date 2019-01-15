@@ -54,5 +54,7 @@
     "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/",
     "publicPath": "cloudeditor/",
     "basePath": "locales"
-  }
+  },
+  "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/",
+  "publicPath": "cloudeditor/"
 }
