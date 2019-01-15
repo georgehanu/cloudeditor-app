@@ -177,7 +177,7 @@ const addTable = (state, action) => {
 const changePage = (state, payload) => {
   return {
     ...state,
-    ["activePage"]: payload.page_id
+    activePage: payload.page_id
   };
 };
 const changeRandomPage = (state, payload) => {

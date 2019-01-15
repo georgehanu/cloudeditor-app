@@ -24,7 +24,7 @@ const {
   changeModeHeaderFooter
 } = require("../../core/stores/actions/project");
 require("./menuItemHeaderFooter.css");
-class MenuItemHeaderFooter extends React.PureComponent {
+class MenuItemHeaderFooter extends React.Component {
   state = {
     submenuOpened: false,
     poptextEdit: {
@@ -269,7 +269,6 @@ class MenuItemHeaderFooter extends React.PureComponent {
   };
 
   render() {
-    console.log("MenuItemHeaderFooter render", this.props);
     const className =
       "projectMenuButtonLink " +
       (this.state.submenuOpened ? "projectMenuButtonSubMenuOpened" : "");
