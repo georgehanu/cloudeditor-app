@@ -97,6 +97,7 @@
     "ramda": "^0.26.1",
     "random-color": "^1.0.1",
     "randomcolor": "^0.5.3",
+    "rc-slider": "^8.6.4",
     "re-reselect": "^2.2.0",
     "react": "^16.6.3",
     "react-color": "^2.14.1",

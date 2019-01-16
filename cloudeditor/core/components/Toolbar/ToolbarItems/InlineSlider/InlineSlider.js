@@ -1,5 +1,7 @@
 const React = require("react");
 const Utils = require("../../ToolbarConfig/utils");
+const Slider = require("rc-slider").default;
+require("rc-slider/assets/index.css");
 
 const InlineSlider = props => {
   const parentClassName = Utils.MergeClassName(
@@ -13,26 +15,24 @@ const InlineSlider = props => {
 
   return (
     <div className={parentClassName}>
-      <input
-        className=""
-        type="range"
-        value={startValue}
-        onChange={event =>
+      <Slider
+        min={0}
+        max={100}
+        step={1}
+        defaultValue={startValue}
+        onChange={value => {
           props.ToolbarHandler({
             mainHandler: true,
             payloadMainHandler: {
-              value: event.target.value,
+              value: value,
               type: props.type
             }
-          })
-        }
+          });
+        }}
         onMouseUp={event => {
           const evt = new Event("update_crop_params");
           document.dispatchEvent(evt);
         }}
-        min="0"
-        max="100"
-        step="1"
       />
     </div>
   );
