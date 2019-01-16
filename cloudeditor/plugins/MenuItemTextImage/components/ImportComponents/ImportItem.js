@@ -11,23 +11,39 @@ const importItem = props => {
         <input
           type="radio"
           className="importTextItemRadio"
-          checked={props.checked}
+          id={"label_" + props.id}
+          name={"test"}
+          defaultChecked={props.checked}
           onChange={() => props.textSelected(props.id)}
         />
-        <label className="itemLabel">{props.text}</label>
+        <label
+          htmlFor={"label_" + props.id}
+          className="itemLabel"
+          dangerouslySetInnerHTML={{ __html: props.text }}
+        />
         {props.checked && (
           <div className="importTextItemSet">
             <div className="importTextItemInProduction">
               <i />
-              <span>{props.t("Insert in product")}</span>
+              <span
+                onClick={() => {
+                  props.onAddBlock({
+                    type: "text",
+                    subType: "textflow",
+                    value: props.text
+                  });
+                  props.closeModal();
+                }}
+              >
+                {props.t("Insert in product")}
+              </span>
             </div>
             <div className="importTextItemFavourite">
               <input
                 type="checkbox"
                 name={props.id}
-                /*checked={props.status}*/ onChange={event =>
-                  props.markFavourite(event)
-                }
+                defaultChecked={props.status}
+                onChange={event => props.markFavourite(event)}
               />
               {props.t("Favourite")}
             </div>
@@ -40,17 +56,44 @@ const importItem = props => {
       <li className="importImageItem">
         <label className="itemLabel">{props.filename}</label>
         <span className="itemLabelDate">{props.date_added}</span>
-        <div className="itemImage">
-          <img src={IMAGE_SRC_URL + props.image} />
+        <div
+          className="itemImage"
+          onClick={() => {
+            props.onAddBlock({
+              type: "graphics",
+              subType: "graphics",
+              image_src: IMAGE_SRC_URL + props.image,
+              imagePath: props.image
+            });
+            props.closeModal();
+          }}
+        >
+          <img src={IMAGE_SRC_URL + props.image} alt="" />
         </div>
         <div className="importImageItemSet">
           <div className="importImageItemFavourite">
-            <input type="checkbox" checked={props.status} name={props.id} />
+            <input
+              type="checkbox"
+              defaultChecked={props.status}
+              name={props.id}
+            />
             {props.t("Favourite")}
           </div>
           <div className="importImageItemInProduction">
             <i />
-            <span>{props.t("Insert in product")}</span>
+            <span
+              onClick={() => {
+                props.onAddBlock({
+                  type: "graphics",
+                  subType: "graphics",
+                  image_src: IMAGE_SRC_URL + props.image,
+                  imagePath: props.image
+                });
+                props.closeModal();
+              }}
+            >
+              {props.t("Insert in product")}
+            </span>
           </div>
         </div>
       </li>

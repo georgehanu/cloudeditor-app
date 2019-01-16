@@ -1,5 +1,6 @@
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
+const $ = require("jquery");
 
 class ColorPicker extends React.Component {
   state = {
@@ -52,15 +53,15 @@ class ColorPicker extends React.Component {
 
   componentDidMount() {
     const picker = this;
-    $("#colorPickerColorId").chromoselector({
+    jQuery("#colorPickerColorId").chromoselector({
       target: "#colorPickerId",
       autoshow: false,
       create: function() {
-        $(this).chromoselector("show", 0);
+        jQuery(this).chromoselector("show", 0);
       },
       width: 150,
       update: function() {
-        const color = $(this).chromoselector("getColor");
+        const color = jQuery(this).chromoselector("getColor");
         const CMYK = color.getCmyk();
         const Hex = color.getHexString();
         const RGB = color
@@ -80,7 +81,7 @@ class ColorPicker extends React.Component {
   onChangeColorHandler = event => {};
 
   onApplyRGB = () => {
-    $("#colorPickerColorId").chromoselector(
+    jQuery("#colorPickerColorId").chromoselector(
       "setColor",
       "rgb(" +
         this.state.RGB_R +
@@ -93,7 +94,7 @@ class ColorPicker extends React.Component {
   };
 
   onApplyCMYK = () => {
-    $("#colorPickerColorId").chromoselector("setColor", {
+    jQuery("#colorPickerColorId").chromoselector("setColor", {
       c: parseInt(this.state.CMYK_C) / 100,
       m: parseInt(this.state.CMYK_M) / 100,
       y: parseInt(this.state.CMYK_Y) / 100,
@@ -118,8 +119,10 @@ class ColorPicker extends React.Component {
       (this.state.RGB_G / 255).toFixed(3) +
       " " +
       (this.state.RGB_B / 255).toFixed(3);
+    const htmlRGB =
+      this.state.RGB_R + "," + this.state.RGB_G + "," + this.state.RGB_B;
     this.props.uiAddColorHandler({
-      color: { htmlRGB: this.state.Hex, RGB, CMYK },
+      color: { htmlRGB, RGB, CMYK },
       activeTab: this.props.tabType
     });
 
@@ -127,7 +130,7 @@ class ColorPicker extends React.Component {
   };
 
   closeWndHanlder = () => {
-    $("#colorPickerColorId").chromoselector("setColor", "rgb(0,0,0)");
+    jQuery("#colorPickerColorId").chromoselector("setColor", "rgb(0,0,0)");
 
     this.props.closePickerWnd();
   };

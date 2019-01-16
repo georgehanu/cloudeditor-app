@@ -125,7 +125,8 @@ const Players = props => {
         )}
         {show("NAME") && (
           <td style={{ ...fupaTd }}>
-            {formatName(el.player)} (<span>{el.player.jerseyNumber}</span>)
+            {formatName(el.player.firstName + " " + el.player.lastName)} (
+            <span>{el.player.jerseyNumber}</span>)
           </td>
         )}
         {show("COUNTRY") && (

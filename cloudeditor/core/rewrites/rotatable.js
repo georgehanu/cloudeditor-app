@@ -1,5 +1,5 @@
 const $ = require("jquery");
-(function($, undefined) {
+(function($) {
   $.widget("ui.rotatable", $.ui.mouse, {
     options: {
       addClasses: true,
@@ -56,7 +56,7 @@ const $ = require("jquery");
       handle.bind("mousedown", this.listeners.startRotate);
       handle.appendTo(this.element);
 
-      if (this.options.angle != false) {
+      if (this.options.angle !== false) {
         this.elementCurrentAngle = this.options.angle;
         this.performRotation(this.elementCurrentAngle);
       } else {
@@ -91,7 +91,7 @@ const $ = require("jquery");
       var elementCentreY = elementOffset.top + this.element.height() / 2;
       /*var elementCentreX = elementOffset.left;
             var elementCentreY = elementOffset.top + this.element.height();*/
-      return Array(elementCentreX, elementCentreY);
+      return [elementCentreX, elementCentreY];
     },
 
     dragStart: function(event) {
@@ -150,7 +150,7 @@ const $ = require("jquery");
       // Plugins callbacks need to be called first.
       this._propagate("rotate", event);
 
-      if (previousRotateAngle != rotateAngle) {
+      if (previousRotateAngle !== rotateAngle) {
         this._trigger("rotate", event, this.ui());
         this.hasRotated = true;
       }

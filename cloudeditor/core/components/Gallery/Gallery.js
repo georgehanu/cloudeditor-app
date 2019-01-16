@@ -15,7 +15,11 @@ const gallery = props => {
       return (
         <li className="uploadGalleryLi" key={index}>
           <LazyLoad>
-            <GalleryItem {...el} deleteAsset={props.onDeleteAssetHandler} />
+            <GalleryItem
+              {...el}
+              type={props.type}
+              deleteAsset={props.onDeleteAssetHandler}
+            />
           </LazyLoad>
         </li>
       );

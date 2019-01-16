@@ -11,7 +11,7 @@ const ChangeShapeWnd = props => {
   return (
     <div className="ChangeShapeWnd">
       <div className="ChangeShapeImageContainer">
-        <img src={props.image} className="ChangeShapeImage" />
+        <img src={props.image} className="ChangeShapeImage" alt="" />
       </div>
       <div className="ChangeShapeInvertThreshold">
         <span>Umkehren</span>

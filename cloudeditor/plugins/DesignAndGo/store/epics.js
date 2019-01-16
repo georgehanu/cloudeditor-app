@@ -22,7 +22,6 @@ module.exports = {
       ofType(DAG_UPLOAD_IMAGE),
       mergeMap(action$ =>
         Observable.create(obs => {
-          console.log("Sssss");
           let serverData = new FormData();
           serverData.append("fileToUpload", action$.payload.image);
           axios
@@ -43,7 +42,6 @@ module.exports = {
               obs.complete();
             })
             .catch(error => {
-              console.log(error, "ERROR");
               obs.next({
                 type: DAG_UPLOAD_IMAGE_FAILED,
                 payload: "Error message: " + error.message
@@ -80,7 +78,6 @@ module.exports = {
               obs.complete();
             })
             .catch(error => {
-              console.log(error, "ERROR");
               obs.next({
                 type: DAG_SIGNIN_FAILED,
                 payload: "Error message: " + error.message

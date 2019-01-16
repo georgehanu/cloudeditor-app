@@ -1,4 +1,3 @@
-const path = require("path");
 const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
@@ -19,10 +18,12 @@ const build = config => {
     sourcemaps,
     fileLoaderDirs,
     cleanDistDir,
-    cssPrefix
+    cssPrefix,
+    copyFrom
   } = config;
   return {
     entry,
+    context: config.contentBase,
     output: {
       path: paths.dist,
       publicPath,
@@ -72,7 +73,18 @@ const build = config => {
                     prefix: cssPrefix,
                     exclude: [".cloudeditor", "body", "html"].concat(
                       cssPrefix ? [cssPrefix] : []
-                    )
+                    ),
+                    transform: function(prefix, selector, prefixedSelector) {
+                      if (
+                        selector.startsWith(".sweet-overlay") ||
+                        selector.startsWith(".sweet-alert") ||
+                        selector.startsWith(".rc-")
+                      ) {
+                        return selector;
+                      } else {
+                        return prefixedSelector;
+                      }
+                    }
                   }),
                   autoprefixer({
                     browsers: ["last 4 versions"]
@@ -147,20 +159,17 @@ const build = config => {
                 var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
                */
           },
-          {
-            from: "./" + namespace + "/core/assets/tinymce",
-            to: "./tinymce"
-          },
-          {
-            from: "./" + namespace + "/core/assets/chromoselector",
-            to: "./chromoselector"
-          }
+          ...copyFrom
         ],
         { debug: prod ? "" : "" }
       )
     ],
     devServer: {
-      port: config.port
+      port: config.port,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*"
+      }
     },
     stats: "none" //https://webpack.js.org/configuration/stats/
   };

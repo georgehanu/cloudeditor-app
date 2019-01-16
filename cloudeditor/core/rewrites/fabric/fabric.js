@@ -1,10 +1,10 @@
 const { fabric } = require("fabric");
-const logger = require("../../utils/LoggerUtils");
 const uuidv4 = require("uuid/v4");
-const { forEach } = require("ramda");
+var WebFont = require("webfontloader");
 fabric.util.object.extend(fabric.StaticCanvas.prototype, {
   snap: 10,
-  canvasScale: 1,
+  // canvasScale: 1,
+  scale: 1,
   canvasContainer: "",
   canvasOffsetX: 0,
   canvasOffsetY: 0,
@@ -14,11 +14,17 @@ fabric.util.object.extend(fabric.StaticCanvas.prototype, {
   setCanvasOffsetX: function(offsetX) {
     this.canvasOffsetX = offsetX;
   },
-  setCanvasScale: function(canvasScale) {
-    this.canvasScale = canvasScale;
+  // setCanvasScale: function(canvasScale) {
+  //   this.canvasScale = canvasScale;
+  // },
+  // getCanvasScale: function() {
+  //   return this.canvasScale;
+  // },
+  setScale: function(scale) {
+    this.scale = scale;
   },
-  getCanvasScale: function() {
-    return this.canvasScale;
+  getScale: function() {
+    return this.scale;
   },
   getCanvasOffsetX: function() {
     return this.canvasOffsetX;
@@ -54,7 +60,11 @@ fabric.util.object.extend(fabric.Object.prototype, {
   ignoreSnap: false,
   isLoaded: false,
   lockSkewingX: false,
-  lockSkewingY: false
+  lockSkewingY: false,
+  borderBlockColor: "",
+  borderBlockWidth: 0,
+  offsetLeft: 0,
+  offsetTop: 0
 });
 fabric.util.object.extend(fabric.Image.prototype, {
   cropX: 0,
@@ -183,14 +193,14 @@ fabric.util.object.extend(fabric.Image.prototype, {
   _initCanvasHandlers: function(canvas) {
     canvas._canvasImageSelectionClearedHandlder = function() {
       fabric.Image.prototype.exitEditingOnOthers(canvas);
-    }.bind(this);
+    };
     canvas._mouseUpImageHandler = function() {
       if (canvas._ImageInstances) {
         canvas._ImageInstances.forEach(function(obj) {
           obj.__isMousedown = 0;
         });
       }
-    }.bind(this);
+    };
     canvas.on(
       "before:selection:cleared",
       canvas._canvasImageSelectionClearedHandlder
@@ -381,11 +391,11 @@ fabric.util.object.extend(fabric.Image.prototype, {
 
     if (key in this._dimensionAffectingProps) {
       if (
-        oldScaleX != this.scaleX ||
-        oldScaleY != this.scaleY ||
-        oldWidth != this.width ||
-        oldHeight != this.height ||
-        oldLeftSlider != this.leftSlider
+        oldScaleX !== this.scaleX ||
+        oldScaleY !== this.scaleY ||
+        oldWidth !== this.width ||
+        oldHeight !== this.height ||
+        oldLeftSlider !== this.leftSlider
       ) {
         this._setViewBox({});
         this.setCoords();
@@ -425,10 +435,10 @@ fabric.util.object.extend(fabric.Image.prototype, {
       canvasW,
       rBlockRatio = imageMargins.width / imageMargins.height,
       imageRatio = this._element.width / this._element.height;
-    if (cw == 0 || ch == 0) {
+    if (cw === 0 || ch === 0) {
       switch (this.fitMethod) {
         case "contain":
-          if (cw == 0 || ch == 0) {
+          if (cw === 0 || ch === 0) {
             if (imageRatio > rBlockRatio) {
               canvasW = this.width;
               canvasH = (this.width / imageRatio / this.scaleY) * this.scaleX;
@@ -481,6 +491,8 @@ fabric.util.object.extend(fabric.Image.prototype, {
           canvasW = this.width;
           canvasH = this.height;
           break;
+        default:
+          break;
       }
     }
 
@@ -506,7 +518,10 @@ fabric.Object.prototype.getMainProps = function() {
     cropX: this.cropX,
     cropY: this.cropY,
     cropW: this.cropW,
-    cropH: this.cropH
+    cropH: this.cropH,
+    offsetLeft: this.offsetLeft,
+    offsetTop: this.offsetTop,
+    scale: this.scale
   };
 };
 fabric.Image.prototype.initialize = (function(initialize) {
@@ -533,10 +548,10 @@ fabric.Image.prototype._renderFill = (function(_renderFill) {
     let elementToDraw = this._element,
       cotrast_brightness = null;
 
-    if (this.brightness != 0) {
+    if (this.brightness !== 0) {
       cotrast_brightness = "brightness(" + (100 + this.brightness) + "%) ";
     }
-    if (this.contrast != 0) {
+    if (this.contrast !== 0) {
       cotrast_brightness += "contrast(" + (100 + this.contrast) + "%)";
     }
     if (cotrast_brightness) {
@@ -572,11 +587,14 @@ fabric.ActiveSelection.prototype.initialize = (function(_initialize) {
 
 fabric.Textbox.prototype.getMainProps = function() {
   return fabric.util.object.extend(this.callSuper("getMainProps"), {
-    fontSize: this.fontSize,
+    fontSize: this.getFontSizePdf(),
     text: this.text,
     textAlign: this.textAlign,
     vAlign: this.vAlign
   });
+};
+fabric.Textbox.prototype.getFontSizePdf = function() {
+  return this.fontSize / this.scale;
 };
 fabric.Object.prototype.render = (function(_render) {
   return function(ctx) {
@@ -584,9 +602,26 @@ fabric.Object.prototype.render = (function(_render) {
       return;
     }
     _render.call(this, ctx);
+    this.renderBorderBlock(ctx);
   };
 })(fabric.Object.prototype.render);
+fabric.Object.prototype.renderBorderBlock = function(ctx) {
+  if (this.borderBlockWidth) {
+    ctx.save();
+    var center = this.getCenterPoint(),
+      wh = this._calculateCurrentDimensions(),
+      vpt = this.canvas.viewportTransform;
+    ctx.translate(center.x, center.y);
+    ctx.scale(1 / vpt[0], 1 / vpt[3]);
+    ctx.rotate(fabric.util.degreesToRadians(this.angle));
 
+    ctx.lineWidth = this.borderBlockWidth;
+    ctx.strokeStyle = this.borderBlockColor;
+    ctx.strokeRect(-wh.x / 2, -wh.y / 2, wh.x, wh.y);
+    ctx.restore();
+    return this;
+  }
+};
 fabric.Graphics = fabric.util.createClass(fabric.Group, {
   type: "graphics",
   initialize: function(objects, options, isAlreadyGrouped) {
@@ -687,14 +722,50 @@ fabric.Textbox.prototype.initDimensions = function() {
   // If fontResizing mode enabled
   var textWidth = this.calcTextWidth();
   var textHeight = this.calcTextHeight();
+  var unit = 1;
   if (textWidth > this.width) {
-    this.fontSize -= 1;
-    this.width = this.maxWidth;
+    this.fontSize -= unit;
+    this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
+
     this.initDimensions();
   } else if (textHeight > this.height) {
-    this.fontSize -= 1;
+    this.fontSize -= unit;
+    this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
     this.initDimensions();
   }
+};
+fabric.Textbox.prototype.set = function(key, value) {
+  this.callSuper("set", key, value);
+  var needsDims = false;
+  if (typeof key === "object") {
+    for (var _key in key) {
+      needsDims =
+        needsDims || this._dimensionAffectingProps.indexOf(_key) !== -1;
+    }
+  } else {
+    needsDims = this._dimensionAffectingProps.indexOf(key) !== -1;
+  }
+  if (needsDims) {
+    if (this.useDefaultFontSize || false) {
+      const defaultFontZise = this.defaultFontZise || 0;
+      this.fontSize =
+        defaultFontZise > this.fontSize ? defaultFontZise : this.fontSize;
+    }
+    this.initDimensions();
+    this.setCoords();
+    if (
+      !this.__skipDimension &&
+      (key === "fontSize" || (typeof key === "object" && key.fontSize)) &&
+      this.designerCallbacks &&
+      typeof this.designerCallbacks.updateObjectProps === "function"
+    ) {
+      this.designerCallbacks.updateObjectProps({
+        id: this.id,
+        props: { fontSize: this.getFontSizePdf() }
+      });
+    }
+  }
+  return this;
 };
 fabric.Textbox.prototype.initialize = (function(_initialize) {
   return function(text, options) {
@@ -705,24 +776,156 @@ fabric.Textbox.prototype.initialize = (function(_initialize) {
     ) {
       this.designerCallbacks.updateObjectProps({
         id: this.id,
-        props: {
-          fontSize: this.fontSize
-        }
+        //props: { fontSize: this.getFontSizePdf(), text: this.text }
+        props: { fontSize: this.getFontSizePdf() }
       });
     }
   };
 })(fabric.Textbox.prototype.initialize);
 fabric.util.object.extend(fabric.Textbox.prototype, {
-  vAlign: "top" //center,bottom
+  vAlign: "top" //center||middle,bottom
 });
 fabric.Textbox.prototype._getTopOffset = function() {
   switch (this.vAlign) {
     case "top":
       return -this.height / 2;
+    case "middle":
+      return -this.calcTextHeight() / 2;
     case "center":
       return -this.calcTextHeight() / 2;
     case "bottom":
       return this.height / 2 - this.calcTextHeight();
+    default:
+      return -this.height / 2;
   }
 };
+fabric.util.object.extend(fabric.util, {
+  fontsLoaded: function(object, callback) {
+    var fonts = [];
+    var processedFontsCount = 0;
+    if (object.fontFamily && typeof object.fontFamily === "string") {
+      fonts.push(object.fontFamily);
+    }
+    if (object.styles && typeof object.styles === "object") {
+      var objStyles = object.styles;
+      for (var i in objStyles) {
+        // per line
+        if (objStyles.hasOwnProperty(i)) {
+          var lineStyles = objStyles[i];
+          for (var j in lineStyles) {
+            // per char
+            if (lineStyles.hasOwnProperty(j)) {
+              if (
+                lineStyles[j].fontFamily &&
+                typeof lineStyles[j].fontFamily === "string"
+              ) {
+                fonts.push(lineStyles[j].fontFamily);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    if (fonts.length <= 0) {
+      callback && callback(null);
+      return;
+    }
+    var fontCount = fonts.length,
+      loadedFonts = [];
+    WebFont &&
+      WebFont.load({
+        custom: {
+          families: fonts
+        },
+        fontactive: function(familyName) {
+          if (fontCount === processedFontsCount + 1) {
+            loadedFonts.push(familyName);
+            callback && callback(loadedFonts);
+          } else {
+            processedFontsCount += 1;
+            loadedFonts.push(familyName);
+          }
+        },
+        fontinactive: function() {
+          if (fontCount === processedFontsCount + 1) {
+            callback && callback(null);
+          } else {
+            processedFontsCount += 1;
+          }
+        }
+      });
+  }
+});
+fabric.Textbox.prototype.fromObject = (function(_fromObject) {
+  return function(object, callback) {
+    fabric.util.fontsLoaded(
+      object,
+      (function(object, callback) {
+        return function(loadedFonts) {
+          return _fromObject.call(this, object, callback);
+        };
+      })(object, callback)
+    );
+  };
+})(fabric.Textbox.prototype.fromObject);
+
+fabric.IText.prototype.getSelectionStartFromPointer = function(e) {
+  var mouseOffset = this.getLocalPointer(e),
+    prevWidth = 0,
+    width = 0,
+    height = 0,
+    charIndex = 0,
+    lineIndex = 0,
+    lineLeftOffset,
+    line;
+  switch (this.vAlign) {
+    case "top":
+      height = 0;
+      break;
+    case "middle":
+      height = (this.height - this.calcTextHeight()) / 2;
+      break;
+    case "center":
+      height = (this.height - this.calcTextHeight()) / 2;
+      break;
+    case "bottom":
+      height = this.height - this.calcTextHeight();
+      break;
+    default:
+      break;
+  }
+  for (var i = 0, len = this._textLines.length; i < len; i++) {
+    if (height <= mouseOffset.y) {
+      height += this.getHeightOfLine(i) * this.scaleY;
+      lineIndex = i;
+      if (i > 0) {
+        charIndex += this._textLines[i - 1].length + 1;
+      }
+    } else {
+      break;
+    }
+  }
+  lineLeftOffset = this._getLineLeftOffset(lineIndex);
+  width = lineLeftOffset * this.scaleX;
+  line = this._textLines[lineIndex];
+  for (var j = 0, jlen = line.length; j < jlen; j++) {
+    prevWidth = width;
+    // i removed something about flipX here, check.
+    width += this.__charBounds[lineIndex][j].kernedWidth * this.scaleX;
+    if (width <= mouseOffset.x) {
+      charIndex++;
+    } else {
+      break;
+    }
+  }
+  return this._getNewSelectionStartFromOffset(
+    mouseOffset,
+    prevWidth,
+    width,
+    charIndex,
+    jlen
+  );
+};
+
 module.exports = { fabric };

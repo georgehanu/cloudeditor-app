@@ -18,14 +18,16 @@ class SideBarContainer extends React.Component {
   showPlugin = pluginIndex => {
     if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
       this.setState({ showPane: false, pluginIndex: null }, () => {
-        rerenderPage();
+        this.props.addContainerClasses("sideBar", [], true);
       });
-      this.props.addContainerClasses("sideBar", []);
     } else {
       this.setState({ showPane: true, pluginIndex }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "sideBar",
+          ["sidebarContainerExpand"],
+          true
+        );
       });
-      this.props.addContainerClasses("sideBar", ["sidebarContainerExpand"]);
     }
   };
 
@@ -75,7 +77,6 @@ class SideBarContainer extends React.Component {
   };
 
   render() {
-    const Container = this.props.container;
     const className =
       this.props.className +
       " " +

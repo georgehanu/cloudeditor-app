@@ -2,12 +2,13 @@ const React = require("react");
 const PropTypes = require("prop-types");
 const { componentFromProp } = require("recompose");
 const PluginsUtils = require("../utils/PluginsUtils");
-const logger = require("../utils/LoggerUtils");
 const { hot } = require("react-hot-loader");
+const { ReactReduxContext } = require("react-redux");
 
 const Component = componentFromProp("component");
 
 class PluginsContainer extends React.Component {
+  static contextType = ReactReduxContext;
   state = {
     additionalClasses: []
   };
@@ -19,7 +20,7 @@ class PluginsContainer extends React.Component {
       plugin
     );
   };
-  addContainerClasses = (pluginName, newClassesArray) => {
+  addContainerClasses = (pluginName, newClassesArray, resizePageEvent) => {
     let newClasses = [...this.state.additionalClasses];
     let index = newClasses.findIndex((el, index) => {
       return el.pluginName === pluginName;
@@ -29,11 +30,16 @@ class PluginsContainer extends React.Component {
     } else {
       newClasses[index] = { pluginName, pluginClasses: newClassesArray };
     }
-    this.setState({ additionalClasses: newClasses });
+    /* Change to have an additional param */
+    this.setState({ additionalClasses: newClasses }, () => {
+      if (resizePageEvent) {
+        var event = new Event("resizePage");
+        window.dispatchEvent(event);
+      }
+    });
   };
 
   renderPlugins = plugins => {
-    logger.info("plugins", plugins);
     return plugins
       .filter(
         Plugin =>
@@ -51,7 +57,6 @@ class PluginsContainer extends React.Component {
         <Plugin.impl
           key={Plugin.id}
           {...this.props.params}
-          {...Plugin.cfg}
           pluginCfg={Plugin.cfg}
           items={Plugin.items}
           addContainerClasses={this.addContainerClasses}
@@ -135,10 +140,6 @@ PluginsContainer.defaultProps = {
   style: {},
   className: "pluginsContainer",
   defaultMode: "desktop"
-};
-
-PluginsContainer.contextTypes = {
-  store: PropTypes.object
 };
 
 module.exports = hot(module)(PluginsContainer);

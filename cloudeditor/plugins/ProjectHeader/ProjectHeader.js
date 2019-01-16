@@ -5,28 +5,32 @@ const assign = require("object-assign");
 
 const { titleSelector } = require("../../core/stores/selectors/project");
 const {
+  getProductNameSelector
+} = require("../../core/stores/selectors/productinformation");
+const {
   previewLoadPage,
   previewDisableMode
 } = require("../PrintPreview/store/actions");
 
+require("./ProjectHeader.css");
 class ProjectHeader extends React.Component {
   state = {
     preview: false
   };
   showPrintPreview = () => {
-    this.props.addContainerClasses("PrintPreview", [
-      this.state.preview === false ? "showPrintPreview" : ""
-    ]);
-
-    if (this.state.preview === false) {
+    const oldPreview = this.state.preview;
+    if (oldPreview === false) {
       this.props.previewLoadPage(0);
     } else {
       this.props.previewDisableMode();
     }
 
     this.setState({ preview: !this.state.preview }, () => {
-      const event = new Event("resizePage");
-      window.dispatchEvent(event);
+      this.props.addContainerClasses(
+        "PrintPreview",
+        [oldPreview === false ? "showPrintPreview" : ""],
+        true
+      );
     });
   };
 
@@ -57,7 +61,7 @@ class ProjectHeader extends React.Component {
               25 {this.props.t("pieces")} 48.92 €
             </div>
             <div className="projectRrightDescription">
-              Stadionzeitun DIN A5, 16 {this.props.t("pages")}
+              {this.props.productName}, 16 {this.props.t("pages")}
             </div>
           </div>
           <div className="projectRightAddContainer">
@@ -73,7 +77,8 @@ class ProjectHeader extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    projectTitle: titleSelector(state)
+    projectTitle: titleSelector(state),
+    productName: getProductNameSelector(state)
   };
 };
 

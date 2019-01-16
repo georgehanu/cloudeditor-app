@@ -3,7 +3,7 @@ const { withNamespaces } = require("react-i18next");
 
 require("./InsertInProduction.css");
 
-const InsertInProduction = props => {
+const insertInProduction = props => {
   return (
     <div className="InsertInProductionContainer">
       <button onClick={() => props.handleClick()}>
@@ -13,4 +13,4 @@ const InsertInProduction = props => {
   );
 };
 
-module.exports = withNamespaces("fupa")(InsertInProduction);
+module.exports = withNamespaces("fupa")(insertInProduction);

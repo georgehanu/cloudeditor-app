@@ -7,10 +7,10 @@
   margin-left: -250px;
   /*overflow-y: auto; MIKI needed to show pane from sidebar*/
   background: #000;
-  -webkit-transition: all 0.5s ease;
+  /*-webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  transition: all 0.5s ease;*/
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -155,6 +155,7 @@
   z-index: -1;
   background-color: #1b2939;
   padding: 5px 0 5px 0px;
+  overflow: visible;
 }
 
 #sidebar-wrapper-container .paneHidden {
@@ -205,6 +206,8 @@
   outline: none;
   color: black;
   margin-top: 5px;
+  right: -13px;
+  position: absolute;
 }
 
 .backButtonContainer button:hover {
@@ -355,13 +358,13 @@
   display: none;
 }
 .pageSelectorMinimized .canvasContainer {
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 }
 .pageSelectorNormal .canvasContainer {
-  padding-bottom: 170px;
+  padding-bottom: 230px;
 }
 .pageSelectorExtended .canvasContainer {
-  padding-bottom: 320px;
+  padding-bottom: 360px;
 }
 .pageSelectorExtended .pageSelectorContainer .canvasContainer,
 .pageSelectorNormal .pageSelectorContainer .canvasContainer,
@@ -386,4 +389,9 @@
 
 #sidebar-wrapper-container > ul {
   overflow: auto;
+}
+
+#sidebar-wrapper-container .paneContainer.paneHidden button {
+  right: 0px;
+  display: none;
 }

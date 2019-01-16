@@ -237,9 +237,9 @@ const PluginsUtils = {
   getPluginDescriptor: (store, plugins, pluginsConfig, pluginDef) => {
     const name = is(Object, pluginDef) ? pluginDef.name : pluginDef;
     const id = is(Object, pluginDef) ? pluginDef.id : null;
-    const stateSelector = is(Object, pluginDef)
-      ? pluginDef.stateSelector
-      : id || undefined;
+    // const stateSelector = is(Object, pluginDef)
+    //   ? pluginDef.stateSelector
+    //   : id || undefined;
     const isDefault = is(Object, pluginDef)
       ? (typeof pluginDef.isDefault === "undefined" && true) ||
         pluginDef.isDefault

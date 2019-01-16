@@ -4,7 +4,9 @@ const {
   clone,
   reduce,
   insertAll,
-  merge
+  merge,
+  without,
+  head
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -15,6 +17,7 @@ const {
   REMOVE_ACTION_SELECTION,
   UPDATE_SELECTION_OBJECTS_COORDS,
   UPDATE_OBJECT_PROPS,
+  UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
   UPDATE_ACTIVE_SELECTION_PROPS,
   UPDATE_LAYER_PROP,
   DUPLICATE_OBJ,
@@ -25,7 +28,31 @@ const {
   CHANGE_RANDOM_PAGE,
   CHANGE_PAGES_ORDER,
   ADD_PAGES,
-  ADD_OBJECT
+  ADD_OBJECT,
+  ADD_TABLE,
+  ADD_OBJECT_MIDDLE,
+  DELETE_PAGE,
+
+  UPDATE_HEADERCONFIG_PROPS,
+  CHANGE_MODE_HEADER_FOOTER,
+  UPDATE_FOOTERCONFIG_PROPS,
+  RESTORE_PAGES,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -39,8 +66,14 @@ const addPages = (state, action) => {
   const { nrPagesToInsert, location } = action;
   let newIds = [];
   let newOrder = clone(pagesOrder);
+  const firstPage = newPages[head(pagesOrder)];
+  const firstPageWidth = firstPage["width"];
+  const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
-    const emptyPage = ProjectUtils.getEmptyPage();
+    const emptyPage = ProjectUtils.getEmptyPage({
+      width: firstPageWidth,
+      height: firstPageHeight
+    });
     const { id } = emptyPage;
     newPages[id] = emptyPage;
     newIds.push(id);
@@ -68,6 +101,28 @@ const addPages = (state, action) => {
     pagesOrder: newOrder
   };
 };
+
+const restorePages = (state, action) => {
+  return {
+    ...state,
+    pages: {
+      ...action.pages
+    },
+    pagesOrder: [...action.pagesOrder],
+    activePage: action.activePage
+  };
+};
+const deletePage = (state, action) => {
+  const { page_id } = action;
+  const { pages, pagesOrder } = state;
+  const newOrder = without(page_id, pagesOrder);
+  const newPages = without(page_id, pages);
+  return {
+    ...state,
+    pages: newPages,
+    pagesOrder: newOrder
+  };
+};
 const changeProjectTitle = (state, action) => {
   return {
     ...state,
@@ -76,10 +131,32 @@ const changeProjectTitle = (state, action) => {
 };
 
 const changePagesOrder = (state, action) => {
-  return { ...state, pagesOrder: action.pages, activePage: action.page_id };
+  return {
+    ...state,
+    pagesOrder: [...action.pages],
+    activePage: action.page_id
+  };
 };
 
 const addObject = (state, action) => {
+  const object = ProjectUtils.getEmptyObject(action);
+  const pageId = state.activePage;
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
+    objects: {
+      ...state.objects,
+      [object.id]: object
+    }
+  };
+};
+const addTable = (state, action) => {
   const object = ProjectUtils.getEmptyObject(action);
   const pageId = state.activePage;
   return {
@@ -137,6 +214,7 @@ const addObjectIdToSelected = (state, payload) => {
 const addObjectIdActionSelected = (state, payload) => {
   return { ...state, selectedActionObjectsIds: [payload] };
 };
+
 const updateObjectProps = (state, payload) => {
   return {
     ...state,
@@ -146,6 +224,57 @@ const updateObjectProps = (state, payload) => {
     }
   };
 };
+const updateHeaderConfigProps = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        header: {
+          ...state.configs.document.header,
+          [payload.prop]: payload.value
+        }
+      }
+    }
+  };
+};
+const updateHeaderFooterConfigProps = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        header: {
+          ...state.configs.document.header,
+          [payload.prop]: payload.value
+        },
+        footer: {
+          ...state.configs.document.footer,
+          [payload.prop]: payload.value
+        }
+      }
+    }
+  };
+};
+
+const updateFooterConfigProps = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        footer: {
+          ...state.configs.document.footer,
+          [payload.prop]: payload.value
+        }
+      }
+    }
+  };
+};
+
 const removeSelection = (state, payload) => {
   let objectsChanges = [];
   if (payload.objectProps) {
@@ -175,12 +304,11 @@ const removeActionSelection = (state, payload) => {
 };
 
 const config = ConfigUtils.getDefaults();
-const emptyProject = ProjectUtils.getRandomProject(config.project);
-//const emptyProject = ProjectUtils.getEmptyProject(config.project);
+//const emptyProject = ProjectUtils.getRandomProject(config.project);
+const emptyProject = ProjectUtils.getEmptyProject(config.project);
 
 const initialState = {
-  ...emptyProject,
-  ui: ProjectUtils.getEmptyUI()
+  ...emptyProject
 };
 
 const swap = (index1, index2, list) => {
@@ -201,6 +329,49 @@ const swap = (index1, index2, list) => {
 
   return result;
 };
+addObjectMiddle = (state, action) => {
+  const pageId = state.activePage;
+  const page = state.pages[pageId];
+  const { width, height } = page;
+  let blockWidth = width / 6;
+  let blockHeight = blockWidth * (height / width);
+  if (width > height) {
+    blockHeight = height / 6;
+    blockWidth = blockHeight * (width / height);
+  }
+  const left = (width - blockWidth) / 2;
+  const top = (height - blockHeight) / 2;
+  const defaultBlock = {
+    ...action,
+    left,
+    top,
+    width: blockWidth,
+    height: blockHeight
+  };
+  const object = ProjectUtils.getEmptyObject(defaultBlock);
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [pageId]: {
+        ...state.pages[pageId],
+        objectsIds: append(object.id, state.pages[pageId].objectsIds)
+      }
+    },
+    objects: {
+      ...state.objects,
+      [object.id]: object
+    }
+  };
+};
+
+handleLoad = (state, loadData) => {
+  return { ...state, load: { ...state.load, ...loadData } };
+};
+
+handleSave = (state, saveData) => {
+  return { ...state, save: { ...state.save, ...saveData } };
+};
 
 module.exports = handleActions(
   {
@@ -209,6 +380,9 @@ module.exports = handleActions(
     },
     [ADD_OBJECT]: (state, action) => {
       return addObject(state, action.payload);
+    },
+    [ADD_TABLE]: (state, action) => {
+      return addTable(state, action.payload);
     },
     [ADD_PAGES]: (state, action) => {
       return addPages(state, action.payload);
@@ -223,7 +397,6 @@ module.exports = handleActions(
       return changeGroups(state, action.payload);
     },
     [CHANGE_PAGE]: (state, action) => {
-      console.log(action, "ACTION");
       return changePage(state, action.payload);
     },
     [ADD_OBJECT_TO_PAGE]: (state, action) => {
@@ -237,6 +410,18 @@ module.exports = handleActions(
     },
     [UPDATE_OBJECT_PROPS]: (state, action) => {
       return updateObjectProps(state, action.payload);
+    },
+    [UPDATE_OBJECT_PROPS_NO_UNDO_REDO]: (state, action) => {
+      return updateObjectProps(state, action.payload);
+    },
+    [UPDATE_HEADERCONFIG_PROPS]: (state, action) => {
+      return updateHeaderConfigProps(state, action.payload);
+    },
+    [CHANGE_MODE_HEADER_FOOTER]: (state, action) => {
+      return updateHeaderFooterConfigProps(state, action.payload);
+    },
+    [UPDATE_FOOTERCONFIG_PROPS]: (state, action) => {
+      return updateFooterConfigProps(state, action.payload);
     },
     [REMOVE_SELECTION]: (state, action) => {
       return removeSelection(state, action.payload);
@@ -311,7 +496,6 @@ module.exports = handleActions(
           ...newObjectsId
         ];
       }
-
       return {
         ...state,
         pages: {
@@ -331,10 +515,7 @@ module.exports = handleActions(
         top: originalObj.top + 30,
         left: originalObj.left + 30
       };
-      return addObjectToPage(state, {
-        object: duplicateObj,
-        pageId: state.activePage
-      });
+      return addObject(state, duplicateObj);
     },
     [DELETE_OBJ]: (state, action) => {
       let newObjects = { ...state.objects };
@@ -358,6 +539,105 @@ module.exports = handleActions(
         objects: newObjects,
         selectedObjectsIds: []
       };
+    },
+    [ADD_OBJECT_MIDDLE]: (state, action) => {
+      return addObjectMiddle(state, action.payload);
+    },
+    [DELETE_PAGE]: (state, action) => {
+      return deletePage(state, action.payload);
+    },
+    [RESTORE_PAGES]: (state, action) => {
+      return restorePages(state, action.payload);
+    },
+    [PROJ_SAVE_START]: (state, action) => {
+      return handleSave(state, {
+        loading: true
+      });
+    },
+    [PROJ_SAVE_SUCCESS]: (state, action) => {
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          loading: false,
+          errorMessage: action.message
+        },
+        title: action.name,
+        description: action.description,
+        projectId: state.projectId !== null ? state.projectId : action.projectId
+      };
+    },
+    [PROJ_SAVE_FAILED]: (state, action) => {
+      return handleSave(state, {
+        loading: false,
+        errorMessage: action.payload
+      });
+    },
+    [PROJ_SAVE_CLEAR_MESSAGE]: (state, action) => {
+      return handleSave(state, { errorMessage: null });
+    },
+    [PROJ_LOAD_START]: (state, action) => {
+      return handleLoad(state, { loading: true });
+    },
+    [PROJ_LOAD_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loading: false,
+        errorMessage: null,
+        loadedProjects: action.data
+      });
+    },
+    [PROJ_LOAD_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loading: false,
+        errorMessage: action.payload
+      });
+    },
+    [PROJ_LOAD_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessage: null });
+    },
+    [PROJ_LOAD_DELETE_START]: (state, action) => {
+      return handleLoad(state, { loadingDelete: true });
+    },
+    [PROJ_LOAD_DELETE_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadedProjects: state.load.loadedProjects.filter(function(project) {
+          return project.projectId !== action.projectId;
+        })
+      });
+    },
+    [PROJ_LOAD_DELETE_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: action.payload
+      });
+    },
+    [PROJ_LOAD_DELETE_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageDelete: null });
+    },
+    [PROJ_LOAD_PROJECT_START]: (state, action) => {
+      return handleLoad(state, { loadingProject: true });
+    },
+    [PROJ_LOAD_PROJECT_SUCCESS]: (state, action) => {
+      return {
+        ...state,
+        load: {
+          ...state.load,
+          loadingProject: false,
+          errorMessageProject: null
+        },
+        projectId: action.projectId
+      };
+    },
+    [PROJ_LOAD_PROJECT_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingProject: false,
+        errorMessageProject: action.payload
+      });
+    },
+    [PROJ_LOAD_PROJECT_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageProject: null });
     }
   },
   initialState

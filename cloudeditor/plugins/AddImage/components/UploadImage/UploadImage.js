@@ -20,7 +20,6 @@ class UploadImage extends React.Component {
       return;
     }
     this.props.uploadImage(acceptedFiles);
-    console.log(acceptedFiles);
   };
 
   onCancel = () => {

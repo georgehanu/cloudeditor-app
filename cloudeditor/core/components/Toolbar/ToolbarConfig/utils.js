@@ -59,8 +59,7 @@ const imageQuality = (activeItem, options) => {
     result =
       Math.sqrt(Math.pow(cropWidth, 2) + Math.pow(cropHeight, 2)) /
       Math.sqrt(Math.pow(width_i, 2) + Math.pow(height_i, 2));
-  console.log("image dpi is ", result);
-  return result;
+  return 300;
 };
 
 const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
@@ -99,21 +98,19 @@ const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
 
 const LoadImageAdditionalInfo = activeItem => {
   return {
-    [Types.CHANGE_SHAPE_WND]: { image: activeItem.src, startValue: 180 },
+    [Types.CHANGE_SHAPE_WND]: { image: activeItem.image_src, startValue: 180 },
     [Types.SPECIAL_EFFECTS_WND]: {
-      image: activeItem.src,
-      brightnessValue: -20,
-      contrastValue: 80,
-      brightnessClass: "flip_horizontal",
-      brightnessFilter: "grayscale(1)"
+      image: activeItem.image_src,
+      brightnessValue: activeItem.brightness,
+      contrastValue: activeItem.contrast,
+      filter: activeItem.filter,
+      flip: activeItem.flip
     },
-    [Types.SLIDER_OPACITY_WND]: {
-      defaultValue: 75
-    }
+    [Types.SLIDER_OPACITY_WND]: { defaultValue: activeItem.imge_src }
   };
 };
 
-const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
+const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
   for (let groupIndex in toolbar.groups) {
     let group = toolbar.groups[groupIndex];
     for (let itemIndex in group.items) {
@@ -122,13 +119,13 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
       if (item.type === Types.POPTEXT_VALIGN) {
         item.selected = activeItem.vAlign + "_valign";
       } else if (item.type === Types.BUTTON_LEFT_ALIGNED) {
-        item.selected = activeItem.textAlign == "left";
+        item.selected = activeItem.textAlign === "left";
       } else if (item.type === Types.BUTTON_RIGHT_ALIGNED) {
-        item.selected = activeItem.textAlign == "right";
+        item.selected = activeItem.textAlign === "right";
       } else if (item.type === Types.BUTTON_CENTER_ALIGNED) {
-        item.selected = activeItem.textAlign == "center";
+        item.selected = activeItem.textAlign === "center";
       } else if (item.type === Types.BUTTON_JUSTIFY_ALIGNED) {
-        item.selected = activeItem.textAlign == "justify";
+        item.selected = activeItem.textAlign === "justify";
       } else if (item.type === Types.BUTTON_LETTER_BOLD) {
         item.selected = activeItem.bold;
       } else if (item.type === Types.BUTTON_LETTER_ITALIC) {
@@ -138,7 +135,7 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
       } else if (item.type === Types.COLOR_SELECTOR) {
         //item.color = activeItem.fill;
         item.color = activeItem.fillColor
-          ? activeItem.fillColor.htmlRGB
+          ? "rgb(" + activeItem.fillColor.htmlRGB + ")"
           : activeItem.fill;
       } else if (item.type === Types.SLIDER_TEXT_SPACEING) {
         item.defaultValue = parseInt(activeItem.charSpacing);
@@ -146,6 +143,15 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer) => {
         item.fontSize = activeItem.fontSize;
       } else if (item.type === Types.POPTEXT_FONT) {
         item.value = activeItem.fontFamily;
+        item.operation = Operation.NEW_DATA;
+        item.newData = fonts.map((el, index) => {
+          return {
+            value: el,
+            label: el,
+            className: "",
+            fontFamily: el
+          };
+        });
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -175,7 +181,7 @@ const LoadTextAdditionalInfo = activeItem => {
         [Types.COLOR_TAB_FG]: 0,
         [Types.COLOR_TAB_BG]: 2,
         [Types.COLOR_TAB_BORDER_COLOR]: null,
-        [Types.COLOR_TAB_BORDER_WIDTH]: 80
+        [Types.COLOR_TAB_BORDER_WIDTH]: activeItem.borderWidth || 0
       }
     }
   };
@@ -204,7 +210,7 @@ const CreatePayload = (activeitem, itemPayload) => {
       break;
     case Types.FILTER_CHOOSER:
       attrs = { filter: itemPayload.value };
-      if (itemPayload.value == "original") {
+      if (itemPayload.value === "original") {
         attrs = { filter: "", flip: "" };
       }
       break;
@@ -221,15 +227,30 @@ const CreatePayload = (activeitem, itemPayload) => {
       break;
 
     case Types.COLOR_TAB_FG:
-      attrs = { fillColor: itemPayload.value };
+      attrs = {
+        fillColor: {
+          colorSpace: activeitem.fillColor.colorSpace,
+          ...itemPayload.value
+        }
+      };
       break;
 
     case Types.COLOR_TAB_BG:
-      attrs = { bgColor: itemPayload.value };
+      attrs = {
+        bgColor: {
+          colorSpace: activeitem.bgColor.colorSpace,
+          ...itemPayload.value
+        }
+      };
       break;
 
     case Types.COLOR_TAB_BORDER_COLOR:
-      attrs = { borderColor: itemPayload.value };
+      attrs = {
+        borderColor: {
+          colorSpace: activeitem.bgColor.colorSpace,
+          ...itemPayload.value
+        }
+      };
       break;
 
     case Types.SLIDER_FONT_WND:
@@ -243,7 +264,18 @@ const CreatePayload = (activeitem, itemPayload) => {
       attrs = { fontSize: parseFloat(itemPayload.value) };
       break;
 
+    case "Brightness":
+      attrs = { brightness: parseFloat(itemPayload.value) };
+      break;
+
+    case "Contrast":
+      attrs = { contrast: parseFloat(itemPayload.value) };
+      break;
+
     case Types.POPTEXT_FONT:
+      attrs = { fontFamily: itemPayload.value };
+      break;
+    case Types.brightness:
       attrs = { fontFamily: itemPayload.value };
       break;
 
@@ -268,8 +300,8 @@ const CreatePayload = (activeitem, itemPayload) => {
       }
     case Types.SLIDER_INLINE_IMAGE:
       attrs = { leftSlider: itemPayload.value };
-      const resizeEvent = new Event("cropperUpdate");
-      document.dispatchEvent(resizeEvent);
+      break;
+    default:
       break;
   }
   return { id: activeitem.id, props: attrs };

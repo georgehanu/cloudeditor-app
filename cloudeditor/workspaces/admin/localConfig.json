@@ -2,7 +2,12 @@
   "plugins": {
     "mobile": ["Html5Renderer"],
     "desktop": [
-      "Html5Renderer",
+      {
+        "name": "Html5Renderer",
+        "cfg": {
+          "facingPages": false
+        }
+      },
       "Toolbar",
       {
         "name": "LiveHtml5Pagination",
@@ -13,7 +18,25 @@
       "SideBar",
       "AddImage",
       "AddPdf",
-      "Zoom"
+      "Layouts",
+      "Zoom",
+      {
+        "name": "Fupa",
+        "cfg": {
+          "additionalConfig": 123
+        }
+      },
+      "ProjectHeader",
+      "ProjectMenu",
+      "MenuItemMyProject",
+      "MenuItemPages",
+      "MenuItemTextImage",
+      "MenuItemUndoRedo",
+      "MenuItemCancel",
+      "MenuItemManual",
+      "MenuItemHeaderFooter",
+      "HelperLines",
+      "PrintPreview"
     ]
   },
   "mainComponent": {

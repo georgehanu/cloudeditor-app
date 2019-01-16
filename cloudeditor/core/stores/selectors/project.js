@@ -11,7 +11,6 @@ const {
   pipe,
   assocPath,
   takeLast,
-  values,
   head,
   keys,
   forEach,
@@ -33,6 +32,14 @@ const titleSelector = state =>
   pathOr("Empty project", ["project", "title"], state);
 
 /* Start Document Config Selectors */
+
+const displayOnePageSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "displayOnePage"],
+    state
+  );
+};
 const facingPagesSelector = state => {
   return pathOr(
     false,
@@ -64,12 +71,27 @@ const includeBoxesSelector = state => {
     state
   );
 };
+const useMagneticSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "useMagentic"],
+    state
+  );
+};
 const showTrimboxSelector = state => {
   return pathOr(
     false,
     ["project", "configs", "document", "showTrimbox"],
     state
   );
+};
+
+const headerConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "header"], state);
+};
+
+const footerConfigSelector = state => {
+  return pathOr(false, ["project", "configs", "document", "footer"], state);
 };
 /* End Document Config Selectors */
 
@@ -91,6 +113,15 @@ const bleedPagesConfigSelector = state => {
     state
   );
 };
+const tolerancePagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "tolerance"], state);
+};
+const blockActionsPagesConfigSelector = state => {
+  return pathOr({}, ["project", "configs", "pages", "blockActions"], state);
+};
+const deletePagePagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "allowDeletePage"], state);
+};
 /* End Pages Config Selectors */
 /* Start Objects Config Selectors */
 const objectsDefaultConfigSelector = state => {
@@ -103,7 +134,6 @@ const groupsSelector = state => {
 };
 
 const objectsSelectorSelector = state => {
-  console.log("1234");
   return (state && state.project && state.project.objects) || {};
 };
 
@@ -131,7 +161,7 @@ let getObjectsInGroup = (pageObjectsIds, allObjects, activePage) => {
   let result = {};
   result = pick(pageObjectsIds, allObjects);
   forEachObjIndexed(obj => {
-    if (obj.type == "group") {
+    if (obj.type === "group") {
       obj._elements = getObjectsInGroup(
         obj._objectsIds,
         allObjects,
@@ -156,7 +186,6 @@ const getPagesWithObjects = (
   activeGroupId,
   selectedPageId
 ) => {
-  const firstPage = pages[head(activeGroupPages)];
   let activePage = {
     id: activeGroupId,
     width: useTrimbox ? boxes["trimbox"]["left"] : 0,
@@ -183,7 +212,7 @@ const getPagesWithObjects = (
       objects: merge(activePage.objects, pageObjects),
       overlays: activePage.overlays
     };
-    if (currentPageId != selectedPageId) {
+    if (currentPageId !== selectedPageId) {
       const overlay = {
         group_id: activeGroupId,
         id: currentPageId,
@@ -192,7 +221,7 @@ const getPagesWithObjects = (
           ? boxes["trimbox"]["top"] + lastPage.height + activePage.height
           : lastPage.height + activePage.height,
         width:
-          lastPageId == currentPageId && useTrimbox
+          lastPageId === currentPageId && useTrimbox
             ? page.width + boxes["trimbox"]["right"]
             : page.width + initialWidth
       };
@@ -276,6 +305,39 @@ const selectedObjectSelector = createSelector(
   }
 );
 
+const projDescriptionSelector = state =>
+  pathOr("Project description", ["project", "description"], state);
+
+const projProjectIdSelector = state =>
+  pathOr(null, ["project", "projectId"], state);
+
+const projSaveLoadingSelector = state =>
+  pathOr(false, ["project", "save", "loading"], state);
+
+const projSaveErrorMessageSelector = state =>
+  pathOr(null, ["project", "save", "errorMessage"], state);
+
+const projLoadLoadingSelector = state =>
+  pathOr(false, ["project", "load", "loading"], state);
+
+const projLoadErrorMessageSelector = state =>
+  pathOr(null, ["project", "load", "errorMessage"], state);
+
+const projLoadLoadedProjectsSelector = state =>
+  pathOr(null, ["project", "load", "loadedProjects"], state);
+
+const projLoadLoadingDeleteSelector = state =>
+  pathOr(false, ["project", "load", "loadingDelete"], state);
+
+const projLoadErrorMessageDeleteSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageDelete"], state);
+
+const projLoadLoadingProjectSelector = state =>
+  pathOr(false, ["project", "load", "loadingProject"], state);
+
+const projLoadErrorMessageProjectSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageProject"], state);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -289,15 +351,33 @@ module.exports = {
   groupsSelector,
   selectedPageIdSelector,
 
+  displayOnePageSelector,
   facingPagesSelector,
   singleFirstLastPageSelector,
   groupSizeSelector,
   predefinedGroupsSelector,
   includeBoxesSelector,
+  useMagneticSelector,
   showTrimboxSelector,
+  headerConfigSelector,
+  footerConfigSelector,
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
+  tolerancePagesConfigSelector,
   objectsDefaultConfigSelector,
-  titleSelector
+  titleSelector,
+  blockActionsPagesConfigSelector,
+  deletePagePagesConfigSelector,
+  projDescriptionSelector,
+  projProjectIdSelector,
+  projSaveLoadingSelector,
+  projSaveErrorMessageSelector,
+  projLoadLoadingSelector,
+  projLoadErrorMessageSelector,
+  projLoadLoadedProjectsSelector,
+  projLoadLoadingDeleteSelector,
+  projLoadErrorMessageDeleteSelector,
+  projLoadLoadingProjectSelector,
+  projLoadErrorMessageProjectSelector
 };

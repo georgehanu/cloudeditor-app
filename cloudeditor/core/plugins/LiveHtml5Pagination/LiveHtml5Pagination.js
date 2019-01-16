@@ -1,10 +1,13 @@
 const React = require("react");
+const uuidv4 = require("uuid/v4");
 const assign = require("object-assign");
 const { hot } = require("react-hot-loader");
 const { connect } = require("react-redux");
 const PropTypes = require("prop-types");
 const PageHeader = require("./components/PageHeader/PageHeader");
 const { clone } = require("ramda");
+const posed = require("react-pose").default;
+const { withNamespaces } = require("react-i18next");
 
 require("./LiveHtml5Pagination.css");
 
@@ -19,10 +22,44 @@ const { groupsSelector } = require("../../stores/selectors/Html5Renderer");
 const {
   pagesOrderSelector,
   activePageIdSelector,
-  groupSizeSelector
+  groupSizeSelector,
+  facingPagesSelector
 } = require("../../stores/selectors/project");
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
 const AddPages = require("./components/AddPages/AddPages");
+
+const Box = posed.div({
+  normalSidebarExpanded: {
+    paddingLeft: 500,
+    height: 150
+    //transition: { type: "spring", stiffness: 100 }
+  },
+  normalSidebarNormal: {
+    paddingLeft: 100,
+    height: 150
+    //transition: { type: "spring", stiffness: 100 }
+  },
+  maximizedSidebarExpanded: {
+    paddingLeft: 500,
+    height: 300
+    //transition: { type: "spring", stiffness: 100 }
+  },
+  maximizedSidebarNormal: {
+    paddingLeft: 100,
+    height: 300
+    //transition: { type: "spring", stiffness: 100 }
+  },
+  minimizedSidebarExpanded: {
+    paddingLeft: 500,
+    height: 25
+    //transition: { type: "spring", stiffness: 100 }
+  },
+  minimizedSidebarNormal: {
+    paddingLeft: 100,
+    height: 25
+    //transition: { type: "spring", stiffness: 100 }
+  }
+});
 
 class LiveHtml5Pagination extends React.Component {
   constructor(props) {
@@ -32,7 +69,9 @@ class LiveHtml5Pagination extends React.Component {
       hoverId: null,
       showAddPages: false,
       nrPagesToInsert: props.groupSize,
-      location: "after"
+      location: "after",
+      uuid: uuidv4(),
+      sidebarExtended: false
     };
   }
   renderGroups() {
@@ -43,9 +82,32 @@ class LiveHtml5Pagination extends React.Component {
     this.setState({ hoverId });
   };
 
+  updatePages = event => {
+    if (event.detail) {
+      const sidebar = event.detail.filter(el => {
+        return el.pluginName === "sideBar";
+      });
+
+      if (
+        sidebar.length > 0 &&
+        sidebar[0].pluginClasses.includes("sidebarContainerExpand")
+      ) {
+        this.setState({ sidebarExtended: true });
+        return;
+      }
+    }
+    this.setState({ sidebarExtended: false });
+  };
+
   componentDidMount() {
     this.minimize();
+    window.addEventListener("resizePage", this.updatePages);
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("resizePage", this.updatePages);
+  }
+
   switchPages = (from, to) => {
     if (from === to) {
       return;
@@ -66,27 +128,39 @@ class LiveHtml5Pagination extends React.Component {
   };
   minimize = () => {
     if (this.state.size === "normal") {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorMinimized"]);
       this.setState({ size: "minimized" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorMinimized"],
+          true
+        );
       });
     } else {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorNormal"]);
       this.setState({ size: "normal" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorNormal"],
+          true
+        );
       });
     }
   };
   extend = () => {
     if (this.state.size === "normal") {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorExtended"]);
       this.setState({ size: "extended" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorExtended"],
+          true
+        );
       });
     } else {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorNormal"]);
       this.setState({ size: "normal" }, () => {
-        rerenderPage();
+        this.props.addContainerClasses(
+          "PageSelector",
+          ["pageSelectorNormal"],
+          true
+        );
       });
     }
   };
@@ -107,9 +181,9 @@ class LiveHtml5Pagination extends React.Component {
   changePagesToInsert = event => {
     this.setState({ nrPagesToInsert: event.target.value });
   };
+
   render() {
     const { groups, className, mode } = this.props;
-    const page_number = 1;
     let groupContainer = groups.map(group => {
       const groupLength = group.length;
       return group.map((page, index) => {
@@ -117,7 +191,7 @@ class LiveHtml5Pagination extends React.Component {
           "paginationPage",
           mode,
           "singlePageContainer",
-          page == this.props.activePageId ? " singlePageSelected" : "",
+          page === this.props.activePageId ? " singlePageSelected" : "",
           this.state.hoverId === page ? " singlePageHover" : ""
         ];
         if (groupLength === 1) {
@@ -133,21 +207,38 @@ class LiveHtml5Pagination extends React.Component {
         const classes = className.join(" ");
         return (
           <PageContainer
+            group={group}
             classes={classes}
             page_id={page}
             key={page}
-            mode={mode}
+            mode1={mode}
             hoverId={page}
             selectedId={page}
             mode={this.state.size}
+            includeBoxes={1}
+            useMagentic={0}
             switchPages={this.switchPages}
             highlightHoverPage={this.highlightHoverPage}
+            uuid={this.state.uuid}
           >
             {page}
           </PageContainer>
         );
       });
     });
+
+    let poseState = this.state.sidebarExtended
+      ? "normalSidebarExpanded"
+      : "normalSidebarNormal";
+    if (this.state.size === "extended") {
+      poseState = this.state.sidebarExtended
+        ? "maximizedSidebarExpanded"
+        : "maximizedSidebarNormal";
+    } else if (this.state.size === "minimized") {
+      poseState = this.state.sidebarExtended
+        ? "minimizedSidebarExpanded"
+        : "minimizedSidebarNormal";
+    }
 
     return (
       <React.Fragment>
@@ -162,7 +253,7 @@ class LiveHtml5Pagination extends React.Component {
           />
         )}
 
-        <div className="pageSelectorContainer">
+        <Box className="pageSelectorContainer" pose={poseState}>
           <div className="pageSelector">
             <PageHeader
               minimize={this.minimize}
@@ -171,10 +262,14 @@ class LiveHtml5Pagination extends React.Component {
               showExtend={this.state.size !== "extended"}
               showMinimized={this.state.size !== "minimized"}
               showAddPages={this.showAddPages}
+              title={this.props.t("Add pages")}
+              dragMessage={this.props.t(
+                "You can drag and drop pages along with their content"
+              )}
             />
             <div className={className}>{groupContainer}</div>
           </div>
-        </div>
+        </Box>
       </React.Fragment>
     );
   }
@@ -191,8 +286,9 @@ LiveHtml5Pagination.defaultProps = {
 };
 
 const mapStateToProps = state => {
+  const getGroupsSelector = groupsSelector(facingPagesSelector);
   return {
-    groups: groupsSelector(state),
+    groups: getGroupsSelector(state),
     pagesOrder: pagesOrderSelector(state),
     activePageId: activePageIdSelector(state),
     groupSize: groupSizeSelector(state)
@@ -209,7 +305,7 @@ const LiveHtml5PaginationPlugin = hot(module)(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(LiveHtml5Pagination)
+  )(withNamespaces("LiveHtml5Pagination")(LiveHtml5Pagination))
 );
 module.exports = {
   LiveHtml5Pagination: assign(LiveHtml5PaginationPlugin),

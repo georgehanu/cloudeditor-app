@@ -1,11 +1,11 @@
 const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
-const { withNamespaces } = require("react-i18next");
 
 const TYPE = "layout";
 
 const Gallery = require("../../core/components/Gallery/Gallery");
+require("./Layouts.css");
 
 class Layouts extends React.Component {
   render() {
@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => {
 const LayoutsPlugin = connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNamespaces("layouts")(Layouts));
+)(Layouts);
 
 module.exports = {
   Layouts: assign(LayoutsPlugin, {

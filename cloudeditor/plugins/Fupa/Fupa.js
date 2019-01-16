@@ -24,13 +24,13 @@ module.exports = {
       text: "Fupa",
       icon: "FupaLogo",
       showMore: true,
-      tooltip: { title: "Fupa", description: "Fupa.net" }
+      tooltip: { title: "Fupa", description: "Fupa net" }
     },
     cfg: {
       tableSizes: {
-        Standings: { width: 378 },
-        Matches: { width: 400 },
-        Players: { width: 500 }
+        Standings: { width: 75 },
+        Matches: { width: 75 },
+        Players: { width: 75 }
       }
     }
   }),

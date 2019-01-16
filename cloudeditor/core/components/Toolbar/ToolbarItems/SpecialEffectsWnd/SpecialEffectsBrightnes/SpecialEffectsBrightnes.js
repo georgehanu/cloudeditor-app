@@ -17,7 +17,7 @@ const SpecialEffectsBrightnes = props => {
   const decContrast = parseFloat(contrast) / 100 + 1;
 
   const filter =
-    "brightness(" +
+    " brightness(" +
     decBrightness +
     ") contrast(" +
     decContrast +
@@ -25,6 +25,27 @@ const SpecialEffectsBrightnes = props => {
     (props.brightnessFilter ? props.brightnessFilter : "");
   const visible = props.visible === "false" ? "none" : "block";
 
+  let filterString = "";
+  let flipStyle = "";
+  if (props.filter.length) {
+    filterString = props.filter + "(1)";
+  }
+  filterString += filter;
+  switch (props.flip) {
+    case "flip_horizontal":
+      flipStyle = "scaleX(-1)";
+      break;
+    case "flip_vertical":
+      flipStyle = "scaleY(-1)";
+      break;
+    case "flip_both":
+      flipStyle = "scale(-1)";
+      break;
+  }
+  const filterStyle = {
+    filter: filterString,
+    transform: flipStyle
+  };
   return (
     <div
       className="SpecialEffectsBrightnessImageContainer"
@@ -32,8 +53,9 @@ const SpecialEffectsBrightnes = props => {
     >
       <img
         src={props.image}
-        style={{ filter: filter }}
+        style={filterStyle}
         className={props.brightnessClass}
+        alt=""
       />
       <div>
         <BrightnessSlider
@@ -64,7 +86,10 @@ const enhance = compose(
       props.setEffect(newValue);
       props.ToolbarHandler({
         mainHandler: true,
-        payloadMainHandler: { [text]: value },
+        payloadMainHandler: {
+          type: text,
+          value
+        },
         keepDetailsWnd: true
       });
     }

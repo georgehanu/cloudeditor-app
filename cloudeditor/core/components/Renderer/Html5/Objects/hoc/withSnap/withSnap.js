@@ -22,7 +22,9 @@ const withSnap = WrappedComponent => {
         resizing,
         dragging,
         rotating,
-        viewOnly
+        viewOnly,
+        checkSnap,
+        middle
       } = this.props;
       let lines = null;
       const { forwardedRef, getReference, ...rest } = this.props;
@@ -59,6 +61,47 @@ const withSnap = WrappedComponent => {
               <Line classes={classes} {...rightSnap} />
               <Line classes={classes} {...bottomSnap} />
               <Line classes={classes} {...leftSnap} />
+            </React.Fragment>
+          );
+      }
+      if (checkSnap && 0) {
+        const topSnap = {
+          top: middle.top - height / 2,
+          width: "100%",
+          height: 1,
+          left: 0
+        };
+        const rightSnap = {
+          top: 0,
+          width: 1,
+          height: "100%",
+          left: middle.left + width / 2
+        };
+        const bottomSnap = {
+          top: middle.top + height / 2,
+          width: "100%",
+          height: 1,
+          left: 0
+        };
+        const leftSnap = {
+          top: 0,
+          width: 1,
+          height: "100%",
+          left: middle.left - width / 2
+        };
+        const classes = [
+          "snapLine",
+          "boxLine",
+          "drag_alignLines",
+          "middle"
+        ].join(" ");
+        if (!viewOnly)
+          lines = (
+            <React.Fragment>
+              <Line classes={classes + " horizontalSnap"} {...topSnap} />
+              <Line classes={classes + " verticalSnap"} {...rightSnap} />
+              <Line classes={classes + " horizontalSnap"} {...bottomSnap} />
+              <Line classes={classes + " verticalSnap"} {...leftSnap} />
             </React.Fragment>
           );
       }

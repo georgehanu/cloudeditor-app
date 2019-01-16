@@ -1,24 +1,19 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 
 const PageHeader = props => {
   return (
     <div className="pageSelectorHeader">
       <div className="pageHeaderText">
-        <div className="pageHeaderTextTitleContainer">
+        <div
+          className="pageHeaderTextTitleContainer"
+          onClick={props.showAddPages}
+        >
           <span className="icon fupa-add-pages" />
-          <button
-            className="pageHeaderButtonAddPages"
-            onClick={props.showAddPages}
-          >
-            {props.t("Add pages")}
-          </button>
+          <span className="pageHeaderTextTitle">{props.title}</span>
         </div>
         <div className="pageHeaderTextInfoContainer">
           <span className="icon fupa-info" />
-          <span className="pageHeaderTextTitle">
-            {props.t("You can drag and drop pages along with their content")}
-          </span>
+          <span className="pageHeaderTextTitle">{props.dragMessage}</span>
         </div>
       </div>
       <div className="pageHeaderButtonsContainer">
@@ -33,18 +28,8 @@ const PageHeader = props => {
           </button>
         )}
       </div>
-      {/*}
-      <div className="pageAddPagesContainer">
-        <button
-          className="pageHeaderButtonAddPages"
-          onClick={props.showAddPages}
-        >
-          {props.t("Add pages")}
-        </button>        
-      </div>
-        */}
     </div>
   );
 };
 
-module.exports = withNamespaces("liveHtml5Pagination")(PageHeader);
+module.exports = PageHeader;

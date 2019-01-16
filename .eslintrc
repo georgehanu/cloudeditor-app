@@ -2,6 +2,16 @@
   "extends": ["react-app", "plugin:prettier/recommended"],
   "parser": "babel-eslint",
   "rules": {
-    "no-undef": "off"
+    "no-undef": "off",
+    "no-script-url": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-unused-vars": "off",
+    "eqeqeq": "off",
+    "no-dupe-keys": "off",
+    "jsx-a11y/alt-text": "off",
+    "array-callback-return": "off",
+    "default-case": "off",
+    "no-unreachable": "off"
   }
 }

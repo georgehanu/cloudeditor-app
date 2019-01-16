@@ -18,7 +18,7 @@ const config = {
     base: __dirname,
     dist: path.join(__dirname, "public", workspace),
     cleanPaths: ["public/" + workspace],
-    contentBase: "./dist/",
+    contentBase: path.join(__dirname, "cloudeditor/"),
     htmlInput: path.join(
       __dirname,
       namespace,
@@ -35,7 +35,32 @@ const config = {
   },
   port: 8081,
   cleanDistDir: !prod,
-  cssPrefix: ".cloudeditor"
+  cssPrefix: ".cloudeditor",
+  copyFrom: []
 };
 
+if (workspace === "designAndGo")
+  config["copyFrom"].push({
+    from: "./" + namespace + "/themes/" + workspace + "/images/*",
+    to: "./editorImages/[name].[ext]"
+  });
+else {
+  // config["copyFrom"].push({
+  //   from: "./" + namespace + "/themes/" + workspace + "/tinymce/js/",
+  //   to: "./tinymce/js"
+  // });
+  config["copyFrom"].push({
+    from:
+      "./" +
+      namespace +
+      "/themes/" +
+      workspace +
+      "/tinymce/resetTinyMceTable.css",
+    to: "./tinymce/resetTinyMceTable.css"
+  });
+  config["copyFrom"].push({
+    from: "./" + namespace + "/core/assets/chromoselector",
+    to: "./chromoselector"
+  });
+}
 module.exports = require("./buildConfig")(config);

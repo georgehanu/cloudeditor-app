@@ -1,12 +1,44 @@
 const React = require("react");
-const randomColor = require("randomcolor");
+const { connect } = require("react-redux");
+const { hot } = require("react-hot-loader");
+const { DropTarget } = require("react-dnd");
 const CropperImage = require("../../CropperImage/CropperImage");
+const type = ["image"];
+const ImageTarget = {
+  drop(props, monitor, component) {
+    if (monitor.isOver()) {
+      props.onUpdateProps({
+        id: props.id,
+        props: {
+          ...monitor.getItem(),
+          cropW: 0,
+          cropX: 0,
+          cropY: 0,
+          cropH: 0
+        }
+      });
+    }
+  },
+  canDrop(props, monitor) {
+    if (!props.viewOnly) {
+      return true;
+    }
+    return false;
+  },
+  hover(props, monitor) {}
+};
 
+collectDrop = (connect, monitor) => {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    clientOffset: monitor.getClientOffset()
+  };
+};
 class ImageBlock extends React.PureComponent {
   state = {};
   constructor(props) {
     super(props);
-    this.el = React.createRef();
     this.state = {
       ready: false
     };
@@ -20,26 +52,49 @@ class ImageBlock extends React.PureComponent {
       width: width,
       height: height,
       left: left,
-      top: top,
-      backgroundColor: randomColor()
+      top: top
     };
     let cropper = null;
     if (this.state.ready) {
       cropper = (
         <CropperImage
-          parent={this.el.current}
           targetWidth={this.props.width}
           targetHeight={this.props.height}
-          {...this.props}
+          cropH={this.props.cropH}
+          cropW={this.props.cropW}
+          cropX={this.props.cropX}
+          cropY={this.props.cropY}
+          imageWidth={this.props.imageWidth}
+          imageHeight={this.props.imageHeight}
+          image_src={this.props.image_src}
+          leftSlider={this.props.leftSlider}
+          alternateZoom={this.props.alternateZoom}
+          width={this.props.width}
+          height={this.props.height}
+          viewOnly={this.props.viewOnly}
+          id={this.props.id}
+          resizing={this.props.resizing}
+          active={this.props.active}
+          filter={this.props.filter}
+          flip={this.props.flip}
+          contrast={this.props.contrast}
+          brightness={this.props.brightness}
+          workingPercent={this.props.workingPercent}
+          onUpdatePropsHandler={this.props.onUpdateProps}
+          onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
         />
       );
     }
-    return (
+    return this.props.connectDropTarget(
       <div ref={this.el} className={this.props.type} style={style}>
         {cropper}
       </div>
     );
   }
 }
-
-module.exports = ImageBlock;
+module.exports = hot(module)(
+  connect(
+    null,
+    null
+  )(DropTarget(type, ImageTarget, collectDrop)(ImageBlock))
+);

@@ -14,7 +14,7 @@ class SideBar extends React.Component {
   };
 
   render() {
-    const { expanded, active } = this.props;
+    const { expanded } = this.props;
 
     return (
       <SideBarContainer

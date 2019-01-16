@@ -1,5 +1,4 @@
 const { is } = require("ramda");
-const $ = require("jquery");
 
 require("../../../../../../rewrites/resizable");
 require("./resizable.css");
@@ -7,8 +6,10 @@ require("./resizable.css");
 const createResizable = ($el, onStart, onResize, onResizeStop) => {
   if ($el.length) {
     $el.resizable({
-      handles: "all",
+      handles: "e,s,se,n,w,nw",
       snap: ".drag_alignLines",
+      snapTolerance: 10,
+      snapToleranceDynamic: 10,
       start: (event, ui) => {
         if (is(Function, onStart)) onStart(event, ui);
       },

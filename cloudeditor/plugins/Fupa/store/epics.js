@@ -1,12 +1,7 @@
-const {
-  FETCH_TEAM_MATCHES_FAILED,
-  FETCH_TEAM_MATCHES_FULFILLED
-} = require("../store/actionTypes");
 //https://fupa.docs.stoplight.io/api-docs-v1/club/get-one-club
 const Rx = require("rxjs");
-const { Observable } = require("rxjs");
 
-const { switchMap, catchError, concatMap } = require("rxjs/operators");
+const { switchMap, catchError } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const actionTypes = require("./actionTypes");
@@ -56,7 +51,7 @@ module.exports = {
             .get("/teams", {
               params: {
                 club: payload,
-                additionalFields: "competition,currentRank"
+                additionalFields: "competition"
               }
             })
             .then(res => res.data)
@@ -150,7 +145,6 @@ module.exports = {
             return Rx.of(actions.fetchTeamMatchesFailed());
           }),
           catchError(error => {
-            console.log(error, "ERROR");
             return Rx.of(actions.fetchTeamMatchesFailed());
           })
         );
@@ -174,12 +168,9 @@ module.exports = {
             if (data.errors === false)
               return Rx.of(actions.fetchTeamPlayersFulfilled(data.data));
 
-            console.log(data);
-
             return Rx.of(actions.fetchTeamPlayersFailed());
           }),
           catchError(error => {
-            console.log(error);
             return Rx.of(actions.fetchTeamPlayersFulfilled());
           })
         );

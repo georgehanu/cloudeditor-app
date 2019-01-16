@@ -2,15 +2,18 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DragSource } = require("react-dnd");
+const uuidv4 = require("uuid/v4");
 const type = "image";
 const PageSource = {
   beginDrag(props) {
     return {
-      type,
-      imageWidth: 200,
-      imageHeight: 300,
-      width: 0,
-      height: 0
+      id: uuidv4(),
+      type: type,
+      subType: props.type,
+      image_src: props.image_src,
+      imagePath: props.image_path,
+      imageWidth: props.imageWidth,
+      imageHeight: props.imageHeight
     };
   },
   canDrag(props, monitor) {

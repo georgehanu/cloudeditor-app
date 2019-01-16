@@ -1,26 +1,34 @@
 const {
   createSelectorWithDependencies: createSelector
 } = require("reselect-tools");
-const { pick } = require("ramda");
+const { pick, mergeAll, merge } = require("ramda");
 
 const {
   objectsSelector,
   selectedObjectsIdsSelector,
+  objectsDefaultConfigSelector,
   pagesSelector,
   activePageIdSelector
 } = require("./project");
 
 const selectedObjectToolbarSelector = createSelector(
-  [objectsSelector, selectedObjectsIdsSelector],
-  (objects, selectedObjectsIds) => {
+  [objectsSelector, selectedObjectsIdsSelector, objectsDefaultConfigSelector],
+  (objects, selectedObjectsIds, defaults) => {
     if (selectedObjectsIds.length === 0) {
       return null;
     }
 
     const selectedObj = pick(selectedObjectsIds, objects);
     const selectedItem = selectedObj[Object.keys(selectedObj)[0]];
-
-    return selectedItem;
+    return merge(
+      merge(defaults.generalCfg, defaults[selectedItem.subType + "Cfg"]),
+      selectedItem
+    );
+    return mergeAll(
+      defaults.generalCfg,
+      defaults[selectedItem.subType + "Cfg"],
+      selectedItem
+    );
   }
 );
 

@@ -1,6 +1,6 @@
 const React = require("react");
 
-const { Config } = require("../../ToolbarConfig/config");
+const Config = require("../../ToolbarConfig/config");
 const Types = require("../../ToolbarConfig/types");
 const SpecialEffectsItem = require("./SpecialEffectsItem/SpecialEffectsItem");
 const Button = require("../Button/Button");
@@ -42,6 +42,8 @@ const SpecialEffectsWnd = props => {
         brightnessFilter={props.itemData.brightnessFilter}
         brightnessValue={props.itemData.brightnessValue}
         contrastValue={props.itemData.contrastValue}
+        filter={props.itemData.filter}
+        flip={props.itemData.flip}
         handler={props.handler}
         ToolbarHandler={props.ToolbarHandler}
       />
@@ -56,6 +58,8 @@ const SpecialEffectsWnd = props => {
         brightnessFilter={props.itemData.brightnessFilter}
         brightnessValue={props.itemData.brightnessValue}
         contrastValue={props.itemData.contrastValue}
+        filter={props.itemData.filter}
+        flip={props.itemData.flip}
         handler={props.handler}
         ToolbarHandler={props.ToolbarHandler}
       />

@@ -1,5 +1,6 @@
 const React = require("react");
 const assign = require("object-assign");
+const { connect } = require("react-redux");
 const ProjectMenuButton = require("../ProjectMenu/components/ProjectMenuButton");
 const SubmenuPoptext = require("./components/SubmenuPoptext");
 const SubmenuLayout = require("./components/SubmenuLayout");
@@ -7,30 +8,49 @@ const { withNamespaces } = require("react-i18next");
 const URL = "http://work.cloudlab.at:9012/ig/uploads/";
 const uuidv4 = require("uuid/v4");
 const axios = require("axios");
+const { createSelector } = require("reselect");
+const { head } = require("ramda");
+const { debounce } = require("underscore");
+const posed = require("react-pose").default;
+const Box = posed.div({
+  visible: { top: 30 },
+  hidden: { top: 0 }
+});
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
+const {
+  headerConfigSelector,
+  footerConfigSelector,
+  objectsSelector
+} = require("../../core/stores/selectors/project");
+
+const {
+  updateHeaderconfigProps,
+  updateFooterconfigProps,
+  changeModeHeaderFooter
+} = require("../../core/stores/actions/project");
+require("./menuItemHeaderFooter.css");
 class MenuItemHeaderFooter extends React.Component {
   state = {
     submenuOpened: false,
     poptextEdit: {
       items: ["Footer", "Header"],
-      active: "Footer",
-      open: false
-    },
-    poptextLayoutMirror: {
-      items: ["Right page", "Left page"],
-      active: "Right page",
+      active: "Header",
       open: false
     },
     poptextInsert: {
-      items: ["Choose", "Option", "Option 2", "Option 3-3-3"],
-      active: "Choose",
+      items: ["yes", "no"],
+      open: false
+    },
+    poptextLayoutMirror: {
+      items: ["yes", "no"],
+      active: "yes",
       open: false
     },
     poptextActive: {
-      items: ["Inside", "All"],
-      active: "Inside",
+      items: ["inner", "all"],
+      active: "inner",
       open: false
     },
     poptextLayouts: {
@@ -40,36 +60,7 @@ class MenuItemHeaderFooter extends React.Component {
     }
   };
 
-  translate = poptext => {
-    const items = poptext.items.map((el, index) => {
-      return this.props.t(el);
-    });
-    return {
-      active: this.props.t(poptext.active),
-      items
-    };
-  };
-
   componentDidMount() {
-    this.setState({
-      poptextEdit: {
-        ...this.state.poptextEdit,
-        ...this.translate(this.state.poptextEdit)
-      },
-      poptextLayoutMirror: {
-        ...this.state.poptextLayoutMirror,
-        ...this.translate(this.state.poptextLayoutMirror)
-      },
-      poptextInsert: {
-        ...this.state.poptextInsert,
-        ...this.translate(this.state.poptextInsert)
-      },
-      poptextActive: {
-        ...this.state.poptextActive,
-        ...this.translate(this.state.poptextActive)
-      }
-    });
-
     this.loadLayouts();
   }
 
@@ -100,8 +91,8 @@ class MenuItemHeaderFooter extends React.Component {
   closePoptext = () => {
     this.setState({
       poptextEdit: { ...this.state.poptextEdit, open: false },
-      poptextLayoutMirror: { ...this.state.poptextLayoutMirror, open: false },
       poptextInsert: { ...this.state.poptextInsert, open: false },
+      poptextLayoutMirror: { ...this.state.poptextLayoutMirror, open: false },
       poptextActive: { ...this.state.poptextActive, open: false },
       poptextLayouts: { ...this.state.poptextLayouts, open: false }
     });
@@ -119,6 +110,16 @@ class MenuItemHeaderFooter extends React.Component {
           open: !this.state.poptextEdit.open
         }
       });
+    } else if (type === "insert") {
+      if (this.state.poptextInsert.open === false) {
+        this.closePoptext();
+      }
+      this.setState({
+        poptextInsert: {
+          ...this.state.poptextInsert,
+          open: !this.state.poptextInsert.open
+        }
+      });
     } else if (type === "layoutMirror") {
       if (this.state.poptextLayoutMirror.open === false) {
         this.closePoptext();
@@ -128,16 +129,6 @@ class MenuItemHeaderFooter extends React.Component {
         poptextLayoutMirror: {
           ...this.state.poptextLayoutMirror,
           open: !this.state.poptextLayoutMirror.open
-        }
-      });
-    } else if (type === "insert") {
-      if (this.state.poptextInsert.open === false) {
-        this.closePoptext();
-      }
-      this.setState({
-        poptextInsert: {
-          ...this.state.poptextInsert,
-          open: !this.state.poptextInsert.open
         }
       });
     } else if (type === "active") {
@@ -164,57 +155,157 @@ class MenuItemHeaderFooter extends React.Component {
   };
 
   toggleSelectPoptext = (type, value) => {
-    if (type === "edit") {
-      this.setState({
-        poptextEdit: {
-          ...this.state.poptextEdit,
-          open: false,
-          active: value
+    const target = this.state.poptextEdit.active;
+
+    let payload = {};
+
+    switch (type) {
+      case "edit":
+        this.setState({
+          poptextEdit: {
+            ...this.state.poptextEdit,
+            open: false,
+            active: value
+          }
+        });
+        break;
+      case "insert":
+        this.setState({
+          poptextInsert: {
+            ...this.state.poptextInsert,
+            open: false
+          }
+        });
+
+        payload = {
+          prop: "enabled",
+          value: value === "yes" ? true : false
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
         }
-      });
-    } else if (type === "layoutMirror") {
-      this.setState({
-        poptextLayoutMirror: {
-          ...this.state.poptextLayoutMirror,
-          open: false,
-          active: value
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
         }
-      });
-    } else if (type === "insert") {
-      this.setState({
-        poptextInsert: {
-          ...this.state.poptextInsert,
-          open: false,
-          active: value
+        break;
+      case "layoutMirror":
+        this.setState({
+          poptextLayoutMirror: {
+            ...this.state.poptextLayoutMirror,
+            open: false
+          }
+        });
+
+        payload = {
+          prop: "mirrored",
+          value: value === "yes" ? true : false
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
         }
-      });
-    } else if (type === "active") {
-      this.setState({
-        poptextActive: {
-          ...this.state.poptextActive,
-          open: false,
-          active: value
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
         }
-      });
+        break;
+      case "active":
+        this.setState({
+          poptextActive: {
+            ...this.state.poptextActive,
+            open: false
+          }
+        });
+
+        payload = {
+          prop: "activeOn",
+          value: value
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
+        }
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
+        }
+        break;
+      case "height":
+        payload = {
+          prop: "height",
+          value: value
+        };
+
+        if (target === "Header") {
+          this.props.onUpdateHeaderConfigHandler(payload);
+        }
+        if (target === "Footer") {
+          this.props.onUpdateFooterConfigHandler(payload);
+        }
+        break;
+      default:
+        break;
     }
   };
 
-  toggleMenuHandler = show => {
-    if (this.state.submenuOpened === false) {
-      this.props.addContainerClasses("submenuHeaderFooter", [
-        "showHeaderFooter"
-      ]);
-    } else {
-      this.closePoptext();
-      this.props.addContainerClasses("submenuHeaderFooter", []);
-    }
-    this.setState({ submenuOpened: !this.state.submenuOpened });
+  toggleMenuHandler = () => {
+    const show = !this.state.submenuOpened;
+
+    this.setState({ submenuOpened: show }, () => {
+      if (this.state.submenuOpened !== false) {
+        this.props.addContainerClasses(
+          "submenuHeaderFooter",
+          ["showHeaderFooter"],
+          true
+        );
+      } else {
+        this.closePoptext();
+        this.props.addContainerClasses("submenuHeaderFooter", [], true);
+      }
+
+      payload = {
+        prop: "mode",
+        value: this.state.submenuOpened ? "edit" : "read"
+      };
+
+      this.props.onUpdateHeaderFooterConfigPropsHandler(payload);
+    });
   };
 
   render() {
     const className =
       "projectMenuButtonLink " +
       (this.state.submenuOpened ? "projectMenuButtonSubMenuOpened" : "");
+
+    const { headerCfg, footerCfg } = this.props;
+
+    const target = this.state.poptextEdit.active;
+
+    let enabled = "no";
+    let activeOn = "";
+    let mirrored = "no";
+    let height = 0;
+
+    switch (target) {
+      case "Header":
+        enabled = headerCfg.enabled ? "yes" : "no";
+        activeOn = headerCfg.activeOn;
+        mirrored = headerCfg.mirrored ? "yes" : "no";
+        height = headerCfg.height;
+        break;
+      case "Footer":
+        enabled = footerCfg.enabled ? "yes" : "no";
+        activeOn = footerCfg.activeOn;
+        mirrored = footerCfg.mirrored ? "yes" : "no";
+        height = footerCfg.height;
+        break;
+      default:
+        break;
+    }
+
+    const classNameSubMenu =
+      "submenuItemHeaderFooter" +
+      (this.state.submenuOpened ? "" : " submenuItemHeaderFooterHidden");
+
     return (
       <React.Fragment>
         <div className={className}>
@@ -225,88 +316,134 @@ class MenuItemHeaderFooter extends React.Component {
             {this.props.t(this.props.text)}
           </ProjectMenuButton>
         </div>
-        {this.state.submenuOpened && (
-          <div className="submenuItemHeaderFooter">
-            <div className="submenuItemHeaderFooterEdit">
-              <span>{this.props.t("Edit")}:</span>
-              <SubmenuPoptext
-                activeItem={this.state.poptextEdit.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="edit"
-                items={this.state.poptextEdit.items}
-                open={this.state.poptextEdit.open}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterLayouts">
-              <SubmenuLayout
-                activeItem={this.state.poptextLayouts.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="layouts"
-                items={this.state.poptextLayouts.items}
-                open={this.state.poptextLayouts.open}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterLayoutMirror">
-              <span>{this.props.t("Layout mirror")}:</span>
-              <SubmenuPoptext
-                activeItem={this.state.poptextLayoutMirror.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="layoutMirror"
-                items={this.state.poptextLayoutMirror.items}
-                open={this.state.poptextLayoutMirror.open}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterInsert">
-              <span>{this.props.t("Insert")}:</span>
-              <SubmenuPoptext
-                activeItem={this.state.poptextInsert.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="insert"
-                items={this.state.poptextInsert.items}
-                open={this.state.poptextInsert.open}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterActive">
-              <span>{this.props.t("Active on")}:</span>
-              <SubmenuPoptext
-                activeItem={this.state.poptextActive.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="active"
-                items={this.state.poptextActive.items}
-                open={this.state.poptextActive.open}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterHeight">
-              <span>{this.props.t("Height")}:</span>
-              <input type="number" />
-              <span>{this.props.t("mm")}</span>
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterClose">
-              <button onClick={this.toggleMenuHandler}>
-                {this.props.t("Close menu")}
-              </button>
-            </div>
+        <Box
+          className={classNameSubMenu}
+          pose={this.state.submenuOpened ? "visible" : "hidden"}
+        >
+          <div className="submenuItemHeaderFooterEdit">
+            <span>{this.props.t("Edit")}:</span>
+            <SubmenuPoptext
+              activeItem={this.state.poptextEdit.active}
+              togglePoptext={this.togglePoptextHandler}
+              toggleSelectPoptext={this.toggleSelectPoptext}
+              poptextName="edit"
+              items={this.state.poptextEdit.items}
+              open={this.state.poptextEdit.open}
+            />
           </div>
-        )}
+          <span className="submenuSepatator">{"|"}</span>
+          <div className="submenuItemHeaderFooterInsert">
+            <span>{this.props.t("Enabled")}:</span>
+            <SubmenuPoptext
+              activeItem={enabled}
+              togglePoptext={this.togglePoptextHandler}
+              toggleSelectPoptext={this.toggleSelectPoptext}
+              poptextName="insert"
+              items={this.state.poptextInsert.items}
+              open={this.state.poptextInsert.open}
+            />
+          </div>
+          <span className="submenuSepatator">{"|"}</span>
+          <div className="submenuItemHeaderFooterLayouts">
+            <SubmenuLayout
+              activeItem={this.state.poptextLayouts.active}
+              togglePoptext={this.togglePoptextHandler}
+              toggleSelectPoptext={this.toggleSelectPoptext}
+              poptextName="layouts"
+              items={this.state.poptextLayouts.items}
+              open={this.state.poptextLayouts.open}
+            />
+          </div>
+          <span className="submenuSepatator">{"|"}</span>
+          <div className="submenuItemHeaderFooterLayoutMirror">
+            <span>{this.props.t("Mirror Layout")}:</span>
+            <SubmenuPoptext
+              activeItem={mirrored}
+              togglePoptext={this.togglePoptextHandler}
+              toggleSelectPoptext={this.toggleSelectPoptext}
+              poptextName="layoutMirror"
+              items={this.state.poptextLayoutMirror.items}
+              open={this.state.poptextLayoutMirror.open}
+            />
+          </div>
+          <span className="submenuSepatator">{"|"}</span>
+          <div className="submenuItemHeaderFooterActive">
+            <span>{this.props.t("Active on")}:</span>
+            <SubmenuPoptext
+              activeItem={activeOn}
+              togglePoptext={this.togglePoptextHandler}
+              toggleSelectPoptext={this.toggleSelectPoptext}
+              poptextName="active"
+              items={this.state.poptextActive.items}
+              open={this.state.poptextActive.open}
+            />
+          </div>
+          <span className="submenuSepatator">{"|"}</span>
+          <div className="submenuItemHeaderFooterHeight">
+            <span>{this.props.t("Height")}:</span>
+            <input
+              type="number"
+              value={height}
+              onChange={event =>
+                debounce(
+                  this.toggleSelectPoptext("height", event.target.value),
+                  300
+                )
+              }
+            />
+            <span>{this.props.t("mm")}</span>
+          </div>
+          <span className="submenuSepatator">{"|"}</span>
+          <div className="submenuItemHeaderFooterClose">
+            <button onClick={() => this.toggleMenuHandler(false)}>
+              {this.props.t("Close menu")}
+            </button>
+          </div>
+        </Box>
       </React.Fragment>
     );
   }
 }
 
-const MenuItemHeaderFooterPlugin = withNamespaces("menuItemHeaderFooter")(
-  MenuItemHeaderFooter
-);
+const mapStateToProps = state => {
+  // const getObjectCallback = (cfg, objects) => {
+  //   return objects[head(cfg.objectsIds)];
+  // };
+  // const headerBlockSelector = createSelector(
+  //   headerConfigSelector,
+  //   objectsSelector,
+  //   getObjectCallback
+  // );
+
+  // const footerBlockSelector = createSelector(
+  //   footerConfigSelector,
+  //   objectsSelector,
+  //   getObjectCallback
+  // );
+
+  return {
+    headerCfg: headerConfigSelector(state),
+    footerCfg: footerConfigSelector(state)
+    // headerBlock: headerBlockSelector(state),
+    // footerBlock: footerBlockSelector(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onUpdateHeaderFooterConfigPropsHandler: payload =>
+      dispatch(changeModeHeaderFooter(payload)),
+    onUpdateHeaderConfigHandler: payload =>
+      dispatch(updateHeaderconfigProps(payload)),
+    onUpdateFooterConfigHandler: payload =>
+      dispatch(updateFooterconfigProps(payload))
+  };
+};
+
+const MenuItemHeaderFooterPlugin = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNamespaces("menuItemHeaderFooter")(MenuItemHeaderFooter));
 
 module.exports = {
   MenuItemHeaderFooter: assign(MenuItemHeaderFooterPlugin, {

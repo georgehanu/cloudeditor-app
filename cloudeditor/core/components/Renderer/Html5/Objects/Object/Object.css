@@ -9,17 +9,6 @@
   cursor: default;
 }
 
-.pageBlock {
-  position: absolute;
-  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
-  -moz-opacity: 1;
-  opacity: 1;
-  filter: alpha(opacity=100);
-  display: block;
-  z-index: 2;
-  cursor: default;
-}
-
 .pageBlock .blockOrientation {
   position: relative;
   z-index: 1;
@@ -30,14 +19,19 @@
   display: block;
   z-index: 0;
   box-sizing: content-box;
-  display: table-cell;
-  z-index: 99;
+  z-index: 0;
   left: -1px;
   position: absolute;
   right: 0;
   top: -1px;
 }
+.pageBlock.editable.textflow,
+.pageBlock.editable.text,
+.pageBlock.editable.textline {
+  color: #000;
+}
 .pageBlock.editable.textflow .north,
+.pageBlock.editable.text .north,
 .pageBlock.editable.textline .north {
   display: table;
   width: 100%;
@@ -56,4 +50,103 @@
   width: 0;
   height: 0;
   display: block;
+}
+
+.pageBlock.header,
+.pageBlock.footer {
+  position: absolute;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+  -moz-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  display: block;
+  z-index: 0;
+  cursor: default;
+}
+
+.pageContainer.header {
+  border-bottom: 1px solid #97bdff;
+}
+.pageContainer.footer {
+  border-top: 1px solid #97bdff;
+}
+
+.pageContainer.headerFooter.active {
+  z-index: 99999;
+}
+
+.pageContainer.headerFooter .helperName {
+  position: absolute;
+  background: #d8e8f5;
+  padding: 5px;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  height: 25px;
+  font-size: 14px;
+  border: 1px solid #a0c3fd;
+  bottom: -25px;
+  left: 10%;
+  display: none;
+}
+
+.pageContainer.footer .helperName {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  top: -25px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  top: -25px;
+}
+
+.pageContainer.headerFooter.active .helperName {
+  display: block;
+}
+
+.deleteBlockHandler {
+  width: 20px;
+  height: 20px;
+  z-index: 501 !important;
+  position: ABSOLUTE;
+  top: -12px;
+  right: -12px;
+  color: #ffff;
+  background: red;
+  line-height: 17px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.ui-resizable-handle,
+.deleteBlockHandler,
+.ui-rotatable-handle {
+  display: none !important;
+}
+.pageBlock:hover .ui-resizable-handle,
+.pageBlock:hover .deleteBlockHandler,
+.pageBlock:hover .ui-rotatable-handle {
+  display: block !important;
+}
+.pageBlock.active:hover .ui-resizable-handle,
+.pageBlock.active:hover .deleteBlockHandler,
+.pageBlock.active:hover .ui-rotatable-handle {
+  display: none !important;
+}
+
+.pageContainer.headerFooter .pageBlock:hover .ui-resizable-handle,
+.pageContainer.headerFooter .pageBlock:hover .deleteBlockHandler,
+.pageContainer.headerFooter .pageBlock:hover .ui-rotatable-handle {
+  display: none !important;
+}
+.pageContainer.headerFooter.active .pageBlock:hover .ui-resizable-handle,
+.pageContainer.headerFooter.active .pageBlock:hover .deleteBlockHandler,
+.pageContainer.headerFooter.active .pageBlock:hover .ui-rotatable-handle {
+  display: block !important;
+}
+
+.pageContainer.headerFooter .pageBlock.active:hover .ui-resizable-handle,
+.pageContainer.headerFooter .pageBlock.active:hover .deleteBlockHandler,
+.pageContainer.headerFooter .pageBlock.active:hover .ui-rotatable-handle {
+  display: none !important;
 }

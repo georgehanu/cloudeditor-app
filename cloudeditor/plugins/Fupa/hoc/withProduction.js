@@ -6,19 +6,19 @@ const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 const { getEmptyObject } = require("../../../core/utils/ProjectUtils");
 
-const { addObject } = require("../../../core/stores/actions/project");
+const { addTable } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
 
 const emptyTable = getEmptyObject({
-  type: "tinymce",
-  width: 300,
-  height: 300,
-  top: 10,
-  left: 10
+  type: "tinymceTable",
+  subType: "tinymceTable",
+  width: 100,
+  height: 100,
+  left: 50,
+  top: 50
 });
 
 const tableStyle = {
-  //width: "calc(100% - 4px)",
   width: "100%",
   borderSpacing: "0",
   color: "black"
@@ -26,7 +26,7 @@ const tableStyle = {
 
 const tbodyStyle = {
   fontFamily: "Arial",
-  fontSize: "12pt"
+  fontSize: "12px"
 };
 
 const withProductionHoc = (WrappedComponent, TableName) => props => {
@@ -37,7 +37,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
     handleClick = () => {
       let tableContent = document
         .getElementById(this.state.tabelId)
-        .innerHTML.replace(new RegExp("px", "g"), "pt");
+        .innerHTML.replace(new RegExp("pt", "g"), "px");
 
       const tableDimensions = document
         .getElementById(this.state.tabelId)
@@ -45,19 +45,15 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       width = props.width ? props.width : tableDimensions.width;
 
-      props.addObject(
-        {
-          ...emptyTable,
-          tableContent: tableContent,
-          id: uuidv4(),
-          //width: tableDimensions.width + 4,
-          width,
-          height: tableDimensions.height,
-          left: 10,
-          top: 10
-        },
-        props.activePage
-      );
+      props.addTable({
+        ...emptyTable,
+        tableContent: tableContent,
+        id: uuidv4(),
+        width: 100,
+        height: (tableDimensions.height * 100) / tableDimensions.width,
+        tableWidth: tableDimensions.width,
+        tableHeight: tableDimensions.height
+      });
     };
     render() {
       return (
@@ -91,9 +87,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    addObject: object => dispatch(addObject(object))
-  };
+  return { addTable: payload => dispatch(addTable(payload)) };
 };
 
 const withProduction = compose(

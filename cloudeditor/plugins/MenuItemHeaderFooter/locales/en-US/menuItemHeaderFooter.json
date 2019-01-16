@@ -3,7 +3,7 @@
   "Edit": "Edit",
   "Header": "Header",
   "Footer": "Footer",
-  "Layout mirror": "Layout mirror",
+  "Mirror Layout": "Mirror Layout",
   "Close menu": "Close menu",
   "Left page": "Left page",
   "Right page": "Right page",
@@ -13,5 +13,16 @@
   "Inside": "Inside",
   "Height": "Height",
   "mm": "mm",
-  "All": "All"
+  "All": "All",
+  "all": "All",
+  "inner": "Inside",
+  "yes": "Yes",
+  "no": "No",
+  "header": "Header",
+  "footer": "Footer",
+  "None": "None",
+  "Layout 1 Page": "Layout 1 Page",
+  "Layout 2 Pages": "Layout 2 Pages",
+  "Layout 3 Pages": "Layout 3 Pages",
+  "Layout 4 Pages": "Layout 4 Pages"
 }

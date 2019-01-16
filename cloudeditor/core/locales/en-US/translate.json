@@ -1,6 +1,10 @@
 {
   "title": "main title",
   "test": "test default",
+  "header": "Header",
+  "footer": "Footer",
+  "Header": "Header",
+  "Footer": "Footer",
   "OK": "OK",
   "Cancel": "Cancel",
   "Change CMYK": "Change CMYK",

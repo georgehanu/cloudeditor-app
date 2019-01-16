@@ -13,6 +13,8 @@ const importBody = props => {
         key={index}
         isText={props.isText}
         markFavourite={props.markFavourite}
+        onAddBlock={props.onAddBlock}
+        closeModal={props.closeModal}
       />
     );
   });

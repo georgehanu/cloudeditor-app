@@ -33,7 +33,7 @@ const pagesLabelSelector = createSelector(
     return pagesLabel;
   }
 );
-
+require("./MenuItemPages.css");
 class MenuItemPages extends React.Component {
   pageSelect = (page_id, index) => {
     if (this.props.previewEnabeld) {
@@ -89,8 +89,7 @@ module.exports = {
     ProjectMenu: {
       position: 2,
       priority: 1,
-      text: "Pages",
-      tooltip: { title: "Fupa", description: "Fupa.net" }
+      text: "Pages"
     }
   })
 };

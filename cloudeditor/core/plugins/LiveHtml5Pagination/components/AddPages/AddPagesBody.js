@@ -1,5 +1,5 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
+//const { withNamespaces } = require("react-i18next");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const {

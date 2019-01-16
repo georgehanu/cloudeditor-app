@@ -38,13 +38,16 @@ class ColorTab extends React.Component {
 
   render() {
     let colors = this.props.colors.map((color, index) => {
+      let colorCode = "";
+      if (color.htmlRGB[0] === "#") colorCode = color.htmlRGB;
+      else colorCode = "rgb(" + color.htmlRGB + ")";
       return (
         <li
           key={color.id}
-          style={{ backgroundColor: color.htmlRGB }}
+          style={{ backgroundColor: colorCode }}
           className={
             "ColorSquare " +
-            (color.htmlRGB === "#ffffff" ? "whiteColorSquare" : "")
+            (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
             const {
@@ -93,13 +96,16 @@ class ColorTab extends React.Component {
     );
 
     lastUsedColors = this.props.lastUsedColors.map((color, index) => {
+      let colorCode1 = "";
+      if (color.htmlRGB[0] === "#") colorCode1 = color.htmlRGB;
+      else colorCode1 = "rgb(" + color.htmlRGB + ")";
       return (
         <li
           key={color.id + " " + index}
-          style={{ backgroundColor: color.htmlRGB }}
+          style={{ backgroundColor: colorCode1 }}
           className={
             "ColorSquare " +
-            (color.htmlRGB === "#ffffff" ? "whiteColorSquare" : "")
+            (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
             const {
