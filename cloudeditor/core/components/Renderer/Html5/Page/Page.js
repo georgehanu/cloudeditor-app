@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
 const { forEachObjIndexed, includes, concat } = require("ramda");
+const now = require("performance-now");
 
 const type = ["image", "text"];
 const Objects = require("../Objects/Object/Objects");
@@ -95,6 +96,7 @@ class Page extends React.Component {
       errorMessages: []
     };
   }
+
   getIfMessage = (pageBounding, blockBounding) => {
     let type = 0;
     let snapTolerance = this.props.activePage.snapTolerance;
@@ -277,7 +279,11 @@ class Page extends React.Component {
   };
 
   render() {
-    const { width, height, viewOnly, background } = this.props;
+    const { width, height, viewOnly, background, visible } = this.props;
+    if (!visible) {
+      return null;
+    }
+
     const { marginLeft, marginTop } = centerPage(this.props);
     const pageStyle = {
       width,
@@ -345,6 +351,9 @@ class Page extends React.Component {
 const makeMapStateToProps = (state, props) => {
   const activePage = (_, props) => {
     return props.activePage;
+  };
+  const viewOnly = (_, props) => {
+    return props.viewOnly;
   };
 
   const zoomScale = (_, props) => {

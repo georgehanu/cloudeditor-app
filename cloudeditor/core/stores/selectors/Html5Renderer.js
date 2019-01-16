@@ -428,8 +428,7 @@ const scaledDisplayedPageSelector = (
         ["magneticBoxes", "magneticSnap", "top"],
         ["magneticBoxes", "magneticSnap", "right"],
         ["magneticBoxes", "magneticSnap", "bottom"],
-        ["magneticBoxes", "magneticSnap", "left"],
-        ["borderWidth"]
+        ["magneticBoxes", "magneticSnap", "left"]
       ];
 
       scaledPage = applyZoomScaleToTarget(scaledPage, zoomScale, defaultPaths);

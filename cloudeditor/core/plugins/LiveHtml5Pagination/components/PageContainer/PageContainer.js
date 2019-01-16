@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { compose } = require("redux");
 const { connect } = require("react-redux");
 const { DragSource, DropTarget } = require("react-dnd");
+const isEqual = require("react-fast-compare");
 const PAGES = "PAGES";
 
 const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
@@ -15,7 +16,11 @@ const {
   displayedPageSelector,
   displayedPageLabelsSelector
 } = require("../../../../stores/selectors/Html5Renderer");
-const { computeZoomScale } = require("../../../../utils/UtilUtils");
+const {
+  computeZoomScale,
+  isVisible,
+  checkChangedProps
+} = require("../../../../utils/UtilUtils");
 require("./PageContainer.css");
 const Canvas = require("../../../../components/Renderer/Html5/Canvas/Canvas");
 const {
@@ -78,17 +83,23 @@ collectDrop = (connect, monitor) => {
   };
 };
 
-class PageContainer extends React.PureComponent {
+class PageContainer extends React.Component {
   constructor(props) {
     super(props);
     this.containerRef = null;
     this.canvasRef = null;
+    this.pageContainerRef = null;
     this.state = {
       zoomScale: 1,
       containerWidth: 0,
       containerHeight: 0,
-      pageReady: false
+      pageReady: false,
+      isVisible: 0
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !(isEqual(nextProps, this.props) && isEqual(nextState, this.state));
   }
 
   getContainerReference = ref => {
@@ -109,6 +120,7 @@ class PageContainer extends React.PureComponent {
         width: this.props.activePage.width,
         height: this.props.activePage.height
       };
+
       this.setState({
         zoomScale: computeZoomScale(1, parent, child),
         containerWidth: parent.width,
@@ -123,6 +135,7 @@ class PageContainer extends React.PureComponent {
   }
   componentDidUpdate() {
     this.updateContainerDimensions();
+    this.setState({ isVisible: isVisible(this.pageContainerRef) });
   }
   clickHandler = () => {
     if (this.props.activePage.selectable) {
@@ -137,9 +150,10 @@ class PageContainer extends React.PureComponent {
       this.props.onDeletePage({ page_id });
     }
   };
+
   render() {
+    // console.log("renderlive renderPageContainer");
     const { classes } = this.props;
-    // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let { zoomScale } = this.state;
     let style = {};
@@ -162,7 +176,12 @@ class PageContainer extends React.PureComponent {
 
     return this.props.connectDropTarget(
       this.props.connectDragSource(
-        <div className={classes} style={style} onClick={this.clickHandler}>
+        <div
+          className={classes}
+          style={style}
+          onClick={this.clickHandler}
+          ref={el => (this.pageContainerRef = el)}
+        >
           <a
             onClick={event => {
               this.onDeletePageHandler(event);
@@ -176,6 +195,7 @@ class PageContainer extends React.PureComponent {
             x
           </a>
           <Canvas
+            visible={this.state.isVisible}
             containerUuid={this.props.uuid}
             getCanvasRef={this.getCanvasReference}
             getContainerRef={this.getContainerReference}

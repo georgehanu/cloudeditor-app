@@ -324,6 +324,7 @@ const getProjectTemplate = cfg => {
       activePage: "page_0",
       pagesOrder: [],
       objects: {},
+      globalObjectsIds: { before: [], after: [] },
       selectedObjectsIds: [],
       activeSelection: null,
       configs: {
