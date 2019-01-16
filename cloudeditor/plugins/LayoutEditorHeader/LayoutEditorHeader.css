@@ -1,9 +1,12 @@
 .layoutEditorHeaderContainer {
   height: 100px;
-  background-color: red;
   width: 100%;
   z-index: 550;
   position: absolute;
+  padding: 0;
+  background-color: #525b61;
+  text-align: center;
+  padding-top: 10px;
 }
 
 #sidebar-wrapper {
@@ -12,4 +15,126 @@
 
 #sidebar-wrapper-container {
   padding-bottom: 100px;
+}
+
+.canvasContainer {
+  padding-top: 110px;
+  padding-bottom: 30px;
+}
+
+.layoutEditorHeaderContainer .duplicateChecked input {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.layoutEditorHeaderContainer .duplicateChecked {
+  height: 30px;
+}
+
+.layoutEditorHeaderContainer .headerSubContainer {
+  display: inline-block;
+  font-size: 12px;
+  line-height: normal;
+  color: #ffffff;
+  margin: 0 10px;
+  vertical-align: middle;
+}
+
+.layoutEditorHeaderContainer .duplicateLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.layoutEditorHeaderContainer .headerPoptextTitle,
+.layoutEditorHeaderContainer .inputLabel {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+  text-align: center;
+}
+
+.layoutEditorHeaderContainer .headerPoptext {
+  color: #707070;
+  text-align: left;
+}
+
+.layoutEditorHeaderContainer .headerPoptextSelect__control {
+  border: none !important;
+  box-shadow: none !important;
+  min-height: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.projectPage {
+  width: 150px;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.isDefault {
+  width: 120px;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.projectCategory {
+  width: 150px;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.projectStatus {
+  width: 120px;
+}
+
+.layoutEditorHeaderContainer .headerPoptextSelect__menu * {
+  cursor: pointer;
+}
+
+.layoutEditorHeaderContainer .uploadLabel {
+  background-color: white;
+}
+
+.layoutEditorHeaderContainer .uploadMessage {
+  color: #707070;
+}
+
+.layoutEditorHeaderContainer .dropzone {
+  width: 180px;
+  height: 14px;
+}
+
+.layoutEditorHeaderContainer .inputLabelContent input {
+  height: 30px;
+}
+
+.layoutEditorHeaderContainer .projectOrder input {
+  width: 50px;
+}
+
+.layoutEditorHeaderContainer .layouHeaderBottom button {
+  border-style: solid;
+  border-width: 0;
+  cursor: pointer;
+  font-weight: normal;
+  line-height: normal;
+  margin: 0 0 1.25rem;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  padding: 4px 8px;
+  font-size: 1rem;
+  background-color: #66b764;
+  color: white;
+  transition: background 200ms ease-in-out 0s;
+  display: inline-block;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 9px;
+  outline: none;
 }
