@@ -32,7 +32,7 @@ class SideBar extends React.Component {
   }
 
   render() {
-    console.log("sidebar");
+    //console.log("sidebar");
     const { expanded } = this.props;
 
     return (

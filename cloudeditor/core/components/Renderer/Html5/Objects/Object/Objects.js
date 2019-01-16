@@ -36,12 +36,12 @@ class Blocks extends React.Component {
     pageBlocksData = pick(pageBlocksIds, nextProps.objectsData);
     const end = now();
 
-    // console.log("getPageBlocks", (end - start).toFixed(15), pageBlocksData);
+    //console.log("getPageBlocks", (end - start).toFixed(15), pageBlocksData);
     return { pageBlocksData };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const omitList = ["objectsData", "objects"];
+    const omitList = ["objectsData"];
     const pProps = omit(omitList, this.props);
     const nProps = omit(omitList, nextProps);
     if (isEqual(nextState, this.state) && isEqual(pProps, nProps)) {

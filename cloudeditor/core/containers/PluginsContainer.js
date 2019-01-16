@@ -77,7 +77,7 @@ class PluginsContainer extends React.Component {
   };
 
   componentDidMount() {
-    console.log("12345");
+    //console.log("12345");
   }
   componentDidUpdate() {
     //console.log("123456");
