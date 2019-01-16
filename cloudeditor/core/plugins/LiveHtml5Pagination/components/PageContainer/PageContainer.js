@@ -125,7 +125,8 @@ class PageContainer extends React.Component {
         zoomScale: computeZoomScale(1, parent, child),
         containerWidth: parent.width,
         containerHeight: parent.height,
-        pageReady: true
+        pageReady: true,
+        isVisible: false
       });
     }
   };
@@ -152,7 +153,7 @@ class PageContainer extends React.Component {
   };
 
   render() {
-    // console.log("renderlive renderPageContainer");
+    //console.log("renderlive renderPageContainer");
     const { classes } = this.props;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let { zoomScale } = this.state;
