@@ -1,0 +1,31 @@
+{
+  "plugins": {
+    "mobile": ["Html5Renderer"],
+    "desktop": [
+      "SideBar",
+      "Html5Renderer",
+      "Toolbar",
+      "AddImage",
+      "AddPdf",
+      "Layouts",
+      "LayoutEditorHeader"
+    ]
+  },
+  "Layout": {
+    "SideBar": {},
+    "Body": {}
+  },
+
+  "mainComponent": {
+    "component": "div",
+    "id": "container",
+    "className": "container"
+  },
+  "translations": {
+    "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/",
+    "publicPath": "cloudeditor/",
+    "basePath": "locales"
+  },
+  "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/",
+  "publicPath": "cloudeditor/"
+}

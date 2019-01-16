@@ -1,0 +1,15 @@
+.layoutEditorHeaderContainer {
+  height: 100px;
+  background-color: red;
+  width: 100%;
+  z-index: 550;
+  position: absolute;
+}
+
+#sidebar-wrapper {
+  padding-top: 100px;
+}
+
+#sidebar-wrapper-container {
+  padding-bottom: 100px;
+}
