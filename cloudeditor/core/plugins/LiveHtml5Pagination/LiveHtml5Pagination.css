@@ -277,7 +277,7 @@
   height: 82px;
 }
 
-.pageHeaderTextTitle {
+.pageHeaderTextTitleContainer .pageHeaderTextTitle {
   cursor: pointer;
 }
 

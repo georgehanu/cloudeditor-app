@@ -236,12 +236,12 @@ const getDocumentDefaults = cfg => {
       displayOnePage: true,
       facingPages: true,
       singleFirstLastPage: true,
-      groupSize: 1,
+      groupSize: 2,
       includeBoxes: true,
       includeMagentic: false,
       showTrimbox: false,
       useMagentic: true,
-      predefinedGroups: [2, 2], //or false
+      predefinedGroups: false,
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]

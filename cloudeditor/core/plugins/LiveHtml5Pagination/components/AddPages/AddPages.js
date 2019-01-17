@@ -1,5 +1,5 @@
 const React = require("react");
-const Backdrop = require("./Backdrop");
+const Backdrop = require("../../../../../core/components/Backdrop/Backdrop");
 
 require("./AddPages.css");
 const AddPagesHeader = require("./AddPagesHeader");
@@ -35,6 +35,7 @@ class AddPages extends React.Component {
   }
 
   onCheckboxChanged = checkboxesSelected => {
+    console.log(checkboxesSelected, "SELE");
     this.setState({ checkboxesSelected });
     this.props.onCheckboxChanged(checkboxesSelected);
   };
@@ -42,7 +43,11 @@ class AddPages extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Backdrop show={this.props.show} clicked={this.props.hideAddPages} />
+        <Backdrop
+          show={this.props.show}
+          clicked={this.props.hideAddPages}
+          classBackdrop="pageSelectorBackdrop"
+        />
         <div className="addPagesModal">
           <AddPagesHeader modalClosed={this.props.hideAddPages} />
           <AddPagesBody
