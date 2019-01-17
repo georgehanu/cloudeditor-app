@@ -111,7 +111,7 @@
     "react-dnd": "2.6.0",
     "react-dnd-html5-backend": "2.6.0",
     "react-dom": "^16.7.0",
-    "react-dropzone": "^7.0.1",
+    "react-dropzone": "5.0.0",
     "react-fast-compare": "^2.0.4",
     "react-i18next": "^8.3.8",
     "react-iframe-comm": "^1.2.2",
