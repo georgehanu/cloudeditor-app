@@ -151,6 +151,7 @@
   color: #777;
   outline: none;
   padding-left: 10px;
+  cursor: pointer;
 }
 
 .addPagesBody
@@ -164,4 +165,8 @@
   left: 7px;
   position: absolute;
   top: 10px;
+}
+
+.addPagesBody .importTextItemRadio {
+  cursor: pointer;
 }
