@@ -169,10 +169,12 @@ class LayoutEditorHeader extends React.Component {
             onChange={this.onChange}
             label={this.props.t("Order")}
           />
-        </div>
-        <div className="layouHeaderBottom">
-          <button>{this.props.t("Save Project")}</button>
-          <button>{this.props.t("Close")}</button>
+          <div className="headerSubContainer buttonContainer">
+            <button>{this.props.t("Save Project")}</button>
+          </div>
+          <div className="headerSubContainer buttonContainer">
+            <button>{this.props.t("Close")}</button>
+          </div>
         </div>
       </div>
     );

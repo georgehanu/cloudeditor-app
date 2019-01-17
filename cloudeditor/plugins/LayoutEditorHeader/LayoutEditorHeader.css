@@ -1,24 +1,23 @@
 .layoutEditorHeaderContainer {
-  height: 100px;
+  height: 110px;
   width: 100%;
   z-index: 550;
   position: absolute;
   padding: 0;
   background-color: #525b61;
   text-align: center;
-  padding-top: 10px;
 }
 
 #sidebar-wrapper {
-  padding-top: 100px;
+  padding-top: 110px;
 }
 
 #sidebar-wrapper-container {
-  padding-bottom: 100px;
+  padding-bottom: 110px;
 }
 
 .canvasContainer {
-  padding-top: 110px;
+  padding-top: 120px;
   padding-bottom: 30px;
 }
 
@@ -39,7 +38,7 @@
   line-height: normal;
   color: #ffffff;
   margin: 0 10px;
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 
 .layoutEditorHeaderContainer .duplicateLabel {
@@ -104,7 +103,7 @@
 
 .layoutEditorHeaderContainer .dropzone {
   width: 180px;
-  height: 14px;
+  height: 40px;
 }
 
 .layoutEditorHeaderContainer .inputLabelContent input {
@@ -115,26 +114,28 @@
   width: 50px;
 }
 
-.layoutEditorHeaderContainer .layouHeaderBottom button {
+.layoutEditorHeaderContainer .buttonContainer {
+  line-height: 55px;
+  height: 40px;
+}
+
+.layoutEditorHeaderContainer button {
   border-style: solid;
   border-width: 0;
   cursor: pointer;
   font-weight: normal;
   line-height: normal;
-  margin: 0 0 1.25rem;
   position: relative;
   text-decoration: none;
   text-align: center;
   -webkit-appearance: none;
   -webkit-border-radius: 0;
-  padding: 4px 8px;
+  padding: 6px 8px;
   font-size: 1rem;
   background-color: #66b764;
   color: white;
   transition: background 200ms ease-in-out 0s;
   display: inline-block;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 9px;
+  margin: 0;
   outline: none;
 }
