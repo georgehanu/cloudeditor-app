@@ -7,8 +7,18 @@ const Duplicate = require("./components/Duplicate/Duplicate");
 const HeaderPoptext = require("./components/HeaderPoptext/HeaderPoptext");
 const UploadOneImage = require("./components/UploadOneImage/UploadOneImage");
 const Input = require("./components/Input/Input");
+const axios = require("axios");
+
+const SweetAlert = require("sweetalert-react").default;
+require("sweetalert/dist/sweetalert.css");
 
 require("./LayoutEditorHeader.css");
+
+const SAVE_LAYOUT_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/saveProject";
+
+const LOAD__TEMPLATES_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/getTemplateProjects";
 
 const poptext = (props, name, onPoptextChange, t) => {
   return (
@@ -27,18 +37,18 @@ class LayoutEditorHeader extends React.Component {
   state = {
     duplicateChecked: false,
     isDefaultPoptext: {
-      options: [{ value: "yes", label: "Yes" }, { value: "no", label: "No" }],
-      selectedOption: { value: "yes", label: "Yes" },
+      options: [{ value: "1", label: "Yes" }, { value: "no", label: "No" }],
+      selectedOption: { value: "0", label: "Yes" },
       title: "Project is Default"
     },
     projectPagePoptext: {
       options: [
-        { value: "Front page", label: "Front page" },
-        { value: "First page", label: "First page" },
-        { value: "Second page", label: "Second page" },
-        { value: "Last Page", label: "Last Page" }
+        { value: "0", label: "Front page" },
+        { value: "1", label: "First page" },
+        { value: "2", label: "Second page" },
+        { value: "3", label: "Last Page" }
       ],
-      selectedOption: { value: "Front page", label: "Front page" },
+      selectedOption: { value: "0", label: "Front page" },
       title: "Project Page"
     },
     projectCategoryPoptext: {
@@ -52,15 +62,17 @@ class LayoutEditorHeader extends React.Component {
     },
     projectStatusPoptext: {
       options: [
-        { value: "Active", label: "Active" },
-        { value: "Inctive", label: "Inctive" }
+        { value: "1", label: "Active" },
+        { value: "0", label: "Inctive" }
       ],
       selectedOption: { value: "Active", label: "Active" },
       title: "Project Status"
     },
     projectTitle: "",
     projectDescription: "",
-    projectOrder: ""
+    projectOrder: "",
+    showAlert: false,
+    saText: ""
   };
 
   onChange = event => {
@@ -106,6 +118,78 @@ class LayoutEditorHeader extends React.Component {
     }
   };
 
+  componentDidMount() {
+    this.loadTemplateProjects();
+  }
+
+  loadTemplateProjects = () => {
+    let serverData = new FormData();
+    axios
+      .post(LOAD__TEMPLATES_URL, serverData)
+      .then(resp => resp.data)
+      .then(data => {
+        console.log(data, "DATA");
+      })
+      .catch(error => {
+        console.log(error, "ERROR");
+      });
+  };
+
+  saveProjectHandler = () => {
+    // call if we are sure ...
+    // test title and description are not empty... and other fields
+    if (this.state.projectTitle === "") {
+      this.setState({
+        showAlert: true,
+        saText: this.props.t("Title is required")
+      });
+      return;
+    } else if (this.state.projectDescription === "") {
+      this.setState({
+        showAlert: true,
+        saText: this.props.t("Description is required")
+      });
+      return;
+    }
+    let serverData = new FormData();
+    serverData.append("id", "1");
+    serverData.append("title", this.state.projectTitle);
+    serverData.append("description", this.state.projectDescription);
+    serverData.append("category_id", "1");
+    serverData.append(
+      "page_no",
+      this.state.projectPagePoptext.selectedOption.value
+    );
+    serverData.append("pdf_file", "pdf");
+    serverData.append("icon", "icon");
+    serverData.append("sort_order", this.state.projectOrder);
+    serverData.append(
+      "is_default",
+      this.state.isDefaultPoptext.selectedOption.value
+    );
+    serverData.append(
+      "status",
+      this.state.projectStatusPoptext.selectedOption.value
+    );
+    serverData.append("saved_data", "date");
+    serverData.append("template_id", "1");
+    serverData.append("duplicate", this.state.duplicateChecked ? "1" : "0");
+
+    axios
+      .post(SAVE_LAYOUT_URL, serverData)
+      .then(resp => resp.data)
+      .then(data => {
+        console.log(data, "DATA");
+      })
+      .catch(error => {
+        console.log(error, "ERROR");
+      });
+  };
+
+  closeSweetAlert = () => {
+    this.setState({ SweetAlert: false });
+  };
+
   render() {
     const isDefaultPoptext = poptext(
       this.state.isDefaultPoptext,
@@ -132,51 +216,64 @@ class LayoutEditorHeader extends React.Component {
       this.props.t
     );
     return (
-      <div className="layoutEditorHeaderContainer">
-        <div className="layouHeaderTop">
-          <Duplicate
-            checked={this.state.duplicateChecked}
-            label={this.props.t("Duplicate")}
-            onChange={this.onChange}
-            name="duplicate"
-          />
-          {isDefaultPoptext}
-          {projectPagePoptext}
-          <Input
-            type="text"
-            className="projectTitle"
-            name="projectTitle"
-            text={this.state.projectTitle}
-            onChange={this.onChange}
-            label={this.props.t("Project Title")}
-          />
-          <Input
-            type="text"
-            className="projectHeaderDescription"
-            name="projectDescription"
-            text={this.state.projectDescription}
-            onChange={this.onChange}
-            label={this.props.t("Description")}
-          />
-          {projectCategoryPoptext}
-          <UploadOneImage t={this.props.t} />
-          {projectStatusPoptext}
-          <Input
-            type="number"
-            className="projectOrder"
-            name="projectOrder"
-            text={this.state.projectOrder}
-            onChange={this.onChange}
-            label={this.props.t("Order")}
-          />
-          <div className="headerSubContainer buttonContainer">
-            <button>{this.props.t("Save Project")}</button>
-          </div>
-          <div className="headerSubContainer buttonContainer">
-            <button>{this.props.t("Close")}</button>
+      <React.Fragment>
+        <SweetAlert
+          show={this.state.showAlert}
+          type="warning"
+          title={this.props.t("Warning")}
+          text={this.state.saText}
+          showCancelButton={true}
+          onConfirm={() => this.closeSweetAlert()}
+          onCancel={() => this.setState({ showAlert: false })}
+        />
+        <div className="layoutEditorHeaderContainer">
+          <div className="layouHeaderTop">
+            <Duplicate
+              checked={this.state.duplicateChecked}
+              label={this.props.t("Duplicate")}
+              onChange={this.onChange}
+              name="duplicate"
+            />
+            {isDefaultPoptext}
+            {projectPagePoptext}
+            <Input
+              type="text"
+              className="projectTitle"
+              name="projectTitle"
+              text={this.state.projectTitle}
+              onChange={this.onChange}
+              label={this.props.t("Project Title")}
+            />
+            <Input
+              type="text"
+              className="projectHeaderDescription"
+              name="projectDescription"
+              text={this.state.projectDescription}
+              onChange={this.onChange}
+              label={this.props.t("Description")}
+            />
+            {projectCategoryPoptext}
+            <UploadOneImage t={this.props.t} />
+            {projectStatusPoptext}
+            <Input
+              type="number"
+              className="projectOrder"
+              name="projectOrder"
+              text={this.state.projectOrder}
+              onChange={this.onChange}
+              label={this.props.t("Order")}
+            />
+            <div className="headerSubContainer buttonContainer">
+              <button onClick={this.saveProjectHandler}>
+                {this.props.t("Save Project")}
+              </button>
+            </div>
+            <div className="headerSubContainer buttonContainer">
+              <button>{this.props.t("Close")}</button>
+            </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
