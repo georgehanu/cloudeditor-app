@@ -1642,6 +1642,7 @@ const getEmptyAssets = cfg => {
   return mergeDeepRight(
     {
       layout: {
+        loading: false,
         items: []
       },
       pdf: {

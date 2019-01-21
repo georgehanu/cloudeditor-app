@@ -1,6 +1,7 @@
 const React = require("react");
 const Dropzone = require("react-dropzone").default;
 const ACCEPTED_FILES = "image/*";
+const withTooltip = require("../../../../core/hoc/withTooltip/withTooltip");
 
 class UploadOneImage extends React.Component {
   state = { files: [] };
@@ -8,7 +9,7 @@ class UploadOneImage extends React.Component {
     if (acceptedFiles.length === 0) {
       return;
     }
-    console.log(acceptedFiles);
+    this.props.uploadIcon(acceptedFiles[0]);
   };
 
   onCancel = () => {
@@ -27,7 +28,7 @@ class UploadOneImage extends React.Component {
           accept={ACCEPTED_FILES}
           className="dropzone"
         >
-          <div className="uploadFileInputs">
+          <div className="uploadFileInputs" {...this.props.tooltipData}>
             <label htmlFor="image-file-upload" className="uploadLabel">
               <span className="uploadIcon icon printqicon-upload" />
               <span className="uploadMessage">
@@ -41,4 +42,4 @@ class UploadOneImage extends React.Component {
   }
 }
 
-module.exports = UploadOneImage;
+module.exports = withTooltip(UploadOneImage);

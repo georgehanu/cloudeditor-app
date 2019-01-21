@@ -207,3 +207,7 @@ section.dropzone {
 .sidebarContainerExpand .canvasContainer {
   padding-left: 550px;
 }
+
+.uploadGalleryItemTitle {
+  text-align: center;
+}

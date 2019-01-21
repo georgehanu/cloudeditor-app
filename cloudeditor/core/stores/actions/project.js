@@ -39,7 +39,8 @@ const {
   PROJ_LOAD_PROJECT_START,
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
-  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  PROJ_LOAD_LAYOUT
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -85,7 +86,8 @@ const {
   projLoadProjectStart,
   projLoadProjectSuccess,
   projLoadProjectFailed,
-  projLoadProjectClearMessage
+  projLoadProjectClearMessage,
+  projLoadLayout
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -128,7 +130,8 @@ const {
   PROJ_LOAD_PROJECT_START,
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
-  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  PROJ_LOAD_LAYOUT
 );
 
 module.exports = {
@@ -172,5 +175,6 @@ module.exports = {
   projLoadProjectStart,
   projLoadProjectSuccess,
   projLoadProjectFailed,
-  projLoadProjectClearMessage
+  projLoadProjectClearMessage,
+  projLoadLayout
 };

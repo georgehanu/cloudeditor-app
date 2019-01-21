@@ -1,7 +1,7 @@
 .layoutEditorHeaderContainer {
   height: 110px;
   width: 100%;
-  z-index: 550;
+  z-index: 1100;
   position: absolute;
   padding: 0;
   background-color: #525b61;
@@ -138,4 +138,18 @@
   display: inline-block;
   margin: 0;
   outline: none;
+}
+
+.layoutEditorLoadingContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.layoutEditorLoadingContainer .loader {
+  color: #737373;
 }

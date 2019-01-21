@@ -6,6 +6,9 @@ const LazyLoad = require("react-lazy-load").default;
 const { connect } = require("react-redux");
 const { pathOr } = require("ramda");
 const { removeAssetFromGallery } = require("../../stores/actions/assets");
+const {
+  assetsLayoutForActivePageSelector
+} = require("../../stores/selectors/assets");
 
 const gallery = props => {
   let items = [];
@@ -34,6 +37,7 @@ const gallery = props => {
               deleteAsset={props.onDeleteAssetHandler}
               tooltip={{ imageSrc: el.thumbnail_src }}
               addContainerClasses={props.addContainerClasses}
+              selectImage={props.selectImage}
             />
           </LazyLoad>
         </li>
@@ -62,9 +66,9 @@ const gallery = props => {
 };
 
 const getItemsByType = (state, props) => {
-  if (props.type === "layout")
-    return pathOr([], [props.type, "items"], state.assets);
-  else return pathOr([], [props.type, "uploadedFiles"], state.assets);
+  if (props.type === "layout") {
+    return assetsLayoutForActivePageSelector(state);
+  } else return pathOr([], [props.type, "uploadedFiles"], state.assets);
 };
 const getLoadingByType = (state, props) => {
   return pathOr(0, [props.type, "loadingFiles"], state.assets);
