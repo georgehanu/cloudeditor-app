@@ -284,3 +284,7 @@
 .pageHeaderButtonsContainer {
   text-align: center;
 }
+
+.pageSelectorContainer .pageContainer.page * {
+  cursor: pointer;
+}
