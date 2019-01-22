@@ -153,3 +153,11 @@
 .layoutEditorLoadingContainer .loader {
   color: #737373;
 }
+
+.layouHeaderTop .tooltipImage img {
+  width: 100px;
+}
+
+.layouHeaderTop .__react_component_tooltip {
+  opacity: 1;
+}
