@@ -47,7 +47,7 @@ const galleryItem = props => {
         />
         <span
           className="delete icon printqicon-delete"
-          onClick={() => props.deleteAsset({ id: props.id })}
+          onClick={() => props.deleteAsset(props.id)}
         />
       </div>
     </div>

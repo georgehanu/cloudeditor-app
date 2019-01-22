@@ -5,65 +5,135 @@ const GalleryPreviewItem = require("./GalleryPreviewItem");
 const LazyLoad = require("react-lazy-load").default;
 const { connect } = require("react-redux");
 const { pathOr } = require("ramda");
-const { removeAssetFromGallery } = require("../../stores/actions/assets");
+const { removeAssetFromGalleryStart } = require("../../stores/actions/assets");
 const {
   assetsLayoutForActivePageSelector
 } = require("../../stores/selectors/assets");
+const SweetAlert = require("sweetalert-react").default;
+require("sweetalert/dist/sweetalert.css");
+const { withNamespaces } = require("react-i18next");
+const BackdropSpinner = require("../../hoc/withSpinner/backdropSpinner");
 
-const gallery = props => {
-  let items = [];
+class Gallery extends React.Component {
+  state = {
+    showAlert: false,
+    itemId: null,
+    loadingDelete: false
+  };
 
-  if (props.hideActions === undefined || props.hideActions === false) {
-    items = props.items.map((el, index) => {
-      return (
-        <li className="uploadGalleryLi" key={index}>
-          <LazyLoad>
-            <GalleryItem
-              {...el}
-              type={props.type}
-              deleteAsset={props.onDeleteAssetHandler}
-            />
-          </LazyLoad>
-        </li>
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.loadingDelete === true && prevState.loadingDelete === false) {
+      nextProps.addContainerClasses(
+        "Gallery",
+        ["containerMaxZindex", "containerMaxZindexGallery"],
+        false
       );
-    });
-  } else {
-    items = props.items.map((el, index) => {
-      return (
-        <li className="uploadGalleryLi" key={index}>
-          <LazyLoad>
-            <GalleryPreviewItem
-              {...el}
-              deleteAsset={props.onDeleteAssetHandler}
-              tooltip={{ imageSrc: el.thumbnail_src }}
-              addContainerClasses={props.addContainerClasses}
-              selectImage={props.selectImage}
-            />
-          </LazyLoad>
-        </li>
-      );
-    });
-  }
-
-  if (props.loading) {
-    for (let counter = 0; counter < props.loadingNr; counter++) {
-      items.push(
-        <li
-          className="uploadGalleryLi uploadGalleryLiLoading"
-          key={props.items.length + counter}
-        >
-          <LoadingItem loading={true} keys={props.items.length + counter} />
-        </li>
-      );
+      return {
+        ...prevState,
+        loadingDelete: true
+      };
+    } else if (
+      nextProps.loadingDelete === false &&
+      prevState.loadingDelete === true
+    ) {
+      nextProps.addContainerClasses("Gallery", [], false);
+      return {
+        ...prevState,
+        loadingDelete: false
+      };
     }
+    return null;
   }
 
-  return (
-    <div className="uploadGallery">
-      <ul className="uploadGalleryUl">{items}</ul>
-    </div>
-  );
-};
+  deleteItemHandler = () => {
+    this.setState({ showAlert: false });
+    this.props.onDeleteAssetHandler({
+      id: this.state.itemId,
+      type: this.props.type
+    });
+  };
+
+  onDeleteHandler = itemId => {
+    this.setState({ showAlert: true, itemId });
+  };
+
+  render() {
+    let items = [];
+
+    if (
+      this.props.hideActions === undefined ||
+      this.props.hideActions === false
+    ) {
+      items = this.props.items.map((el, index) => {
+        return (
+          <li className="uploadGalleryLi" key={index}>
+            <LazyLoad>
+              <GalleryItem
+                {...el}
+                type={this.props.type}
+                deleteAsset={this.onDeleteHandler}
+              />
+            </LazyLoad>
+          </li>
+        );
+      });
+    } else {
+      items = this.props.items.map((el, index) => {
+        return (
+          <li className="uploadGalleryLi" key={index}>
+            <LazyLoad>
+              <GalleryPreviewItem
+                {...el}
+                deleteAsset={this.props.onDeleteAssetHandler}
+                tooltip={{ imageSrc: el.thumbnail_src }}
+                addContainerClasses={this.props.addContainerClasses}
+                selectImage={this.props.selectImage}
+              />
+            </LazyLoad>
+          </li>
+        );
+      });
+    }
+
+    if (this.props.loading) {
+      for (let counter = 0; counter < this.props.loadingNr; counter++) {
+        items.push(
+          <li
+            className="uploadGalleryLi uploadGalleryLiLoading"
+            key={this.props.items.length + counter}
+          >
+            <LoadingItem
+              loading={true}
+              keys={this.props.items.length + counter}
+            />
+          </li>
+        );
+      }
+    }
+
+    return (
+      <React.Fragment>
+        <SweetAlert
+          show={this.state.showAlert}
+          type="warning"
+          title={this.props.t("Warning")}
+          text={this.props.t("Are you sure you want to delete ?")}
+          showCancelButton={true}
+          onConfirm={() => this.deleteItemHandler()}
+          onCancel={() => this.setState({ showAlert: false })}
+        />
+        {this.props.loadingDelete && (
+          <div className="backdropSpinnerContainer">
+            <BackdropSpinner loading={true} />
+          </div>
+        )}
+        <div className="uploadGallery">
+          <ul className="uploadGalleryUl">{items}</ul>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
 
 const getItemsByType = (state, props) => {
   if (props.type === "layout") {
@@ -78,20 +148,26 @@ const getLoadingNrByType = (state, props) => {
   return pathOr(false, [props.type, "loading"], state.assets);
 };
 
+const getLoadingDeleteByType = (state, props) => {
+  return pathOr(false, [props.type, "loadingDelete"], state.assets);
+};
+
 const mapStateToProps = (state, props) => {
   return {
     items: getItemsByType(state, props),
     loading: getLoadingByType(state, props),
-    loadingNr: getLoadingNrByType(state, props)
+    loadingNr: getLoadingNrByType(state, props),
+    loadingDelete: getLoadingDeleteByType(state, props)
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    onDeleteAssetHandler: payload => dispatch(removeAssetFromGallery(payload))
+    onDeleteAssetHandler: payload =>
+      dispatch(removeAssetFromGalleryStart(payload))
   };
 };
 
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
-)(gallery);
+)(withNamespaces("gallery")(Gallery));

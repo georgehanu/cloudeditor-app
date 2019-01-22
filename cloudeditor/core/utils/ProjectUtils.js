@@ -1647,11 +1647,13 @@ const getEmptyAssets = cfg => {
       },
       pdf: {
         loading: false,
+        loadingDelete: false,
         loadingFiles: 0,
         uploadedFiles: []
       },
       image: {
         loading: false,
+        loadingDelete: false,
         loadingFiles: 0,
         uploadedFiles: []
       }

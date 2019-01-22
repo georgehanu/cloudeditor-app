@@ -15,7 +15,7 @@ const galleryPreviewItem = props => {
         <div className="uploadGalleryItemImageContainer">
           <img
             src={props.thumbnail_src}
-            alt="galleryItem"
+            alt={props.title}
             className="uploadGalleryItemImage"
           />
         </div>

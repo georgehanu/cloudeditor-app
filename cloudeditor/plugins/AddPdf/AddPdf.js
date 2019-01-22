@@ -21,6 +21,7 @@ class AddPdf extends React.Component {
           items={this.props.uploadedPdfs}
           type={TYPE}
           selectImage={this.selectImageHandler}
+          addContainerClasses={this.props.addContainerClasses}
         />
       </div>
     );

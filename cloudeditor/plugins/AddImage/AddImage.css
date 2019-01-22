@@ -225,3 +225,7 @@ section.dropzone {
 .LayoutsContainer .uploadGalleryItem {
   height: 105px;
 }
+
+.containerMaxZindexGallery #sidebar-wrapper-container .paneShow.paneContainer {
+  z-index: 1;
+}
