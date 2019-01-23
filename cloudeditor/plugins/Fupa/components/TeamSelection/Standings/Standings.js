@@ -110,17 +110,16 @@ const Standings = props => {
           <div style={{ color: "#bfbfbf" }} />
         </td>
         <td width="30px" style={{ ...fupaTd, padding: "1px 2px" }}>
-          <div style={{ ...fupaImageWrapper, width: "25px", height: "25px" }}>
-            <picture style={{ ...fupaImageWrapperPicture }}>
-              <source srcSet={imageUrl + " 1x, " + imageUrl + " 2x"} />
-              <img
-                src={imageUrl}
-                title={el.team.name.full}
-                alt={el.team.name.full}
-                style={{ ...fupaImageWrapperPicture }}
-              />
-            </picture>
-          </div>
+          <img
+            src={imageUrl}
+            title={el.team.name.full}
+            alt={el.team.name.full}
+            style={{
+              ...fupaImageWrapperPicture,
+              width: "25px",
+              height: "25px"
+            }}
+          />
         </td>
 
         <td

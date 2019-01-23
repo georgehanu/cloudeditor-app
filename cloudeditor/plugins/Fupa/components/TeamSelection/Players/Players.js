@@ -7,18 +7,26 @@ const Colors = require("../Utils/Colors");
 const showColumnsPlayers = [
   "ID",
   "NAME",
-  "COUNTRY",
   "PLAYED",
   "GOALS",
-  //"?",
-  "PENALTIES",
+  "ASSISTS",
   "YELLOW_CARD",
   "YELLOW_RED_CARD",
   "RED_CARD",
-  "SUB_IN",
-  "SUB_OUT",
-  "MINUTES"
+  "TOP_ELEVEN"
 ];
+
+const fupaTdBase = {
+  padding: "4px 0px",
+  margin: "0",
+  borderBottom: "none",
+  textAlign: "center",
+  fontSize: "12px",
+  lineHeight: "12px",
+  border: "none",
+  fontFamily: "Arial",
+  height: "27px"
+};
 
 const show = columnName => {
   return showColumnsPlayers.includes(columnName);
@@ -32,27 +40,50 @@ const formatName = player => {
   );
 };
 
+const formatJerseyNumber = player => {
+  return player.playerRole.seasons[0].jerseyNumber;
+};
+
 const formatNumber = value => {
   return value === 0 ? "-" : value;
 };
 
-const formatPenalty = (penalties, noGoal) => {
-  if (penalties === 0) {
-    return "-/-";
-  } else {
-    return penalties + "/" + (penalties - noGoal);
-  }
+const formatGamesPlayer = player => {
+  return formatNumber(player.playerRole.total.matches);
+};
+
+const formatGoals = player => {
+  return formatNumber(player.playerRole.total.goals);
+};
+
+const formatAssists = player => {
+  return formatNumber(player.playerRole.total.assists);
+};
+
+const formatYellowCard = player => {
+  return formatNumber(player.playerRole.total.yellowCard);
+};
+
+const formatYellowRedCard = player => {
+  return formatNumber(player.playerRole.total.yellowRedCard);
+};
+
+const formatRedCard = player => {
+  return formatNumber(player.playerRole.total.redCard);
+};
+
+const formatTopEleven = player => {
+  return player.playerRole.total.topEleven;
 };
 
 const Players = props => {
-  const headerBackground = { ...Colors.oddRow, border: "none" };
+  const headerBackground = { ...fupaTdBase, ...Colors.oddRow };
   const headerTable = (
     <tr>
       {show("ID") && (
         <td
           style={{
             ...headerBackground,
-            textAlign: "right",
             fontWeight: "bold"
           }}
         >
@@ -60,10 +91,9 @@ const Players = props => {
         </td>
       )}
       {show("NAME") && (
-        <td style={{ ...headerBackground }}>{props.t("Player_Name")}</td>
-      )}
-      {show("COUNTRY") && (
-        <td style={{ ...headerBackground }}>{props.t("Player_Country")}</td>
+        <td style={{ ...headerBackground, textAlign: "left" }}>
+          {props.t("Player_Name")}
+        </td>
       )}
       {show("PLAYED") && (
         <td style={{ ...headerBackground }}>{props.t("Player_Game_Played")}</td>
@@ -73,13 +103,8 @@ const Players = props => {
           {props.t("Player_Goals_Scored")}
         </td>
       )}
-      {show("?") && (
-        <td style={{ ...headerBackground }}>{props.t("Player_?")}</td>
-      )}
-      {show("PENALTIES") && (
-        <td style={{ ...headerBackground, textAlign: "right" }}>
-          {props.t("Player_Penalties")}
-        </td>
+      {show("ASSISTS") && (
+        <td style={{ ...headerBackground }}>{props.t("Player_Assists")}</td>
       )}
       {show("YELLOW_CARD") && (
         <td style={{ ...headerBackground }}>{props.t("Player_Yellow")}</td>
@@ -90,109 +115,57 @@ const Players = props => {
       {show("RED_CARD") && (
         <td style={{ ...headerBackground }}>{props.t("Player_Red")}</td>
       )}
-      {show("SUB_IN") && (
-        <td style={{ ...headerBackground }}>{props.t("Player_SubsIn")}</td>
-      )}
-      {show("SUB_OUT") && (
-        <td style={{ ...headerBackground }}>{props.t("Player_SubsOut")}</td>
-      )}
-      {show("MINUTES") && (
-        <td style={{ ...headerBackground, textAlign: "right" }}>
-          {props.t("Player_Minutes")}
-        </td>
+      {show("TOP_ELEVEN") && (
+        <td style={{ ...headerBackground }}>{props.t("Player_TopEleven")}</td>
       )}
     </tr>
   );
-  const matches = props.players.map((el, index) => {
-    if (el.player === null) {
+  const matches = props.players.map((player, index) => {
+    if (player === null) {
       return null;
     }
     let tdBackground =
       index % 2 === 0 ? { ...Colors.evenRow } : { ...Colors.oddRow };
-    let fupaTd = { ...tdBackground, border: "none" };
+    let fupaTd = { ...fupaTdBase, ...tdBackground };
     return (
       <tr key={index}>
         {show("ID") && (
           <td
             style={{
               ...fupaTd,
-              textAlign: "right",
-              fontWeight: "bold"
+              fontWeight: "bold",
+              width: "24px"
             }}
           >
             {index + 1}.
           </td>
         )}
         {show("NAME") && (
-          <td style={{ ...fupaTd }}>
-            {formatName(el.player.firstName + " " + el.player.lastName)} (
-            <span>{el.player.jerseyNumber}</span>)
-          </td>
-        )}
-        {show("COUNTRY") && (
-          <td style={{ ...fupaTd }}>
-            <img
-              src={
-                "https://www.fupa.net/fupa/images/laenderfahnen/" +
-                el.player.nationality +
-                ".png"
-              }
-              alt="DE"
-            />
+          <td style={{ ...fupaTd, textAlign: "left" }}>
+            {formatName(player)} (<span>{formatJerseyNumber(player)}</span>)
           </td>
         )}
         {show("PLAYED") && (
-          <td style={{ ...fupaTd, fontWeight: "bold", textAlign: "right" }}>
-            {formatNumber(el.statistics.matchesPlayed)}
+          <td style={{ ...fupaTd, fontWeight: "bold" }}>
+            {formatGamesPlayer(player)}
           </td>
         )}
-        {show("GOALS") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.goals)}
-          </td>
+        {show("GOALS") && <td style={{ ...fupaTd }}>{formatGoals(player)}</td>}
+        {show("ASSISTS") && (
+          <td style={{ ...fupaTd }}>{formatAssists(player)}</td>
         )}
-        {show("?") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.scores)}
-          </td>
-        )}
-        {show("PENALTIES") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatPenalty(
-              el.statistics.penaltySpots,
-              el.statistics.penaltySpotsNoGoal
-            )}
-          </td>
-        )}
+
         {show("YELLOW_CARD") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.yellowCards)}
-          </td>
+          <td style={{ ...fupaTd }}>{formatYellowCard(player)}</td>
         )}
         {show("YELLOW_RED_CARD") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.yellowRedCards)}
-          </td>
+          <td style={{ ...fupaTd }}>{formatYellowRedCard(player)}</td>
         )}
         {show("YELLOW_RED_CARD") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.redCards)}
-          </td>
+          <td style={{ ...fupaTd }}>{formatRedCard(player)}</td>
         )}
-        {show("SUB_IN") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.substitutesIn)}
-          </td>
-        )}
-        {show("SUB_OUT") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.substitutesOut)}
-          </td>
-        )}
-        {show("MINUTES") && (
-          <td style={{ ...fupaTd, textAlign: "right" }}>
-            {formatNumber(el.statistics.minutes)}
-          </td>
+        {show("TOP_ELEVEN") && (
+          <td style={{ ...fupaTd }}>{formatTopEleven(player)}</td>
         )}
       </tr>
     );
