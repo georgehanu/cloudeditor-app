@@ -20,7 +20,7 @@ const {
 const {
   activePageIdSelector,
   includeBoxesSelector,
-  useMagneticSelector
+  allowSafeCutSelector
 } = require("../../stores/selectors/project");
 const {
   canvasSelector,
@@ -189,7 +189,7 @@ const makeMapStateToProps = (state, props) => {
     getActiveGroupSelector,
     activePageIdSelector,
     includeBoxesSelector,
-    useMagneticSelector
+    allowSafeCutSelector
   );
 
   const mapStateToProps = (state, props) => {
