@@ -199,3 +199,7 @@
 .submenuLayoutContainer li img {
   cursor: pointer;
 }
+
+.submenuItemHeaderFooter {
+  z-index: -1;
+}

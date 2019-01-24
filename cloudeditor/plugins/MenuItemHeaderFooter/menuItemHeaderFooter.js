@@ -10,6 +10,11 @@ const uuidv4 = require("uuid/v4");
 const axios = require("axios");
 const isEqual = require("react-fast-compare");
 const { debounce } = require("underscore");
+const posed = require("react-pose").default;
+const Box = posed.div({
+  visible: { top: 30 },
+  hidden: { top: 0 }
+});
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
@@ -302,6 +307,8 @@ class MenuItemHeaderFooter extends React.Component {
         break;
     }
 
+    const classNameSubMenu = "submenuItemHeaderFooter";
+
     return (
       <React.Fragment>
         <div className={className}>
@@ -312,7 +319,10 @@ class MenuItemHeaderFooter extends React.Component {
             {this.props.t(this.props.text)}
           </ProjectMenuButton>
         </div>
-        {this.state.submenuOpened && (
+        <Box
+          className={classNameSubMenu}
+          pose={this.state.submenuOpened ? "visible" : "hidden"}
+        >
           <div className="submenuItemHeaderFooter">
             <div className="submenuItemHeaderFooterEdit">
               <span>{this.props.t("Edit")}:</span>
@@ -394,7 +404,7 @@ class MenuItemHeaderFooter extends React.Component {
               </button>
             </div>
           </div>
-        )}
+        </Box>
       </React.Fragment>
     );
   }
