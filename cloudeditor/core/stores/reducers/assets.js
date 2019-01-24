@@ -15,7 +15,6 @@ const {
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const config = ConfigUtils.getDefaults();
-const layoutNoImage = require("../../../plugins/Layouts/assets/no_layout.jpg");
 
 const LAYOUTS_ASSETS_URL =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/media/personalization/layouts/projects/";
@@ -109,13 +108,7 @@ const layoutsStart = (state, action) => {
 const layoutsSuccess = (state, action) => {
   let newItems = [];
   newItems = action.data.map((el, index) => {
-    return {
-      ...el,
-      thumbnail_src:
-        el.icon === "null" || el.icon === ""
-          ? layoutNoImage
-          : LAYOUTS_ASSETS_URL + el.icon
-    };
+    return { ...el, thumbnail_src: LAYOUTS_ASSETS_URL + el.icon };
   });
 
   return {
