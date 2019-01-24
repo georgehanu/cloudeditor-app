@@ -48,9 +48,11 @@ class Layouts extends React.Component {
           show={this.state.showAlert}
           type="warning"
           title={this.props.t("Warning")}
-          text={this.props.t(
-            "Are you sure you want to load this layout ?\nAll changes for this page will be overwritten."
-          )}
+          text={
+            this.props.t("Are you sure you want to load this layout ?") +
+            "\n" +
+            this.props.t("All changes for this page will be overwritten")
+          }
           showCancelButton={true}
           onConfirm={() => this.loadLayout()}
           onCancel={() => this.setState({ showAlert: false })}
