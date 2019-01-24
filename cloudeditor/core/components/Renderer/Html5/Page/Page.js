@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
 const { forEachObjIndexed, includes, concat } = require("ramda");
+const now = require("performance-now");
 
 const type = ["image", "text"];
 const Objects = require("../Objects/Object/Objects");
@@ -25,6 +26,7 @@ const {
 } = require("../../../../stores/selectors/project");
 const BlockMessage = require("../BlockMesage/BlockMessage");
 
+const WithColumns = require("../renderProps/withColumns/withColumns");
 require("./Page.css");
 
 const Boxes = require("../Boxes/Boxes");
@@ -95,6 +97,7 @@ class Page extends React.Component {
       errorMessages: []
     };
   }
+
   getIfMessage = (pageBounding, blockBounding) => {
     let type = 0;
     let snapTolerance = this.props.activePage.snapTolerance;
@@ -133,6 +136,7 @@ class Page extends React.Component {
     };
     this.setState({ errorMessages });
   };
+
   renderObjects() {
     const {
       innerPages,
@@ -181,18 +185,13 @@ class Page extends React.Component {
       let mirroredHeader = false;
       let mirroredFooter = false;
 
-      if (headerConfig.enabled) {
-        let headerObjIds = [];
-        if (headerConfig.activeOn === "all")
-          headerObjIds = headerConfig.objectsIds;
-        if (headerConfig.activeOn === "inner") {
-          if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
-            headerObjIds = headerConfig.objectsIds;
-        }
+      const hasHeader = innerPage["hasHeader"];
+      const hasFooter = innerPage["hasFooter"];
+      if (hasHeader) {
         if (headerConfig.display === "before")
-          beforeObjIds = concat(beforeObjIds, headerObjIds);
+          beforeObjIds = concat(beforeObjIds, headerConfig.objectsIds);
         if (headerConfig.display === "after")
-          afterObjIds = concat(afterObjIds, headerObjIds);
+          afterObjIds = concat(afterObjIds, headerConfig.objectsIds);
 
         if (headerConfig.mirrored) {
           mirroredHeader =
@@ -200,18 +199,11 @@ class Page extends React.Component {
         }
       }
 
-      if (footerConfig.enabled) {
-        let footerObjIds = [];
-        if (footerConfig.activeOn === "all")
-          footerObjIds = footerConfig.objectsIds;
-        if (footerConfig.activeOn === "inner") {
-          if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
-            footerObjIds = footerConfig.objectsIds;
-        }
+      if (hasFooter) {
         if (footerConfig.display === "before")
-          beforeObjIds = concat(beforeObjIds, footerObjIds);
+          beforeObjIds = concat(beforeObjIds, footerConfig.objectsIds);
         if (footerConfig.display === "after")
-          afterObjIds = concat(afterObjIds, footerObjIds);
+          afterObjIds = concat(afterObjIds, footerConfig.objectsIds);
 
         if (footerConfig.mirrored)
           mirroredFooter =
@@ -231,12 +223,12 @@ class Page extends React.Component {
           parent
         };
 
-        if (headerConfig.enabled && includes(cV, headerConfig.objectsIds)) {
+        if (hasHeader && includes(cV, headerConfig.objectsIds)) {
           newObj["mirroredHeader"] = mirroredHeader;
           newObj["heightHeader"] = headerConfig.height;
           newObj["modeHeader"] = headerConfig.mode;
         }
-        if (footerConfig.enabled && includes(cV, footerConfig.objectsIds)) {
+        if (hasFooter && includes(cV, footerConfig.objectsIds)) {
           newObj["mirroredFooter"] = mirroredFooter;
           newObj["heightFooter"] = footerConfig.height;
           newObj["modeFooter"] = footerConfig.mode;
@@ -277,7 +269,18 @@ class Page extends React.Component {
   };
 
   render() {
-    const { width, height, viewOnly, background } = this.props;
+    const {
+      width,
+      height,
+      viewOnly,
+      background,
+      visible,
+      zoomScale
+    } = this.props;
+    if (!visible) {
+      return null;
+    }
+
     const { marginLeft, marginTop } = centerPage(this.props);
     const pageStyle = {
       width,
@@ -289,6 +292,7 @@ class Page extends React.Component {
     };
     let boxes = null;
     let snapBoxes = null;
+    let withColumns = null;
     if (!viewOnly) {
       boxes = (
         <React.Fragment>
@@ -325,6 +329,50 @@ class Page extends React.Component {
           <Line {...leftStyle} classes={classes + " vertical"} />
         </React.Fragment>
       );
+
+      const { innerPages, activePageId } = this.props;
+
+      withColumns = (
+        <WithColumns page={innerPages[activePageId]} zoomScale={zoomScale}>
+          {boxes => {
+            return boxes.map(box => {
+              const topStyle = {
+                top: box["top"],
+                width: box["width"],
+                height: 1,
+                left: box["left"]
+              };
+              const leftStyle = {
+                top: box["top"],
+                width: 1,
+                height: box["height"],
+                left: box["left"]
+              };
+              const rightStyle = {
+                top: box["top"],
+                width: 1,
+                height: box["height"],
+                left: box["left"] + box["width"]
+              };
+              const bottomStyle = {
+                top: box["top"] + box["height"],
+                width: box["width"],
+                height: 1,
+                left: box["left"]
+              };
+              const classes = "boxLine  ";
+              return (
+                <React.Fragment key={box["key"]}>
+                  <Line {...topStyle} classes={classes + " top"} />
+                  <Line {...leftStyle} classes={classes + " left"} />
+                  <Line {...rightStyle} classes={classes + " right"} />
+                  <Line {...bottomStyle} classes={classes + " bottom"} />
+                </React.Fragment>
+              );
+            });
+          }}
+        </WithColumns>
+      );
     }
 
     return this.props.connectDropTarget(
@@ -333,9 +381,11 @@ class Page extends React.Component {
         style={pageStyle}
         className="pageContainer page"
       >
+        {this.renderObjects()}
+
         {boxes}
         {snapBoxes}
-        {this.renderObjects()}
+        {withColumns}
         {this.renderErrorMessages()}
       </div>
     );
@@ -345,6 +395,9 @@ class Page extends React.Component {
 const makeMapStateToProps = (state, props) => {
   const activePage = (_, props) => {
     return props.activePage;
+  };
+  const viewOnly = (_, props) => {
+    return props.viewOnly;
   };
 
   const zoomScale = (_, props) => {

@@ -240,8 +240,9 @@ const getDocumentDefaults = cfg => {
       includeBoxes: true,
       includeMagentic: false,
       showTrimbox: false,
-      useMagentic: true,
-      predefinedGroups: false,
+      allowSafeCut: true,
+      allowLayoutColumns: false,
+      predefinedGroups: false, //[2,2]or false
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]
@@ -273,11 +274,11 @@ const getDocumentDefaults = cfg => {
 const getPagesDefaults = cfg => {
   const defaults = mergeDeepRight(
     {
-      defaults: {
-        width: 1080,
-        height: 1080
-      },
-      tolerance: 40,
+      width: 1080,
+      height: 1080,
+      safeCut: 0,
+      columnsNo: 0,
+      columnSpacing: 0,
       blockActions: {
         allowAddImage: 1,
         allowAddText: 1,
@@ -297,6 +298,27 @@ const getPagesDefaults = cfg => {
           bottom: 0,
           left: 0
         }
+      },
+      label: "Page %no%",
+      shortLabel: "%no%",
+      countInPagination: true,
+      lockPosition: true,
+      selectable: true,
+      allowDeletePage: true,
+      objectsIds: [],
+      background: {
+        type: "none",
+        color: {
+          colorSpace: "DeviceRGB",
+          htmlRGB: "255,255,255",
+          RGB: "1,1,1",
+          CMYK: null,
+          separation: null,
+          separationColorSpace: null,
+          separationColor: null
+        },
+        image_src: false,
+        path: false
       }
     },
     cfg || {}
@@ -324,6 +346,7 @@ const getProjectTemplate = cfg => {
       activePage: "page_0",
       pagesOrder: [],
       objects: {},
+      globalObjectsIds: { before: [], after: [] },
       selectedObjectsIds: [],
       activeSelection: null,
       configs: {

@@ -17,6 +17,7 @@ const {
   REMOVE_SELECTION,
   REMOVE_ACTION_SELECTION,
   UPDATE_SELECTION_OBJECTS_COORDS,
+  UPDATE_PAGE_PROPS,
   UPDATE_OBJECT_PROPS,
   UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
   UPDATE_ACTIVE_SELECTION_PROPS,
@@ -223,6 +224,15 @@ const updateObjectProps = (state, payload) => {
     objects: {
       ...state.objects,
       [payload.id]: merge(state.objects[payload.id], payload.props)
+    }
+  };
+};
+const updatePageProps = (state, payload) => {
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [payload.id]: merge(state.pages[payload.id], payload.props)
     }
   };
 };
@@ -447,6 +457,9 @@ module.exports = handleActions(
     },
     [ADD_OBJECT_ID_ACTION_SELECTED]: (state, action) => {
       return addObjectIdActionSelected(state, action.payload);
+    },
+    [UPDATE_PAGE_PROPS]: (state, action) => {
+      return updatePageProps(state, action.payload);
     },
     [UPDATE_OBJECT_PROPS]: (state, action) => {
       return updateObjectProps(state, action.payload);
