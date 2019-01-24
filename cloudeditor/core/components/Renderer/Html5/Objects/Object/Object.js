@@ -396,6 +396,8 @@ class ObjectBlock extends React.Component {
   render() {
     let element = null;
 
+    //console.log("renderElement", this.props.id);
+
     switch (this.props.subType) {
       case "textflow":
       case "text":

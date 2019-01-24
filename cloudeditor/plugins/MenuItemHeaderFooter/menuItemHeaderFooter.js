@@ -8,7 +8,7 @@ const { withNamespaces } = require("react-i18next");
 const URL = "http://work.cloudlab.at:9012/ig/uploads/";
 const uuidv4 = require("uuid/v4");
 const axios = require("axios");
-const { equals } = require("ramda");
+const isEqual = require("react-fast-compare");
 const { debounce } = require("underscore");
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
@@ -58,7 +58,9 @@ class MenuItemHeaderFooter extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !equals(nextProps, this.props);
+    return true;
+    // console.log("render footer should update");
+    // return !isEqual(nextProps, this.props);
   }
 
   loadLayouts = () => {
@@ -269,6 +271,7 @@ class MenuItemHeaderFooter extends React.Component {
   };
 
   render() {
+    //console.log("render footer");
     const className =
       "projectMenuButtonLink " +
       (this.state.submenuOpened ? "projectMenuButtonSubMenuOpened" : "");
