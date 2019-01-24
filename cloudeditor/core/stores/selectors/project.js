@@ -338,6 +338,18 @@ const projLoadLoadingProjectSelector = state =>
 const projLoadErrorMessageProjectSelector = state =>
   pathOr(null, ["project", "load", "errorMessageProject"], state);
 
+const activePageWithObjectsSelector = createSelector(
+  [objectsSelector, pagesSelector, activePageIdSelector],
+  (objects, pages, activePageId) => {
+    const pageWithObjects = {
+      page: pages[activePageId],
+      objects: pick(pages[activePageId].objectsIds, objects)
+    };
+
+    return pageWithObjects;
+  }
+);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -379,5 +391,6 @@ module.exports = {
   projLoadLoadingDeleteSelector,
   projLoadErrorMessageDeleteSelector,
   projLoadLoadingProjectSelector,
-  projLoadErrorMessageProjectSelector
+  projLoadErrorMessageProjectSelector,
+  activePageWithObjectsSelector
 };

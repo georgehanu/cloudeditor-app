@@ -1,0 +1,163 @@
+.layoutEditorHeaderContainer {
+  height: 110px;
+  width: 100%;
+  z-index: 1100;
+  position: absolute;
+  padding: 0;
+  background-color: #525b61;
+  text-align: center;
+}
+
+#sidebar-wrapper {
+  padding-top: 110px;
+}
+
+#sidebar-wrapper-container {
+  padding-bottom: 110px;
+}
+
+.canvasContainer {
+  padding-top: 120px;
+  padding-bottom: 30px;
+}
+
+.layoutEditorHeaderContainer .duplicateChecked input {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.layoutEditorHeaderContainer .duplicateChecked {
+  height: 30px;
+}
+
+.layoutEditorHeaderContainer .headerSubContainer {
+  display: inline-block;
+  font-size: 12px;
+  line-height: normal;
+  color: #ffffff;
+  margin: 0 10px;
+  vertical-align: bottom;
+}
+
+.layoutEditorHeaderContainer .duplicateLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+}
+
+.layoutEditorHeaderContainer .headerPoptextTitle,
+.layoutEditorHeaderContainer .inputLabel {
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+  display: block;
+  margin-bottom: 5px;
+  color: white;
+  text-align: center;
+}
+
+.layoutEditorHeaderContainer .headerPoptext {
+  color: #707070;
+  text-align: left;
+}
+
+.layoutEditorHeaderContainer .headerPoptextSelect__control {
+  border: none !important;
+  box-shadow: none !important;
+  min-height: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.projectPage {
+  width: 150px;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.isDefault {
+  width: 120px;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.projectCategory {
+  width: 150px;
+}
+
+.layoutEditorHeaderContainer .headerPoptext.projectStatus {
+  width: 120px;
+}
+
+.layoutEditorHeaderContainer .headerPoptextSelect__menu * {
+  cursor: pointer;
+}
+
+.layoutEditorHeaderContainer .uploadLabel {
+  background-color: white;
+}
+
+.layoutEditorHeaderContainer .uploadMessage {
+  color: #707070;
+}
+
+.layoutEditorHeaderContainer .dropzone {
+  width: 180px;
+  height: 40px;
+}
+
+.layoutEditorHeaderContainer .inputLabelContent input {
+  height: 30px;
+}
+
+.layoutEditorHeaderContainer .projectOrder input {
+  width: 50px;
+}
+
+.layoutEditorHeaderContainer .buttonContainer {
+  line-height: 55px;
+  height: 40px;
+}
+
+.layoutEditorHeaderContainer button {
+  border-style: solid;
+  border-width: 0;
+  cursor: pointer;
+  font-weight: normal;
+  line-height: normal;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  padding: 6px 8px;
+  font-size: 1rem;
+  background-color: #66b764;
+  color: white;
+  transition: background 200ms ease-in-out 0s;
+  display: inline-block;
+  margin: 0;
+  outline: none;
+}
+
+.layoutEditorLoadingContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.layoutEditorLoadingContainer .loader {
+  color: #737373;
+}
+
+.layouHeaderTop .tooltipImage img {
+  width: 100px;
+}
+
+.layouHeaderTop .__react_component_tooltip {
+  opacity: 1;
+}

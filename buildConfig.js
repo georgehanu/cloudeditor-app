@@ -77,7 +77,8 @@ const build = config => {
                     transform: function(prefix, selector, prefixedSelector) {
                       if (
                         selector.startsWith(".sweet-overlay") ||
-                        selector.startsWith(".sweet-alert")
+                        selector.startsWith(".sweet-alert") ||
+                        selector.startsWith(".rc-")
                       ) {
                         return selector;
                       } else {

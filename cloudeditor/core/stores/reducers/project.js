@@ -6,7 +6,8 @@ const {
   insertAll,
   merge,
   without,
-  head
+  head,
+  omit
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -52,7 +53,8 @@ const {
   PROJ_LOAD_PROJECT_START,
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
-  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  PROJ_LOAD_LAYOUT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -373,6 +375,44 @@ handleSave = (state, saveData) => {
   return { ...state, save: { ...state.save, ...saveData } };
 };
 
+loadLayout = (state, payload) => {
+  // remove the objects that are currently belonging to the current page
+  const newObjects = omit(
+    state.pages[state.activePage].objectsIds,
+    state.objects
+  );
+
+  // add the new objects ... create new ids
+  const savedData = JSON.parse(payload.saved_data);
+  const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
+    const id = uuidv4();
+    return { ...savedData.activePage.objects[key], id: id };
+  });
+  // store the new keys into objectsIds
+  const addPageObj = {};
+  const pageObj = pageObjects.map(el => {
+    addPageObj[el.id] = el;
+    return el.id;
+  });
+
+  const newActivePage = {
+    ...savedData.activePage.page,
+    objectsIds: [...pageObj]
+  };
+
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [state.activePage]: { ...newActivePage }
+    },
+    objects: {
+      ...newObjects,
+      ...addPageObj
+    }
+  };
+};
+
 module.exports = handleActions(
   {
     [CHANGE_PROJECT_TITLE]: (state, action) => {
@@ -638,6 +678,9 @@ module.exports = handleActions(
     },
     [PROJ_LOAD_PROJECT_CLEAR_MESSAGE]: (state, action) => {
       return handleLoad(state, { errorMessageProject: null });
+    },
+    [PROJ_LOAD_LAYOUT]: (state, action) => {
+      return loadLayout(state, action.payload);
     }
   },
   initialState
