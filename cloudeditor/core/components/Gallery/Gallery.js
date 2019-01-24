@@ -141,11 +141,11 @@ const getItemsByType = (state, props) => {
   } else return pathOr([], [props.type, "uploadedFiles"], state.assets);
 };
 const getLoadingByType = (state, props) => {
-  return pathOr(0, [props.type, "loadingFiles"], state.assets);
+  return pathOr(false, [props.type, "loading"], state.assets);
 };
 
 const getLoadingNrByType = (state, props) => {
-  return pathOr(false, [props.type, "loading"], state.assets);
+  return pathOr(0, [props.type, "loadingFiles"], state.assets);
 };
 
 const getLoadingDeleteByType = (state, props) => {
