@@ -236,8 +236,8 @@ const makeMapStateToProps = (state, props) => {
     return props.includeBoxes;
   };
 
-  const useMagneticSelector = (_, props) => {
-    return props.useMagentic;
+  const allowSafeCutSelector = (_, props) => {
+    return props.allowSafeCut;
   };
 
   const getDisplayedPageSelector = displayedPageSelector(
@@ -245,7 +245,7 @@ const makeMapStateToProps = (state, props) => {
     groupSelector,
     activePage,
     includeBoxesSelector,
-    useMagneticSelector
+    allowSafeCutSelector
   );
   const getDisplayedPageLabelsSelector = displayedPageLabelsSelector(
     activePage
