@@ -10,6 +10,7 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
   let elementId = null;
   let className = "tooltip ";
   let position = "bottom";
+  let tooltipIcon = null;
 
   if (props.tooltip && props.tooltip !== undefined) {
     // we need tooltip data but this requires to bind it to the elementId - create it if it does not exist
@@ -30,6 +31,16 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
     if (props.tooltip.imageSrc) {
       className += " tooltipImage";
       position = "right";
+
+      if (props.tooltip.icon === null || props.tooltip.icon === "null") {
+        tooltipIcon = <div className="noLayoutImg" />;
+      } else {
+        tooltipIcon = (
+          <div>
+            <img src={props.tooltip.imageSrc} alt="" />
+          </div>
+        );
+      }
     }
   }
 
@@ -66,11 +77,7 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
                     </p>
                   </React.Fragment>
                 ) : props.tooltip.imageSrc ? (
-                  <React.Fragment>
-                    <div>
-                      <img src={props.tooltip.imageSrc} alt="" />
-                    </div>
-                  </React.Fragment>
+                  <React.Fragment>{tooltipIcon}</React.Fragment>
                 ) : (
                   <React.Fragment>
                     <p className="tooltipTitle">{t(props.tooltip)}</p>
