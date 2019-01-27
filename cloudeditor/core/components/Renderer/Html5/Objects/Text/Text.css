@@ -6,4 +6,9 @@
 }
 .pageBlock.text .blockData {
   display: table-cell;
+  outline: none;
+}
+
+.pageBlock.text .blockData > div {
+  outline: none;
 }

@@ -477,10 +477,9 @@ const getEmptyProject = cfg => {
     height: 10,
     left: 10,
     top: 10,
-    value: "Header text here",
+    value: "Header text",
     fontFamily: "Dax",
-    fontSize: 10,
-    fill: "red"
+    fontSize: 12
   });
   const textFooter = getEmptyObject({
     id: "textFooter",
@@ -490,9 +489,9 @@ const getEmptyProject = cfg => {
     height: 10,
     left: 10,
     top: 10,
-    value: "Footer text here",
+    value: "Footer text",
     fontFamily: "Dax",
-    fontSize: 10,
+    fontSize: 12,
     fill: "red"
   });
 
@@ -514,12 +513,12 @@ const getEmptyProject = cfg => {
     id: "table",
     type: "tinymceTable",
     subType: "tinymceTable",
-    width: 100,
-    height: 133.1578947368421,
-    tableWidth: 380,
-    tableHeight: 506,
-    left: 30,
-    top: 30,
+    width: 790.82688,
+    height: 545,
+    tableWidth: null,
+    tableHeight: null,
+    left: 16.55 + 8.50394,
+    top: 16.55 + 8.50394,
     tableContent: `<table style="border-spacing: 0px; color: black;">
 <tbody>
   <tr>
