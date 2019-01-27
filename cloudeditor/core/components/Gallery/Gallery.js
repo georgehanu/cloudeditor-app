@@ -85,7 +85,7 @@ class Gallery extends React.Component {
               <GalleryPreviewItem
                 {...el}
                 deleteAsset={this.props.onDeleteAssetHandler}
-                tooltip={{ imageSrc: el.thumbnail_src }}
+                tooltip={{ imageSrc: el.thumbnail_src, icon: el.icon }}
                 addContainerClasses={this.props.addContainerClasses}
                 selectImage={this.props.selectImage}
               />
