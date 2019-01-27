@@ -112,9 +112,9 @@ class Tinymce extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { width, height, tableContent, zoomScale, viewOnly } = this.props;
-    // if (this.tinyEditor && this.currentNode) {
+    /*     // if (this.tinyEditor && this.currentNode) {
     //   this.tinyEditor.editor.selection.setCursorLocation(this.currentNode, 1);
-    // }
+    // } */
     if (width > 0 && height > 0) {
       if (this.tinyEditor) {
         const newWidth = width / zoomScale;
