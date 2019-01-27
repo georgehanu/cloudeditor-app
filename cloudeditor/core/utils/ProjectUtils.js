@@ -100,8 +100,8 @@ const getObjectsDefaults = cfg => {
       brightness: 0,
       imageWidth: 0,
       imageHeight: 0,
-      ratioWidth: 0,
-      ratioHeight: 0,
+      ratioWidth: 1,
+      ratioHeight: 1,
       flip: ""
     },
     image || {}
@@ -241,6 +241,7 @@ const getDocumentDefaults = cfg => {
       includeMagentic: false,
       showTrimbox: false,
       allowSafeCut: true,
+      allowSnapBlocks: false,
       allowLayoutColumns: false,
       predefinedGroups: false, //[2,2]or false
       groups: {
@@ -302,7 +303,7 @@ const getPagesDefaults = cfg => {
       label: "Page %no%",
       shortLabel: "%no%",
       countInPagination: true,
-      lockPosition: true,
+      lockPosition: false,
       selectable: true,
       allowDeletePage: true,
       objectsIds: [],
@@ -354,7 +355,7 @@ const getProjectTemplate = cfg => {
         pages: getPagesDefaults({}),
         objects: getObjectsDefaults({})
       },
-      ui: getEmptyUI()
+      ui: getEmptyUI(cfg.ui)
     },
     cfg || {}
   );
@@ -477,9 +478,24 @@ const getEmptyProject = cfg => {
     height: 10,
     left: 10,
     top: 10,
-    value: "Header text",
+    isPageNrBlock: 1,
+    value: "",
     fontFamily: "Dax",
     fontSize: 12
+  });
+  const logoHeader = getEmptyObject({
+    id: "logoHeader",
+    type: "image",
+    subType: "image",
+    width: 100,
+    height: 10,
+    left: 700,
+    top: 10,
+    image_src:
+      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs//media/personalization/local_files/cw_logo.png",
+    imageWidth: 237,
+    imageHeight: 121,
+    alternateZoom: 1
   });
   const textFooter = getEmptyObject({
     id: "textFooter",
@@ -499,7 +515,7 @@ const getEmptyProject = cfg => {
     id: "header",
     type: "section",
     subType: "header",
-    objectsIds: [textHeader.id]
+    objectsIds: [textHeader.id, logoHeader.id]
   });
 
   const footer = getEmptyObject({
@@ -1404,6 +1420,7 @@ const getEmptyProject = cfg => {
   project.objects[footer.id] = footer;
   project.objects[textHeader.id] = textHeader;
   project.objects[textFooter.id] = textFooter;
+  project.objects[logoHeader.id] = logoHeader;
 
   project.configs.document.header.objectsIds = [header.id];
   project.configs.document.footer.objectsIds = [footer.id];
@@ -1644,7 +1661,7 @@ const getEmptyUI = cfg => {
           workingHeight: 0
         }
       },
-      permissions: getUIPermissionsTemplate(cfg)
+      permissions: getUIPermissionsTemplate(cfg.permissions)
     },
     cfg || {}
   );

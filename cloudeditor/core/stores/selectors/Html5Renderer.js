@@ -348,6 +348,7 @@ const displayedPageSelector = (
         magneticBoxes: magneticBoxes,
         lockPosition: lockPosition,
         background: background,
+        page_id: activePageId,
         label: label,
         selectable: selectable,
         pagesLabels,

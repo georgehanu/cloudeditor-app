@@ -92,6 +92,7 @@ class Blocks extends React.Component {
             snapTolerance={snapTolerance}
             checkErrorMessages={that.props.checkErrorMessages}
             middle={middle}
+            labelPage={that.props.labelPage}
             viewOnly={viewOnly}
             data={objectData}
             {...obj}
@@ -108,6 +109,7 @@ class Blocks extends React.Component {
           uuid={bUuid}
           zoomScale={zoomScale}
           snapTolerance={snapTolerance}
+          labelPage={that.props.labelPage}
           middle={middle}
           checkErrorMessages={that.props.checkErrorMessages}
           viewOnly={viewOnly}

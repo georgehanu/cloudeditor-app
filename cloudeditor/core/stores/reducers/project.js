@@ -7,6 +7,7 @@ const {
   merge,
   without,
   head,
+  last,
   omit
 } = require("ramda");
 const {
@@ -90,6 +91,11 @@ const addPages = (state, action) => {
       break;
     case "end":
       pageIndex = pagesOrder.length;
+      const lastPageId = last(pagesOrder);
+      const lastPage = pages[lastPageId];
+      if (lastPage.lockPosition) {
+        pageIndex = pagesOrder.length - 1;
+      }
       break;
     default:
       break;

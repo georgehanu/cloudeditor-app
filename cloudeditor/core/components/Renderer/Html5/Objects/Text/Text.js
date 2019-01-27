@@ -10,18 +10,25 @@ class TextBlock extends React.Component {
     this.editableContainerRef = null;
   }
   handleChange = (ev, value) => {
-    /*   this.props.onTextChange({
-      id: this.props.id,
-      props: {
-        value: value
-      }
-    }); */
-    this.props.onUpdateProps({
-      id: this.props.id,
-      props: {
-        value: value
-      }
-    });
+    const containerEditable = this.editableContainerRef;
+    let height = this.props.height;
+    if (height < containerEditable.offsetHeight) {
+      height = containerEditable.offsetHeight / this.props.zoomScale;
+      this.props.onUpdateProps({
+        id: this.props.id,
+        props: {
+          value: value,
+          height
+        }
+      });
+    } else {
+      this.props.onUpdateProps({
+        id: this.props.id,
+        props: {
+          value: value
+        }
+      });
+    }
   };
 
   getInputRef = ref => {
@@ -31,6 +38,11 @@ class TextBlock extends React.Component {
 
   render() {
     const { width } = this.props;
+    const vAlign = {
+      top: "normal",
+      middle: "center",
+      bottom: "flex-end"
+    };
     const style = {
       width: width,
       maxWidth: width,
@@ -41,7 +53,7 @@ class TextBlock extends React.Component {
       textDecoration: this.props.underline ? "underline" : "none",
       fontWeight: this.props.bold ? "bold" : "normal",
       fontStyle: this.props.italic ? "italic" : "normal",
-      verticalAlign: this.props.vAlign
+      justifyContent: vAlign[this.props.vAlign]
     };
 
     let content = <div>{this.props.value}</div>;
