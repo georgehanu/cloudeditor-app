@@ -15,13 +15,22 @@ const AddPagesBody = props => {
       <div className="addPagesLocationRow" key={index}>
         <input
           type="radio"
+          className="importTextItemRadio"
+          id={"pageLabel_" + index}
           value={el.value}
           checked={props.checkboxesSelected === el.value}
           onChange={() => props.onCheckboxChanged(el.value)}
         />
-        <span>
-          {el.label.replace("%page_label%", props.pageLabels.shortLabel)}
-        </span>
+        <label
+          htmlFor={"pageLabel_" + index}
+          className="itemLabel"
+          dangerouslySetInnerHTML={{
+            __html: el.label.replace(
+              "%page_label%",
+              props.pageLabels.shortLabel
+            )
+          }}
+        />
       </div>
     );
   });

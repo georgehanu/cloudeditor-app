@@ -123,3 +123,10 @@
 .projectPreviewContainer {
   overflow: hidden;
 }
+
+.previewImagecontainer .loader .spinnerText {
+  left: 0px;
+}
+.previewImagecontainer .loader {
+  color: #737373;
+}

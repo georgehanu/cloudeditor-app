@@ -35,6 +35,13 @@ const fupaTdBase = {
   border: "none"
 };
 
+const fupaImageWrapperPicture = {
+  objectFit: "contain",
+  height: "25px",
+  width: "25px",
+  marginLeft: "3px"
+};
+
 const Matches = props => {
   const matches = props.matches.map((el, index) => {
     let oponentTeam = null;
@@ -55,6 +62,12 @@ const Matches = props => {
       opositeTeamGoals = el.guestGoal;
     }
 
+    const imageUrl =
+      oponentTeam.image.basePath +
+      (oponentTeam.image.svg
+        ? "svg/" + oponentTeam.image.baseName
+        : "png/25x25/" + oponentTeam.image.baseName);
+
     let matchInfo = null;
     let matchInfoBgColor = null;
     let matchInfoFgColor = "white";
@@ -72,17 +85,18 @@ const Matches = props => {
 
     if (el.section === "PRE") {
       // match did not happen yet, we have to display the date
-      matchInfoBgColor = "red";
+      matchInfoBgColor = "#ececec";
       matchInfo = (
         <div style={{ lineHeight: "24px" }}>
-          <span style={{ color: "#fff" }}>{kickoffDateStr}</span>
+          <span style={{ color: "#000", fontSize: "11px" }}>
+            {kickoffDateStr}
+          </span>
         </div>
       );
     } else {
       // display the score
       if (currentTeamGoals === opositeTeamGoals) {
-        matchInfoBgColor = "#e1e3e2";
-        matchInfoFgColor = "black";
+        matchInfoBgColor = "#a0a0a0";
       } else if (currentTeamGoals > opositeTeamGoals) {
         matchInfoBgColor = "#3bba27";
       } else {
@@ -112,9 +126,17 @@ const Matches = props => {
         <td style={{ ...fupaTd }}>
           {weekDate}, {kickoffDateStr}
         </td>
-        <td style={{ ...fupaTd }}>{location}</td>
-        <td align="left" style={{ ...fupaTd, fontWeight: "bold" }}>
-          {oponentTeam.name.middle}
+        <td style={{ ...fupaTd, fontWeight: "bold" }}>{location}</td>
+        <td width="30px" style={{ ...fupaTd, padding: "1px 2px" }}>
+          <img
+            src={imageUrl}
+            title={oponentTeam.name.full}
+            alt={oponentTeam.name.full}
+            style={{ ...fupaImageWrapperPicture }}
+          />
+        </td>
+        <td align="left" style={{ ...fupaTd }}>
+          {oponentTeam.name.full}
         </td>
         <td style={{ ...fupaTd }}>&nbsp;</td>
         <td style={{ ...fupaTd, paddingRight: "0px" }}>

@@ -45,10 +45,10 @@ if (workspace === "designAndGo")
     to: "./editorImages/[name].[ext]"
   });
 else {
-  config["copyFrom"].push({
-    from: "./" + namespace + "/themes/" + workspace + "/tinymce/js/",
-    to: "./tinymce/js"
-  });
+  // config["copyFrom"].push({
+  //   from: "./" + namespace + "/themes/" + workspace + "/tinymce/js/",
+  //   to: "./tinymce/js"
+  // });
   config["copyFrom"].push({
     from:
       "./" +

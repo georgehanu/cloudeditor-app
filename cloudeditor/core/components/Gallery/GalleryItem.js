@@ -38,16 +38,16 @@ const galleryItem = props => {
         src={props.thumbnail_src}
         alt="galleryItem"
         className="uploadGalleryItemImage"
-        onClick={() => props.selectImage(props.id)}
+        /*onClick={() => props.selectImage(props.id)}*/
       />
       <div className="galleryItemActions">
         <span
           className="select icon printqicon-ok"
-          onClick={() => props.selectImage(props.id)}
+          /*onClick={() => props.selectImage(props.id)}*/
         />
         <span
           className="delete icon printqicon-delete"
-          onClick={() => props.deleteAsset({ id: props.id })}
+          onClick={() => props.deleteAsset(props.id)}
         />
       </div>
     </div>

@@ -10,5 +10,8 @@
   "Close": "Close",
   "Please fill the password field": "Please fill the password field",
   "Please fill the email field": "Please fill the email field",
-  "Invalid email field": "Invalid email field"
+  "Invalid email field": "Invalid email field",
+  "Project name": "Project name",
+  "Delete": "Delete",
+  "Load project": "Load project"
 }

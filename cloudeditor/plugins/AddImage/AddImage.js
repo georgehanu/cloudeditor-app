@@ -17,8 +17,7 @@ class AddImage extends React.Component {
         <UploadFile acceptedFiles={ACCEPTED_FILES} type={TYPE} />
         <Gallery
           type={TYPE}
-          deleteImage={this.deleteImageHandler}
-          selectImage={this.selectImageHandler}
+          addContainerClasses={this.props.addContainerClasses}
         />
       </div>
     );

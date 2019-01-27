@@ -4,6 +4,7 @@
   padding: 15px;
   position: absolute;
   transform: translate(-50%, -100%);
+  z-index: 99999;
 }
 .errorBody {
   background-color: rgba(243, 243, 243, 1);

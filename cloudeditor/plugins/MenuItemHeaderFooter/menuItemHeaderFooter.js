@@ -8,16 +8,14 @@ const { withNamespaces } = require("react-i18next");
 const URL = "http://work.cloudlab.at:9012/ig/uploads/";
 const uuidv4 = require("uuid/v4");
 const axios = require("axios");
-const { createSelector } = require("reselect");
-const { head } = require("ramda");
+const isEqual = require("react-fast-compare");
 const { debounce } = require("underscore");
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
 const {
   headerConfigSelector,
-  footerConfigSelector,
-  objectsSelector
+  footerConfigSelector
 } = require("../../core/stores/selectors/project");
 
 const {
@@ -57,6 +55,12 @@ class MenuItemHeaderFooter extends React.Component {
 
   componentDidMount() {
     this.loadLayouts();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+    // console.log("render footer should update");
+    // return !isEqual(nextProps, this.props);
   }
 
   loadLayouts = () => {
@@ -267,6 +271,7 @@ class MenuItemHeaderFooter extends React.Component {
   };
 
   render() {
+    //console.log("render footer");
     const className =
       "projectMenuButtonLink " +
       (this.state.submenuOpened ? "projectMenuButtonSubMenuOpened" : "");
@@ -396,26 +401,9 @@ class MenuItemHeaderFooter extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // const getObjectCallback = (cfg, objects) => {
-  //   return objects[head(cfg.objectsIds)];
-  // };
-  // const headerBlockSelector = createSelector(
-  //   headerConfigSelector,
-  //   objectsSelector,
-  //   getObjectCallback
-  // );
-
-  // const footerBlockSelector = createSelector(
-  //   footerConfigSelector,
-  //   objectsSelector,
-  //   getObjectCallback
-  // );
-
   return {
     headerCfg: headerConfigSelector(state),
     footerCfg: footerConfigSelector(state)
-    // headerBlock: headerBlockSelector(state),
-    // footerBlock: footerBlockSelector(state)
   };
 };
 

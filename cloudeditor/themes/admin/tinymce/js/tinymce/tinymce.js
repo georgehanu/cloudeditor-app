@@ -14158,7 +14158,7 @@ define("tinymce/dom/ControlSelection", [
 			});
 
 			// Update resize helper position
-			resizeHelperX = selectedHandle.startPos.x + deltaX;
+			/* resizeHelperX = selectedHandle.startPos.x + deltaX;
 			resizeHelperY = selectedHandle.startPos.y + deltaY;
 			resizeHelperX = resizeHelperX > 0 ? resizeHelperX : 0;
 			resizeHelperY = resizeHelperY > 0 ? resizeHelperY : 0;
@@ -14169,7 +14169,7 @@ define("tinymce/dom/ControlSelection", [
 				display: "block"
 			});
 
-			resizeHelper.innerHTML = width + " &times; " + height;
+			resizeHelper.innerHTML = width + " &times; " + height; */
 
 			// Update ghost X position if needed
 			if (selectedHandle[2] < 0 && selectedElmGhost.clientWidth <= width) {
@@ -14186,12 +14186,12 @@ define("tinymce/dom/ControlSelection", [
 			deltaY = rootElement.scrollHeight - startScrollHeight;
 
 			// Re-position the resize helper based on the overflow
-			if (deltaX + deltaY !== 0) {
+			/* if (deltaX + deltaY !== 0) {
 				dom.setStyles(resizeHelper, {
 					left: resizeHelperX - deltaX,
 					top: resizeHelperY - deltaY
 				});
-			}
+			} */
 
 			if (!resizeStarted) {
 				editor.fire("ObjectResizeStart", {
@@ -14314,7 +14314,7 @@ define("tinymce/dom/ControlSelection", [
 							dom.bind(rootDocument, "mouseup", endGhostResize);
 						}
 
-						resizeHelper = dom.add(
+						/* resizeHelper = dom.add(
 							rootElement,
 							"div",
 							{
@@ -14322,7 +14322,7 @@ define("tinymce/dom/ControlSelection", [
 								"data-mce-bogus": "all"
 							},
 							startW + " &times; " + startH
-						);
+						); */
 					}
 
 					if (mouseDownHandleName) {

@@ -1,43 +1,39 @@
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
+const { connect } = require("react-redux");
 const assign = require("object-assign");
+const { pathOr } = require("ramda");
+const { createSelector } = require("reselect");
+
+const {
+  activePageIdSelector,
+  pageColumnsNoSelector,
+  allowLayoutColumnsSelector
+} = require("../../core/stores/selectors/project");
+
+const { updatePageProps } = require("../../core/stores/actions/project");
+
 require("./HelperLines.css");
 const SubmenuPoptext = require("../MenuItemHeaderFooter/components/SubmenuPoptext");
 
-class HelperLines extends React.Component {
+class HelperLines extends React.PureComponent {
   state = {
     submenuOpened: false,
     poptextPages: {
-      items: [
-        "Layout 1 Page",
-        "Layout 2 Pages",
-        "Layout 3 Pages",
-        "Layout 4 Pages",
-        "None"
-      ],
-
-      active: "Layout 1 Page",
+      items: ["2 Columns", "3 Columns", "4 Columns", "None"],
+      mapItems: [2, 3, 4, 0],
       open: false
     }
   };
 
-  translate = poptext => {
-    const items = poptext.items.map((el, index) => {
-      return this.props.t(el);
-    });
-    return {
-      active: this.props.t(poptext.active),
-      items
-    };
-  };
+  static getDerivedStateFromProps(nextProps, state) {
+    const { columnsNo } = nextProps;
 
-  componentDidMount() {
-    this.setState({
-      poptextPages: {
-        ...this.state.poptextPages,
-        ...this.translate(this.state.poptextPages)
-      }
-    });
+    let active = "None";
+    if (columnsNo > 1 && columnsNo <= 4) {
+      active = columnsNo + " Columns";
+    }
+    return { poptextPages: { ...state.poptextPages, active: active } };
   }
 
   togglePoptextHandler = type => {
@@ -56,10 +52,20 @@ class HelperLines extends React.Component {
       this.setState({
         poptextPages: {
           ...this.state.poptextPages,
-          open: false,
-          active: value
+          open: false
         }
       });
+
+      const payload = {
+        id: this.props.pageId,
+        props: {
+          columnsNo: this.state.poptextPages.mapItems[
+            this.state.poptextPages.items.indexOf(value)
+          ]
+        }
+      };
+
+      this.props.updatePagePropsHandler(payload);
     }
   };
 
@@ -88,7 +94,24 @@ class HelperLines extends React.Component {
   }
 }
 
-const HelperLinesPlugin = withNamespaces("helperLines")(HelperLines);
+const mapStateToProps = state => {
+  return {
+    pageId: activePageIdSelector(state),
+    columnsNo: pageColumnsNoSelector(state),
+    allowColumns: allowLayoutColumnsSelector(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updatePagePropsHandler: payload => dispatch(updatePageProps(payload))
+  };
+};
+
+const HelperLinesPlugin = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNamespaces("helperLines")(HelperLines));
 
 module.exports = {
   HelperLines: assign(HelperLinesPlugin)

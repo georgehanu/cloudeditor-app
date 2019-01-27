@@ -193,8 +193,8 @@
 
 .GroupArea {
   /*border:1px solid green;*/
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 9px;
+  padding-right: 9px;
   float: left;
   height: 45px;
 }
@@ -387,6 +387,7 @@ button.ButtonSelected .icon {
 
 .ColorBorderWidthSlider {
   width: 100%;
+  top: 0px;
 }
 
 .ColorTabColorContainer {
@@ -490,6 +491,17 @@ button.ButtonSelected .icon {
   width: 100%;
 }
 
+.rc-slider {
+  top: 15px;
+}
+
+.rc-slider-handle {
+  margin-left: -10px;
+  margin-top: -8px;
+  width: 20px;
+  height: 20px;
+}
+
 .ShowList {
   transform: none !important;
 }
@@ -572,9 +584,13 @@ button.ButtonSelected .icon {
 }
 
 .SliderPopupSlider {
-  margin-top: 30px;
   float: left;
   width: 230px;
+  position: absolute;
+  margin-left: 56px;
+  height: 36px;
+  top: 0px;
+  margin-top: 21px;
 }
 
 /*Apply styling that will override basic appearance*/
@@ -818,6 +834,8 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .RightContainer .Slider {
   width: 243px;
+  top: -5px;
+  margin-left: 5px;
 }
 
 .SliderValue {

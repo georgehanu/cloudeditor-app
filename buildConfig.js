@@ -73,7 +73,18 @@ const build = config => {
                     prefix: cssPrefix,
                     exclude: [".cloudeditor", "body", "html"].concat(
                       cssPrefix ? [cssPrefix] : []
-                    )
+                    ),
+                    transform: function(prefix, selector, prefixedSelector) {
+                      if (
+                        selector.startsWith(".sweet-overlay") ||
+                        selector.startsWith(".sweet-alert") ||
+                        selector.startsWith(".rc-")
+                      ) {
+                        return selector;
+                      } else {
+                        return prefixedSelector;
+                      }
+                    }
                   }),
                   autoprefixer({
                     browsers: ["last 4 versions"]

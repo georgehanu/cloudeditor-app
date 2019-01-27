@@ -6,7 +6,8 @@ const {
   insertAll,
   merge,
   without,
-  head
+  head,
+  omit
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -16,6 +17,7 @@ const {
   REMOVE_SELECTION,
   REMOVE_ACTION_SELECTION,
   UPDATE_SELECTION_OBJECTS_COORDS,
+  UPDATE_PAGE_PROPS,
   UPDATE_OBJECT_PROPS,
   UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
   UPDATE_ACTIVE_SELECTION_PROPS,
@@ -44,7 +46,16 @@ const {
   PROJ_LOAD_START,
   PROJ_LOAD_SUCCESS,
   PROJ_LOAD_FAILED,
-  PROJ_LOAD_CLEAR_MESSAGE
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  PROJ_LOAD_LAYOUT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -169,7 +180,7 @@ const addTable = (state, action) => {
 const changePage = (state, payload) => {
   return {
     ...state,
-    ["activePage"]: payload.page_id
+    activePage: payload.page_id
   };
 };
 const changeRandomPage = (state, payload) => {
@@ -213,6 +224,15 @@ const updateObjectProps = (state, payload) => {
     objects: {
       ...state.objects,
       [payload.id]: merge(state.objects[payload.id], payload.props)
+    }
+  };
+};
+const updatePageProps = (state, payload) => {
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [payload.id]: merge(state.pages[payload.id], payload.props)
     }
   };
 };
@@ -365,6 +385,44 @@ handleSave = (state, saveData) => {
   return { ...state, save: { ...state.save, ...saveData } };
 };
 
+loadLayout = (state, payload) => {
+  // remove the objects that are currently belonging to the current page
+  const newObjects = omit(
+    state.pages[state.activePage].objectsIds,
+    state.objects
+  );
+
+  // add the new objects ... create new ids
+  const savedData = JSON.parse(payload.saved_data);
+  const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
+    const id = uuidv4();
+    return { ...savedData.activePage.objects[key], id: id };
+  });
+  // store the new keys into objectsIds
+  const addPageObj = {};
+  const pageObj = pageObjects.map(el => {
+    addPageObj[el.id] = el;
+    return el.id;
+  });
+
+  const newActivePage = {
+    ...savedData.activePage.page,
+    objectsIds: [...pageObj]
+  };
+
+  return {
+    ...state,
+    pages: {
+      ...state.pages,
+      [state.activePage]: { ...newActivePage }
+    },
+    objects: {
+      ...newObjects,
+      ...addPageObj
+    }
+  };
+};
+
 module.exports = handleActions(
   {
     [CHANGE_PROJECT_TITLE]: (state, action) => {
@@ -399,6 +457,9 @@ module.exports = handleActions(
     },
     [ADD_OBJECT_ID_ACTION_SELECTED]: (state, action) => {
       return addObjectIdActionSelected(state, action.payload);
+    },
+    [UPDATE_PAGE_PROPS]: (state, action) => {
+      return updatePageProps(state, action.payload);
     },
     [UPDATE_OBJECT_PROPS]: (state, action) => {
       return updateObjectProps(state, action.payload);
@@ -586,6 +647,53 @@ module.exports = handleActions(
     },
     [PROJ_LOAD_CLEAR_MESSAGE]: (state, action) => {
       return handleLoad(state, { errorMessage: null });
+    },
+    [PROJ_LOAD_DELETE_START]: (state, action) => {
+      return handleLoad(state, { loadingDelete: true });
+    },
+    [PROJ_LOAD_DELETE_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadedProjects: state.load.loadedProjects.filter(function(project) {
+          return project.projectId !== action.projectId;
+        })
+      });
+    },
+    [PROJ_LOAD_DELETE_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: action.payload
+      });
+    },
+    [PROJ_LOAD_DELETE_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageDelete: null });
+    },
+    [PROJ_LOAD_PROJECT_START]: (state, action) => {
+      return handleLoad(state, { loadingProject: true });
+    },
+    [PROJ_LOAD_PROJECT_SUCCESS]: (state, action) => {
+      return {
+        ...state,
+        load: {
+          ...state.load,
+          loadingProject: false,
+          errorMessageProject: null
+        },
+        projectId: action.projectId
+      };
+    },
+    [PROJ_LOAD_PROJECT_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingProject: false,
+        errorMessageProject: action.payload
+      });
+    },
+    [PROJ_LOAD_PROJECT_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageProject: null });
+    },
+    [PROJ_LOAD_LAYOUT]: (state, action) => {
+      return loadLayout(state, action.payload);
     }
   },
   initialState

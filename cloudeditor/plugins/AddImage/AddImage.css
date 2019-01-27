@@ -207,3 +207,25 @@ section.dropzone {
 .sidebarContainerExpand .canvasContainer {
   padding-left: 550px;
 }
+
+.uploadGalleryItemTitle {
+  text-align: center;
+}
+
+.uploadGalleryItemTitle:hover {
+  cursor: pointer;
+}
+
+.uploadGalleryItemImageContainer {
+  padding-bottom: 16px;
+  width: 100%;
+  height: 100%;
+}
+
+.LayoutsContainer .uploadGalleryItem {
+  height: 105px;
+}
+
+.containerMaxZindexGallery #sidebar-wrapper-container .paneShow.paneContainer {
+  z-index: 1;
+}
