@@ -238,15 +238,15 @@ class ObjectBlock extends React.Component {
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-    const styleBorderColor = {
-      width: width + parseFloat(borderWidth),
-      height: height + parseFloat(borderWidth),
-      borderColor:
-        subType !== "tinymceTable" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-      borderWidth: subType !== "tinymceTable" ? parseFloat(borderWidth) : "",
-      top: (-1 * parseFloat(borderWidth)) / 2,
-      left: (-1 * parseFloat(borderWidth)) / 2
-    };
+    // const styleBorderColor = {
+    //   width: width + parseFloat(borderWidth),
+    //   height: height + parseFloat(borderWidth),
+    //   borderColor:
+    //     subType !== "tinymceTable" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+    //   borderWidth: subType !== "tinymceTable" ? parseFloat(borderWidth) : "",
+    //   top: (-1 * parseFloat(borderWidth)) / 2,
+    //   left: (-1 * parseFloat(borderWidth)) / 2
+    // };
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
@@ -289,7 +289,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        <div className={"blockBorder"} style={styleBorderColor} />
+        {/* <div className={"blockBorder"} style={styleBorderColor} /> */}
         <u style={{ width, height }} />
 
         {rotatableHandle}

@@ -16,12 +16,12 @@ class TextBlock extends React.Component {
         value: value
       }
     }); */
-    /*  this.props.onUpdateProps({
+    this.props.onUpdateProps({
       id: this.props.id,
       props: {
         value: value
       }
-    }); */
+    });
   };
 
   getInputRef = ref => {
@@ -57,7 +57,7 @@ class TextBlock extends React.Component {
           tagName="div"
           sanitise={true}
           multiLine={true}
-          /*  onChange={this.handleChange} */
+          onChange={this.handleChange}
         />
       );
     }
