@@ -238,15 +238,7 @@ class ObjectBlock extends React.Component {
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-    // const styleBorderColor = {
-    //   width: width + parseFloat(borderWidth),
-    //   height: height + parseFloat(borderWidth),
-    //   borderColor:
-    //     subType !== "tinymceTable" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-    //   borderWidth: subType !== "tinymceTable" ? parseFloat(borderWidth) : "",
-    //   top: (-1 * parseFloat(borderWidth)) / 2,
-    //   left: (-1 * parseFloat(borderWidth)) / 2
-    // };
+
     let styleNorth = {};
 
     if (subType === "tinymceTable") {

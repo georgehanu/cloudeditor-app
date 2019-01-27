@@ -12,209 +12,192 @@ class Tinymce extends React.Component {
   constructor(props) {
     super(props);
     this.tinyEditor = null;
-    this.currentEditor = null;
     this.coverRef = React.createRef();
+    this.currentNode = null;
   }
 
-  attributes = {
-    src:
-      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/cloudeditorScripts/tinyMceIframe.php",
-    width: "0",
-    height: "0",
-    frameBorder: 0
-  };
-  onReceiveMessage = message => {
-    const table = pathOr(null, ["data", "table"], message);
-    if (table) {
-      if (table.width === -1 || table.height === -1)
-        if (
-          this.props.tableWidth === table.width &&
-          this.props.tableHeight === table.height
-        )
-          return;
-      this.props.onUpdateProps({
-        id: this.props.id,
-        props: {
-          tableWidth: table.width,
-          tableHeight: table.height
-        }
-      });
+  hasClass(el, className) {
+    if (el.classList) return el.classList.contains(className);
+    return !!el.className.match(new RegExp("(\\s|^)" + className + "(\\s|$)"));
+  }
+
+  addClass(el, className) {
+    if (el.classList) el.classList.add(className);
+    else if (!hasClass(el, className)) el.className += " " + className;
+  }
+
+  removeClass(el, className) {
+    if (el.classList) el.classList.remove(className);
+    else if (hasClass(el, className)) {
+      var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
+      el.className = el.className.replace(reg, " ");
     }
-  };
-  onReady = () => {};
+  }
 
-  onChangeHandler = (event, data) => {
-    var content = data.getDoc().getElementsByClassName("tableContainer")[0]
-      .innerHTML;
-
-    this.props.onUpdateProps({
-      id: this.props.id,
-      props: {
-        content
+  getTableSize(editor) {
+    let result = { width: null, height: null };
+    if (editor) {
+      const table = editor.getDoc().getElementsByClassName("mce-item-table")[0];
+      if (table) {
+        result["width"] = table.offsetWidth;
+        result["height"] = table.offsetHeight;
       }
-    });
-  };
-
-  onClickHandler = event => {
-    console.log("onClick");
-    event.preventDefault();
-  };
-  onObjectResizeHandler = (event, editor) => {
-    var MutationObserver =
-      window.MutationObserver ||
-      window.WebKitMutationObserver ||
-      window.MozMutationObserver;
-    var element = editor.dom.doc.getElementsByClassName(
-      "mce-clonedresizable"
-    )[0]; // element resize by handle
-
-    if (element) {
-      const tableScale = this.props.width / this.props.tableWidth;
-      element.style = "transform:scale(" + tableScale + ")";
-
-      var observer = new MutationObserver(mutations => {
-        mutations.forEach(mutation => {
-          if (mutation.type === "attributes") {
-            const targetBounding = mutation.target.getBoundingClientRect();
-
-            this.props.onUpdateProps({
-              id: this.props.id,
-              props: {
-                width:
-                  (this.props.width * mutation.target.offsetWidth) /
-                  this.props.tableWidth /
-                  this.props.zoomScale,
-                height:
-                  (this.props.height * mutation.target.offsetHeight) /
-                  this.props.tableHeight /
-                  this.props.zoomScale,
-                tableWidth: mutation.target.offsetWidth,
-                tableHeight: mutation.target.offsetHeight
-              }
-            });
-          }
-        });
-      });
-
-      observer.observe(element, {
-        attributes: true //configure it to listen to attribute changes
-      });
-      event.target.parentElement.classList.add("hideTableResize");
-      event.target.parentElement.parentElement.classList.add("hideResize");
     }
-  };
-  onObjectResizedHandler = event => {
-    event.target.parentElement.classList.remove("hideTableResize");
-    event.target.parentElement.parentElement.classList.remove("hideResize");
-  };
+    return result;
+  }
 
-  componentDidUpdate() {
-    if (this.currentEditor && this.currentEditor.dom.doc) {
-      var table = this.currentEditor.dom.doc.getElementsByClassName(
-        "mce-item-table"
-      )[0];
-      table.style =
-        "width:" +
-        this.props.tableWidth +
-        "px; height:" +
-        this.props.tableHeight +
-        "px;";
+  getTableMinSize(editor) {
+    let result = { width: null, height: null };
+    if (editor) {
+      const body = editor.getBody();
+      this.addClass(body, "minDimTable");
+      const table = editor.getDoc().getElementsByClassName("mce-item-table")[0];
+      if (table) {
+        result["width"] = table.offsetWidth;
+        result["height"] = table.offsetHeight;
+      }
+      this.removeClass(body, "minDimTable");
     }
-    /* if (this.currentEditor && this.currentEditor.dom.doc) {
-      var element = this.currentEditor.dom.doc.getElementsByClassName(
-        "tableContainer"
-      )[0];
-      var table = this.currentEditor.dom.doc.getElementsByClassName(
-        "mce-item-table"
-      )[0];
-      element.setAttribute(
-        "style",
-        "transform:scale(" +
-          this.props.zoomScale +
-          ");width:" +
-          this.props.width / this.props.zoomScale +
-          "px; height:0;"
-      );
+    return result;
+  }
 
-      const tableOffsetWidth = table.offsetWidth;
-      console.log("tableOffsetWidth1", tableOffsetWidth);
-      table.style =
-        "width:" +
-        this.props.width / this.props.zoomScale +
-        "px;" +
-        "transform-origin: top left; " +
-        "transform: scale(" +
-        this.props.width / this.props.zoomScale / tableOffsetWidth +
-        "); ";
-    } */
+  getTableAutoSize(editor) {
+    let result = { width: null, height: null };
+    if (editor) {
+      const body = editor.getBody();
+      this.addClass(body, "autoDimTable");
+      const table = editor.getDoc().getElementsByClassName("mce-item-table")[0];
+      if (table) {
+        result["width"] = table.offsetWidth;
+        result["height"] = table.offsetHeight;
+      }
+      this.removeClass(body, "autoDimTable");
+    }
+    return result;
+  }
+
+  setTableSize(editor, size) {
+    if (editor) {
+      const table = editor.getDoc().getElementsByClassName("mce-item-table")[0];
+      if (table) {
+        table.style =
+          "width:" + size.width + "px; height:" + size.height + "px;";
+      }
+    }
   }
 
   initCallbackHandler = editor => {
-    this.currentEditor = editor;
     if (this.props.viewOnly) {
       editor.setMode("readonly");
     }
 
-    var table = editor.getDoc().getElementsByClassName("mce-item-table")[0];
-    if (table) {
-      table.style =
-        "width:" +
-        this.props.tableWidth +
-        "px; height:" +
-        this.props.tableHeight +
-        "px;";
+    const tableSize = this.getTableAutoSize(editor);
+
+    this.props.onUpdateProps({
+      id: this.props.id,
+      props: tableSize
+    });
+  };
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    let selection = null;
+    let editor = null;
+    if (this.tinyEditor) {
+      editor = this.tinyEditor.editor;
+      selection = this.tinyEditor.editor.selection.getNode();
+    }
+
+    return { selection: selection };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { width, height, tableContent, zoomScale, viewOnly } = this.props;
+    // if (this.tinyEditor && this.currentNode) {
+    //   this.tinyEditor.editor.selection.setCursorLocation(this.currentNode, 1);
+    // }
+    if (width > 0 && height > 0) {
+      if (this.tinyEditor) {
+        const newWidth = width / zoomScale;
+        const newHeight = height / zoomScale;
+        if (!viewOnly) {
+          const tableSize = this.getTableAutoSize(this.tinyEditor.editor);
+          if (tableSize.width > newWidth || tableSize.height > newHeight) {
+            this.props.onUpdateProps({
+              id: this.props.id,
+              props: {
+                width: Math.max(tableSize.width, newWidth),
+                height: Math.max(tableSize.height, newHeight)
+              }
+            });
+          }
+        }
+        this.setTableSize(this.tinyEditor.editor, {
+          width: newWidth,
+          height: newHeight
+        });
+      }
+    }
+  }
+
+  onChangeHandler = (event, editor) => {
+    if (editor) {
+      var content = editor.getDoc().getElementsByClassName("tableContainer")[0]
+        .innerHTML;
+
+      const tableSize = this.getTableSize(editor);
+
+      this.props.onUpdateProps({
+        id: this.props.id,
+        props: {
+          tableContent: content,
+          width: tableSize.width,
+          height: tableSize.height
+        }
+      });
     }
   };
 
-  onMouseEnterHandler = () => {
-    if (this.currentEditor) this.currentEditor.fire("editorMouseEnter");
-  };
-  onMouseLeaveHandler = () => {
-    if (this.currentEditor) this.currentEditor.fire("editorMouseLeave");
+  onKeyUpHandler = (event, editor) => {
+    if (editor) {
+      this.currentNode = editor.selection.getNode();
+      var content = editor.getDoc().getElementsByClassName("tableContainer")[0]
+        .innerHTML;
+      const tableSize = this.getTableSize(editor);
+
+      this.props.onUpdateProps({
+        id: this.props.id,
+        props: {
+          // tableContent: content,
+          width: tableSize.width,
+          height: tableSize.height
+        }
+      });
+    }
   };
 
   render() {
     const globalConfig = ConfigUtils.getDefaults();
+    const { width, height, tableContent, zoomScale } = this.props;
 
-    const tableScale = this.props.width / this.props.tableWidth;
+    let tableScale = 1;
+    if (width > 0 && height > 0) {
+      tableScale = zoomScale;
+    }
 
     let disableCover = null;
 
     if (this.props.viewOnly || !this.props.active) {
-      disableCover = (
-        <div
-          onMouseEnter={this.onMouseEnterHandler}
-          onMouseLeave={this.onMouseLeaveHandler}
-          onClick={this.onMouseLeaveHandler}
-          ref={this.coverRef}
-          className="tinyMceCover"
-        />
-      );
-      resizeCover = (
-        <div
-          onMouseEnter={this.onMouseEnterHandler}
-          onMouseLeave={this.onMouseLeaveHandler}
-          onClick={this.onMouseLeaveHandler}
-          ref={this.coverRef}
-          className="tinyMceCover"
-        />
-      );
+      disableCover = <div ref={this.coverRef} className="tinyMceCover" />;
+      resizeCover = <div ref={this.coverRef} className="tinyMceCover" />;
     }
+
     return (
       <React.Fragment>
-        {/* <IframeComm
-          attributes={this.attributes}
-          postMessageData={this.props.tableContent}
-          handleReady={this.onReady}
-          handleReceiveMessage={this.onReceiveMessage}
-        /> */}
         <Editor
-          initialValue={
+          value={
             "<div class='tableContainer' style='transform:scale(" +
             tableScale +
-            ");width:" +
-            this.props.width +
-            "px; height:0;" +
+            "); width:10000px; height:10000px;" +
             "'>" +
             this.props.tableContent +
             "</div>" //key={uuidv4()}
@@ -233,12 +216,9 @@ class Tinymce extends React.Component {
             body_class: "TinymceContainer",
             init_instance_callback: this.initCallbackHandler
           }}
-          onObjectResizeStart={this.onObjectResizeHandler}
-          onObjectResized={this.onObjectResizedHandler}
           onChange={this.onChangeHandler}
-          onKeyDown={this.onChangeHandler}
+          onKeyUp={this.onKeyUpHandler}
           id={"Tiny" + this.props.uuid}
-          onClick={e => this.onClickHandler(e)}
         />
         {disableCover}
       </React.Fragment>
