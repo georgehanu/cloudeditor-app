@@ -16,6 +16,9 @@ const canvasSelector = state =>
 const colorsSelector = state => {
   return values(pathOr({}, ["ui", "colors"], state));
 };
+const permissionsSelector = state => {
+  return pathOr({}, ["ui", "permissions"], state);
+};
 const getTabActiveSelector = (_, props) => {
   return props.activeTab;
 };
@@ -88,5 +91,6 @@ module.exports = {
   getActiveBlockColors,
   rerenderIdSelector,
   lastUsedColorsSelector,
+  permissionsSelector,
   uiFontsSelector
 };

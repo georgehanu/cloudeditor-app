@@ -26,6 +26,7 @@ const {
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
+const { permissionsSelector } = require("../../../../../stores/selectors/ui");
 require("./Object.css");
 
 const TextBlock = require("../Text/Text");
@@ -100,6 +101,7 @@ class ObjectBlock extends React.Component {
       id: props.id,
       active: props.active,
       width: props.width,
+      height: props.height,
       maxWidth: props.width,
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
@@ -109,7 +111,10 @@ class ObjectBlock extends React.Component {
       bold: props.bold,
       italic: props.italic,
       type: props.type,
-      value: props.value,
+      value:
+        props.isPageNrBlock && !props.value.length
+          ? props.labelPage.longLabel
+          : props.value,
       fillColor: props.fillColor.htmlRGB,
       bgColor: props.bgColor.htmlRGB,
       borderColor: props.borderColor.htmlRGB,
@@ -117,6 +122,7 @@ class ObjectBlock extends React.Component {
       onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       onTextChange: props.onTextChange,
       editableRef: this.getEditableReference,
+      zoomScale: this.props.zoomScale,
       contentEditable
     };
     const block = <TextBlock {...textProps} />;
@@ -145,7 +151,7 @@ class ObjectBlock extends React.Component {
       image_src: props.image_src,
       leftSlider: props.leftSlider,
       initialRestore: props.initialRestore,
-      alternateZoom: props.alternate_zoom,
+      alternateZoom: props.alternateZoom,
       resizing: props.resizing,
       zoomScale: this.props.zoomScale,
       workingPercent: this.props.workingPercent,
@@ -463,7 +469,11 @@ const mapStateToProps = (state, props) => {
     }
   );
 
-  return { ...scaledObject, active: getActivePropSelector(state, props) };
+  return {
+    ...scaledObject,
+    active: getActivePropSelector(state, props),
+    permissions: permissionsSelector(state, props)
+  };
 };
 
 const mapDispatchToProps = dispatch => {

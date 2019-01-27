@@ -14,7 +14,8 @@ const {
 } = require("../../../../rewrites/reselect/createSelector");
 const {
   displayedPageSelector,
-  displayedPageLabelsSelector
+  displayedPageLabelsSelector,
+  displayedPagesLabelsSelector
 } = require("../../../../stores/selectors/Html5Renderer");
 const {
   computeZoomScale,
@@ -34,11 +35,11 @@ const PageSource = {
     return {
       type: PAGES,
       page_id: props.page_id,
-      draggable: props.activePage.lockPosition || true
+      draggable: !props.activePage.lockPosition || true
     };
   },
   canDrag(props, monitor) {
-    if (props.activePage.lockPosition === false) {
+    if (!props.activePage.lockPosition === false) {
       return false;
     }
     return true;
@@ -52,7 +53,7 @@ const PageTarget = {
   },
 
   canDrop(props, monitor) {
-    if (props.activePage.lockPosition === false) {
+    if (!props.activePage.lockPosition === false) {
       return false;
     }
     return true;
@@ -60,7 +61,7 @@ const PageTarget = {
   hover(props, monitor) {
     if (
       props.page_id === monitor.getItem().page_id ||
-      props.activePage.lockPosition === false
+      !props.activePage.lockPosition === false
     ) {
       props.highlightHoverPage(null);
     } else {
@@ -199,12 +200,14 @@ class PageContainer extends React.Component {
             visible={this.state.isVisible}
             containerUuid={this.props.uuid}
             getCanvasRef={this.getCanvasReference}
+            page_id={this.props.page_id}
             getContainerRef={this.getContainerReference}
             activePage={this.props.activePage}
             viewOnly={1}
             zoomScale={zoomScale}
             containerWidth={containerWidth}
             containerHeight={containerHeight}
+            labels={this.props.labels}
             pageReady={pageReady}
           />
           <div className="singlePageText">
@@ -254,7 +257,8 @@ const makeMapStateToProps = (state, props) => {
   const mapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
-      pageLabels: getDisplayedPageLabelsSelector(state, props)
+      pageLabels: getDisplayedPageLabelsSelector(state, props),
+      labels: displayedPagesLabelsSelector(state, props)
     };
   };
   return mapStateToProps;

@@ -1,6 +1,7 @@
 const React = require("react");
 const assign = require("object-assign");
 const { connect } = require("react-redux");
+const { forEachObjIndexed } = require("ramda");
 
 const { withNamespaces } = require("react-i18next");
 const {
@@ -16,23 +17,9 @@ const { previewEnabeldSelector } = require("../PrintPreview/store/selectors");
 
 const { previewLoadPage } = require("../PrintPreview/store/actions");
 
-const pagesLabelSelector = createSelector(
-  pagesOrderSelector,
-  pagesSelector,
-  (pagesOrder, pages) => {
-    let pageNumber = 1;
-    let pagesLabel = [];
-    for (let index in pagesOrder) {
-      const pageId = pagesOrder[index];
-      pagesLabel.push({
-        longLabel: pages[pageId]["label"].replace("%no%", pageNumber),
-        page_id: pagesOrder[index]
-      });
-      pageNumber++;
-    }
-    return pagesLabel;
-  }
-);
+const {
+  displayedPagesLabelsSelector
+} = require("../../core/stores/selectors/Html5Renderer");
 require("./MenuItemPages.css");
 class MenuItemPages extends React.Component {
   pageSelect = (page_id, index) => {
@@ -43,14 +30,15 @@ class MenuItemPages extends React.Component {
     }
   };
   render() {
-    const pages = this.props.pagesLabel.map((el, index) => {
+    let index = 0;
+    const pages = Object.keys(this.props.pagesLabel).map(obKey => {
       return (
         <li
-          key={index}
+          key={obKey}
           className="submenuItem"
-          onClick={() => this.pageSelect(el.page_id, index)}
+          onClick={() => this.pageSelect(obKey, index++)}
         >
-          {el.longLabel}
+          {this.props.pagesLabel[obKey]["longLabel"]}
         </li>
       );
     });
@@ -67,7 +55,7 @@ class MenuItemPages extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    pagesLabel: pagesLabelSelector(state),
+    pagesLabel: displayedPagesLabelsSelector(state),
     previewEnabeld: previewEnabeldSelector(state)
   };
 };

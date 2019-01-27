@@ -1,12 +1,14 @@
 .pageBlock.textflow .blockData {
   white-space: pre-wrap;
 }
-.pageBlock.textflow .blockData {
-  display: table-cell;
-}
+
+.pageBlock.textflow .blockData,
 .pageBlock.text .blockData {
-  display: table-cell;
   outline: none;
+  vertical-align: middle;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
 }
 
 .pageBlock.text .blockData > div {
