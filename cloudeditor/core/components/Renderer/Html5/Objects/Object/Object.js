@@ -63,6 +63,14 @@ class ObjectBlock extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     const list = [];
+    if (nextProps.viewOnly) {
+      console.log(
+        "text ",
+        nextProps.uuid,
+        nextProps.deleteMissingImages,
+        nextProps.viewOnly
+      );
+    }
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
     if (equals(nProps, cProps)) {
@@ -123,6 +131,7 @@ class ObjectBlock extends React.Component {
       onTextChange: props.onTextChange,
       editableRef: this.getEditableReference,
       zoomScale: this.props.zoomScale,
+      renderId: this.props.renderId,
       contentEditable
     };
     const block = <TextBlock {...textProps} />;
@@ -156,6 +165,10 @@ class ObjectBlock extends React.Component {
       zoomScale: this.props.zoomScale,
       workingPercent: this.props.workingPercent,
       brightness: this.props.brightness,
+      renderId: this.props.renderId,
+      deleteMissingImages: this.props.deleteMissingImages,
+      setMissingImages: this.props.setMissingImages,
+      missingImage: this.props.missingImage,
       contrast: this.props.contrast
     };
 
@@ -372,6 +385,8 @@ class ObjectBlock extends React.Component {
         offsetLeft,
         offsetTop,
         mirrored,
+        deleteMissingImages: props.deleteMissingImages,
+        setMissingImages: props.setMissingImages,
         parent: {
           ...innerBlock.props.parent,
           width: props.width,
@@ -395,7 +410,9 @@ class ObjectBlock extends React.Component {
     let element = null;
 
     //console.log("renderElement", this.props.id);
-
+    if (this.props.viewOnly) {
+      console.log("apo", this.props.deleteMissingImages);
+    }
     switch (this.props.subType) {
       case "textflow":
       case "text":

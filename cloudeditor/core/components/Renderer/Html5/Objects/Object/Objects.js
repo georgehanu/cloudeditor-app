@@ -94,6 +94,8 @@ class Blocks extends React.Component {
             middle={middle}
             labelPage={that.props.labelPage}
             viewOnly={viewOnly}
+            deleteMissingImages={that.props.deleteMissingImages}
+            setMissingImages={that.props.setMissingImages}
             data={objectData}
             {...obj}
           >
@@ -113,6 +115,8 @@ class Blocks extends React.Component {
           middle={middle}
           checkErrorMessages={that.props.checkErrorMessages}
           viewOnly={viewOnly}
+          deleteMissingImages={that.props.deleteMissingImages}
+          setMissingImages={that.props.setMissingImages}
           data={objectData}
           {...obj}
         />

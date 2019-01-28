@@ -67,7 +67,8 @@ const getObjectsDefaults = cfg => {
       borderColor: getObjectColorTemplate(
         (general && general.borderColor) || {}
       ),
-      borderWidth: 0
+      borderWidth: 0,
+      renderId: uuidv4()
     },
     general || {}
   );
@@ -102,6 +103,7 @@ const getObjectsDefaults = cfg => {
       imageHeight: 0,
       ratioWidth: 1,
       ratioHeight: 1,
+      missingImage: false,
       flip: ""
     },
     image || {}
@@ -493,6 +495,7 @@ const getEmptyProject = cfg => {
     top: 10,
     image_src:
       "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs//media/personalization/local_files/cw_logo.png",
+    imagePath: "local_files/cw_logo.png",
     imageWidth: 237,
     imageHeight: 121,
     cropX: 0,

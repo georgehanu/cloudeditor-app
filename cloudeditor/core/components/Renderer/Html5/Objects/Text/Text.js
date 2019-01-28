@@ -65,7 +65,7 @@ class TextBlock extends React.Component {
           className={this.props.type}
           content={this.props.value}
           active={this.props.active}
-          id={this.props.id}
+          id={this.props.renderId}
           tagName="div"
           sanitise={true}
           multiLine={true}

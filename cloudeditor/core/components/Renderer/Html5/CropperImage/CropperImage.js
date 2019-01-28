@@ -18,10 +18,7 @@ class CropperImage extends React.Component {
       topImage: 0,
       widthImage: 0,
       minPercent: 0,
-      focalPoint: {
-        x: 0,
-        y: 0
-      },
+      focalPoint: { x: 0, y: 0 },
       dragImageCoords: {},
       isDragging: false,
       resizeTimes: 2,
@@ -32,6 +29,7 @@ class CropperImage extends React.Component {
       originalHeight: 0,
       zoomScale: 0,
       image_src: "",
+      renderId: "",
       resizing: 0
     };
     this.initializeDimensions();
@@ -63,6 +61,7 @@ class CropperImage extends React.Component {
       this.props.zoomScale != this.options.zoomScale ||
       this.props.image_src != this.options.image_src ||
       this.props.activePageId != this.options.activePageId ||
+      this.props.renderId != this.options.renderId ||
       this.props.resizing
     ) {
       this.options = merge(
@@ -71,6 +70,7 @@ class CropperImage extends React.Component {
           zoomScale: this.props.zoomScale,
           resizing: this.props.resizing,
           image_src: this.props.image_src,
+          renderId: this.props.renderId,
           active_page: this.props.activePageId
         }
       );
@@ -199,7 +199,8 @@ class CropperImage extends React.Component {
         cropY: Math.floor((parseInt(topImage) / workingPercent) * -1),
         cropW: Math.round(targetWidth / workingPercent),
         cropH: Math.round(targetHeight / workingPercent),
-        workingPercent
+        workingPercent,
+        missingImage: false
       };
       this.props.onUpdateNoUndoRedoPropsHandler({
         id: this.props.id,
@@ -337,6 +338,7 @@ class CropperImage extends React.Component {
               {
                 zoomScale: this.props.zoomScale,
                 image_src: this.props.image_src,
+                renderId: this.props.renderId,
                 active_page: this.props.activePageId
               }
             );
