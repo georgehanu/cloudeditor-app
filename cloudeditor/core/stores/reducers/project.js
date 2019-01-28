@@ -8,7 +8,8 @@ const {
   without,
   head,
   last,
-  omit
+  omit,
+  forEachObjIndexed
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -679,8 +680,22 @@ module.exports = handleActions(
       return handleLoad(state, { loadingProject: true });
     },
     [PROJ_LOAD_PROJECT_SUCCESS]: (state, action) => {
+      var data = action.data;
+      var project_data = data.project_data;
+      Object.keys(project_data.objects).map(obKey => {
+        project_data.objects[obKey]["renderId"] = uuidv4();
+        if (project_data.objects[obKey]["type"] == "image") {
+          project_data.objects[obKey]["workingPercent"] = -1;
+        }
+      });
       return {
         ...state,
+        title: data.title,
+        projectId: data.projectId,
+        pages: project_data.pages,
+        objects: project_data.objects,
+        pagesOrder: project_data.pagesOrder,
+        activePage: head(project_data.pagesOrder),
         load: {
           ...state.load,
           loadingProject: false,

@@ -206,6 +206,7 @@ class Canvas extends React.Component {
     const pageNumbers = this.getPageNumbersRender();
     let bottomPagination = this.getBottomPagination();
     let sidePagination = this.getSidePagination();
+
     return (
       <div className="canvasContainer" ref={getCanvasRef}>
         <Zoom {...otherProps} />

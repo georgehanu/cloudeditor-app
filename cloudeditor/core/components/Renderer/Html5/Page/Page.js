@@ -3,7 +3,13 @@ const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
-const { forEachObjIndexed, includes, concat } = require("ramda");
+const {
+  forEachObjIndexed,
+  includes,
+  concat,
+  without,
+  indexOf
+} = require("ramda");
 const now = require("performance-now");
 
 const type = ["image", "text"];
@@ -237,7 +243,6 @@ class Page extends React.Component {
         return acc;
       }, objectsOffset);
     }, innerPages);
-
     return (
       <Objects
         objects={objectsOffset}
@@ -246,6 +251,8 @@ class Page extends React.Component {
         snapTolerance={activePage.snapTolerance}
         middle={{ left: width / 2, top: height / 2 }}
         checkErrorMessages={this.checkErrorMessages}
+        setMissingImages={this.props.setMissingImages}
+        deleteMissingImages={this.props.deleteMissingImages}
         viewOnly={viewOnly}
       />
     );

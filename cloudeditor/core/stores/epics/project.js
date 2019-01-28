@@ -28,10 +28,10 @@ const LOAD_PROJ =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/getAllProjects";
 
 const DELETE_PROJ =
-  "http://work.cloudlab.at:9012/ig/designAndGoUpload/delete.php";
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/deleteProject";
 
 const LOAD_ONE_PROJ =
-  "http://work.cloudlab.at:9012/ig/designAndGoUpload/one.php";
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/loadProject";
 
 const dispachEvent = () => {
   setTimeout(() => {
@@ -80,6 +80,8 @@ module.exports = {
                   projectId: data.projectId,
                   message: data.message
                 });
+                var event = new Event("resizePage");
+                window.dispatchEvent(event);
               } else {
                 obs.next({
                   type: PROJ_SAVE_FAILED,
@@ -188,7 +190,7 @@ module.exports = {
               if (data.success) {
                 obs.next({
                   type: PROJ_LOAD_PROJECT_SUCCESS,
-                  data: data.projects,
+                  data: data.project,
                   projectId: action$.payload.projectId
                 });
               } else {
