@@ -1,6 +1,8 @@
 body {
   overflow-x: hidden;
   margin-bottom: 0px !important;
+  font-family: Arial;
+  font-size: 14px;
 }
 html,
 body {
@@ -8,6 +10,7 @@ body {
   width: 100%;
   margin: 0px;
 }
+
 .canvas-container {
   position: absolute;
   display: block;
@@ -320,4 +323,14 @@ section.dropzone {
 
 .containerMaxZindex #sidebar-wrapper {
   z-index: 5000;
+}
+
+.noLayoutImg {
+  background-image: url("./assets/no_layout.jpg");
+  background-size: contain;
+}
+
+.tooltipImage .noLayoutImg {
+  height: 300px;
+  width: 300px;
 }

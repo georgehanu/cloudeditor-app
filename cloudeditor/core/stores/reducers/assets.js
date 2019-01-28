@@ -2,339 +2,24 @@ const uuidv4 = require("uuid/v4");
 const { handleActions } = require("redux-actions");
 const { pathOr } = require("ramda");
 const {
-  REMOVE_ASSET_FROM_GALLERY,
+  REMOVE_ASSET_FROM_GALLERY_START,
+  REMOVE_ASSET_FROM_GALLERY_SUCCESS,
+  REMOVE_ASSET_FROM_GALLERY_FAILED,
   UPLOAD_ASSET_FAILED,
   UPLOAD_ASSET_START,
-  UPLOAD_ASSET_SUCCESS
+  UPLOAD_ASSET_SUCCESS,
+  ASSETS_LAYOUT_START,
+  ASSETS_LAYOUT_SUCCESS,
+  ASSETS_LAYOUT_FAILED
 } = require("../actionTypes/assets");
+const ProjectUtils = require("../../utils/ProjectUtils");
+const ConfigUtils = require("../../utils/ConfigUtils");
+const config = ConfigUtils.getDefaults();
 
-const URL = "http://work.cloudlab.at:9012/ig/uploads/";
+const LAYOUTS_ASSETS_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/media/personalization/layouts/projects/";
 
-const initialState = {
-  layout: {
-    items: [
-      {
-        id: uuidv4(),
-        src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
-        thumbnail_src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
-      },
-      {
-        id: uuidv4(),
-        src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
-        thumbnail_src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
-      },
-      {
-        id: uuidv4(),
-        src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
-        thumbnail_src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
-      },
-      {
-        id: uuidv4(),
-        src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png",
-        thumbnail_src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(2).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(3).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(4).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(5).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(6).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(7).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(8).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(9).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(10).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(2).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(3).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(4).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(5).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(6).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(7).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(8).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(9).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(10).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(2).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(3).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(4).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(5).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(6).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(7).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(8).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(9).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(10).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(2).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(3).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(4).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(5).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(6).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(7).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(8).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(9).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(10).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(2).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(3).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(4).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(5).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(6).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(7).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(8).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(9).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(10).png",
-        thumbnail_src: URL + "1%20-%20Copy%20(2).png"
-      }
-    ]
-  }
-  /*layout: {
-    items: [
-      {
-        id: uuidv4(),
-        src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
-      },
-      {
-        id: uuidv4(),
-        src:
-          URL +
-          "2018-07-23%2010_42_50-React%2016%20-%20The%20Complete%20Guide%20(incl.%20React%20Router%204%20&%20Redux)%20_%20Udemy.png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(2).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(3).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(4).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(5).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(6).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(7).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(8).png"
-      },
-
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(9).png"
-      },
-      {
-        id: uuidv4(),
-        src: URL + "1%20-%20Copy%20(10).png"
-      }
-    ]
-  }*/
-};
+const initialState = ProjectUtils.getEmptyAssets(config.assets);
 uploadFileStart = (state, action) => {
   return {
     ...state,
@@ -379,14 +64,74 @@ const removeAssetFromGallery = (state, action) => {
   newUploadedFiles = newUploadedFiles.filter(el => {
     return el.id !== action.id;
   });
+
   return {
     ...state,
     [action.type]: {
       ...state[action.type],
-      uploadedFiles: newUploadedFiles
+      uploadedFiles: newUploadedFiles,
+      loadingDelete: false
     }
   };
 };
+
+const removeAssetFromGalleryStart = (state, action) => {
+  return {
+    ...state,
+    [action.type]: {
+      ...state[action.type],
+      loadingDelete: true
+    }
+  };
+};
+
+const removeAssetFromGalleryFailed = (state, action) => {
+  return {
+    ...state,
+    [action.type]: {
+      ...state[action.type],
+      loadingDelete: false
+    }
+  };
+};
+
+const layoutsStart = (state, action) => {
+  return {
+    ...state,
+    layout: {
+      ...state.layout,
+      loading: true
+    }
+  };
+};
+
+const layoutsSuccess = (state, action) => {
+  let newItems = [];
+  newItems = action.data.map((el, index) => {
+    return { ...el, thumbnail_src: LAYOUTS_ASSETS_URL + el.icon };
+  });
+
+  return {
+    ...state,
+    layout: {
+      ...state.layout,
+      loading: false,
+      items: newItems
+    }
+  };
+};
+
+const layoutsFailed = (state, action) => {
+  return {
+    ...state,
+    layout: {
+      ...state.layout,
+      loading: false,
+      items: []
+    }
+  };
+};
+
 module.exports = handleActions(
   {
     [UPLOAD_ASSET_START]: (state, action) => {
@@ -398,8 +143,23 @@ module.exports = handleActions(
     [UPLOAD_ASSET_SUCCESS]: (state, action) => {
       return uploadAssetSuccces(state, action.payload);
     },
-    [REMOVE_ASSET_FROM_GALLERY]: (state, action) => {
+    [REMOVE_ASSET_FROM_GALLERY_START]: (state, action) => {
+      return removeAssetFromGalleryStart(state, action.payload);
+    },
+    [REMOVE_ASSET_FROM_GALLERY_SUCCESS]: (state, action) => {
       return removeAssetFromGallery(state, action.payload);
+    },
+    [REMOVE_ASSET_FROM_GALLERY_FAILED]: (state, action) => {
+      return removeAssetFromGalleryFailed(state, action.payload);
+    },
+    [ASSETS_LAYOUT_START]: (state, action) => {
+      return layoutsStart(state, action.payload);
+    },
+    [ASSETS_LAYOUT_SUCCESS]: (state, action) => {
+      return layoutsSuccess(state, action.payload);
+    },
+    [ASSETS_LAYOUT_FAILED]: (state, action) => {
+      return layoutsFailed(state, action.payload);
     }
   },
   initialState

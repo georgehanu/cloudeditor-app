@@ -13,37 +13,67 @@ const withResizable = WrappedComponent => {
       super(props);
       this.el = null;
     }
-    changePropsOnDragHandler = (ui, resizing) => {
+    changePropsOnDragHandler = (ui, resizing, undoRedo) => {
       const { zoomScale, id, offsetTop, offsetLeft, parent } = this.props;
-      this.props.onUpdatePropsHandler({
-        id,
-        props: {
-          width: ui.size.width / zoomScale,
-          height: ui.size.height / zoomScale,
-          top:
-            (ui.position.top - offsetTop - parent.innerPage.offset.top) /
-            zoomScale,
-          left:
-            (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
-            zoomScale,
-          resizing
-        }
-      });
+      if (undoRedo) {
+        this.props.onUpdatePropsHandler({
+          id,
+          props: {
+            width: ui.size.width / zoomScale,
+            height: ui.size.height / zoomScale,
+            top:
+              (ui.position.top - offsetTop - parent.innerPage.offset.top) /
+              zoomScale,
+            left:
+              (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
+              zoomScale,
+            resizing
+          }
+        });
+      } else {
+        this.props.onUpdateNoUndoRedoPropsHandler({
+          id,
+          props: {
+            width: ui.size.width / zoomScale,
+            height: ui.size.height / zoomScale,
+            top:
+              (ui.position.top - offsetTop - parent.innerPage.offset.top) /
+              zoomScale,
+            left:
+              (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
+              zoomScale,
+            resizing
+          }
+        });
+      }
     };
     onResizeStartHandler = (event, ui) => {
       var resizable = $(event.target).data("ui-resizable");
+
       resizable.options.snapToleranceDynamic =
         this.props.snapTolerance * this.props.zoomScale;
       resizable.options.snapTolerance = 10;
       ui = addSnapElements(event, ui, resizable.coords, resizable);
+      this.changePropsOnDragHandler(ui, 1);
     };
     onResizeHandler = (event, ui) => {
+      var text = $(event.target).find(".text");
+      var text = $(event.target).find(".text");
+      if (text.length) {
+        if (text.width() > $(event.target).width()) {
+          ui.size.width = text.width();
+        }
+        if (text.height() > $(event.target).height()) {
+          ui.size.height = text.height();
+        }
+      }
       var resizable = $(event.target).data("ui-resizable");
       ui = addSnapElements(event, ui, resizable.coords, resizable);
+
       this.changePropsOnDragHandler(ui, 1);
     };
     onResizeStopHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 0);
+      this.changePropsOnDragHandler(ui, 0, 1);
       removeSnapClass();
     };
     componentDidMount() {
@@ -60,8 +90,9 @@ const withResizable = WrappedComponent => {
       this.enableUI =
         !this.props.active &&
         !this.props.viewOnly &&
+        this.props.permissions.resizeBlocks &&
         this.props.resizable &&
-        this.props.type !== "tinymce";
+        this.props.type !== "tinymceTable1";
       this.$el = $(this.el);
       handleUI(
         this.$el,

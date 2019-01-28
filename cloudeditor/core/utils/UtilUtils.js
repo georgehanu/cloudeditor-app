@@ -10,8 +10,10 @@ const {
   forEach,
   lensPath,
   set,
-  view
+  view,
+  equals
 } = require("ramda");
+const isEqual = require("react-fast-compare");
 
 const updateObject = (oldObject, updatedProperties) => {
   return {
@@ -30,6 +32,7 @@ const computeZoomScale = function(zoom, parent, child) {
   const zoomScale = scale + ((zoom * 100 - 100) / 100) * scale;
   return zoomScale;
 };
+
 const getMaxProp = (target, prop) => {
   return compose(
     apply(Math.max),
@@ -77,6 +80,34 @@ const rerenderPage = () => {
   var event = new Event("resizePage");
   window.dispatchEvent(event);
 };
+
+const checkChangedProps = (nextProps, currentProps) => {
+  Object.keys(nextProps)
+    .filter(key => {
+      return !isEqual(nextProps[key], currentProps[key]);
+    })
+    .map(key => {
+      console.log(
+        "changed property:",
+        key,
+        "from",
+        currentProps[key],
+        "to",
+        nextProps[key]
+      );
+    });
+};
+
+function isVisible(el) {
+  var rect = el.getBoundingClientRect();
+
+  var isVisible =
+    rect.top >= 0 &&
+    rect.bottom <= window.innerHeight &&
+    rect.left >= 0 &&
+    rect.right <= window.innerWidth;
+  return isVisible;
+}
 module.exports = {
   updateObject,
   computeScale,
@@ -87,5 +118,7 @@ module.exports = {
   applyMax,
   addProps,
   applyZoomScaleToTarget,
-  rerenderPage
+  rerenderPage,
+  checkChangedProps,
+  isVisible
 };

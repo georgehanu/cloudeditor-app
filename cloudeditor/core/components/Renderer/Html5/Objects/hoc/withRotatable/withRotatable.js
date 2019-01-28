@@ -11,17 +11,27 @@ const withRotatable = WrappedComponent => {
       this.el = null;
     }
 
-    changePropsOnDragHandler = (ui, rotating) => {
+    changePropsOnDragHandler = (ui, rotating, undoRedo) => {
       const { id } = this.props;
       const rotateAngle = ((ui.angle.current * 180) / Math.PI) % 360;
-      this.props.onUpdatePropsHandler({ id, props: { rotateAngle, rotating } });
+      if (undoRedo) {
+        this.props.onUpdatePropsHandler({
+          id,
+          props: { rotateAngle, rotating }
+        });
+      } else {
+        this.props.onUpdateNoUndoRedoPropsHandler({
+          id,
+          props: { rotateAngle, rotating }
+        });
+      }
     };
     onRotateStartHandler = (event, ui) => {};
     onRotateHandler = (event, ui) => {
       this.changePropsOnDragHandler(ui, 0);
     };
     onRotateStopHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 0);
+      this.changePropsOnDragHandler(ui, 0, 1);
     };
     componentDidMount() {
       this.updateUI();
@@ -32,7 +42,10 @@ const withRotatable = WrappedComponent => {
     }
     updateUI = () => {
       this.enableUI =
-        !this.props.active && !this.props.viewOnly && this.props.rotatable;
+        !this.props.active &&
+        !this.props.viewOnly &&
+        this.props.rotatable &&
+        this.props.permissions.rotateBlocks;
       this.$el = $(this.el);
       const radians = (this.props.rotateAngle * Math.PI) / 180;
       handleUI(

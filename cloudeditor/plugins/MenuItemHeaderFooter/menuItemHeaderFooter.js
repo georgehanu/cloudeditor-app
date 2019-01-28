@@ -8,21 +8,20 @@ const { withNamespaces } = require("react-i18next");
 const URL = "http://work.cloudlab.at:9012/ig/uploads/";
 const uuidv4 = require("uuid/v4");
 const axios = require("axios");
-const { createSelector } = require("reselect");
-const { head } = require("ramda");
+const isEqual = require("react-fast-compare");
 const { debounce } = require("underscore");
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
 const {
   headerConfigSelector,
-  footerConfigSelector,
-  objectsSelector
+  footerConfigSelector
 } = require("../../core/stores/selectors/project");
 
 const {
   updateHeaderconfigProps,
-  updateFooterconfigProps
+  updateFooterconfigProps,
+  changeModeHeaderFooter
 } = require("../../core/stores/actions/project");
 require("./menuItemHeaderFooter.css");
 class MenuItemHeaderFooter extends React.Component {
@@ -56,6 +55,12 @@ class MenuItemHeaderFooter extends React.Component {
 
   componentDidMount() {
     this.loadLayouts();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return true;
+    // console.log("render footer should update");
+    // return !isEqual(nextProps, this.props);
   }
 
   loadLayouts = () => {
@@ -246,12 +251,14 @@ class MenuItemHeaderFooter extends React.Component {
 
     this.setState({ submenuOpened: show }, () => {
       if (this.state.submenuOpened !== false) {
-        this.props.addContainerClasses("submenuHeaderFooter", [
-          "showHeaderFooter"
-        ]);
+        this.props.addContainerClasses(
+          "submenuHeaderFooter",
+          ["showHeaderFooter"],
+          true
+        );
       } else {
         this.closePoptext();
-        this.props.addContainerClasses("submenuHeaderFooter", []);
+        this.props.addContainerClasses("submenuHeaderFooter", [], true);
       }
 
       payload = {
@@ -259,12 +266,12 @@ class MenuItemHeaderFooter extends React.Component {
         value: this.state.submenuOpened ? "edit" : "read"
       };
 
-      this.props.onUpdateHeaderConfigHandler(payload);
-      this.props.onUpdateFooterConfigHandler(payload);
+      this.props.onUpdateHeaderFooterConfigPropsHandler(payload);
     });
   };
 
   render() {
+    //console.log("render footer");
     const className =
       "projectMenuButtonLink " +
       (this.state.submenuOpened ? "projectMenuButtonSubMenuOpened" : "");
@@ -394,31 +401,16 @@ class MenuItemHeaderFooter extends React.Component {
 }
 
 const mapStateToProps = state => {
-  // const getObjectCallback = (cfg, objects) => {
-  //   return objects[head(cfg.objectsIds)];
-  // };
-  // const headerBlockSelector = createSelector(
-  //   headerConfigSelector,
-  //   objectsSelector,
-  //   getObjectCallback
-  // );
-
-  // const footerBlockSelector = createSelector(
-  //   footerConfigSelector,
-  //   objectsSelector,
-  //   getObjectCallback
-  // );
-
   return {
     headerCfg: headerConfigSelector(state),
     footerCfg: footerConfigSelector(state)
-    // headerBlock: headerBlockSelector(state),
-    // footerBlock: footerBlockSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    onUpdateHeaderFooterConfigPropsHandler: payload =>
+      dispatch(changeModeHeaderFooter(payload)),
     onUpdateHeaderConfigHandler: payload =>
       dispatch(updateHeaderconfigProps(payload)),
     onUpdateFooterConfigHandler: payload =>

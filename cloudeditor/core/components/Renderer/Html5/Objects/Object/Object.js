@@ -26,6 +26,7 @@ const {
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
+const { permissionsSelector } = require("../../../../../stores/selectors/ui");
 require("./Object.css");
 
 const TextBlock = require("../Text/Text");
@@ -35,6 +36,7 @@ const GraphicBlock = require("../Graphic/Graphic");
 const {
   updateObjectProps,
   addObjectIdToSelected,
+  updateObjectPropsNoUndoRedo,
   deleteObj
 } = require("../../../../../stores/actions/project");
 
@@ -99,6 +101,7 @@ class ObjectBlock extends React.Component {
       id: props.id,
       active: props.active,
       width: props.width,
+      height: props.height,
       maxWidth: props.width,
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
@@ -108,13 +111,18 @@ class ObjectBlock extends React.Component {
       bold: props.bold,
       italic: props.italic,
       type: props.type,
-      value: props.value,
+      value:
+        props.isPageNrBlock && !props.value.length
+          ? props.labelPage.longLabel
+          : props.value,
       fillColor: props.fillColor.htmlRGB,
       bgColor: props.bgColor.htmlRGB,
       borderColor: props.borderColor.htmlRGB,
       onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       onTextChange: props.onTextChange,
       editableRef: this.getEditableReference,
+      zoomScale: this.props.zoomScale,
       contentEditable
     };
     const block = <TextBlock {...textProps} />;
@@ -139,10 +147,11 @@ class ObjectBlock extends React.Component {
       flip: props.flip,
       cropH: props.cropH,
       onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       image_src: props.image_src,
       leftSlider: props.leftSlider,
       initialRestore: props.initialRestore,
-      alternateZoom: props.alternate_zoom,
+      alternateZoom: props.alternateZoom,
       resizing: props.resizing,
       zoomScale: this.props.zoomScale,
       workingPercent: this.props.workingPercent,
@@ -180,8 +189,13 @@ class ObjectBlock extends React.Component {
         tableContent={this.props.tableContent}
         height={this.props.height}
         width={this.props.width}
+        tableHeight={this.props.tableHeight}
+        tableWidth={this.props.tableWidth}
         onUpdateProps={this.props.onUpdatePropsHandler}
+        onUpdatePropsNoUndoRedo={this.props.onUpdateNoUndoRedoPropsHandler}
         zoomScale={this.props.zoomScale}
+        viewOnly={this.props.viewOnly}
+        active={this.props.active}
       />
     );
 
@@ -224,44 +238,23 @@ class ObjectBlock extends React.Component {
       top: top + offsetTop,
       transform: "rotate(" + rotateAngle + "deg)",
       backgroundColor:
-        subType != "tinymce" ? "rgb(" + bgColor.htmlRGB + ")" : ""
+        subType !== "tinymceTable" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
 
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-    const styleBorderColor = {
-      width: width + parseFloat(borderWidth),
-      height: height + parseFloat(borderWidth),
-      borderColor:
-        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
-      top: (-1 * parseFloat(borderWidth)) / 2,
-      left: (-1 * parseFloat(borderWidth)) / 2
-    };
+
     let styleNorth = {};
-    let tinyMceResizable = null;
 
     if (subType === "tinymceTable") {
       styleNorth = { width: width + 16, height: height + 16 };
-      tinyMceResizable = (
-        <React.Fragment>
-          <div className="ui-resizable-handle ui-resizable-se ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-sw ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-ne ui-icon" />
-          <div className="ui-resizable-handle ui-resizable-nw ui-icon" />
-        </React.Fragment>
-      );
     }
 
-    let resizableHandle = null;
-    if (this.props.resizable && !viewOnly) {
-      resizableHandle = (
-        <div
-          className={
-            "ui-rotatable-handle icon printqicon-rotate_handler ui-draggable"
-          }
-        />
+    let rotatableHandle = null;
+    if (this.props.rotatable && !viewOnly) {
+      rotatableHandle = (
+        <div className={"ui-rotatable-handle icon printqicon-rotate_handler"} />
       );
     }
     let deleteHandle = null;
@@ -294,11 +287,10 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        <div className={"blockBorder"} style={styleBorderColor} />
+        {/* <div className={"blockBorder"} style={styleBorderColor} /> */}
         <u style={{ width, height }} />
 
-        {tinyMceResizable}
-        {resizableHandle}
+        {rotatableHandle}
         {deleteHandle}
       </div>
     );
@@ -402,6 +394,8 @@ class ObjectBlock extends React.Component {
   render() {
     let element = null;
 
+    //console.log("renderElement", this.props.id);
+
     switch (this.props.subType) {
       case "textflow":
       case "text":
@@ -475,7 +469,11 @@ const mapStateToProps = (state, props) => {
     }
   );
 
-  return { ...scaledObject, active: getActivePropSelector(state, props) };
+  return {
+    ...scaledObject,
+    active: getActivePropSelector(state, props),
+    permissions: permissionsSelector(state, props)
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -483,6 +481,8 @@ const mapDispatchToProps = dispatch => {
     onSetActiveBlockHandler: payload =>
       dispatch(addObjectIdToSelected(payload)),
     onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload)),
+    onUpdateNoUndoRedoPropsHandler: payload =>
+      dispatch(updateObjectPropsNoUndoRedo(payload)),
     onDeleteObjectHandler: payload => dispatch(deleteObj(payload))
   };
 };

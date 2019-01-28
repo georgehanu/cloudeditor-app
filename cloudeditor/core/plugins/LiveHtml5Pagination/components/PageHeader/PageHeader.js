@@ -21,12 +21,18 @@ const PageHeader = props => {
       </div>
       <div className="pageHeaderButtonsContainer">
         {props.showExtend && (
-          <button className="pageHeaderButtonExtend" onClick={props.extend}>
+          <button
+            className="pageHeaderButtonExtend"
+            onClick={() => props.toggle("up")}
+          >
             <span className="icon porto-up" />
           </button>
         )}
         {props.showMinimized && (
-          <button className="pageHeaderButtonMinimize" onClick={props.minimize}>
+          <button
+            className="pageHeaderButtonMinimize"
+            onClick={() => props.toggle("down")}
+          >
             <span className="icon porto-down" />
           </button>
         )}

@@ -3,6 +3,7 @@ const { connect } = require("react-redux");
 const { propEq, find, clone, pathOr, pick, omit } = require("ramda");
 var now = require("performance-now");
 const isEqual = require("react-fast-compare");
+const Utils = require("../../../../../utils/UtilUtils");
 
 const ObjectBlock = require("./Object");
 
@@ -30,21 +31,23 @@ class Blocks extends React.Component {
       return obj.id;
     });
 
-    //const start = now();
+    const start = now();
     let pageBlocksIds = getPageBlocksIds(ids, nextProps.objectsData);
     pageBlocksData = pick(pageBlocksIds, nextProps.objectsData);
-    //const end = now();
+    const end = now();
 
     //console.log("getPageBlocks", (end - start).toFixed(15), pageBlocksData);
     return { pageBlocksData };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const pProps = omit(["objectsData"], this.props);
-    const nProps = omit(["objectsData"], nextProps);
+    const omitList = ["objectsData"];
+    const pProps = omit(omitList, this.props);
+    const nProps = omit(omitList, nextProps);
     if (isEqual(nextState, this.state) && isEqual(pProps, nProps)) {
       return false;
     }
+    //console.log("update");
     return true;
   }
 
@@ -89,6 +92,7 @@ class Blocks extends React.Component {
             snapTolerance={snapTolerance}
             checkErrorMessages={that.props.checkErrorMessages}
             middle={middle}
+            labelPage={that.props.labelPage}
             viewOnly={viewOnly}
             data={objectData}
             {...obj}
@@ -105,6 +109,7 @@ class Blocks extends React.Component {
           uuid={bUuid}
           zoomScale={zoomScale}
           snapTolerance={snapTolerance}
+          labelPage={that.props.labelPage}
           middle={middle}
           checkErrorMessages={that.props.checkErrorMessages}
           viewOnly={viewOnly}

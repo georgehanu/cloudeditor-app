@@ -198,6 +198,10 @@ class Canvas extends React.Component {
     );
   };
   render() {
+    // console.log(
+    //   "renderlive renderPageContainer renderCanvas",
+    //   this.props.zoomScale
+    // );
     const { getCanvasRef, ...otherProps } = this.props;
     const pageNumbers = this.getPageNumbersRender();
     let bottomPagination = this.getBottomPagination();
@@ -213,6 +217,7 @@ class Canvas extends React.Component {
   }
 }
 Canvas.propTypes = {
+  visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   viewOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   getCanvasRef: PropTypes.func,
   getContainerRef: PropTypes.func,
@@ -222,6 +227,7 @@ Canvas.propTypes = {
 };
 
 Canvas.defaultProps = {
+  visible: 1,
   viewOnly: 0,
   getCanvasRef: () => {},
   getContainerRef: () => {},

@@ -6,6 +6,8 @@ const { connect } = require("react-redux");
 const PropTypes = require("prop-types");
 const PageHeader = require("./components/PageHeader/PageHeader");
 const { clone } = require("ramda");
+const isEqual = require("react-fast-compare");
+const { debounce } = require("underscore");
 
 require("./LiveHtml5Pagination.css");
 
@@ -23,20 +25,26 @@ const {
   groupSizeSelector,
   facingPagesSelector
 } = require("../../stores/selectors/project");
-const { rerenderPage } = require("../../../core/utils/UtilUtils");
+const {
+  rerenderPage,
+  checkChangedProps
+} = require("../../../core/utils/UtilUtils");
 const AddPages = require("./components/AddPages/AddPages");
 
 class LiveHtml5Pagination extends React.Component {
   constructor(props) {
     super(props);
+    this.paginationContainer = React.createRef();
     this.state = {
-      size: "minimized",
+      size: "normal",
       hoverId: null,
       showAddPages: false,
       nrPagesToInsert: props.groupSize,
       location: "after",
-      uuid: uuidv4()
+      uuid: uuidv4(),
+      scrollCheckId: uuidv4()
     };
+    this.sizes = ["minimized", "normal", "extended"];
   }
   renderGroups() {
     const groups = this.props.groups;
@@ -46,8 +54,30 @@ class LiveHtml5Pagination extends React.Component {
     this.setState({ hoverId });
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !(isEqual(nextProps, this.props) && isEqual(nextState, this.state));
+  }
+
   componentDidMount() {
-    this.minimize();
+    const el = this.paginationContainer.current;
+    if (el) {
+      const handleScrolldebounce = debounce(this.handleScroll, 300);
+      el.addEventListener("scroll", handleScrolldebounce);
+    }
+  }
+
+  handleScroll = args => {
+    const el = this.paginationContainer.current;
+    //if (el === args.currentTarget) {
+    this.setState({ checkScrollId: uuidv4() });
+    //}
+  };
+
+  componentWillUnmount() {
+    const el = this.paginationContainer.current;
+    if (el) {
+      el.removeEventListener("scroll", this.handleScroll);
+    }
   }
   switchPages = (from, to) => {
     if (from === to) {
@@ -67,34 +97,41 @@ class LiveHtml5Pagination extends React.Component {
       page_id: from
     });
   };
-  minimize = () => {
-    if (this.state.size === "normal") {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorMinimized"]);
-      this.setState({ size: "minimized" }, () => {
-        rerenderPage();
-      });
-    } else {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorNormal"]);
-      this.setState({ size: "normal" }, () => {
-        rerenderPage();
-      });
+
+  toggleHandler = direction => {
+    let currentIndex = this.sizes.indexOf(this.state.size);
+    if (currentIndex === -1) currentIndex = 0;
+
+    let newIndex = currentIndex;
+
+    switch (direction) {
+      case "up":
+        newIndex = currentIndex + 1;
+        break;
+      case "down":
+        newIndex = currentIndex - 1;
+        break;
+      default:
+        break;
     }
+
+    if (newIndex < 0) newIndex = 0;
+    if (newIndex > this.sizes.length - 1) newIndex = this.sizes.length - 1;
+
+    this.changeSize(this.sizes[newIndex]);
   };
-  extend = () => {
-    if (this.state.size === "normal") {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorExtended"]);
-      this.setState({ size: "extended" }, () => {
-        rerenderPage();
-      });
-    } else {
-      this.props.addContainerClasses("PageSelector", ["pageSelectorNormal"]);
-      this.setState({ size: "normal" }, () => {
-        rerenderPage();
-      });
-    }
-  };
+
+  changeSize(newSize) {
+    this.props.addContainerClasses(
+      "PageSelector",
+      ["pageSelector" + newSize.charAt(0).toUpperCase() + newSize.slice(1)],
+      true
+    );
+    this.setState({ size: newSize });
+  }
   showAddPages = () => {
-    this.setState({ showAddPages: true });
+    const currentPage = this.props.pages[this.props.activePageId];
+    if (!currentPage.lockPosition) this.setState({ showAddPages: true });
   };
   hideAddPages = () => {
     this.setState({ showAddPages: false });
@@ -111,49 +148,52 @@ class LiveHtml5Pagination extends React.Component {
     this.setState({ nrPagesToInsert: event.target.value });
   };
   render() {
+    //console.log("renderlive");
     const { groups, className, mode } = this.props;
-    let groupContainer = groups.map(group => {
-      const groupLength = group.length;
-      return group.map((page, index) => {
-        let className = [
-          "paginationPage",
-          mode,
-          "singlePageContainer",
-          page === this.props.activePageId ? " singlePageSelected" : "",
-          this.state.hoverId === page ? " singlePageHover" : ""
-        ];
-        if (groupLength === 1) {
-          className = className.concat(["singlePageLeft"]);
-        } else {
-          if (index === 0) className = className.concat(["singlePageLeft"]);
-          if (index === groupLength - 1)
-            className = className.concat(["singlePageRight"]);
-          if (index > 0 && index < groupLength - 1)
-            className = className.concat(["singlePageCenter"]);
-        }
+    let groupContainer = null;
+    if (this.state.size !== "minimized")
+      groupContainer = groups.map(group => {
+        const groupLength = group.length;
+        return group.map((page, index) => {
+          let className = [
+            "paginationPage",
+            mode,
+            "singlePageContainer",
+            page === this.props.activePageId ? " singlePageSelected" : "",
+            this.state.hoverId === page ? " singlePageHover" : ""
+          ];
+          if (groupLength === 1) {
+            className = className.concat(["singlePageLeft"]);
+          } else {
+            if (index === 0) className = className.concat(["singlePageLeft"]);
+            if (index === groupLength - 1)
+              className = className.concat(["singlePageRight"]);
+            if (index > 0 && index < groupLength - 1)
+              className = className.concat(["singlePageCenter"]);
+          }
 
-        const classes = className.join(" ");
-        return (
-          <PageContainer
-            group={group}
-            classes={classes}
-            page_id={page}
-            key={page}
-            mode1={mode}
-            hoverId={page}
-            selectedId={page}
-            mode={this.state.size}
-            includeBoxes={1}
-            useMagentic={0}
-            switchPages={this.switchPages}
-            highlightHoverPage={this.highlightHoverPage}
-            uuid={this.state.uuid}
-          >
-            {page}
-          </PageContainer>
-        );
+          const classes = className.join(" ");
+          return (
+            <PageContainer
+              checkScrollId={this.state.checkScrollId}
+              mode={this.state.size}
+              group={group}
+              classes={classes}
+              page_id={page}
+              key={page}
+              hoverId={page}
+              selectedId={page}
+              includeBoxes={1}
+              useMagentic={0}
+              switchPages={this.switchPages}
+              highlightHoverPage={this.highlightHoverPage}
+              uuid={this.state.uuid}
+            >
+              {page}
+            </PageContainer>
+          );
+        });
       });
-    });
 
     return (
       <React.Fragment>
@@ -171,14 +211,15 @@ class LiveHtml5Pagination extends React.Component {
         <div className="pageSelectorContainer">
           <div className="pageSelector">
             <PageHeader
-              minimize={this.minimize}
-              extend={this.extend}
               status={this.state.size}
+              toggle={this.toggleHandler}
               showExtend={this.state.size !== "extended"}
               showMinimized={this.state.size !== "minimized"}
               showAddPages={this.showAddPages}
             />
-            <div className={className}>{groupContainer}</div>
+            <div ref={this.paginationContainer} className={className}>
+              {groupContainer}
+            </div>
           </div>
         </div>
       </React.Fragment>
@@ -202,7 +243,8 @@ const mapStateToProps = state => {
     groups: getGroupsSelector(state),
     pagesOrder: pagesOrderSelector(state),
     activePageId: activePageIdSelector(state),
-    groupSize: groupSizeSelector(state)
+    groupSize: groupSizeSelector(state),
+    pages: state.project.pages
   };
 };
 const mapDispatchToProps = dispatch => {

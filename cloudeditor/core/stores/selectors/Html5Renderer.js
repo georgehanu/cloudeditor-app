@@ -5,6 +5,17 @@ const {
 
 const createCachedSelector = require("re-reselect").default;
 
+const hasPageHeaderFooter = function(innerPage, config) {
+  if (config.enabled) {
+    if (config.activeOn === "all") return true;
+    if (config.activeOn === "inner") {
+      if (!(innerPage.isDocumentFirstPage || innerPage.isDocumentLastPage))
+        return true;
+    }
+  }
+  return false;
+};
+
 const {
   head,
   any,
@@ -23,7 +34,8 @@ const {
   view,
   mergeAll,
   forEachObjIndexed,
-  clone
+  clone,
+  mergeDeepLeft
 } = require("ramda");
 
 const {
@@ -37,11 +49,13 @@ const {
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
-  tolerancePagesConfigSelector,
+  safeCutPagesConfigSelector,
   objectsDefaultConfigSelector,
   blockActionsPagesConfigSelector,
   deletePagePagesConfigSelector,
-  showTrimboxSelector
+  showTrimboxSelector,
+  headerConfigSelector,
+  footerConfigSelector
 } = require("./project");
 
 const { getMaxProp, addProps } = require("../../utils/UtilUtils");
@@ -124,36 +138,34 @@ const displayedPageSelector = (
   groupSelector,
   activePageIdSelector,
   includeBoxesSelector,
-  useMagneticSelector
+  allowSafeCutSelector
 ) => {
   return createSelector(
     displayOnePageSelector,
     groupSelector,
     pagesSelector,
     pagesDefaultConfigSelector,
-    trimboxPagesConfigSelector,
-    bleedPagesConfigSelector,
-    tolerancePagesConfigSelector,
     includeBoxesSelector,
-    useMagneticSelector,
+    allowSafeCutSelector,
     activePageIdSelector,
     pagesOrderSelector,
     deletePagePagesConfigSelector,
     showTrimboxSelector,
+    headerConfigSelector,
+    footerConfigSelector,
     (
       displayOnePage,
       group,
       pages,
       config,
-      trimbox,
-      bleed,
-      tolerance,
       includeBoxes,
-      useMagnetic,
+      allowSafeCut,
       activePageId,
       pagesOrder,
       allowDeletePage,
-      showTrimbox
+      showTrimbox,
+      headerConfig,
+      footerConfig
     ) => {
       const innerPages = {};
       const activePage = pages[activePageId];
@@ -182,38 +194,42 @@ const displayedPageSelector = (
       let background = true;
       let lockPosition = true;
       let pagesLabels = [];
+
+      const defaultBox = { top: 0, right: 0, bottom: 0, left: 0 };
       const addInnerPage = (page, groupIndex) => {
-        innerPages[page] = merge(pages[page], config);
+        innerPages[page] = mergeDeepLeft(pages[page], config);
+
         innerPages[page]["isDocumentFirstPage"] =
           pagesOrder.indexOf(page) === 0;
         innerPages[page]["isDocumentLastPage"] =
           pagesOrder.indexOf(page) === pagesOrder.length - 1;
 
-        innerPages[page]["isGroupFirstPage"] = group.indexOf(page) === 0;
+        innerPages[page]["isGroupFirstPage"] =
+          group.indexOf(page) === 0 && group.length > 1;
         innerPages[page]["isGroupLastPage"] =
-          group.indexOf(page) === group.length - 1;
-        innerPages[page]["boxes"] = {
-          trimbox: merge(
-            trimbox,
-            pathOr({}, [page, "boxes", "trimbox"], pages)
-          ),
-          bleed: merge(bleed, pathOr({}, [page, "boxes", "bleed"], pages))
-        };
-        innerPages[page]["boxesMagentic"] = {
-          magneticSnapEdge: { left: -1, top: -1, bottom: -1, right: -1 },
-          magneticSnap: {
-            left: pathOr(tolerance, [page, "snapTolerance"], pages),
-            top: pathOr(tolerance, [page, "snapTolerance"], pages),
-            bottom: pathOr(tolerance, [page, "snapTolerance"], pages),
-            right: pathOr(tolerance, [page, "snapTolerance"], pages)
-          }
-        };
+          group.indexOf(page) === group.length - 1 && group.length > 1;
+        innerPages[page]["isSinglePageGroup"] = group.length === 1;
+
+        let pageTrimboxTolerance = 0;
+        if (allowSafeCut) {
+          pageTrimboxTolerance =
+            innerPages[page]["boxes"]["trimbox"]["top"] * 2 +
+            innerPages[page]["safeCut"];
+
+          innerPages[page]["boxesMagentic"] = {
+            magneticSnapEdge: { left: -1, top: -1, bottom: -1, right: -1 },
+            magneticSnap: {
+              left: pageTrimboxTolerance,
+              top: pageTrimboxTolerance,
+              bottom: pageTrimboxTolerance,
+              right: pageTrimboxTolerance
+            }
+          };
+        } else {
+          innerPages[page]["8"] = {};
+        }
         innerPages[page]["offset"] = { ...offset };
-        innerPages[page]["snapTolerance"] = pathOr(
-          tolerance,
-          [page, "snapTolerance"],
-          pages
-        );
+        innerPages[page]["snapTolerance"] = pageTrimboxTolerance;
         offset["left"] += innerPages[page]["width"];
         pagesLabels[page] = { left: innerPages[page]["width"] };
         label = innerPages[page]["label"];
@@ -234,9 +250,19 @@ const displayedPageSelector = (
         }
       }
 
+      forEachObjIndexed((innerPage, pKey) => {
+        innerPages[pKey]["hasHeader"] = hasPageHeaderFooter(
+          innerPage,
+          headerConfig
+        );
+        innerPages[pKey]["hasFooter"] = hasPageHeaderFooter(
+          innerPage,
+          footerConfig
+        );
+      }, innerPages);
+
       let boxes = {};
       let magneticBoxes = {};
-      const defaultBox = { left: 0, top: 0, bottom: 0, right: 0 };
 
       const pagesBoxes = pluck("boxes", innerPages);
       const pagesBoxesMagnetic = pluck("boxesMagentic", innerPages);
@@ -271,10 +297,11 @@ const displayedPageSelector = (
           return bKey;
         });
       }, pagesBoxes);
-      forEachObjIndexed((pageBoxesMagnetic, pKey) => {
-        Object.keys(pageBoxesMagnetic).map(bKey => {
-          magneticBoxes[bKey] = defaultBox;
-          if (useMagnetic) {
+      if (allowSafeCut) {
+        forEachObjIndexed((pageBoxesMagnetic, pKey) => {
+          Object.keys(pageBoxesMagnetic).map(bKey => {
+            magneticBoxes[bKey] = defaultBox;
+
             const box = compose(pluck(bKey))(pagesBoxesMagnetic);
             magneticBoxes[bKey] = {
               top: compose(
@@ -298,10 +325,10 @@ const displayedPageSelector = (
                 pluck("top")
               )(box)
             };
-          }
-          return false;
-        });
-      }, pagesBoxesMagnetic);
+            return false;
+          });
+        }, pagesBoxesMagnetic);
+      }
 
       return {
         width: addProps(
@@ -318,9 +345,10 @@ const displayedPageSelector = (
             : 0),
         snapTolerance: getMaxProp(innerPages, "snapTolerance"),
         boxes: showTrimbox ? boxes : {},
-        magneticBoxes: useMagnetic ? magneticBoxes : {},
+        magneticBoxes: magneticBoxes,
         lockPosition: lockPosition,
         background: background,
+        page_id: activePageId,
         label: label,
         selectable: selectable,
         pagesLabels,
@@ -415,6 +443,8 @@ const scaledDisplayedPageSelector = (
         ["width"],
         ["height"],
         ["snapTolerance"],
+        ["safeCut"],
+        ["columnSpacing"],
         ["offset", "top"],
         ["offset", "left"],
         ["boxes", "trimbox", "top"],
@@ -428,8 +458,7 @@ const scaledDisplayedPageSelector = (
         ["magneticBoxes", "magneticSnap", "top"],
         ["magneticBoxes", "magneticSnap", "right"],
         ["magneticBoxes", "magneticSnap", "bottom"],
-        ["magneticBoxes", "magneticSnap", "left"],
-        ["borderWidth"]
+        ["magneticBoxes", "magneticSnap", "left"]
       ];
 
       scaledPage = applyZoomScaleToTarget(scaledPage, zoomScale, defaultPaths);

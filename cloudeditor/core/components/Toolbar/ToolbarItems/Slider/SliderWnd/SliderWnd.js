@@ -1,5 +1,6 @@
 const React = require("react");
 const Utils = require("../../../ToolbarConfig/utils");
+const Slider = require("rc-slider").default;
 
 const SliderWnd = props => {
   const parentClassName = Utils.MergeClassName("Slider", props.parentClassName);
@@ -21,19 +22,18 @@ const SliderWnd = props => {
     <div className={parentClassName}>
       <div className="SliderPopup">
         {popupIcon}
-        <input
+        <Slider
           className="SliderPopupSlider"
-          type="range"
           defaultValue={startValue}
-          min={min}
-          max={max}
-          step={step}
-          onChange={event =>
+          min={parseInt(min, 10)}
+          max={parseInt(max, 10)}
+          step={parseInt(step, 10)}
+          onChange={value =>
             props.ToolbarHandler({
               mainHandler: true,
               payloadMainHandler: {
                 type: props.settingsHandler,
-                value: event.target.value
+                value: value
               },
               keepDetailsWnd: true
             })

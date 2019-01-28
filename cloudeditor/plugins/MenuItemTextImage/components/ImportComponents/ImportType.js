@@ -1,5 +1,5 @@
 const React = require("react");
-const Backdrop = require("./Backdrop");
+const Backdrop = require("../../../../core/components/Backdrop/Backdrop");
 const ImportModal = require("./ImportModal");
 require("./ImportType.css");
 const { withNamespaces } = require("react-i18next");

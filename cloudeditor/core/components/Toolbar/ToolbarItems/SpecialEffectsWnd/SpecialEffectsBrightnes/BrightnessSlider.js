@@ -1,5 +1,6 @@
 const React = require("react");
 const { withState, withHandlers, compose } = require("recompose");
+const Slider = require("rc-slider").default;
 
 const BrightnessSlider = props => {
   let slValue = props.sliderValue;
@@ -13,14 +14,13 @@ const BrightnessSlider = props => {
         <span className="Title">{props.text}</span>
       </div>
       <div className="RightContainer">
-        <input
+        <Slider
           className="Slider"
-          type="range"
           defaultValue={props.startValue}
-          onChange={event => props.handleSlider(event.target.value)}
-          min="-100"
-          max="100"
-          step="1"
+          min={-100}
+          max={100}
+          step={1}
+          onChange={value => props.handleSlider(value)}
         />
         <span className="SliderValue">{slValue}</span>
       </div>

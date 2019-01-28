@@ -155,6 +155,7 @@
   z-index: -1;
   background-color: #1b2939;
   padding: 5px 0 5px 0px;
+  overflow: visible;
 }
 
 #sidebar-wrapper-container .paneHidden {
@@ -205,6 +206,8 @@
   outline: none;
   color: black;
   margin-top: 5px;
+  right: -13px;
+  position: absolute;
 }
 
 .backButtonContainer button:hover {
@@ -299,7 +302,7 @@
 
 #sidebar-wrapper-container .sidebarButton {
   padding: 6px;
-  height: 70px;
+  height: 60px;
 }
 
 .rightTriangle:before {
@@ -386,4 +389,9 @@
 
 #sidebar-wrapper-container > ul {
   overflow: auto;
+}
+
+#sidebar-wrapper-container .paneContainer.paneHidden button {
+  right: 0px;
+  display: none;
 }

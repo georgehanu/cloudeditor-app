@@ -71,10 +71,18 @@ const includeBoxesSelector = state => {
     state
   );
 };
-const useMagneticSelector = state => {
+const allowSafeCutSelector = state => {
   return pathOr(
     false,
-    ["project", "configs", "document", "useMagentic"],
+    ["project", "configs", "document", "allowSafeCut"],
+    state
+  );
+};
+
+const allowLayoutColumnsSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "allowLayoutColumns"],
     state
   );
 };
@@ -97,7 +105,7 @@ const footerConfigSelector = state => {
 
 /* Start Pages Config Selectors */
 const pagesDefaultConfigSelector = state => {
-  return pathOr(false, ["project", "configs", "pages", "default"], state);
+  return pathOr(false, ["project", "configs", "pages"], state);
 };
 const trimboxPagesConfigSelector = state => {
   return pathOr(
@@ -113,8 +121,11 @@ const bleedPagesConfigSelector = state => {
     state
   );
 };
-const tolerancePagesConfigSelector = state => {
-  return pathOr(0, ["project", "configs", "pages", "tolerance"], state);
+const safeCutPagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "safeCut"], state);
+};
+const columnsNoPagesConfigSelector = state => {
+  return pathOr(0, ["project", "configs", "pages", "columnsNo"], state);
 };
 const blockActionsPagesConfigSelector = state => {
   return pathOr({}, ["project", "configs", "pages", "blockActions"], state);
@@ -305,6 +316,64 @@ const selectedObjectSelector = createSelector(
   }
 );
 
+const projDescriptionSelector = state =>
+  pathOr("Project description", ["project", "description"], state);
+
+const projProjectIdSelector = state =>
+  pathOr(null, ["project", "projectId"], state);
+
+const projSaveLoadingSelector = state =>
+  pathOr(false, ["project", "save", "loading"], state);
+
+const projSaveErrorMessageSelector = state =>
+  pathOr(null, ["project", "save", "errorMessage"], state);
+
+const projLoadLoadingSelector = state =>
+  pathOr(false, ["project", "load", "loading"], state);
+
+const projLoadErrorMessageSelector = state =>
+  pathOr(null, ["project", "load", "errorMessage"], state);
+
+const projLoadLoadedProjectsSelector = state =>
+  pathOr(null, ["project", "load", "loadedProjects"], state);
+
+const projLoadLoadingDeleteSelector = state =>
+  pathOr(false, ["project", "load", "loadingDelete"], state);
+
+const projLoadErrorMessageDeleteSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageDelete"], state);
+
+const projLoadLoadingProjectSelector = state =>
+  pathOr(false, ["project", "load", "loadingProject"], state);
+
+const projLoadErrorMessageProjectSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageProject"], state);
+
+const activePageWithObjectsSelector = createSelector(
+  [objectsSelector, pagesSelector, activePageIdSelector],
+  (objects, pages, activePageId) => {
+    const pageWithObjects = {
+      page: pages[activePageId],
+      objects: pick(pages[activePageId].objectsIds, objects)
+    };
+
+    return pageWithObjects;
+  }
+);
+const pageColumnsNoSelector = createSelector(
+  activePageIdSelector,
+  pagesSelector,
+  columnsNoPagesConfigSelector,
+  allowLayoutColumnsSelector,
+  (pageId, pagesData, defaultVal, allowColumns) => {
+    if (allowColumns) {
+      const columnsNo = pathOr(defaultVal, [pageId, "columnsNo"], pagesData);
+      return columnsNo;
+    }
+    return 0;
+  }
+);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -324,16 +393,32 @@ module.exports = {
   groupSizeSelector,
   predefinedGroupsSelector,
   includeBoxesSelector,
-  useMagneticSelector,
+  allowSafeCutSelector,
+  allowLayoutColumnsSelector,
   showTrimboxSelector,
   headerConfigSelector,
   footerConfigSelector,
   pagesDefaultConfigSelector,
   trimboxPagesConfigSelector,
   bleedPagesConfigSelector,
-  tolerancePagesConfigSelector,
+  safeCutPagesConfigSelector,
+  columnsNoPagesConfigSelector,
   objectsDefaultConfigSelector,
   titleSelector,
   blockActionsPagesConfigSelector,
-  deletePagePagesConfigSelector
+  deletePagePagesConfigSelector,
+  projDescriptionSelector,
+  projProjectIdSelector,
+  projSaveLoadingSelector,
+  projSaveErrorMessageSelector,
+  projLoadLoadingSelector,
+  projLoadErrorMessageSelector,
+  projLoadLoadedProjectsSelector,
+  projLoadLoadingDeleteSelector,
+  projLoadErrorMessageDeleteSelector,
+  projLoadLoadingProjectSelector,
+  projLoadErrorMessageProjectSelector,
+  activePageWithObjectsSelector,
+
+  pageColumnsNoSelector
 };

@@ -1,4 +1,5 @@
 const React = require("react");
+const Slider = require("rc-slider").default;
 
 const ColorBorderWidth = props => {
   return (
@@ -7,19 +8,18 @@ const ColorBorderWidth = props => {
         <span className={props.className} />
       </div>
       <div className="ColorBorderWidthRight">
-        <input
+        <Slider
           className="ColorBorderWidthSlider"
-          type="range"
           defaultValue={props.defaultValue}
-          min="0"
-          max="10"
-          step="1"
-          onChange={event =>
+          min={0}
+          max={10}
+          step={1}
+          onChange={value =>
             props.selectWidth({
               mainHandler: true,
               payloadMainHandler: {
                 type: props.type,
-                value: parseFloat(event.target.value)
+                value: parseFloat(value)
               },
               keepDetailsWnd: true
             })

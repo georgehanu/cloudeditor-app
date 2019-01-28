@@ -12,23 +12,11 @@ const { compose } = require("redux");
 const emptyTable = getEmptyObject({
   type: "tinymceTable",
   subType: "tinymceTable",
-  width: 200,
-  height: 200,
-  left: 200,
-  top: 200
+  width: null,
+  height: null,
+  left: 17,
+  top: 17
 });
-
-const tableStyle = {
-  //width: "calc(100% - 4px)",
-  width: "100%",
-  borderSpacing: "0",
-  color: "black"
-};
-
-const tbodyStyle = {
-  fontFamily: "Arial",
-  fontSize: "12pt"
-};
 
 const withProductionHoc = (WrappedComponent, TableName) => props => {
   const WithProduction = class extends React.Component {
@@ -38,7 +26,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
     handleClick = () => {
       let tableContent = document
         .getElementById(this.state.tabelId)
-        .innerHTML.replace(new RegExp("px", "g"), "pt");
+        .innerHTML.replace(new RegExp("pt", "g"), "px");
 
       const tableDimensions = document
         .getElementById(this.state.tabelId)
@@ -50,9 +38,10 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
         ...emptyTable,
         tableContent: tableContent,
         id: uuidv4(),
-        //width: tableDimensions.width + 4,
-        width,
-        height: tableDimensions.height
+        width: null,
+        height: null,
+        tableWidth: null,
+        tableHeight: null
       });
     };
     render() {
@@ -63,11 +52,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
             <div>
               <ToggleTable TableName={TableName}>
                 <div id={this.state.tabelId} className="ContainerTable">
-                  <table style={{ ...tableStyle }}>
-                    <tbody style={{ ...tbodyStyle }}>
-                      <WrappedComponent {...props} />
-                    </tbody>
-                  </table>
+                  <WrappedComponent {...props} />
                 </div>
               </ToggleTable>
             </div>

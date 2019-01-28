@@ -88,3 +88,7 @@
 .helperLinesLayout .submenuPoptextContainer {
   margin-top: 2px;
 }
+
+.sidebarContainerExpand .helperLinesContainer {
+  padding-left: 500px;
+}

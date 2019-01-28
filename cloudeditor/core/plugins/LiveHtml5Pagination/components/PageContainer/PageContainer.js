@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { compose } = require("redux");
 const { connect } = require("react-redux");
 const { DragSource, DropTarget } = require("react-dnd");
+const isEqual = require("react-fast-compare");
 const PAGES = "PAGES";
 
 const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
@@ -13,9 +14,14 @@ const {
 } = require("../../../../rewrites/reselect/createSelector");
 const {
   displayedPageSelector,
-  displayedPageLabelsSelector
+  displayedPageLabelsSelector,
+  displayedPagesLabelsSelector
 } = require("../../../../stores/selectors/Html5Renderer");
-const { computeZoomScale } = require("../../../../utils/UtilUtils");
+const {
+  computeZoomScale,
+  isVisible,
+  checkChangedProps
+} = require("../../../../utils/UtilUtils");
 require("./PageContainer.css");
 const Canvas = require("../../../../components/Renderer/Html5/Canvas/Canvas");
 const {
@@ -29,11 +35,11 @@ const PageSource = {
     return {
       type: PAGES,
       page_id: props.page_id,
-      draggable: props.activePage.lockPosition || true
+      draggable: !props.activePage.lockPosition || true
     };
   },
   canDrag(props, monitor) {
-    if (props.activePage.lockPosition === false) {
+    if (!props.activePage.lockPosition === false) {
       return false;
     }
     return true;
@@ -47,7 +53,7 @@ const PageTarget = {
   },
 
   canDrop(props, monitor) {
-    if (props.activePage.lockPosition === false) {
+    if (!props.activePage.lockPosition === false) {
       return false;
     }
     return true;
@@ -55,7 +61,7 @@ const PageTarget = {
   hover(props, monitor) {
     if (
       props.page_id === monitor.getItem().page_id ||
-      props.activePage.lockPosition === false
+      !props.activePage.lockPosition === false
     ) {
       props.highlightHoverPage(null);
     } else {
@@ -78,17 +84,23 @@ collectDrop = (connect, monitor) => {
   };
 };
 
-class PageContainer extends React.PureComponent {
+class PageContainer extends React.Component {
   constructor(props) {
     super(props);
     this.containerRef = null;
     this.canvasRef = null;
+    this.pageContainerRef = null;
     this.state = {
       zoomScale: 1,
       containerWidth: 0,
       containerHeight: 0,
-      pageReady: false
+      pageReady: false,
+      isVisible: 0
     };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !(isEqual(nextProps, this.props) && isEqual(nextState, this.state));
   }
 
   getContainerReference = ref => {
@@ -102,18 +114,20 @@ class PageContainer extends React.PureComponent {
       const activePageRaport =
         this.props.activePage.height / this.props.activePage.width;
       const parent = {
-        width: this.containerRef.offsetHeight * activePageRaport,
+        width: this.containerRef.offsetHeight / activePageRaport,
         height: this.containerRef.offsetHeight
       };
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
       };
+
       this.setState({
         zoomScale: computeZoomScale(1, parent, child),
         containerWidth: parent.width,
         containerHeight: parent.height,
-        pageReady: true
+        pageReady: true,
+        isVisible: false
       });
     }
   };
@@ -123,6 +137,7 @@ class PageContainer extends React.PureComponent {
   }
   componentDidUpdate() {
     this.updateContainerDimensions();
+    this.setState({ isVisible: isVisible(this.pageContainerRef) });
   }
   clickHandler = () => {
     if (this.props.activePage.selectable) {
@@ -137,9 +152,10 @@ class PageContainer extends React.PureComponent {
       this.props.onDeletePage({ page_id });
     }
   };
+
   render() {
+    //console.log("renderlive renderPageContainer");
     const { classes } = this.props;
-    // if (mode === "minimized") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let { zoomScale } = this.state;
     let style = {};
@@ -162,7 +178,12 @@ class PageContainer extends React.PureComponent {
 
     return this.props.connectDropTarget(
       this.props.connectDragSource(
-        <div className={classes} style={style} onClick={this.clickHandler}>
+        <div
+          className={classes}
+          style={style}
+          onClick={this.clickHandler}
+          ref={el => (this.pageContainerRef = el)}
+        >
           <a
             onClick={event => {
               this.onDeletePageHandler(event);
@@ -176,14 +197,17 @@ class PageContainer extends React.PureComponent {
             x
           </a>
           <Canvas
+            visible={this.state.isVisible}
             containerUuid={this.props.uuid}
             getCanvasRef={this.getCanvasReference}
+            page_id={this.props.page_id}
             getContainerRef={this.getContainerReference}
             activePage={this.props.activePage}
             viewOnly={1}
             zoomScale={zoomScale}
             containerWidth={containerWidth}
             containerHeight={containerHeight}
+            labels={this.props.labels}
             pageReady={pageReady}
           />
           <div className="singlePageText">
@@ -215,8 +239,8 @@ const makeMapStateToProps = (state, props) => {
     return props.includeBoxes;
   };
 
-  const useMagneticSelector = (_, props) => {
-    return props.useMagentic;
+  const allowSafeCutSelector = (_, props) => {
+    return props.allowSafeCut;
   };
 
   const getDisplayedPageSelector = displayedPageSelector(
@@ -224,7 +248,7 @@ const makeMapStateToProps = (state, props) => {
     groupSelector,
     activePage,
     includeBoxesSelector,
-    useMagneticSelector
+    allowSafeCutSelector
   );
   const getDisplayedPageLabelsSelector = displayedPageLabelsSelector(
     activePage
@@ -233,7 +257,8 @@ const makeMapStateToProps = (state, props) => {
   const mapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
-      pageLabels: getDisplayedPageLabelsSelector(state, props)
+      pageLabels: getDisplayedPageLabelsSelector(state, props),
+      labels: displayedPagesLabelsSelector(state, props)
     };
   };
   return mapStateToProps;

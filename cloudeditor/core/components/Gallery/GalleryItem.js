@@ -2,10 +2,12 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DragSource } = require("react-dnd");
+const uuidv4 = require("uuid/v4");
 const type = "image";
 const PageSource = {
   beginDrag(props) {
     return {
+      id: uuidv4(),
       type: type,
       subType: props.type,
       image_src: props.image_src,
@@ -36,16 +38,16 @@ const galleryItem = props => {
         src={props.thumbnail_src}
         alt="galleryItem"
         className="uploadGalleryItemImage"
-        onClick={() => props.selectImage(props.id)}
+        /*onClick={() => props.selectImage(props.id)}*/
       />
       <div className="galleryItemActions">
         <span
           className="select icon printqicon-ok"
-          onClick={() => props.selectImage(props.id)}
+          /*onClick={() => props.selectImage(props.id)}*/
         />
         <span
           className="delete icon printqicon-delete"
-          onClick={() => props.deleteAsset({ id: props.id })}
+          onClick={() => props.deleteAsset(props.id)}
         />
       </div>
     </div>

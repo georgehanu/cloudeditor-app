@@ -1,93 +1,88 @@
 .addPagesModal {
-  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   width: 600px;
-  height: 330px;
-  position: absolute;
+  height: 280px;
   z-index: 101;
-  background-color: white;
   color: #58595b;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 1001;
+  position: absolute;
+  margin: 0px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 16px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  padding: 0px;
+  -webkit-box-shadow: black 0px 0px 14px;
+  box-shadow: black 0px 0px 14px;
+  display: inline-block;
+  box-shadow: black 0px 0px 14px;
+  background: whitesmoke;
 }
 
 .addPagesHeader {
-  padding: 15px;
-  height: 50px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 22px;
+  padding: 12px 20px;
+  color: #666666;
+  text-shadow: none;
   border-bottom: 1px solid #dcdee1;
-  font-size: 20px;
-  color: #58595b;
 }
-/* 
-.addPagesModal .closeMenu {
-  position: absolute;
-  right: 32px;
-  top: 10px;
-  width: 32px;
-  height: 32px;
-  opacity: 0.3;
-}
-.addPagesModal .closeMenu:hover {
-  opacity: 1;
-}
-.addPagesModal .closeMenu:before,
-.addPagesModal .closeMenu:after {
-  position: absolute;
-  left: 15px;
-  content: " ";
-  height: 33px;
-  width: 2px;
-  background-color: #333;
-}
-.addPagesModal .closeMenu:before {
-  transform: rotate(45deg);
-}
-.addPagesModal .closeMenu:after {
-  transform: rotate(-45deg);
-} */
 
 .addPagesFooter {
   margin-top: 0;
   padding-top: 16px;
   padding-right: 16px;
   padding-bottom: 16px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  background-color: #f9fafc;
-  border-top: 1px solid #dcdee1;
-  text-align: right;
+  text-align: center;
   height: 36px;
 }
 
 .addPagesFooter button {
-  display: inline-block;
-  padding: 0 20px;
-  font-weight: 400;
-  font-size: 12px;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  outline: 0;
-  line-height: 36px;
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
   text-decoration: none;
-  border-radius: 4px;
-  text-transform: uppercase;
+  border-radius: 0;
+  white-space: nowrap;
+  width: 150px;
+  display: inline-block;
   border: 0;
+  background: #666666;
+  padding: 0 5px;
+  font-weight: normal;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
   color: #fff;
-  background-color: #f05323;
+  line-height: 38px;
+  border-radius: 0px;
+  /* float: left; */
+  outline: none;
+  margin-left: 11px;
+  margin-right: 11px;
+  cursor: pointer;
 }
 
 .addPagesBody {
-  height: 200px;
-  padding-top: 15px;
-  padding-left: 15px;
+  height: 140px;
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: left;
 }
 
-.addPagesNumber {
-  padding-left: 20px;
-}
 .addPagesNumberInput {
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
   border: 1px solid #666;
@@ -111,8 +106,11 @@
 }
 
 .addPagesLocationRow {
-  height: 32px;
-  padding-left: 15px;
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  padding: 5px 0px;
+  height: 30px;
 }
 
 .addPagesLocation {
@@ -122,4 +120,53 @@
 .addPagesLocationRow span,
 .addPagesLocationRow input {
   vertical-align: middle;
+}
+
+.addPagesModal .closeMenu {
+  right: 20px;
+}
+
+.addPagesBody {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+
+  vertical-align: middle;
+  color: #777;
+}
+
+.addPagesBody .itemLabel {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  padding-left: 17px;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+  vertical-align: middle;
+  color: #777;
+  outline: none;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.addPagesBody
+  input.importTextItemRadio[type="radio"]:checked
+  + label.itemLabel:before {
+  content: "\2022";
+  color: #666666;
+  font-size: 30px;
+  text-align: center;
+  line-height: 14px;
+  left: 7px;
+  position: absolute;
+  top: 10px;
+}
+
+.addPagesBody .importTextItemRadio {
+  cursor: pointer;
 }

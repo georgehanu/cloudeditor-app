@@ -1,38 +1,90 @@
 const React = require("react");
 const { connect } = require("react-redux");
+const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
+const LayoutContainer = require("./components/LayoutsContainer");
+const { activePageIdSelector } = require("../../core/stores/selectors/project");
+const {
+  assetsLayoutLoadingSelector
+} = require("../../core/stores/selectors/assets");
 
-const TYPE = "layout";
+const { assetsLayoutStart } = require("../../core/stores/actions/assets");
+const { pagesOrderSelector } = require("../../core/stores/selectors/project");
+const { projLoadLayout } = require("../../core/stores/actions/project");
+const { assetsLayoutSelector } = require("../../core/stores/selectors/assets");
 
-const Gallery = require("../../core/components/Gallery/Gallery");
+const SweetAlert = require("sweetalert-react").default;
+
 require("./Layouts.css");
 
 class Layouts extends React.Component {
+  state = {
+    activePageId: null,
+    showAlert: false,
+    saText: "",
+    layoutId: null
+  };
+
+  componentDidMount() {
+    this.props.assetsLayoutStart();
+  }
+
+  selectImageHandler = layoutId => {
+    this.setState({ showAlert: true, layoutId });
+  };
+
+  loadLayout = () => {
+    this.setState({ showAlert: false });
+    const layout = this.props.assetsLayout.findIndex(el => {
+      return el.id === this.state.layoutId;
+    });
+    this.props.projLoadLayout(this.props.assetsLayout[layout]);
+  };
+
   render() {
     return (
-      <div className="LayoutsContainer">
-        <Gallery
-          type={TYPE}
-          hideActions={true}
-          addContainerClasses={this.props.addContainerClasses}
+      <React.Fragment>
+        <SweetAlert
+          show={this.state.showAlert}
+          type="warning"
+          title={this.props.t("Warning")}
+          text={this.props.t(
+            "Are you sure you want to load this layout ?\nAll changes for this page will be overwritten."
+          )}
+          showCancelButton={true}
+          onConfirm={() => this.loadLayout()}
+          onCancel={() => this.setState({ showAlert: false })}
         />
-      </div>
+        <LayoutContainer
+          addContainerClasses={this.props.addContainerClasses}
+          loading={this.props.loading}
+          selectImage={this.selectImageHandler}
+        />
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    activePageId: activePageIdSelector(state),
+    pagesOrder: pagesOrderSelector(state),
+    loading: assetsLayoutLoadingSelector(state),
+    assetsLayout: assetsLayoutSelector(state)
+  };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    assetsLayoutStart: () => dispatch(assetsLayoutStart()),
+    projLoadLayout: layout => dispatch(projLoadLayout(layout))
+  };
 };
 
 const LayoutsPlugin = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Layouts);
+)(withNamespaces("layouts")(Layouts));
 
 module.exports = {
   Layouts: assign(LayoutsPlugin, {

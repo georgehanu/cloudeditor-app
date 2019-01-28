@@ -10,7 +10,8 @@ const axios = require("../axios");
 const {
   teamCompetitionSelector,
   teamSelector,
-  currentTeamSelector
+  currentTeamSelector,
+  currentClubSelector
 } = require("./selectors");
 
 module.exports = {
@@ -51,7 +52,7 @@ module.exports = {
             .get("/teams", {
               params: {
                 club: payload,
-                additionalFields: "competition,currentRank"
+                additionalFields: "competition"
               }
             })
             .then(res => res.data)
@@ -96,51 +97,26 @@ module.exports = {
     action$.pipe(
       ofType(actionTypes.CHANGE_CURRENT_TEAM),
       switchMap(action => {
+        const club = currentClubSelector(store.value);
         const competition = teamCompetitionSelector(store.value);
         const team = teamSelector(store.value);
-        // we need to make 2 calls - one for the previous games, one for the next games
+        const teamSlug = team.ageGroup.slug + team.level;
+
         return Rx.from(
           axios
             .get("/matches", {
               params: {
-                club: team.clubSlug,
+                club: club,
                 competition: competition,
-                section: "PRE",
-                limit: 6
+                team: teamSlug,
+                limit: 0
               }
             })
             .then(res => res.data)
         ).pipe(
           switchMap(data => {
             if (data.errors === false) {
-              return Rx.from(
-                axios
-                  .get("/matches", {
-                    params: {
-                      club: team.clubSlug,
-                      competition: competition,
-                      section: "POST,LIVE",
-                      sort: "-kickoff",
-                      limit: 6
-                    }
-                  })
-                  .then(res => res.data)
-              ).pipe(
-                switchMap(postData => {
-                  if (postData.errors === false) {
-                    return Rx.of(
-                      actions.fetchTeamMatchesFulfilled([
-                        ...postData.data.reverse(),
-                        ...data.data
-                      ])
-                    );
-                  }
-                  return Rx.of(actions.fetchTeamMatchesFailed());
-                }),
-                catchError(error => {
-                  return Rx.of(actions.fetchTeamMatchesFailed());
-                })
-              );
+              return Rx.of(actions.fetchTeamMatchesFulfilled(data.data));
             }
             return Rx.of(actions.fetchTeamMatchesFailed());
           }),
@@ -154,12 +130,17 @@ module.exports = {
     action$.pipe(
       ofType(actionTypes.CHANGE_CURRENT_TEAM),
       switchMap(action => {
-        const team = currentTeamSelector(store.value);
+        const club = currentClubSelector(store.value);
+        const team = teamSelector(store.value);
+        const teamSlug = team.ageGroup.slug + team.level;
         return Rx.from(
           axios
-            .get("/players", {
+            .get("/teamPlayers", {
               params: {
-                team: team
+                team: teamSlug,
+                club: club,
+                role: "player",
+                orderBy: "-playerRole.total.matches"
               }
             })
             .then(res => res.data)

@@ -1,6 +1,6 @@
 const React = require("react");
 const { Provider } = require("react-redux");
-const PluginsContainer = require("./PluginsContainer");
+const StoreWrapper = require("./StoreWrapper");
 const { hot } = require("react-hot-loader");
 
 const { DragDropContextProvider } = require("react-dnd");
@@ -8,10 +8,11 @@ const HTML5Backend = require("react-dnd-html5-backend");
 
 class Editor extends React.Component {
   render() {
+    //console.log("editor");
     return (
       <Provider store={this.props.store}>
         <DragDropContextProvider backend={HTML5Backend}>
-          <PluginsContainer
+          <StoreWrapper
             mode="desktop"
             plugins={this.props.plugins}
             pluginsConfig={this.props.pluginsConfig}
@@ -25,4 +26,4 @@ class Editor extends React.Component {
   }
 }
 
-module.exports = hot(module)(Editor);
+module.exports = Editor;
