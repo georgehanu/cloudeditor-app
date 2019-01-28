@@ -114,7 +114,7 @@ class PageContainer extends React.Component {
       const activePageRaport =
         this.props.activePage.height / this.props.activePage.width;
       const parent = {
-        width: this.containerRef.offsetHeight * activePageRaport,
+        width: this.containerRef.offsetHeight / activePageRaport,
         height: this.containerRef.offsetHeight
       };
       const child = {
