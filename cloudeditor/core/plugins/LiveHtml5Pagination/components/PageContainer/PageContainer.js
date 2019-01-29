@@ -87,14 +87,14 @@ collectDrop = (connect, monitor) => {
   };
 };
 setMissingImages = id => {
-  const missingImages = this.state.missingImages;
+  let missingImages = [...this.state.missingImages];
   if (indexOf(id, missingImages) == -1) {
     missingImages.push(id);
     this.setState({ missingImages });
   }
 };
 deleteMissingImages = id => {
-  const missingImages = this.state.missingImages;
+  let missingImages = [...this.state.missingImages];
   if (indexOf(id, missingImages) != -1) {
     missingImages = without(id, missingImages);
     this.setState({ missingImages });
