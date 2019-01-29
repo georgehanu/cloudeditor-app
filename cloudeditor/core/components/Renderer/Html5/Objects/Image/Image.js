@@ -7,10 +7,11 @@ const type = ["image"];
 const ImageTarget = {
   drop(props, monitor, component) {
     if (monitor.isOver()) {
+      const { id, ...otherProps } = monitor.getItem();
       props.onUpdateProps({
         id: props.id,
         props: {
-          ...monitor.getItem(),
+          ...otherProps,
           cropW: 0,
           cropX: 0,
           cropY: 0,
@@ -46,6 +47,15 @@ class ImageBlock extends React.PureComponent {
   componentDidMount() {
     this.setState({ ready: true });
   }
+  componentDidUpdate = () => {
+    if (this.props.viewOnly) {
+      if (this.props.missingImage) {
+        this.props.setMissingImages(this.props.id);
+      } else {
+        this.props.deleteMissingImages(this.props.id);
+      }
+    }
+  };
   render() {
     const { key, width, height, top, left, ...otherProps } = this.props;
     const style = {
@@ -79,6 +89,7 @@ class ImageBlock extends React.PureComponent {
           flip={this.props.flip}
           contrast={this.props.contrast}
           brightness={this.props.brightness}
+          renderId={this.props.renderId}
           workingPercent={this.props.workingPercent}
           onUpdatePropsHandler={this.props.onUpdateProps}
           onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}

@@ -130,7 +130,8 @@ class LiveHtml5Pagination extends React.Component {
     this.setState({ size: newSize });
   }
   showAddPages = () => {
-    this.setState({ showAddPages: true });
+    const currentPage = this.props.pages[this.props.activePageId];
+    if (!currentPage.lockPosition) this.setState({ showAddPages: true });
   };
   hideAddPages = () => {
     this.setState({ showAddPages: false });
@@ -242,7 +243,8 @@ const mapStateToProps = state => {
     groups: getGroupsSelector(state),
     pagesOrder: pagesOrderSelector(state),
     activePageId: activePageIdSelector(state),
-    groupSize: groupSizeSelector(state)
+    groupSize: groupSizeSelector(state),
+    pages: state.project.pages
   };
 };
 const mapDispatchToProps = dispatch => {

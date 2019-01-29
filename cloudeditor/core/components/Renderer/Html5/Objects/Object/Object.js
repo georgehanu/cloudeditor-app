@@ -26,6 +26,7 @@ const {
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
+const { permissionsSelector } = require("../../../../../stores/selectors/ui");
 require("./Object.css");
 
 const TextBlock = require("../Text/Text");
@@ -62,6 +63,14 @@ class ObjectBlock extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     const list = [];
+    if (nextProps.viewOnly) {
+      console.log(
+        "text ",
+        nextProps.uuid,
+        nextProps.deleteMissingImages,
+        nextProps.viewOnly
+      );
+    }
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
     if (equals(nProps, cProps)) {
@@ -100,6 +109,7 @@ class ObjectBlock extends React.Component {
       id: props.id,
       active: props.active,
       width: props.width,
+      height: props.height,
       maxWidth: props.width,
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
@@ -109,7 +119,10 @@ class ObjectBlock extends React.Component {
       bold: props.bold,
       italic: props.italic,
       type: props.type,
-      value: props.value,
+      value:
+        props.isPageNrBlock && !props.value.length
+          ? props.labelPage.longLabel
+          : props.value,
       fillColor: props.fillColor.htmlRGB,
       bgColor: props.bgColor.htmlRGB,
       borderColor: props.borderColor.htmlRGB,
@@ -117,6 +130,8 @@ class ObjectBlock extends React.Component {
       onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       onTextChange: props.onTextChange,
       editableRef: this.getEditableReference,
+      zoomScale: this.props.zoomScale,
+      renderId: this.props.renderId,
       contentEditable
     };
     const block = <TextBlock {...textProps} />;
@@ -145,11 +160,15 @@ class ObjectBlock extends React.Component {
       image_src: props.image_src,
       leftSlider: props.leftSlider,
       initialRestore: props.initialRestore,
-      alternateZoom: props.alternate_zoom,
+      alternateZoom: props.alternateZoom,
       resizing: props.resizing,
       zoomScale: this.props.zoomScale,
       workingPercent: this.props.workingPercent,
       brightness: this.props.brightness,
+      renderId: this.props.renderId,
+      deleteMissingImages: this.props.deleteMissingImages,
+      setMissingImages: this.props.setMissingImages,
+      missingImage: this.props.missingImage,
       contrast: this.props.contrast
     };
 
@@ -238,15 +257,7 @@ class ObjectBlock extends React.Component {
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-    const styleBorderColor = {
-      width: width + parseFloat(borderWidth),
-      height: height + parseFloat(borderWidth),
-      borderColor:
-        subType !== "tinymceTable" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-      borderWidth: subType !== "tinymceTable" ? parseFloat(borderWidth) : "",
-      top: (-1 * parseFloat(borderWidth)) / 2,
-      left: (-1 * parseFloat(borderWidth)) / 2
-    };
+
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
@@ -289,7 +300,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        <div className={"blockBorder"} style={styleBorderColor} />
+        {/* <div className={"blockBorder"} style={styleBorderColor} /> */}
         <u style={{ width, height }} />
 
         {rotatableHandle}
@@ -374,6 +385,8 @@ class ObjectBlock extends React.Component {
         offsetLeft,
         offsetTop,
         mirrored,
+        deleteMissingImages: props.deleteMissingImages,
+        setMissingImages: props.setMissingImages,
         parent: {
           ...innerBlock.props.parent,
           width: props.width,
@@ -397,7 +410,9 @@ class ObjectBlock extends React.Component {
     let element = null;
 
     //console.log("renderElement", this.props.id);
-
+    if (this.props.viewOnly) {
+      console.log("apo", this.props.deleteMissingImages);
+    }
     switch (this.props.subType) {
       case "textflow":
       case "text":
@@ -471,7 +486,11 @@ const mapStateToProps = (state, props) => {
     }
   );
 
-  return { ...scaledObject, active: getActivePropSelector(state, props) };
+  return {
+    ...scaledObject,
+    active: getActivePropSelector(state, props),
+    permissions: permissionsSelector(state, props)
+  };
 };
 
 const mapDispatchToProps = dispatch => {

@@ -3,7 +3,13 @@ const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ReactDOM = require("react-dom");
-const { forEachObjIndexed, includes, concat } = require("ramda");
+const {
+  forEachObjIndexed,
+  includes,
+  concat,
+  without,
+  indexOf
+} = require("ramda");
 const now = require("performance-now");
 
 const type = ["image", "text"];
@@ -237,14 +243,16 @@ class Page extends React.Component {
         return acc;
       }, objectsOffset);
     }, innerPages);
-
     return (
       <Objects
         objects={objectsOffset}
         zoomScale={zoomScale}
+        labelPage={this.props.labels[this.props.activePage.page_id]}
         snapTolerance={activePage.snapTolerance}
         middle={{ left: width / 2, top: height / 2 }}
         checkErrorMessages={this.checkErrorMessages}
+        setMissingImages={this.props.setMissingImages}
+        deleteMissingImages={this.props.deleteMissingImages}
         viewOnly={viewOnly}
       />
     );
@@ -309,26 +317,29 @@ class Page extends React.Component {
           />
         </React.Fragment>
       );
-      const classes = "snapLine boxLine drag_alignLines middle_snap";
-      const topStyle = {
-        width: this.props.width,
-        left: 0,
-        top: this.props.height / 2,
-        height: 1
-      };
-      const leftStyle = {
-        width: 1,
-        left: this.props.width / 2,
-        top: 0,
-        height: this.props.height
-      };
+      ///this is middle snap
+      if (0) {
+        const classes = "snapLine boxLine drag_alignLines middle_snap";
+        const topStyle = {
+          width: this.props.width,
+          left: 0,
+          top: this.props.height / 2,
+          height: 1
+        };
+        const leftStyle = {
+          width: 1,
+          left: this.props.width / 2,
+          top: 0,
+          height: this.props.height
+        };
 
-      snapBoxes = (
-        <React.Fragment>
-          <Line {...topStyle} classes={classes + " horizontal"} />
-          <Line {...leftStyle} classes={classes + " vertical"} />
-        </React.Fragment>
-      );
+        snapBoxes = (
+          <React.Fragment>
+            <Line {...topStyle} classes={classes + " horizontal"} />
+            <Line {...leftStyle} classes={classes + " vertical"} />
+          </React.Fragment>
+        );
+      }
 
       const { innerPages, activePageId } = this.props;
 
@@ -360,7 +371,7 @@ class Page extends React.Component {
                 height: 1,
                 left: box["left"]
               };
-              const classes = "boxLine  ";
+              const classes = "boxLine  drag_alignLines columnsLine";
               return (
                 <React.Fragment key={box["key"]}>
                   <Line {...topStyle} classes={classes + " top"} />

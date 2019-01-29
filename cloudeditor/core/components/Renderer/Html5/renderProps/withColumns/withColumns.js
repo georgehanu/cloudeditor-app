@@ -1,12 +1,13 @@
 const React = require("react");
 const { connect } = require("react-redux");
-const { identity, memoizeWith } = require("ramda");
+const { identity, memoizeWith, values } = require("ramda");
 
 const {
   allowLayoutColumnsSelector,
   allowSafeCutSelector,
   headerConfigSelector,
-  footerConfigSelector
+  footerConfigSelector,
+  showTrimboxSelector
 } = require("../../../../../stores/selectors/project");
 class WithColumns extends React.Component {
   getBoxContainerFromPage() {
@@ -21,9 +22,10 @@ class WithColumns extends React.Component {
       footerConfig,
       page,
       zoomScale,
-      allowSafeCut
+      allowSafeCut,
+      allowTrimbox
     } = this.props;
-    const {
+    let {
       width,
       height,
       hasHeader,
@@ -41,13 +43,50 @@ class WithColumns extends React.Component {
     if (hasFooter) {
       footerHeight = footerConfig.height * 2.83465 * zoomScale;
     }
-
-    columnsContainer["top"] = headerHeight;
+    if (allowTrimbox) {
+      width =
+        width +
+        page["boxes"]["trimbox"]["left"] +
+        page["boxes"]["trimbox"]["right"];
+      height =
+        height +
+        page["boxes"]["trimbox"]["top"] +
+        page["boxes"]["trimbox"]["bottom"];
+    }
+    const safeCut =
+      Math.max(...values(page["boxes"]["trimbox"])) * 2 + page["safeCut"];
+    columnsContainer["top"] = 0;
+    columnsContainer["height"] = height;
     columnsContainer["bottom"] = height - footerHeight;
-    columnsContainer["height"] = height - headerHeight - footerHeight;
+    if (hasHeader) {
+      columnsContainer["top"] = headerHeight;
+      columnsContainer["height"] = columnsContainer["height"] - headerHeight;
+    } else {
+      if (allowSafeCut) {
+        columnsContainer["top"] = safeCut;
+        columnsContainer["height"] = height - safeCut;
+      } else {
+        columnsContainer["top"] = page["boxes"]["trimbox"]["top"];
+        columnsContainer["height"] = height - page["boxes"]["trimbox"]["top"];
+      }
+    }
+    if (hasFooter) {
+      columnsContainer["bottom"] = height - footerHeight;
+      columnsContainer["height"] = columnsContainer["height"] - footerHeight;
+    } else {
+      if (allowSafeCut) {
+        columnsContainer["bottom"] = height - safeCut;
+        columnsContainer["height"] = columnsContainer["height"] - safeCut;
+      } else {
+        columnsContainer["bottom"] =
+          height - page["boxes"]["trimbox"]["bottom"];
+        columnsContainer["height"] =
+          columnsContainer["height"] - page["boxes"]["trimbox"]["bottom"];
+      }
+    }
 
     if (allowSafeCut) {
-      leftMargin = page["boxes"]["trimbox"]["top"] * 2 + page["safeCut"];
+      leftMargin = safeCut;
       rightMargin = leftMargin;
     } else {
       leftMargin = page["boxes"]["trimbox"]["left"];
@@ -67,10 +106,11 @@ class WithColumns extends React.Component {
 
     let i;
 
+    let totalLeft = boxContainer["left"];
     for (i = 0; i < columnsNo; i++) {
       const top = boxContainer["top"];
-      const left =
-        boxContainer["left"] + i * boxWidth + columnSpacing * (i === 0 ? 0 : 1);
+      if (i > 0) totalLeft += boxWidth + columnSpacing * (i === 0 ? 0 : 1);
+      const left = totalLeft;
       const box = {
         top,
         left,
@@ -99,6 +139,7 @@ const mapStateToProps = state => {
   return {
     allowColumns: allowLayoutColumnsSelector(state),
     allowSafeCut: allowSafeCutSelector(state),
+    allowTrimbox: showTrimboxSelector(state),
     headerConfig: headerConfigSelector(state),
     footerConfig: footerConfigSelector(state)
   };

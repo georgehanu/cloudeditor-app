@@ -5,6 +5,8 @@ const { compose } = require("redux");
 const { connect } = require("react-redux");
 const { DragSource, DropTarget } = require("react-dnd");
 const isEqual = require("react-fast-compare");
+const uuidv4 = require("uuid/v4");
+const withTooltip = require("../../../../../core/hoc/withTooltip/withTooltip");
 const PAGES = "PAGES";
 
 const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
@@ -14,7 +16,8 @@ const {
 } = require("../../../../rewrites/reselect/createSelector");
 const {
   displayedPageSelector,
-  displayedPageLabelsSelector
+  displayedPageLabelsSelector,
+  displayedPagesLabelsSelector
 } = require("../../../../stores/selectors/Html5Renderer");
 const {
   computeZoomScale,
@@ -27,6 +30,7 @@ const {
   changePage,
   deletePage
 } = require("../../../../stores/actions/project");
+const { indexOf, without } = require("ramda");
 
 const PageSource = {
   beginDrag(props) {
@@ -34,11 +38,11 @@ const PageSource = {
     return {
       type: PAGES,
       page_id: props.page_id,
-      draggable: props.activePage.lockPosition || true
+      draggable: !props.activePage.lockPosition || true
     };
   },
   canDrag(props, monitor) {
-    if (props.activePage.lockPosition === false) {
+    if (!props.activePage.lockPosition === false) {
       return false;
     }
     return true;
@@ -52,7 +56,7 @@ const PageTarget = {
   },
 
   canDrop(props, monitor) {
-    if (props.activePage.lockPosition === false) {
+    if (!props.activePage.lockPosition === false) {
       return false;
     }
     return true;
@@ -60,7 +64,7 @@ const PageTarget = {
   hover(props, monitor) {
     if (
       props.page_id === monitor.getItem().page_id ||
-      props.activePage.lockPosition === false
+      !props.activePage.lockPosition === false
     ) {
       props.highlightHoverPage(null);
     } else {
@@ -82,7 +86,20 @@ collectDrop = (connect, monitor) => {
     isOver: monitor.isOver()
   };
 };
-
+setMissingImages = id => {
+  let missingImages = [...this.state.missingImages];
+  if (indexOf(id, missingImages) == -1) {
+    missingImages.push(id);
+    this.setState({ missingImages });
+  }
+};
+deleteMissingImages = id => {
+  let missingImages = [...this.state.missingImages];
+  if (indexOf(id, missingImages) != -1) {
+    missingImages = without(id, missingImages);
+    this.setState({ missingImages });
+  }
+};
 class PageContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -94,7 +111,8 @@ class PageContainer extends React.Component {
       containerWidth: 0,
       containerHeight: 0,
       pageReady: false,
-      isVisible: 0
+      isVisible: 0,
+      missingImages: []
     };
   }
 
@@ -113,7 +131,7 @@ class PageContainer extends React.Component {
       const activePageRaport =
         this.props.activePage.height / this.props.activePage.width;
       const parent = {
-        width: this.containerRef.offsetHeight * activePageRaport,
+        width: this.containerRef.offsetHeight / activePageRaport,
         height: this.containerRef.offsetHeight
       };
       const child = {
@@ -151,7 +169,20 @@ class PageContainer extends React.Component {
       this.props.onDeletePage({ page_id });
     }
   };
-
+  setMissingImages = id => {
+    const missingImages = [...this.state.missingImages];
+    if (indexOf(id, missingImages) == -1) {
+      missingImages.push(id);
+      this.setState({ missingImages });
+    }
+  };
+  deleteMissingImages = id => {
+    const missingImages = [...this.state.missingImages];
+    if (indexOf(id, missingImages) != -1) {
+      missingImages = without(id, missingImages);
+      this.setState({ missingImages });
+    }
+  };
   render() {
     //console.log("renderlive renderPageContainer");
     const { classes } = this.props;
@@ -174,10 +205,35 @@ class PageContainer extends React.Component {
       };
       zoomScale = computeZoomScale(1, parent, child);
     }
-
+    let warning = null;
+    if (this.state.missingImages.length) {
+      warning = (
+        <React.Fragment>
+          <div className={"warningContainer"}>
+            <div className="backgroundContainer" />
+            <span className={"warn warning"} />
+          </div>
+        </React.Fragment>
+      );
+    }
+    const id = this.props.id;
+    let tooltipData = {
+      "data-for": id,
+      "data-tip": false,
+      "data-tip-disable": true,
+      id
+    };
+    if (this.state.missingImages.length)
+      tooltipData = {
+        "data-for": id,
+        "data-tip": true,
+        "data-tip-disable": false,
+        id
+      };
     return this.props.connectDropTarget(
       this.props.connectDragSource(
         <div
+          {...tooltipData}
           className={classes}
           style={style}
           onClick={this.clickHandler}
@@ -195,16 +251,21 @@ class PageContainer extends React.Component {
           >
             x
           </a>
+          {warning}
           <Canvas
             visible={this.state.isVisible}
             containerUuid={this.props.uuid}
             getCanvasRef={this.getCanvasReference}
+            page_id={this.props.page_id}
             getContainerRef={this.getContainerReference}
             activePage={this.props.activePage}
             viewOnly={1}
             zoomScale={zoomScale}
             containerWidth={containerWidth}
             containerHeight={containerHeight}
+            setMissingImages={this.setMissingImages}
+            deleteMissingImages={this.deleteMissingImages}
+            labels={this.props.labels}
             pageReady={pageReady}
           />
           <div className="singlePageText">
@@ -254,7 +315,13 @@ const makeMapStateToProps = (state, props) => {
   const mapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
-      pageLabels: getDisplayedPageLabelsSelector(state, props)
+      pageLabels: getDisplayedPageLabelsSelector(state, props),
+      labels: displayedPagesLabelsSelector(state, props),
+      tooltip: {
+        title: "Missing Image",
+        description: "Some Images are missing "
+      },
+      id: props.page_id
     };
   };
   return mapStateToProps;
@@ -274,5 +341,5 @@ module.exports = hot(module)(
     ),
     DropTarget(PAGES, PageTarget, collectDrop),
     DragSource(PAGES, PageSource, collectDrag)
-  )(PageContainer)
+  )(withTooltip(PageContainer))
 );

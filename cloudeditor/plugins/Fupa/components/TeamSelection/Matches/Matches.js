@@ -42,6 +42,15 @@ const fupaImageWrapperPicture = {
 };
 
 const Matches = props => {
+  const tableStyle = {
+    borderSpacing: "0",
+    color: "black"
+  };
+
+  const tbodyStyle = {
+    fontFamily: "Arial",
+    fontSize: "12px"
+  };
   const matches = props.matches.map((el, index) => {
     let oponentTeam = null;
     let location = null;
@@ -155,7 +164,13 @@ const Matches = props => {
     );
   });
 
-  return <React.Fragment>{matches}</React.Fragment>;
+  return (
+    <React.Fragment>
+      <table style={{ ...tableStyle }}>
+        <tbody style={{ ...tbodyStyle }}>{matches}</tbody>
+      </table>
+    </React.Fragment>
+  );
 };
 
 module.exports = withSpinner(withProduction(Matches, "Matches"));

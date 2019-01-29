@@ -9,8 +9,6 @@ const fupaTdBase = {
   margin: "0",
   borderBottom: "none",
   textAlign: "center",
-  fontSize: "12px",
-  lineHeight: "12px",
   border: "none",
   fontFamily: "Arial"
 };
@@ -30,6 +28,15 @@ const fupaImageWrapperPicture = {
 };
 
 const Standings = props => {
+  const tableStyle = {
+    borderSpacing: "0",
+    color: "black"
+  };
+
+  const tbodyStyle = {
+    fontFamily: "Arial",
+    fontSize: "12px"
+  };
   const header = (
     <tr>
       <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
@@ -158,8 +165,12 @@ const Standings = props => {
 
   return (
     <React.Fragment>
-      {header}
-      {teams}
+      <table style={{ ...tableStyle }}>
+        <tbody style={{ ...tbodyStyle }}>
+          {header}
+          {teams}
+        </tbody>
+      </table>
     </React.Fragment>
   );
 };
