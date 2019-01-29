@@ -58,6 +58,7 @@ const teamSelection = props => {
       </div>
     </div>
   );
+
   return component;
 };
 

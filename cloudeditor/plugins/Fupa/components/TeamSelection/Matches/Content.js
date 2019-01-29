@@ -5,55 +5,7 @@ const withProduction = require("../../../hoc/withProduction");
 const withSpinner = require("../../../../../core/hoc/withSpinner/withSpinner");
 const Colors = require("../Utils/Colors");
 
-const WithMatchesProps = require("../../../renderProps/Matches/withMatchesProps");
-
-const scoreCard = {
-  color: "#212121",
-  fontSize: "14px",
-  position: "relative",
-  textAlign: "center",
-  width: "60px",
-  fontWeight: "normal !important",
-  backgroundColor: "#3bba27",
-  height: "24px"
-};
-
-const matchesWeekDay = [
-  "Match_Monday",
-  "Match_Tuesday",
-  "Match_Wednesday",
-  "Match_Thursday",
-  "Match_Friday",
-  "Match_Saturday",
-  "Match_Sunday"
-];
-
-const fupaTdBase = {
-  padding: "5px",
-  paddingRight: "2px",
-  margin: "0",
-  borderBottom: "1px solid #fff",
-  textAlign: "center",
-  border: "none"
-};
-
-const fupaImageWrapperPicture = {
-  objectFit: "contain",
-  height: "25px",
-  width: "25px",
-  marginLeft: "3px"
-};
-
-const Matches = props => {
-  const tableStyle = {
-    borderSpacing: "0",
-    color: "black"
-  };
-
-  const tbodyStyle = {
-    fontFamily: "Arial",
-    fontSize: "12px"
-  };
+const Content = props => {
   const matches = props.matches.map((el, index) => {
     let oponentTeam = null;
     let location = null;
@@ -167,26 +119,7 @@ const Matches = props => {
     );
   });
 
-  console.log(
-    "ReactDOMServer",
-    ReactDOMServer.renderToString(
-      <React.Fragment>
-        <table style={{ ...tableStyle }}>
-          <tbody style={{ ...tbodyStyle }}>{matches}</tbody>
-        </table>
-      </React.Fragment>
-    )
-  );
-
-  return (
-    <WithMatchesProps size="big">
-      {cfg => (
-        <table style={{ ...tableStyle }}>
-          <tbody style={{ ...tbodyStyle }}>{matches}</tbody>
-        </table>
-      )}
-    </WithMatchesProps>
-  );
+  return matches;
 };
 
 module.exports = withSpinner(

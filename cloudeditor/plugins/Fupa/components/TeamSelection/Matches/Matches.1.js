@@ -1,11 +1,10 @@
 const React = require("react");
 const ReactDOMServer = require("react-dom/server");
 const { withNamespaces } = require("react-i18next");
+require("./Matches.css");
 const withProduction = require("../../../hoc/withProduction");
 const withSpinner = require("../../../../../core/hoc/withSpinner/withSpinner");
 const Colors = require("../Utils/Colors");
-
-const WithMatchesProps = require("../../../renderProps/Matches/withMatchesProps");
 
 const scoreCard = {
   color: "#212121",
@@ -179,13 +178,11 @@ const Matches = props => {
   );
 
   return (
-    <WithMatchesProps size="big">
-      {cfg => (
-        <table style={{ ...tableStyle }}>
-          <tbody style={{ ...tbodyStyle }}>{matches}</tbody>
-        </table>
-      )}
-    </WithMatchesProps>
+    <React.Fragment>
+      <table style={{ ...tableStyle }}>
+        <tbody style={{ ...tbodyStyle }}>{matches}</tbody>
+      </table>
+    </React.Fragment>
   );
 };
 
