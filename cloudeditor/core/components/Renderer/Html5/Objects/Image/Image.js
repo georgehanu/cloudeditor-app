@@ -7,10 +7,11 @@ const type = ["image"];
 const ImageTarget = {
   drop(props, monitor, component) {
     if (monitor.isOver()) {
+      const { id, ...otherProps } = monitor.getItem();
       props.onUpdateProps({
         id: props.id,
         props: {
-          ...monitor.getItem(),
+          ...otherProps,
           cropW: 0,
           cropX: 0,
           cropY: 0,
