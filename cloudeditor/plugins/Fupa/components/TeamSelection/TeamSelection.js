@@ -3,14 +3,13 @@ const Matches = require("./Matches/Matches");
 const Players = require("./Players/Players");
 
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 const { map, pipe, pathOr, slice } = require("ramda");
 
 const teamSelection = props => {
   const { t, tReady, club, teams, team, hide } = props;
   let component = null;
 
-  if (!tReady) return null;
+  //if (!tReady) return null;
   if (hide) return null;
 
   const teamItem = item => {
@@ -52,13 +51,22 @@ const teamSelection = props => {
         <Standings
           {...props.teamStandings}
           {...props.tableSizes["Standings"]}
+          t={props.t}
         />
-        <Matches {...props.teamMatches} {...props.tableSizes["Matches"]} />
-        <Players {...props.teamPlayers} {...props.tableSizes["Players"]} />
+        <Matches
+          {...props.teamMatches}
+          {...props.tableSizes["Matches"]}
+          t={props.t}
+        />
+        <Players
+          {...props.teamPlayers}
+          {...props.tableSizes["Players"]}
+          t={props.t}
+        />
       </div>
     </div>
   );
   return component;
 };
 
-module.exports = withNamespaces("fupa")(teamSelection);
+module.exports = teamSelection;

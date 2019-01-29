@@ -4,11 +4,20 @@ const ToggleSidebar = require("./subcomponents/ToggleSidebar");
 const React = require("react");
 const PropTypes = require("prop-types");
 const { rerenderPage } = require("../../../../core/utils/UtilUtils");
+const isEqual = require("react-fast-compare");
+
 class SideBarContainer extends React.Component {
   state = {
     showPane: false,
     pluginIndex: null,
     expanded: true
+  };
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
   };
 
   getTool = tool => {

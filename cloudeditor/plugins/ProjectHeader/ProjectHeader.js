@@ -2,6 +2,7 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
+const isEqual = require("react-fast-compare");
 
 const { titleSelector } = require("../../core/stores/selectors/project");
 const {
@@ -17,6 +18,14 @@ class ProjectHeader extends React.Component {
   state = {
     preview: false
   };
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
+  };
+
   showPrintPreview = () => {
     const oldPreview = this.state.preview;
     if (oldPreview === false) {

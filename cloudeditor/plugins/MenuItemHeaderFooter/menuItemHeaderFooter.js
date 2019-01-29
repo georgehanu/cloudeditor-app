@@ -333,6 +333,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="edit"
                 items={this.state.poptextEdit.items}
                 open={this.state.poptextEdit.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -345,6 +346,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="insert"
                 items={this.state.poptextInsert.items}
                 open={this.state.poptextInsert.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -356,6 +358,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="layouts"
                 items={this.state.poptextLayouts.items}
                 open={this.state.poptextLayouts.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -368,6 +371,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="layoutMirror"
                 items={this.state.poptextLayoutMirror.items}
                 open={this.state.poptextLayoutMirror.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -380,6 +384,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="active"
                 items={this.state.poptextActive.items}
                 open={this.state.poptextActive.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>

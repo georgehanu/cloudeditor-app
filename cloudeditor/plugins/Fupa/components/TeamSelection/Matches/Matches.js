@@ -1,5 +1,4 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 require("./Matches.css");
 const withProduction = require("../../../hoc/withProduction");
 const withSpinner = require("../../../../../core/hoc/withSpinner/withSpinner");
@@ -159,6 +158,4 @@ const Matches = props => {
   return <React.Fragment>{matches}</React.Fragment>;
 };
 
-module.exports = withSpinner(
-  withProduction(withNamespaces("fupa")(Matches), "Matches")
-);
+module.exports = withSpinner(withProduction(Matches, "Matches"));

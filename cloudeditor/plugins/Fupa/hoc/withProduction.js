@@ -58,10 +58,10 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
     render() {
       return (
         <div className="Container">
-          <InsertInProduction handleClick={this.handleClick} />
+          <InsertInProduction handleClick={this.handleClick} t={props.t} />
           <div className={TableName}>
             <div>
-              <ToggleTable TableName={TableName}>
+              <ToggleTable TableName={TableName} t={props.t}>
                 <div id={this.state.tabelId} className="ContainerTable">
                   <table style={{ ...tableStyle }}>
                     <tbody style={{ ...tbodyStyle }}>

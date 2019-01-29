@@ -14,7 +14,7 @@ require("sweetalert/dist/sweetalert.css");
 const { withNamespaces } = require("react-i18next");
 const BackdropSpinner = require("../../hoc/withSpinner/backdropSpinner");
 
-class Gallery extends React.Component {
+class Gallery extends React.PureComponent {
   state = {
     showAlert: false,
     itemId: null,
@@ -170,4 +170,4 @@ const mapDispatchToProps = dispatch => {
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNamespaces("gallery")(Gallery));
+)(withNamespaces("gallery", { usePureComponent: true })(Gallery));
