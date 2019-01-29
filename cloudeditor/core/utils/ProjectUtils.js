@@ -374,7 +374,7 @@ const getProjectPageTemplate = cfg => {
     label: pathOr("Page %no%", ["label"], cfg),
     shortLabel: pathOr("%no%", ["label"], cfg),
     countInPagination: pathOr(true, ["countInPagination"], cfg),
-    lockPosition: pathOr(true, ["lockPosition"], cfg),
+    lockPosition: pathOr(false, ["lockPosition"], cfg),
     selectable: pathOr(true, ["selectable"], cfg),
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
