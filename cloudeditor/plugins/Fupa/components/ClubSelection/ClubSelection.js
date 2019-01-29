@@ -1,6 +1,5 @@
 const withSpinner = require("../../../../core/hoc/withSpinner/withSpinner");
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 const { isEmpty, filter, propEq, map, pipe, pathOr, slice } = require("ramda");
 
 const Error = require("../../UI/Error/Error");
@@ -58,7 +57,7 @@ const clubSelection = props => {
   };
   let component = null;
 
-  if (!tReady) return null;
+  //if (!tReady) return null;
   //if (props.loading) return <Spinner />;
   if (props.error) return <Error errorMsg={t("clubsFetchFail")} />;
   if (hide) return null;
@@ -83,4 +82,4 @@ const clubSelection = props => {
   return component;
 };
 
-module.exports = withSpinner(withNamespaces("fupa")(clubSelection));
+module.exports = withSpinner(clubSelection);

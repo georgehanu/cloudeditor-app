@@ -1,5 +1,4 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 
 require("./InsertInProduction.css");
 
@@ -13,4 +12,4 @@ const insertInProduction = props => {
   );
 };
 
-module.exports = withNamespaces("fupa")(insertInProduction);
+module.exports = insertInProduction;

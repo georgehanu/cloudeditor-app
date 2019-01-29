@@ -14,6 +14,7 @@ const { projLoadLayout } = require("../../core/stores/actions/project");
 const { assetsLayoutSelector } = require("../../core/stores/selectors/assets");
 
 const SweetAlert = require("sweetalert-react").default;
+const isEqual = require("react-fast-compare");
 
 require("./Layouts.css");
 
@@ -23,6 +24,13 @@ class Layouts extends React.Component {
     showAlert: false,
     saText: "",
     layoutId: null
+  };
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
   };
 
   componentDidMount() {

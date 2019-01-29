@@ -4,7 +4,7 @@ const Dropzone = require("react-dropzone").default;
 const { uploadAssetStart } = require("../../stores/actions/assets");
 const { connect } = require("react-redux");
 
-class UploadFile extends React.Component {
+class UploadFile extends React.PureComponent {
   state = { files: [] };
   onDrop = (acceptedFiles, rejectedFile) => {
     if (acceptedFiles.length === 0) {
@@ -57,4 +57,4 @@ const mapDispatchToProps = dispatch => {
 module.exports = connect(
   null,
   mapDispatchToProps
-)(withNamespaces("addImage")(UploadFile));
+)(UploadFile);

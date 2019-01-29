@@ -2,10 +2,18 @@ const React = require("react");
 const { connect } = require("react-redux");
 const assign = require("object-assign");
 const FupaBuilder = require("./FupaBuilder");
+const isEqual = require("react-fast-compare");
+const { withNamespaces } = require("react-i18next");
 
 class Fupa extends React.Component {
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
+  };
   render() {
-    return <FupaBuilder cfg={this.props.cfg} />;
+    return <FupaBuilder cfg={this.props.cfg} t={this.props.t} />;
   }
 }
 
@@ -14,7 +22,7 @@ class Fupa extends React.Component {
 const FupaPlugin = connect(
   null,
   null
-)(Fupa);
+)(withNamespaces("fupa")(Fupa));
 
 module.exports = {
   Fupa: assign(FupaPlugin, {

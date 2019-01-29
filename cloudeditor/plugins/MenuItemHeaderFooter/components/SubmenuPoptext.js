@@ -1,5 +1,4 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 
 const submenuPoptext = props => {
   const items = props.items.map((el, index) => {
@@ -32,4 +31,4 @@ const submenuPoptext = props => {
   );
 };
 
-module.exports = withNamespaces("menuItemHeaderFooter")(submenuPoptext);
+module.exports = submenuPoptext;
