@@ -129,6 +129,8 @@ class Html5 extends React.Component {
       this.updateContainerDimensions();
     }
   }
+  setMissingImages = () => {};
+  deleteMissingImages = () => {};
 
   componentDidMount() {
     this.updateContainerDimensions();
@@ -155,7 +157,10 @@ class Html5 extends React.Component {
         labels={this.props.labels}
         activePageId={this.props.activePageId}
         rerenderId={this.props.rerenderId}
+        viewOnly={0}
         onChangePage={this.props.onChangePageHandler}
+        deleteMissingImages={this.deleteMissingImages}
+        setMissingImages={this.setMissingImages}
       />
     );
   }

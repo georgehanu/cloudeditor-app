@@ -24,8 +24,7 @@ const fupaTdBase = {
   fontSize: "12px",
   lineHeight: "12px",
   border: "none",
-  fontFamily: "Arial",
-  height: "27px"
+  fontFamily: "Arial"
 };
 
 const show = columnName => {
@@ -171,10 +170,24 @@ const Players = props => {
     );
   });
 
+  const tableStyle = {
+    borderSpacing: "0",
+    color: "black"
+  };
+
+  const tbodyStyle = {
+    fontFamily: "Arial",
+    fontSize: "12px"
+  };
+
   return (
     <React.Fragment>
-      {headerTable}
-      {matches}
+      <table style={{ ...tableStyle }}>
+        <tbody style={{ ...tbodyStyle }}>
+          {headerTable}
+          {matches}
+        </tbody>
+      </table>
     </React.Fragment>
   );
 };

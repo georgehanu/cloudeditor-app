@@ -42,7 +42,10 @@ const withRotatable = WrappedComponent => {
     }
     updateUI = () => {
       this.enableUI =
-        !this.props.active && !this.props.viewOnly && this.props.rotatable;
+        !this.props.active &&
+        !this.props.viewOnly &&
+        this.props.rotatable &&
+        this.props.permissions.rotateBlocks;
       this.$el = $(this.el);
       const radians = (this.props.rotateAngle * Math.PI) / 180;
       handleUI(

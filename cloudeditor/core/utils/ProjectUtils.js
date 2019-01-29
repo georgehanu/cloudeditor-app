@@ -67,7 +67,8 @@ const getObjectsDefaults = cfg => {
       borderColor: getObjectColorTemplate(
         (general && general.borderColor) || {}
       ),
-      borderWidth: 0
+      borderWidth: 0,
+      renderId: uuidv4()
     },
     general || {}
   );
@@ -100,8 +101,9 @@ const getObjectsDefaults = cfg => {
       brightness: 0,
       imageWidth: 0,
       imageHeight: 0,
-      ratioWidth: 0,
-      ratioHeight: 0,
+      ratioWidth: 1,
+      ratioHeight: 1,
+      missingImage: false,
       flip: ""
     },
     image || {}
@@ -241,6 +243,7 @@ const getDocumentDefaults = cfg => {
       includeMagentic: false,
       showTrimbox: false,
       allowSafeCut: true,
+      allowSnapBlocks: false,
       allowLayoutColumns: false,
       predefinedGroups: false, //[2,2]or false
       groups: {
@@ -302,7 +305,7 @@ const getPagesDefaults = cfg => {
       label: "Page %no%",
       shortLabel: "%no%",
       countInPagination: true,
-      lockPosition: true,
+      lockPosition: false,
       selectable: true,
       allowDeletePage: true,
       objectsIds: [],
@@ -354,7 +357,7 @@ const getProjectTemplate = cfg => {
         pages: getPagesDefaults({}),
         objects: getObjectsDefaults({})
       },
-      ui: getEmptyUI()
+      ui: getEmptyUI(cfg.ui)
     },
     cfg || {}
   );
@@ -371,7 +374,7 @@ const getProjectPageTemplate = cfg => {
     label: pathOr("Page %no%", ["label"], cfg),
     shortLabel: pathOr("%no%", ["label"], cfg),
     countInPagination: pathOr(true, ["countInPagination"], cfg),
-    lockPosition: pathOr(true, ["lockPosition"], cfg),
+    lockPosition: pathOr(false, ["lockPosition"], cfg),
     selectable: pathOr(true, ["selectable"], cfg),
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
@@ -475,12 +478,32 @@ const getEmptyProject = cfg => {
     subType: "textflow",
     width: 100,
     height: 10,
-    left: 10,
+    left: 17.308244475806433,
     top: 10,
-    value: "Header text here",
+    isPageNrBlock: 1,
+    value: "",
     fontFamily: "Dax",
-    fontSize: 10,
-    fill: "red"
+    fontSize: 12
+  });
+  const logoHeader = getEmptyObject({
+    id: "logoHeader",
+    type: "image",
+    subType: "image",
+    width: 35.819147865000915,
+    height: 8.487903225806452,
+    left: 526.1277667114695,
+    top: 10,
+    image_src:
+      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs//media/personalization/local_files/cw_logo.png",
+    imagePath: "local_files/cw_logo.png",
+    imageWidth: 237,
+    imageHeight: 121,
+    cropX: 0,
+    cropY: 29,
+    cropW: 232,
+    cropH: 55,
+    leftSlider: 0,
+    alternateZoom: 0
   });
   const textFooter = getEmptyObject({
     id: "textFooter",
@@ -488,11 +511,11 @@ const getEmptyProject = cfg => {
     subType: "textflow",
     width: 100,
     height: 10,
-    left: 10,
-    top: 10,
-    value: "Footer text here",
+    left: 17.308244475806433,
+    top: 5,
+    value: "Footer text",
     fontFamily: "Dax",
-    fontSize: 10,
+    fontSize: 12,
     fill: "red"
   });
 
@@ -500,7 +523,7 @@ const getEmptyProject = cfg => {
     id: "header",
     type: "section",
     subType: "header",
-    objectsIds: [textHeader.id]
+    objectsIds: [textHeader.id, logoHeader.id]
   });
 
   const footer = getEmptyObject({
@@ -514,13 +537,13 @@ const getEmptyProject = cfg => {
     id: "table",
     type: "tinymceTable",
     subType: "tinymceTable",
-    width: 100,
-    height: 133.1578947368421,
-    tableWidth: 380,
-    tableHeight: 506,
-    left: 30,
-    top: 30,
-    tableContent: `<table style="border-spacing: 0px; color: black;">
+    // width: 790.82688,
+    // height: 545,
+    width: null,
+    height: null,
+    left: 16.55 + 8.50394,
+    top: 16.55 + 8.50394,
+    tableContent: `<table style="width:auto; height: auto; border-spacing: 0px; color: black;">
 <tbody>
   <tr>
       <td style="padding: 4px 0px; margin: 0px; border: none; text-align: center; font-size: 12px; line-height: 12px; background-color: white;"></td>
@@ -1405,6 +1428,7 @@ const getEmptyProject = cfg => {
   project.objects[footer.id] = footer;
   project.objects[textHeader.id] = textHeader;
   project.objects[textFooter.id] = textFooter;
+  project.objects[logoHeader.id] = logoHeader;
 
   project.configs.document.header.objectsIds = [header.id];
   project.configs.document.footer.objectsIds = [footer.id];
@@ -1645,7 +1669,7 @@ const getEmptyUI = cfg => {
           workingHeight: 0
         }
       },
-      permissions: getUIPermissionsTemplate(cfg)
+      permissions: getUIPermissionsTemplate(cfg.permissions)
     },
     cfg || {}
   );

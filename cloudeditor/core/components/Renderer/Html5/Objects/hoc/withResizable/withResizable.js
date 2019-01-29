@@ -49,6 +49,7 @@ const withResizable = WrappedComponent => {
     };
     onResizeStartHandler = (event, ui) => {
       var resizable = $(event.target).data("ui-resizable");
+
       resizable.options.snapToleranceDynamic =
         this.props.snapTolerance * this.props.zoomScale;
       resizable.options.snapTolerance = 10;
@@ -56,8 +57,19 @@ const withResizable = WrappedComponent => {
       this.changePropsOnDragHandler(ui, 1);
     };
     onResizeHandler = (event, ui) => {
+      var text = $(event.target).find(".text");
+      var text = $(event.target).find(".text");
+      if (text.length) {
+        if (text.width() > $(event.target).width()) {
+          ui.size.width = text.width();
+        }
+        if (text.height() > $(event.target).height()) {
+          ui.size.height = text.height();
+        }
+      }
       var resizable = $(event.target).data("ui-resizable");
       ui = addSnapElements(event, ui, resizable.coords, resizable);
+
       this.changePropsOnDragHandler(ui, 1);
     };
     onResizeStopHandler = (event, ui) => {
@@ -78,6 +90,7 @@ const withResizable = WrappedComponent => {
       this.enableUI =
         !this.props.active &&
         !this.props.viewOnly &&
+        this.props.permissions.resizeBlocks &&
         this.props.resizable &&
         this.props.type !== "tinymceTable1";
       this.$el = $(this.el);
