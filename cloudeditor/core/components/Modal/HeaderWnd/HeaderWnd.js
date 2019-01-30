@@ -1,10 +1,9 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 
 const headerWnd = props => {
   return (
     <div className="headerWnd">
-      <div className="titleMenu">{props.t(props.title)}</div>
+      <div className="titleMenu">{props.title}</div>
       <a
         href="#"
         className="closeMenu"
@@ -17,4 +16,4 @@ const headerWnd = props => {
   );
 };
 
-module.exports = withNamespaces("menuItemMyProject")(headerWnd);
+module.exports = headerWnd;

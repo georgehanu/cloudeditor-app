@@ -38,3 +38,31 @@
 .containerMaxZindex #sidebar-wrapper {
   z-index: 5000;
 }
+
+.layoutHeaderContainer .headerPoptextSelect__control {
+  border-color: #dedede !important;
+  box-shadow: none !important;
+  min-height: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.layoutHeaderContainer {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.headerPoptextTitle {
+  width: 100px;
+  float: left;
+  line-height: 30px;
+  color: #737373;
+}
+
+.headerPoptextCategories {
+  margin-left: 100px;
+}
+
+.layoutHeaderContainer .headerPoptextSelect__menu * {
+  cursor: pointer;
+}

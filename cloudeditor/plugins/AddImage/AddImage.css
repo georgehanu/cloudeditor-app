@@ -227,5 +227,10 @@ section.dropzone {
 }
 
 .containerMaxZindexGallery #sidebar-wrapper-container .paneShow.paneContainer {
+  border-top: 1px solid #dcdee1;
   z-index: 1;
+}
+
+#sidebar-wrapper-container {
+  border-top: 1px solid #dcdee1;
 }
