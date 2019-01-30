@@ -851,7 +851,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .colorPickerContainer {
   width: 384px;
-  height: 200px;
+  height: 210px;
   background-color: white;
   display: block;
   top: 138px;
@@ -901,6 +901,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 .colorPickerRGBContainer,
 .colorPickerCMYKContainer {
   float: left;
+  height: 151px;
 }
 .colorPickerRGBContainer {
   margin-left: 30px;
@@ -915,7 +916,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   padding: 0px;
   outline: none;
   cursor: pointer;
-  margin-top: 0px;
+  margin-top: 6px;
 }
 
 .colorPickerOKContainer button {
@@ -954,4 +955,8 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .whiteColorSquare {
   border: 1px solid #ccc;
+}
+
+.colorPickerButtonsContainer {
+  width: 96px;
 }

@@ -11,7 +11,8 @@ const getObjectColorTemplate = cfg => {
       CMYK: null,
       separation: null,
       separationColorSpace: null,
-      separationColor: null
+      separationColor: null,
+      new: false
     },
     cfg || {}
   );
@@ -394,7 +395,8 @@ const getColorTemplate = cfg => {
       separation: null,
       separationColorSpace: null,
       separationColor: null,
-      type: ["COLOR_TAB_FG", "COLOR_TAB_BG", "COLOR_TAB_BORDER_COLOR"]
+      type: ["COLOR_TAB_FG", "COLOR_TAB_BG", "COLOR_TAB_BORDER_COLOR"],
+      new: false
     },
     cfg || {}
   ); //label of the color //html value of the color //pdflib RGB value //pdflib CMYK value // pdflib Separation color value //fallback for separation color //fallback for separation color

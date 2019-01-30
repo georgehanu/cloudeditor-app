@@ -9,12 +9,17 @@ const ColorPicker = require("./ColorPicker");
 
 const {
   uiAddColor,
-  uiAddLastUsedColor
+  uiAddLastUsedColor,
+  uiRemoveColor
 } = require("./../../../../../stores/actions/ui");
+
+const { PICKER_MODE_VIEW, PICKER_MODE_ADD } = require("./ColorTabTypes");
 
 class ColorTab extends React.Component {
   state = {
     showPickerWnd: false,
+    pickerWndMode: "",
+    activeColor: null,
     type: null
   };
 
@@ -22,25 +27,65 @@ class ColorTab extends React.Component {
     if (nextProps.type !== prevState.type) {
       return {
         type: nextProps.type,
-        showPickerWnd: false
+        showPickerWnd: false,
+        activeColor: nextProps.activeColors[nextProps.activeTab]
       };
     }
     return null;
   }
 
-  togglePickerWnd = showPickerWnd => {
-    this.setState({ showPickerWnd });
+  togglePickerWnd = (showPickerWnd, pickerWndMode, activeColor) => {
+    this.setState({ showPickerWnd, pickerWndMode, activeColor });
   };
 
   closePickerWnd = () => {
-    this.togglePickerWnd(false);
+    this.setState({ showPickerWnd: false });
+  };
+
+  useColorHandler = () => {
+    const {
+      htmlRGB,
+      RGB,
+      CMYK,
+      separation,
+      separationColorSpace,
+      separationColor
+    } = this.state.activeColor;
+    this.props.uiAddLastUsedColor(this.state.activeColor.id);
+    this.props.selectColor({
+      mainHandler: true,
+      payloadMainHandler: {
+        type: this.props.type,
+        value: {
+          htmlRGB,
+          RGB,
+          CMYK,
+          separation,
+          separationColorSpace,
+          separationColor
+        }
+      }
+    });
+  };
+
+  deleteColorHandler = payload => {
+    this.props.uiRemoveColor(payload);
+    this.setState({ showPickerWnd: false });
   };
 
   render() {
+    const activeColor =
+      this.state.activeColor === null
+        ? this.props.activeColors[this.props.activeTab]
+        : this.state.activeColor;
+
     let colors = this.props.colors.map((color, index) => {
       let colorCode = "";
       if (color.htmlRGB[0] === "#") colorCode = color.htmlRGB;
       else colorCode = "rgb(" + color.htmlRGB + ")";
+      const selectedColor = activeColor.id
+        ? activeColor.id === color.id
+        : activeColor.htmlRGB === color.htmlRGB;
       return (
         <li
           key={color.id}
@@ -50,34 +95,10 @@ class ColorTab extends React.Component {
             (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
-            const {
-              htmlRGB,
-              RGB,
-              CMYK,
-              separation,
-              separationColorSpace,
-              separationColor
-            } = color;
-            this.props.uiAddLastUsedColor(color.id);
-            this.props.selectColor({
-              mainHandler: true,
-              payloadMainHandler: {
-                type: this.props.type,
-                value: {
-                  htmlRGB,
-                  RGB,
-                  CMYK,
-                  separation,
-                  separationColorSpace,
-                  separationColor
-                }
-              }
-            });
+            this.togglePickerWnd(true, PICKER_MODE_VIEW, color);
           }}
         >
-          {this.props.activeColors[this.props.activeTab] === color.htmlRGB && (
-            <b className="icon printqicon-ok SelectedColor" />
-          )}
+          {selectedColor && <b className="icon printqicon-ok SelectedColor" />}
         </li>
       );
     });
@@ -87,7 +108,7 @@ class ColorTab extends React.Component {
         key={-1}
         className="ColorSquare AddColor"
         onClick={() => {
-          this.togglePickerWnd(true);
+          this.togglePickerWnd(true, PICKER_MODE_ADD, this.state.activeColor);
         }}
         id="newColor"
       >
@@ -108,29 +129,7 @@ class ColorTab extends React.Component {
             (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
-            const {
-              htmlRGB,
-              RGB,
-              CMYK,
-              separation,
-              separationColorSpace,
-              separationColor
-            } = color;
-            this.props.uiAddLastUsedColor(color.id);
-            this.props.selectColor({
-              mainHandler: true,
-              payloadMainHandler: {
-                type: this.props.type,
-                value: {
-                  htmlRGB,
-                  RGB,
-                  CMYK,
-                  separation,
-                  separationColorSpace,
-                  separationColor
-                }
-              }
-            });
+            this.togglePickerWnd(true, PICKER_MODE_VIEW, color);
           }}
         />
       );
@@ -145,9 +144,12 @@ class ColorTab extends React.Component {
         <ColorPicker
           closePickerWnd={this.closePickerWnd}
           uiAddColorHandler={this.props.uiAddColor}
+          uiRemoveColorHandler={this.deleteColorHandler}
           tabType={this.props.type}
-          activeColor={this.props.activeColors[this.props.activeTab]}
+          activeColor={this.state.activeColor}
           visible={this.state.showPickerWnd}
+          mode={this.state.pickerWndMode}
+          useColorHandler={this.useColorHandler}
         />
       </div>
     );
@@ -165,7 +167,8 @@ const mapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch => {
   return {
     uiAddColor: payload => dispatch(uiAddColor(payload)),
-    uiAddLastUsedColor: payload => dispatch(uiAddLastUsedColor(payload))
+    uiAddLastUsedColor: payload => dispatch(uiAddLastUsedColor(payload)),
+    uiRemoveColor: payload => dispatch(uiRemoveColor(payload))
   };
 };
 
