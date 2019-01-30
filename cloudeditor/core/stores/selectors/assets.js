@@ -11,15 +11,25 @@ const assetsLayoutLoadingSelector = state =>
 const assetsLayoutSelector = state =>
   pathOr([], ["assets", "layout", "items"], state);
 
+const selectCategory = (_, props) => props.category_id;
+
 const assetsLayoutForActivePageSelector = createSelector(
-  [activePageIdSelector, pagesOrderSelector, assetsLayoutSelector],
-  (activePageId, pagesOrder, assetsLayout) => {
+  [
+    activePageIdSelector,
+    pagesOrderSelector,
+    assetsLayoutSelector,
+    selectCategory
+  ],
+  (activePageId, pagesOrder, assetsLayout, category_id) => {
     const pageNo = pagesOrder.findIndex(el => {
       return el === activePageId;
     });
 
     const layouts = assetsLayout.filter((el, index) => {
-      return parseInt(el.page_no, 10) === parseInt(pageNo, 10);
+      return (
+        parseInt(el.page_no, 10) === parseInt(pageNo, 10) &&
+        parseInt(el.category_id, 10) === parseInt(category_id, 10)
+      );
     });
 
     return layouts;

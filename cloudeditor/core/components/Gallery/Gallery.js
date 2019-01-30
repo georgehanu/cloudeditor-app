@@ -137,7 +137,9 @@ class Gallery extends React.PureComponent {
 
 const getItemsByType = (state, props) => {
   if (props.type === "layout") {
-    return assetsLayoutForActivePageSelector(state);
+    return assetsLayoutForActivePageSelector(state, {
+      category_id: props.category_id
+    });
   } else return pathOr([], [props.type, "uploadedFiles"], state.assets);
 };
 const getLoadingByType = (state, props) => {

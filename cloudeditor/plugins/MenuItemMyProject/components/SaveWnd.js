@@ -1,5 +1,5 @@
 const React = require("react");
-const HeaderWnd = require("./HeaderWnd");
+const ModalWnd = require("../../../core/components/Modal/ModalWnd");
 const { connect } = require("react-redux");
 const Input = require("./Input");
 const Textarea = require("./Textarea");
@@ -77,45 +77,39 @@ class SaveWnd extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="loginContainer">
-          <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
-          <div className="loginWnd saveWnd">
-            <div className="loginWndContainer">
-              <HeaderWnd
-                modalClosed={this.props.modalClosed}
-                title={this.props.t("Save project")}
-              />
-              <div className="loginFields">
-                <Input
-                  label={this.props.t("Project name")}
-                  onInputChange={this.onInputChange}
-                  text={this.state.projectName}
-                  name="projectName"
-                />
-                <Textarea
-                  label={this.props.t("Project description")}
-                  onInputChange={this.onInputChange}
-                  text={this.state.projectDescription}
-                  name="projectDescription"
-                />
-              </div>
-              <div className="messageForm">
-                <MessageForm
-                  errorMessage={errorMessage}
-                  loading={this.props.loading}
-                />
-              </div>
-              <div className="loginWndButtons">
-                <button onClick={this.onSaveButton}>
-                  {this.props.t("Save")}
-                </button>
-                <button onClick={this.props.modalClosed}>
-                  {this.props.t("Close")}
-                </button>
-              </div>
-            </div>
+        <ModalWnd
+          className="loginWnd saveWnd"
+          clicked={this.props.modalClosed}
+          show={this.props.show}
+          title={this.props.t("Save project")}
+        >
+          <div className="loginFields">
+            <Input
+              label={this.props.t("Project name")}
+              onInputChange={this.onInputChange}
+              text={this.state.projectName}
+              name="projectName"
+            />
+            <Textarea
+              label={this.props.t("Project description")}
+              onInputChange={this.onInputChange}
+              text={this.state.projectDescription}
+              name="projectDescription"
+            />
           </div>
-        </div>
+          <div className="messageForm">
+            <MessageForm
+              errorMessage={errorMessage}
+              loading={this.props.loading}
+            />
+          </div>
+          <div className="loginWndButtons">
+            <button onClick={this.onSaveButton}>{this.props.t("Save")}</button>
+            <button onClick={this.props.modalClosed}>
+              {this.props.t("Close")}
+            </button>
+          </div>
+        </ModalWnd>
       </React.Fragment>
     );
   }

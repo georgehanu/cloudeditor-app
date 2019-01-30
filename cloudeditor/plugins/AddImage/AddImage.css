@@ -229,3 +229,9 @@ section.dropzone {
 .containerMaxZindexGallery #sidebar-wrapper-container .paneShow.paneContainer {
   z-index: 1;
 }
+
+.previewImagegalleryPreview {
+  width: 150px;
+  height: 100px;
+  position: absolute;
+}

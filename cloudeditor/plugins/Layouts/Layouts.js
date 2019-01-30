@@ -15,6 +15,7 @@ const { assetsLayoutSelector } = require("../../core/stores/selectors/assets");
 
 const SweetAlert = require("sweetalert-react").default;
 const isEqual = require("react-fast-compare");
+const LayoutsHeader = require("./components/LayoutsHeader");
 
 require("./Layouts.css");
 
@@ -23,7 +24,13 @@ class Layouts extends React.Component {
     activePageId: null,
     showAlert: false,
     saText: "",
-    layoutId: null
+    layoutId: null,
+    categories: [],
+    selectedCategory: { value: "", label: "" }
+  };
+
+  onCategoryChange = selectedCategory => {
+    this.setState({ selectedCategory });
   };
 
   shouldComponentUpdate = (nextProps, nextState) => {
@@ -35,6 +42,12 @@ class Layouts extends React.Component {
 
   componentDidMount() {
     this.props.assetsLayoutStart();
+    const categories = [
+      { value: "1", label: "Categ 1" },
+      { value: "2", label: "Categ 2" },
+      { value: "3", label: "Categ 3" }
+    ];
+    this.setState({ categories, selectedCategory: categories[0] });
   }
 
   selectImageHandler = layoutId => {
@@ -65,10 +78,17 @@ class Layouts extends React.Component {
           onConfirm={() => this.loadLayout()}
           onCancel={() => this.setState({ showAlert: false })}
         />
+        <LayoutsHeader
+          title={this.props.t("Categories")}
+          options={this.state.categories}
+          selectedOption={this.state.selectedCategory}
+          onChange={this.onCategoryChange}
+        />
         <LayoutContainer
           addContainerClasses={this.props.addContainerClasses}
           loading={this.props.loading}
           selectImage={this.selectImageHandler}
+          category_id={this.state.selectedCategory.value}
         />
       </React.Fragment>
     );

@@ -1,8 +1,7 @@
 const React = require("react");
-const HeaderWnd = require("./HeaderWnd");
+const ModalWnd = require("../../../core/components/Modal/ModalWnd");
 const { connect } = require("react-redux");
 const Input = require("./Input");
-const Backdrop = require("../../../core/components/Backdrop/Backdrop");
 const MessageForm = require("./MessageForm");
 
 require("./LoginWnd.css");
@@ -78,49 +77,45 @@ class LoginWnd extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="loginContainer">
-          <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
-          <div className="loginWnd">
-            <div className="loginWndContainer">
-              <HeaderWnd
-                modalClosed={this.props.modalClosed}
-                title={this.props.t("Login")}
-              />
-              <div className="loginFields">
-                <Input
-                  label={this.props.t("Email")}
-                  onInputChange={this.onInputChange}
-                  text={this.state.email}
-                  name="email"
-                />
-                <Input
-                  label={this.props.t("Password")}
-                  type="password"
-                  onInputChange={this.onInputChange}
-                  text={this.state.password}
-                  name="password"
-                />
-              </div>
-              <div className="messageForm">
-                <MessageForm
-                  errorMessage={errorMessage}
-                  loading={this.props.loading}
-                />
-              </div>
-              <div className="loginWndButtons">
-                <button onClick={this.props.modalClosed}>
-                  {this.props.t("Register")}
-                </button>
-                <button onClick={this.onLoginButton}>
-                  {this.props.t("Login")}
-                </button>
-                <button onClick={this.props.modalClosed}>
-                  {this.props.t("Close")}
-                </button>
-              </div>
-            </div>
+        <ModalWnd
+          className="loginWnd"
+          clicked={this.props.modalClosed}
+          show={this.props.show}
+          title={this.props.t("Login")}
+        >
+          <div className="loginFields">
+            <Input
+              label={this.props.t("Email")}
+              onInputChange={this.onInputChange}
+              text={this.state.email}
+              name="email"
+            />
+            <Input
+              label={this.props.t("Password")}
+              type="password"
+              onInputChange={this.onInputChange}
+              text={this.state.password}
+              name="password"
+            />
           </div>
-        </div>
+          <div className="messageForm">
+            <MessageForm
+              errorMessage={errorMessage}
+              loading={this.props.loading}
+            />
+          </div>
+          <div className="loginWndButtons">
+            <button onClick={this.props.modalClosed}>
+              {this.props.t("Register")}
+            </button>
+            <button onClick={this.onLoginButton}>
+              {this.props.t("Login")}
+            </button>
+            <button onClick={this.props.modalClosed}>
+              {this.props.t("Close")}
+            </button>
+          </div>
+        </ModalWnd>
       </React.Fragment>
     );
   }

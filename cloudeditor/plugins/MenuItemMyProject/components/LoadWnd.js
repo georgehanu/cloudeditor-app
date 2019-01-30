@@ -1,7 +1,6 @@
 const React = require("react");
-const HeaderWnd = require("./HeaderWnd");
+const ModalWnd = require("../../../core/components/Modal/ModalWnd");
 const { connect } = require("react-redux");
-const Backdrop = require("../../../core/components/Backdrop/Backdrop");
 const { withNamespaces } = require("react-i18next");
 const LoadProjects = require("./LoadProjects");
 const SweetAlert = require("sweetalert-react").default;
@@ -84,47 +83,39 @@ class LoadWnd extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="loginContainer">
-          <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
-          <div className="loginWnd loadWnd">
-            <div className="loginWndContainer">
-              <HeaderWnd
-                modalClosed={this.props.modalClosed}
-                title={this.props.t("Load project")}
-              />
-              <LoadProjects
-                delete={this.deleteProjectHandler}
-                load={this.loadProjectHandler}
-                loading={this.props.loading}
-                loadedProjects={this.props.loadedProjects}
-                errorMessage={this.props.errorMessage}
-              />
+        <ModalWnd
+          className="loginWnd loadWnd"
+          clicked={this.props.modalClosed}
+          show={this.props.show}
+          title={this.props.t("Load project")}
+        >
+          <LoadProjects
+            delete={this.deleteProjectHandler}
+            load={this.loadProjectHandler}
+            loading={this.props.loading}
+            loadedProjects={this.props.loadedProjects}
+            errorMessage={this.props.errorMessage}
+          />
 
-              <div className="messageForm">
-                <MessageForm
-                  errorMessage={actionError}
-                  loading={actionLoading}
-                />
-              </div>
-
-              <div className="loginWndButtons">
-                <button onClick={this.props.modalClosed}>
-                  {this.props.t("Close")}
-                </button>
-              </div>
-            </div>
+          <div className="messageForm">
+            <MessageForm errorMessage={actionError} loading={actionLoading} />
           </div>
 
-          <SweetAlert
-            show={this.state.showAlert}
-            type={saType}
-            title={saTitle}
-            text={saText}
-            showCancelButton={true}
-            onConfirm={() => this.confirmtSweetAlert()}
-            onCancel={() => this.setState({ showAlert: false })}
-          />
-        </div>
+          <div className="loginWndButtons">
+            <button onClick={this.props.modalClosed}>
+              {this.props.t("Close")}
+            </button>
+          </div>
+        </ModalWnd>
+        <SweetAlert
+          show={this.state.showAlert}
+          type={saType}
+          title={saTitle}
+          text={saText}
+          showCancelButton={true}
+          onConfirm={() => this.confirmtSweetAlert()}
+          onCancel={() => this.setState({ showAlert: false })}
+        />
       </React.Fragment>
     );
   }
