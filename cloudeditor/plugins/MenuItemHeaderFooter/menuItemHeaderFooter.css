@@ -114,7 +114,8 @@
   float: right;
 }
 
-.submenuItemHeaderFooterClose button {
+.submenuItemHeaderFooterClose button,
+.submenuItemHeaderFooterHeightReset {
   -webkit-box-shadow: none;
   box-shadow: none;
   border-radius: 0;

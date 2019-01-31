@@ -258,6 +258,7 @@ const getDocumentDefaults = cfg => {
         display: "before", // (before, after)
         mirrored: true,
         height: 12,
+        initialHeight: 12,
         objectsIds: []
       },
       footer: {
@@ -267,6 +268,7 @@ const getDocumentDefaults = cfg => {
         display: "before", // (before, after),
         mirrored: false,
         height: 10,
+        initialHeight: 10,
         objectsIds: []
       }
     },

@@ -275,6 +275,20 @@ class MenuItemHeaderFooter extends React.Component {
     });
   };
 
+  resetInitialHeight = () => {
+    if (this.state.poptextEdit.active === "Header") {
+      this.props.onUpdateHeaderConfigHandler({
+        prop: "height",
+        value: this.props.headerCfg.initialHeight
+      });
+    } else {
+      this.props.onUpdateFooterConfigHandler({
+        prop: "height",
+        value: this.props.footerCfg.initialHeight
+      });
+    }
+  };
+
   render() {
     //console.log("render footer");
     const className =
@@ -401,6 +415,12 @@ class MenuItemHeaderFooter extends React.Component {
                 }
               />
               <span>{this.props.t("mm")}</span>
+              <button
+                className="submenuItemHeaderFooterHeightReset"
+                onClick={this.resetInitialHeight}
+              >
+                {this.props.t("Reset Height")}
+              </button>
             </div>
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterClose">
