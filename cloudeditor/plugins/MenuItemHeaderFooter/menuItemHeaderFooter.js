@@ -165,13 +165,28 @@ class MenuItemHeaderFooter extends React.Component {
 
     switch (type) {
       case "edit":
-        this.setState({
-          poptextEdit: {
-            ...this.state.poptextEdit,
-            open: false,
-            active: value
+        this.setState(
+          {
+            poptextEdit: {
+              ...this.state.poptextEdit,
+              open: false,
+              active: value
+            }
+          },
+          () => {
+            if (this.state.poptextEdit.active === "Header") {
+              this.props.onUpdateHeaderFooterConfigPropsHandler({
+                header: { prop: "mode", value: "edit" },
+                footer: { prop: "mode", value: "read" }
+              });
+            } else {
+              this.props.onUpdateHeaderFooterConfigPropsHandler({
+                header: { prop: "mode", value: "read" },
+                footer: { prop: "mode", value: "edit" }
+              });
+            }
           }
-        });
+        );
         break;
       case "insert":
         this.setState({
@@ -266,12 +281,24 @@ class MenuItemHeaderFooter extends React.Component {
         this.props.addContainerClasses("submenuHeaderFooter", [], true);
       }
 
-      payload = {
-        prop: "mode",
-        value: this.state.submenuOpened ? "edit" : "read"
-      };
-
-      this.props.onUpdateHeaderFooterConfigPropsHandler(payload);
+      if (this.state.submenuOpened === false) {
+        this.props.onUpdateHeaderFooterConfigPropsHandler({
+          header: { prop: "mode", value: "read" },
+          footer: { prop: "mode", value: "read" }
+        });
+      } else {
+        if (this.state.poptextEdit.active === "Header") {
+          this.props.onUpdateHeaderConfigHandler({
+            prop: "mode",
+            value: "edit"
+          });
+        } else {
+          this.props.onUpdateFooterConfigHandler({
+            prop: "mode",
+            value: "edit"
+          });
+        }
+      }
     });
   };
 

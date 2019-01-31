@@ -295,11 +295,11 @@ const updateHeaderFooterConfigProps = (state, payload) => {
         ...state.configs.document,
         header: {
           ...state.configs.document.header,
-          [payload.prop]: payload.value
+          [payload.header.prop]: payload.header.value
         },
         footer: {
           ...state.configs.document.footer,
-          [payload.prop]: payload.value
+          [payload.footer.prop]: payload.footer.value
         }
       }
     }
