@@ -226,11 +226,39 @@ const addObjectIdActionSelected = (state, payload) => {
 };
 
 const updateObjectProps = (state, payload) => {
+  if (payload.props.image) {
+    /* update the image with given imageId */
+    return updateImageProps(state, payload);
+  }
   return {
     ...state,
     objects: {
       ...state.objects,
       [payload.id]: merge(state.objects[payload.id], payload.props)
+    }
+  };
+};
+
+const updateImageProps = (state, payload) => {
+  const imageProps = {
+    image_src: payload.props.image.image_src,
+    value: payload.props.image.image_src.substring(
+      payload.props.image.image_src.lastIndexOf("/") + 1
+    ),
+    imagePath: payload.props.image.image_path,
+    cropX: 0,
+    cropY: 0,
+    cropW: 0,
+    cropH: 0,
+    imageWidth: payload.props.image.imageWidth,
+    imageHeight: payload.props.image.imageHeight,
+    image: payload.props.image
+  };
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      [payload.id]: merge(state.objects[payload.id], imageProps)
     }
   };
 };

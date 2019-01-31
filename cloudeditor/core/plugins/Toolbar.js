@@ -295,7 +295,12 @@ const ToolbarPlugin = connect(
 module.exports = {
   Toolbar: assign(ToolbarPlugin, {
     Html5Renderer: {
-      blurSelectors: ["ToolbarContainer", "pageBlock"]
+      blurSelectors: [
+        "ToolbarContainer",
+        "pageBlock",
+        "sweet-overlay",
+        "sweet-alert"
+      ]
     }
   }),
   reducers: { toolbar: require("../stores/reducers/toolbar") },

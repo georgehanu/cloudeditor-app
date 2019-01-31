@@ -173,27 +173,27 @@
 section.dropzone {
   height: 60px;
 }
-#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading {
+.uploadGallery .uploadGalleryLiLoading {
   text-align: -webkit-center;
 }
 
-#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .loader {
+.uploadGallery .uploadGalleryLiLoading .loader {
   font-size: 8px;
   margin: 0px;
 }
 
-#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .loader .spinnerText {
+.uploadGallery .uploadGalleryLiLoading .loader .spinnerText {
   left: 2px;
   top: 35px;
   font-size: 12px;
 }
 
-#sidebar-wrapper .uploadLabel {
+.uploadLabel {
   background-color: #f9fafc;
   border: 1px solid #dcdee1;
 }
 
-#sidebar-wrapper .uploadLabel .uploadMessage {
+.uploadLabel .uploadMessage {
   color: #58595b;
   margin-left: 3px;
 }
@@ -225,13 +225,17 @@ section.dropzone {
 .LayoutsContainer .uploadGalleryItem {
   height: 105px;
 }
-
-.containerMaxZindexGallery #sidebar-wrapper-container .paneShow.paneContainer {
-  z-index: 1;
+.containerMaxZindexGallery #sidebar-wrapper-container .paneContainer.paneShow {
+  z-index: 500;
 }
 
 .previewImagegalleryPreview {
   width: 150px;
   height: 100px;
   position: absolute;
+}
+
+.sweet-overlay,
+.sweet-alert {
+  z-index: 300000 !important;
 }

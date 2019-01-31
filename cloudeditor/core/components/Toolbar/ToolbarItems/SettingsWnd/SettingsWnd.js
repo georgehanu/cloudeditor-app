@@ -7,6 +7,7 @@ const SliderWnd = require("../Slider/SliderWnd/SliderWnd");
 const ColorSelectorWnd = require("../ColorSelector/ColorElements/ColorSelectorWnd");
 const SpecialEffectsWnd = require("../SpecialEffectsWnd/SpecialEffectsWnd");
 const ChangeShapeWnd = require("../ChangeShapeWnd/ChangeShapeWnd");
+const ToolbarGalleryPreviewWnd = require("../ToolbarGalleryPreviewWnd/ToolbarGalleryPreviewWnd");
 
 const SettingsWnd = props => {
   /* Merge the props with the data from Config */
@@ -43,6 +44,15 @@ const SettingsWnd = props => {
   else if (item.baseType === Types.CHANGE_SHAPE_WND)
     itemData = (
       <ChangeShapeWnd
+        {...item}
+        ToolbarHandler={props.ToolbarHandler}
+        handler={props.handler}
+        {...props.itemData}
+      />
+    );
+  else if (item.baseType === Types.GALLERY_PREVIEW_WND)
+    itemData = (
+      <ToolbarGalleryPreviewWnd
         {...item}
         ToolbarHandler={props.ToolbarHandler}
         handler={props.handler}

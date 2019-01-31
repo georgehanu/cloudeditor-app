@@ -2,6 +2,7 @@ const React = require("react");
 const { withNamespaces } = require("react-i18next");
 
 const PageHeader = props => {
+  const showPagesWarning = props.nrPages % 4 ? true : false;
   return (
     <div className="pageSelectorHeader">
       <div className="pageHeaderText">
@@ -37,16 +38,10 @@ const PageHeader = props => {
           </button>
         )}
       </div>
-      {/*}
-      <div className="pageAddPagesContainer">
-        <button
-          className="pageHeaderButtonAddPages"
-          onClick={props.showAddPages}
-        >
-          {props.t("Add pages")}
-        </button>        
+      <div className="pageHeaderMessage">
+        {showPagesWarning &&
+          props.t("Invalid number of pages. It should be a multiply of 4.")}
       </div>
-        */}
     </div>
   );
 };

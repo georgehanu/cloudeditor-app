@@ -65,6 +65,17 @@ const removeAssetFromGallery = (state, action) => {
     return el.id !== action.id;
   });
 
+  if (action.fromToolbar) {
+    return {
+      ...state,
+      [action.type]: {
+        ...state[action.type],
+        uploadedFiles: newUploadedFiles,
+        loadingDeleteToolbar: false
+      }
+    };
+  }
+
   return {
     ...state,
     [action.type]: {
@@ -76,6 +87,15 @@ const removeAssetFromGallery = (state, action) => {
 };
 
 const removeAssetFromGalleryStart = (state, action) => {
+  if (action.fromToolbar) {
+    return {
+      ...state,
+      [action.type]: {
+        ...state[action.type],
+        loadingDeleteToolbar: true
+      }
+    };
+  }
   return {
     ...state,
     [action.type]: {
@@ -86,6 +106,15 @@ const removeAssetFromGalleryStart = (state, action) => {
 };
 
 const removeAssetFromGalleryFailed = (state, action) => {
+  if (action.fromToolbar) {
+    return {
+      ...state,
+      [action.type]: {
+        ...state[action.type],
+        loadingDeleteToolbar: false
+      }
+    };
+  }
   return {
     ...state,
     [action.type]: {

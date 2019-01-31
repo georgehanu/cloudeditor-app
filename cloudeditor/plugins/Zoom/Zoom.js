@@ -49,6 +49,12 @@ const Zoom = props => {
         >
           200%
         </button>
+        <button
+          className="zoomButtonBottom"
+          onClick={() => props.setZoomValue(4)}
+        >
+          400%
+        </button>
       </div>
     </div>
   );

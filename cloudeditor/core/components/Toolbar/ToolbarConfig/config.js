@@ -41,7 +41,8 @@ const Config = {
   [Types.BUTTON_CHANGE_IMAGE]: {
     baseType: Types.BUTTON,
     className: "icon printqicon-background",
-    parentClassName: "AlignItem"
+    parentClassName: "AlignItem",
+    settingsHandler: Types.GALLERY_PREVIEW_WND
   },
   [Types.BUTTON_CHANGE_SHAPE]: {
     baseType: Types.BUTTON,
@@ -382,6 +383,10 @@ const Config = {
   [Types.CHANGE_SHAPE_WND]: {
     baseType: Types.CHANGE_SHAPE_WND,
     type: Types.CHANGE_SHAPE_WND
+  },
+  [Types.GALLERY_PREVIEW_WND]: {
+    baseType: Types.GALLERY_PREVIEW_WND,
+    type: Types.GALLERY_PREVIEW_WND
   }
 };
 module.exports = Config;

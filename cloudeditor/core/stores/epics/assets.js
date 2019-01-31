@@ -116,13 +116,17 @@ module.exports = {
                   type: REMOVE_ASSET_FROM_GALLERY_SUCCESS,
                   payload: {
                     id: action$.payload.id,
-                    type: action$.payload.type
+                    type: action$.payload.type,
+                    fromToolbar: action$.payload.fromToolbar
                   }
                 });
               } else {
                 obs.next({
                   type: REMOVE_ASSET_FROM_GALLERY_FAILED,
-                  payload: { message: data.message }
+                  payload: {
+                    message: data.message,
+                    fromToolbar: action$.payload.fromToolbar
+                  }
                 });
                 obs.complete();
               }
@@ -130,7 +134,10 @@ module.exports = {
             .catch(error => {
               obs.next({
                 type: REMOVE_ASSET_FROM_GALLERY_FAILED,
-                payload: { message: "Error message: " + error.message }
+                payload: {
+                  message: "Error message: " + error.message,
+                  fromToolbar: action$.payload.fromToolbar
+                }
               });
               obs.complete();
             });
