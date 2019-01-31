@@ -63,14 +63,7 @@ class ObjectBlock extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     const list = [];
-    if (nextProps.viewOnly) {
-      console.log(
-        "text ",
-        nextProps.uuid,
-        nextProps.deleteMissingImages,
-        nextProps.viewOnly
-      );
-    }
+
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
     if (equals(nProps, cProps)) {
@@ -410,9 +403,7 @@ class ObjectBlock extends React.Component {
     let element = null;
 
     //console.log("renderElement", this.props.id);
-    if (this.props.viewOnly) {
-      console.log("apo", this.props.deleteMissingImages);
-    }
+
     switch (this.props.subType) {
       case "textflow":
       case "text":

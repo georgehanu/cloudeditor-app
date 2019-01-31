@@ -162,7 +162,10 @@ const build = config => {
           ...copyFrom
         ],
         { debug: prod ? "" : "" }
-      )
+      ),
+      new webpack.DefinePlugin({
+        PRODUCTION: JSON.stringify(prod)
+      })
     ],
     devServer: {
       port: config.port,

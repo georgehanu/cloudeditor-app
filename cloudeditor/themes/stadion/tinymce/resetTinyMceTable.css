@@ -1,16 +1,22 @@
-html {
-  font-size: 1px;
+html * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
+
 body {
+  transform-origin: left top;
   padding: 0px !important;
-  overflow-x: hidden !important;
+  overflow: hidden !important;
   width: 10000px;
   height: 10000px;
-  overflow: hidden;
+  background-color: #fff;
 }
 table {
   width: auto;
   height: auto;
+  border: 0px;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 body,
 td,
@@ -18,9 +24,23 @@ pre {
   color: #000000;
   font-family: Arial, Helvetica, sans-serif;
 }
-body .tableContainer {
-  transform-origin: left top;
+
+td,
+th {
+  font-family: inherit;
+  font-size: inherit;
 }
+
+body.autoDimTable table {
+  width: auto !important;
+  height: auto !important;
+}
+
+body.minDimTable table {
+  width: 10px !important;
+  height: 10px !important;
+}
+
 .mce-panel {
   background-color: rgba(0, 0, 0, 0) !important;
   border: none;
@@ -73,26 +93,10 @@ div.mce-edit-area {
   border-spacing: 0px;
 }
 
-.tableContainer {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  top: 0;
-  left: 0;
-}
 .hideResize .mce-resizehandle {
   display: none !important;
 }
-html {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-html body {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
+
 .mce-content-body .mce-clonedresizable {
   transform-origin: left top;
 }

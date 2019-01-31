@@ -1,6 +1,5 @@
 const React = require("react");
 const { Editor } = require("@tinymce/tinymce-react");
-//const IframeComm = require("react-iframe-comm").default;
 const { pathOr } = require("ramda");
 require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
@@ -13,7 +12,6 @@ class Tinymce extends React.Component {
     super(props);
     this.tinyEditor = null;
     this.coverRef = React.createRef();
-    this.currentNode = null;
   }
 
   hasClass(el, className) {
@@ -32,6 +30,20 @@ class Tinymce extends React.Component {
       var reg = new RegExp("(\\s|^)" + className + "(\\s|$)");
       el.className = el.className.replace(reg, " ");
     }
+  }
+
+  getTableSize1(editor, bodyClass) {
+    let result = { width: null, height: null };
+
+    if (!editor) return result;
+
+    const body = editor.getBody();
+
+    if (bodyClass != undefined) {
+      this.addClass(body, bodyClass);
+    }
+
+    return result;
   }
 
   getTableSize(editor) {
@@ -84,30 +96,6 @@ class Tinymce extends React.Component {
           "width:" + size.width + "px; height:" + size.height + "px;";
       }
     }
-  }
-
-  initCallbackHandler = editor => {
-    if (this.props.viewOnly) {
-      editor.setMode("readonly");
-    }
-
-    const tableSize = this.getTableAutoSize(editor);
-
-    this.props.onUpdateProps({
-      id: this.props.id,
-      props: tableSize
-    });
-  };
-
-  getSnapshotBeforeUpdate(prevProps, prevState) {
-    let selection = null;
-    let editor = null;
-    if (this.tinyEditor) {
-      editor = this.tinyEditor.editor;
-      selection = this.tinyEditor.editor.selection.getNode();
-    }
-
-    return { selection: selection };
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -175,48 +163,59 @@ class Tinymce extends React.Component {
     }
   };
 
-  render() {
+  getContentCss() {
     const globalConfig = ConfigUtils.getDefaults();
-    const { width, height, tableContent, zoomScale } = this.props;
+    let content_css = undefined;
 
-    let tableScale = 1;
-    if (width > 0 && height > 0) {
-      tableScale = zoomScale;
+    if (!PRODUCTION) {
+      content_css = "http://localhost:8081/tinymce/resetTinyMceTable.css";
+    } else {
+      content_css =
+        globalConfig.baseUrl +
+        globalConfig.publicPath +
+        "tinymce/resetTinyMceTable.css";
     }
 
+    return content_css;
+  }
+
+  initCallbackHandler = editor => {
+    if (this.props.viewOnly) {
+      editor.setMode("readonly");
+    }
+
+    const tableSize = this.getTableAutoSize(editor);
+
+    this.props.onUpdateProps({
+      id: this.props.id,
+      props: tableSize
+    });
+  };
+
+  render() {
+    const { width, height, tableContent, zoomScale } = this.props;
     let disableCover = null;
 
     if (this.props.viewOnly || !this.props.active) {
       disableCover = <div ref={this.coverRef} className="tinyMceCover" />;
-      resizeCover = <div ref={this.coverRef} className="tinyMceCover" />;
     }
 
     return (
       <React.Fragment>
         <Editor
-          value={
-            "<div class='tableContainer' style='transform:scale(" +
-            tableScale +
-            "); width:10000px; height:10000px;" +
-            "'>" +
-            this.props.tableContent +
-            "</div>" //key={uuidv4()}
-          }
+          value={this.props.tableContent}
           ref={node => (this.tinyEditor = node)}
           init={{
-            plugins: "table autoresize",
+            plugins: "table autoresize paste",
             toolbar: false,
-            content_css:
-              globalConfig.baseUrl +
-              globalConfig.publicPath +
-              "tinymce/resetTinyMceTable.css",
+            content_css: this.getContentCss(),
             menubar: false,
             resize: !this.props.viewOnly,
             object_resizing: !this.props.viewOnly,
             body_class: "TinymceContainer",
             init_instance_callback: this.initCallbackHandler
           }}
-          onChange={this.onChangeHandler}
+          onEditorChange={this.onChangeHandler}
           onKeyUp={this.onKeyUpHandler}
           id={"Tiny" + this.props.uuid}
         />
