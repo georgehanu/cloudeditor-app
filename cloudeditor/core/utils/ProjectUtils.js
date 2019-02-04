@@ -92,7 +92,7 @@ const getObjectsDefaults = cfg => {
       type: "image",
       subType: "image",
       alternateZoom: 0,
-      backgroundBlock: 0,
+      backgroundblock: 0,
       borderWidth: 0,
       contrast: 0,
       luminosite: 0,

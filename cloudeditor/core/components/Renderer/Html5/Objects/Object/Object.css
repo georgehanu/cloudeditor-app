@@ -9,6 +9,9 @@
   cursor: default;
 }
 
+.pageBlock.backgroundblock {
+  pointer-events: none;
+}
 .pageBlock .blockOrientation {
   position: relative;
   z-index: 1;

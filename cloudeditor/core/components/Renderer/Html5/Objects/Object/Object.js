@@ -226,7 +226,8 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       mirrored,
-      parent
+      parent,
+      backgroundblock
     } = props;
 
     const classes = [
@@ -234,6 +235,7 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       active && !viewOnly ? "active" : "",
+      backgroundblock && !viewOnly ? "backgroundblock" : "",
       editable ? "editable" : "",
       !viewOnly ? "block_" + props.id : ""
     ].join(" ");
@@ -273,7 +275,7 @@ class ObjectBlock extends React.Component {
       );
     }
     let deleteHandle = null;
-    if (this.props.deletable && !viewOnly) {
+    if (this.props.deletable && !viewOnly && !this.props.backgroundblock) {
       deleteHandle = (
         <div
           onClick={event => {

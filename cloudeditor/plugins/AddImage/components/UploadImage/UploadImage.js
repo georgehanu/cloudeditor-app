@@ -68,24 +68,3 @@ const UploadImagePlugin = connect(
 )(withNamespaces("addImage")(UploadImage));
 
 module.exports = { UploadImage: UploadImagePlugin };
-
-/*
-<div className="UploadFileInputs">
-<label htmlFor="image-file-upload" className="UploadLabel">
-  <span className="UploadIcon icon printqicon-upload" />
-  <span className="UploadMessage">
-    {this.props.t("Upload your own")}
-  </span>
-</label>
-<input
-  type="file"
-  id="image-file-upload"
-  className="UploadFormInput"
-  onChange={this.selectUploadFileHandler}
-  accept="image/*"
-/>
-</div>
-<div className="UploadDescription">
-{this.props.t("Select and insert the image")}
-</div>
-*/
