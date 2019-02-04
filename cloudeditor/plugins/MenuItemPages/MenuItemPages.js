@@ -24,7 +24,7 @@ require("./MenuItemPages.css");
 class MenuItemPages extends React.Component {
   pageSelect = (page_id, index) => {
     if (this.props.previewEnabeld) {
-      this.props.previewLoadPage(index);
+      this.props.previewLoadPage({ page_id });
     } else {
       this.props.onChangePageHandler({ page_id });
     }

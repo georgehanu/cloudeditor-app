@@ -234,7 +234,8 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       active && !viewOnly ? "active" : "",
-      editable ? "editable" : ""
+      editable ? "editable" : "",
+      !viewOnly ? "block_" + props.id : ""
     ].join(" ");
 
     const style = {
@@ -250,7 +251,15 @@ class ObjectBlock extends React.Component {
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-
+    const styleBorderColor = {
+      width: width + parseFloat(borderWidth),
+      height: height + parseFloat(borderWidth),
+      borderColor:
+        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
+      top: (-1 * parseFloat(borderWidth)) / 2,
+      left: (-1 * parseFloat(borderWidth)) / 2
+    };
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
@@ -274,6 +283,7 @@ class ObjectBlock extends React.Component {
             this.props.onDeleteObjectHandler({
               id: this.props.id
             });
+            // this.props.deleteMissingImages(this.props.id);
           }}
           className={"deleteBlockHandler"}
         >
@@ -293,7 +303,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        {/* <div className={"blockBorder"} style={styleBorderColor} /> */}
+        {<div className={"blockBorder"} style={styleBorderColor} />}
         <u style={{ width, height }} />
 
         {rotatableHandle}

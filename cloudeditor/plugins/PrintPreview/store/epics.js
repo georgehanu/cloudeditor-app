@@ -1,5 +1,6 @@
 const {
   PREVIEW_LOAD_PAGE,
+  PREVIEW_GET_PAGE,
   PREVIEW_LOAD_PAGE_SUCCESS,
   PREVIEW_LOAD_PAGE_FAILED
 } = require("./actionTypes");
@@ -8,10 +9,125 @@ const qs = require("qs");
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
-const { head } = require("ramda");
+const { head, forEachObjIndexed, findIndex } = require("ramda");
 
 const PRINT_PREVIEW_URL =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/previewCloudeditor";
+const PRINT_GET_PAGE_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/getPageCloudeditor";
+const getPage = (state$, obs, payload) => {
+  const index = state$.value.project.pagesOrder.indexOf(payload.page_id);
+  let imageUrls = { ...state$.value.preview.imageUrls };
+  let pageUrl = "";
+  if (typeof imageUrls[index] !== "undefined") {
+    pageUrl = imageUrls[index];
+    obs.next({
+      type: PREVIEW_LOAD_PAGE_SUCCESS,
+      payload: {
+        imageUrls,
+        pageUrl
+      }
+    });
+    return false;
+  }
+  const serverData = {
+    page: index + 1,
+    productId: state$.value.productInformation.productId,
+    templateId: state$.value.productInformation.templateId,
+    selection: state$.value.selection
+  };
+  axios
+    .post(PRINT_GET_PAGE_URL, qs.stringify(serverData))
+    .then(resp => resp.data)
+    .then(data => {
+      if (data.success) {
+        if (Array.isArray(data.data.image)) {
+          imageUrls = data.data.image;
+          pageUrl = data.data.image[index];
+        } else {
+          pageUrl = data.data.image;
+          imageUrls[index] = data.data.image;
+        }
+        obs.next({
+          type: PREVIEW_LOAD_PAGE_SUCCESS,
+          payload: {
+            imageUrls,
+            pageUrl
+          }
+        });
+      } else {
+        obs.next({
+          type: PREVIEW_LOAD_PAGE_FAILED,
+          payload: data.message
+        });
+      }
+      obs.complete();
+    })
+    .catch(error => {
+      obs.next({
+        type: PREVIEW_LOAD_PAGE_FAILED,
+        payload: "Error message: " + error.message
+      });
+      obs.complete();
+    });
+};
+const getPreview = (state$, obs) => {
+  const project = {
+    pages: { ...state$.value.project.pages },
+    objects: { ...state$.value.project.objects },
+    pagesOrder: { ...state$.value.project.pagesOrder },
+    configs: {
+      ...state$.value.project.configs.document,
+      objects: { ...state$.value.project.configs.objects }
+    },
+    fontsLoadUrl:
+      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/loadFonts/id/" +
+      state$.value.productInformation.templateId
+  };
+  const serverData = {
+    project,
+    productId: state$.value.productInformation.productId,
+    templateId: state$.value.productInformation.templateId,
+    selection: state$.value.selection,
+    fonts: state$.value.ui.fonts
+  };
+  axios
+    .post(PRINT_PREVIEW_URL, qs.stringify(serverData))
+    .then(resp => resp.data)
+    .then(data => {
+      if (data.success) {
+        let imageUrls = { ...state$.value.preview.imageUrls };
+        let pageUrl = "";
+        if (Array.isArray(data.data.image)) {
+          imageUrls = data.data.image;
+          pageUrl = head(data.data.image);
+        } else {
+          pageUrl = data.data.image;
+          imageUrls[0] = data.data.image;
+        }
+        obs.next({
+          type: PREVIEW_LOAD_PAGE_SUCCESS,
+          payload: {
+            imageUrls,
+            pageUrl
+          }
+        });
+      } else {
+        obs.next({
+          type: PREVIEW_LOAD_PAGE_FAILED,
+          payload: data.message
+        });
+      }
+      obs.complete();
+    })
+    .catch(error => {
+      obs.next({
+        type: PREVIEW_LOAD_PAGE_FAILED,
+        payload: "Error message: " + error.message
+      });
+      obs.complete();
+    });
+};
 
 module.exports = {
   onEpicPreview: (action$, state$) =>
@@ -19,34 +135,12 @@ module.exports = {
       ofType(PREVIEW_LOAD_PAGE),
       mergeMap(action$ =>
         Observable.create(obs => {
-          const serverData = {
-            project: { ...state$.value.project },
-            selection: state$.value.selection
-          };
-          axios
-            .post(PRINT_PREVIEW_URL, qs.stringify(serverData))
-            .then(resp => resp.data)
-            .then(data => {
-              if (data.status === "success") {
-                obs.next({
-                  type: PREVIEW_LOAD_PAGE_SUCCESS,
-                  payload: head(data.images)
-                });
-              } else {
-                obs.next({
-                  type: PREVIEW_LOAD_PAGE_FAILED,
-                  payload: data.error_message
-                });
-              }
-              obs.complete();
-            })
-            .catch(error => {
-              obs.next({
-                type: PREVIEW_LOAD_PAGE_FAILED,
-                payload: "Error message: " + error.message
-              });
-              obs.complete();
-            });
+          const { payload } = action$;
+          if (!Object.keys(state$.value.preview.imageUrls).length) {
+            getPreview(state$, obs);
+          } else {
+            getPage(state$, obs, payload);
+          }
         })
       )
     )

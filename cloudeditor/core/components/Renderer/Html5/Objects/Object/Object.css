@@ -50,6 +50,7 @@
   width: 0;
   height: 0;
   display: block;
+  pointer-events: none;
 }
 
 .pageBlock.header,
