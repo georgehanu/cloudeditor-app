@@ -36,9 +36,9 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
         tooltipIcon = <div className="noLayoutImg" />;
       } else {
         tooltipIcon = (
-          <div>
-            <img src={props.tooltip.imageSrc} alt="" />
-          </div>
+          <div
+            style={{ backgroundImage: 'url("' + props.tooltip.imageSrc + '")' }}
+          />
         );
       }
     }

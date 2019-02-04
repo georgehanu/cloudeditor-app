@@ -32,6 +32,8 @@ class MenuItemCancel extends React.Component {
             clicked={() => {
               this.setState({ showAlert: true });
             }}
+            onMouseEnter={this.props.onMouseEnter}
+            onMouseLeave={this.props.onMouseLeave}
           >
             {this.props.t(this.props.text)}
           </ProjectMenuButton>

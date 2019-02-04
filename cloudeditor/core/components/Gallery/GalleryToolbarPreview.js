@@ -4,12 +4,10 @@ const galleryToolbarPreview = props => {
   const className = "uploadGalleryItem ";
 
   return (
-    <div className={className}>
-      <img
-        src={props.image.thumbnail_src}
-        alt="galleryItem"
-        className="uploadGalleryItemImage"
-      />
+    <div
+      className={className}
+      style={{ backgroundImage: 'url("' + props.image.thumbnail_src + '")' }}
+    >
       <div className="galleryItemActions">
         <span
           className="select icon printqicon-ok"

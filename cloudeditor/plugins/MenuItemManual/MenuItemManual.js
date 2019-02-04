@@ -27,6 +27,8 @@ class MenuItemManual extends React.Component {
           <ProjectMenuButton
             active={this.props.active}
             clicked={this.onShowWnd}
+            onMouseEnter={this.props.onMouseEnter}
+            onMouseLeave={this.props.onMouseLeave}
           >
             {this.props.t(this.props.text)}
           </ProjectMenuButton>

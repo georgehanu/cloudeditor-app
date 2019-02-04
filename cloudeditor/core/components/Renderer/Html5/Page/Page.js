@@ -69,16 +69,45 @@ const PageTarget = {
         default:
           break;
       }
-      object.width = width;
-      object.height = width * aspectRatio;
+      if (props.headerConfig.mode === "edit") {
+        object.height = parseInt(props.headerConfig.height, 10);
+        object.width = object.height / aspectRatio;
+      } else if (props.footerConfig.mode === "edit") {
+        object.height = parseInt(props.footerConfig.height, 10);
+        object.width = object.height / aspectRatio;
+      } else {
+        object.width = width;
+        object.height = width * aspectRatio;
+      }
       const position = monitor.getSourceClientOffset();
 
       object.left = (-1 * (componentBounding.x - position.x)) / props.zoomScale;
       object.top = (-1 * (componentBounding.y - position.y)) / props.zoomScale;
+      // TODO add in objects header/footer
       props.onAddObjectHandler(object);
     }
   },
   canDrop(props, monitor) {
+    const position = monitor.getSourceClientOffset();
+    if (
+      props.headerConfig.mode === "edit" ||
+      props.footerConfig.mode === "edit"
+    ) {
+      const headerFooterOverlay = document.getElementById(
+        "headerFooterOverlayId"
+      );
+
+      const overlayDimensions = headerFooterOverlay.getBoundingClientRect();
+      if (
+        position.x >= overlayDimensions.x &&
+        position.x <= overlayDimensions.x + overlayDimensions.width &&
+        position.y >= overlayDimensions.y &&
+        position.y <= overlayDimensions.y + overlayDimensions.height
+      ) {
+        return false;
+      }
+    }
+
     if (!props.viewOnly) {
       return true;
     }
@@ -392,6 +421,7 @@ class Page extends React.Component {
         style={pageStyle}
         className="pageContainer page"
       >
+        {/*<div className="pageOverlay" id="pageOverlay" />*/}
         {this.renderObjects()}
 
         {boxes}

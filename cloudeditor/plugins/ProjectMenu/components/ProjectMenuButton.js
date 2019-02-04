@@ -8,7 +8,13 @@ const projectMenuButton = props => {
 
   const className = defaultClasses.join(" ");
   return (
-    <button type="button" onClick={props.clicked} className={className}>
+    <button
+      type="button"
+      onClick={props.clicked}
+      className={className}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
+    >
       <div className="buttonName">{props.children}</div>
       <div className="buttonIcon">
         <span className="icon stadion-down stadion-icon" />

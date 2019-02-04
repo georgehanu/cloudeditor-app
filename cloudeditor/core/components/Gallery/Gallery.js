@@ -91,6 +91,7 @@ class Gallery extends React.PureComponent {
                 {...el}
                 type={this.props.type}
                 deleteAsset={this.onDeleteHandler}
+                addContainerClasses={this.props.addContainerClasses}
               />
             </LazyLoad>
           </li>

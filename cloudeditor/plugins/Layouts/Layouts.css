@@ -1,14 +1,18 @@
-.tooltipImage img {
-  height: auto;
-  width: 300px;
+.tooltipImage {
+  height: 240px;
+  width: 240px;
 }
 
 .__react_component_tooltip.type-dark.tooltipImage {
   background-color: transparent !important;
 }
 
-.tooltipImage .tooltip {
-  max-width: 300px !important;
+.tooltipImage div {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100%;
+  height: 100%;
 }
 
 .__react_component_tooltip.type-dark.tooltipImage.place-bottom .Tooltip {
@@ -65,4 +69,9 @@
 
 .layoutHeaderContainer .headerPoptextSelect__menu * {
   cursor: pointer;
+}
+
+.LayoutsContainer .__react_component_tooltip.type-dark,
+.LayoutsContainer .tooltip {
+  background-color: transparent !important;
 }

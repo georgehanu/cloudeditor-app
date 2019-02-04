@@ -19,10 +19,11 @@ const galleryPreviewItem = props => {
           </div>
         ) : (
           <div className="uploadGalleryItemImageContainer">
-            <img
-              src={props.thumbnail_src}
-              alt={props.title}
-              className="uploadGalleryItemImage"
+            <div
+              className="uploadGalleryItemImage "
+              style={{
+                backgroundImage: 'url("' + props.thumbnail_src + '")'
+              }}
             />
           </div>
         )}

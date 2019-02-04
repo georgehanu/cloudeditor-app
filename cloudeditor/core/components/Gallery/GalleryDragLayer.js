@@ -36,10 +36,12 @@ const galleryDragLayer = props => {
   return (
     <div style={layerStyles}>
       <div style={getItemStyles(props)}>
-        <img
-          className="previewImagegalleryPreview"
-          src={props.item.image_src}
-        />
+        <div className="previewImagegalleryPreviewContainer">
+          <div
+            style={{ backgroundImage: 'url("' + props.item.image_src + '")' }}
+            className="previewImagegalleryPreview"
+          />
+        </div>
       </div>
     </div>
   );

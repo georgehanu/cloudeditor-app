@@ -10,6 +10,7 @@ const { getEmptyImage } = require("react-dnd-html5-backend");
 
 const PageSource = {
   beginDrag(props) {
+    props.addContainerClasses("GalleryItem", ["containerMaxZindex"]);
     return {
       id: uuidv4(),
       type: type,
@@ -22,6 +23,9 @@ const PageSource = {
   },
   canDrag(props, monitor) {
     return true;
+  },
+  endDrag(props) {
+    props.addContainerClasses("GalleryItem", []);
   }
 };
 
@@ -53,17 +57,15 @@ class galleryItem extends React.Component {
         : "");
 
     return (
-      <div className={className}>
+      <div
+        className={className}
+        style={{ backgroundImage: 'url("' + this.props.thumbnail_src + '")' }}
+      >
         {this.props.connectDragPreview(
           <div>
             <GalleryDragLayer />
           </div>
         )}
-        <img
-          src={this.props.thumbnail_src}
-          alt="galleryItem"
-          className="uploadGalleryItemImage"
-        />
         <div className="galleryItemActions">
           {this.props.connectDragSource(
             <span className="select icon printqicon-ok" />
