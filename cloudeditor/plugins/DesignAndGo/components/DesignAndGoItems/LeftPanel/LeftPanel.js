@@ -30,7 +30,7 @@ class LeftPanel extends React.Component {
             {this.props.showSlider && (
               <React.Fragment>
                 <SliderCarousel
-                  sliderData={this.props.sliderData}
+                  products={this.props.products}
                   onDataOpenHandler={this.props.onDataOpenHandler}
                 />
                 <div className="EditLabelButtonContainer">
@@ -44,7 +44,7 @@ class LeftPanel extends React.Component {
                 </div>
               </React.Fragment>
             )}
-            <Fields sliderData={this.props.sliderData} />
+            <Fields />
           </div>
         </div>
       </div>

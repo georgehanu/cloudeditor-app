@@ -11,18 +11,15 @@ const createDraggable = ($el, onDragStart, onDrag, onDragStop) => {
       snapTolerance: 10,
       helper: "original",
       start: (event, ui) => {
-        console.log("start draggable");
         if (is(Function, onDragStart)) onDragStart(event, ui);
       },
       drag: (event, ui) => {
-        console.log("drag draggable");
         if (is(Function, onDrag)) onDrag(event, ui);
       },
       stop: (event, ui) => {
         $(event.originalEvent.target).one("click", function(e) {
           e.stopImmediatePropagation();
         });
-        console.log("stop draggable");
         if (is(Function, onDragStop)) onDragStop(event, ui);
       },
       snapped: (event, ui) => {

@@ -37,7 +37,6 @@ const Fields = props => {
   const { variables, variablesConfigs, dagChangeInput } = props;
 
   const items = Object.keys(variables).map(vKey => {
-    console.log("fieldVariables", variables[vKey], vKey);
     return (
       <InputVariable
         key={vKey}

@@ -142,7 +142,6 @@ const displayedPageSelector = groupSelector => {
       var x = { y: 1, x: 3 };
 
       const offset = { left: 0, top: 0 };
-      console.log("selectot html5", group);
       forEach(page => {
         innerPages[page] = merge(pages[page], config);
         innerPages[page]["boxes"] = {
@@ -249,7 +248,6 @@ const scaledDisplayedPageSelector = (
     displayedPageSelector,
     zoomScaleSelector,
     (page, zoomScale) => {
-      console.log("selectot scale", zoomScale);
       let scaledPage = clone(page);
       if (zoomScale === 1) return scaledPage;
 

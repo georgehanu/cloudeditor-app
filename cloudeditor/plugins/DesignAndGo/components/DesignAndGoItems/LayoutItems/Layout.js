@@ -3,7 +3,7 @@ const React = require("react");
 const LeftPanel = require("../LeftPanel/LeftPanel");
 const RightPanel = require("../RightPanel/RightPanel");
 const SliderCarousel = require("../SliderCarousel/SliderCarousel");
-const { dagSliderDataSelector } = require("../../../store/selectors");
+const { dagProductsSelector } = require("../../../store/selectors");
 
 const { connect } = require("react-redux");
 
@@ -37,13 +37,13 @@ class Layout extends React.Component {
                 data={this.props.data}
                 onMenuOpenHandler={this.props.onMenuOpenHandler}
                 onDataOpenHandler={this.props.onDataOpenHandler}
-                sliderData={this.props.sliderData}
                 showSlider={this.state.width > MobileBreakpoint ? false : true}
+                products={this.props.products}
               />
               <RightPanel />
             </div>
             {this.state.width > MobileBreakpoint && (
-              <SliderCarousel sliderData={this.props.sliderData} />
+              <SliderCarousel products={this.props.products} />
             )}
           </div>
         </div>
@@ -54,7 +54,7 @@ class Layout extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    sliderData: dagSliderDataSelector(state)
+    products: dagProductsSelector(state)
   };
 };
 

@@ -24,7 +24,6 @@ module.exports = {
       ofType(DAG_UPLOAD_IMAGE),
       mergeMap(action$ =>
         Observable.create(obs => {
-          console.log("Sssss");
           let serverData = new FormData();
           serverData.append("fileToUpload", action$.payload.image);
           axios

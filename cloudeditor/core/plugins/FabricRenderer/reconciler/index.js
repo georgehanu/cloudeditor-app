@@ -68,15 +68,6 @@ const hostConfig = {
 
     if (canvas.totalChilds === canvas.getObjects().length) {
       canvas.fire("canvas:objects:ready");
-      // console.log(
-      //   arguments[0].instance.toDataURL({
-      //     left: canvas.getCanvasOffsetX(),
-      //     top: canvas.getCanvasOffsetY(),
-      //     width: canvas.getCanvasWorkingWidth(),
-      //     height: canvas.getCanvasWorkingHeight(),
-      //     format: "png"
-      //   })
-      // );
     }
     logger.info("resetAfterCommit");
     // Noop

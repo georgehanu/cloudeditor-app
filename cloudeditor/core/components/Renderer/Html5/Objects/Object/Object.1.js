@@ -42,15 +42,12 @@ class ObjectBlock extends React.Component {
   };
 
   componentDidUpdate() {
-    console.log("editableRef2", this.editable);
     if (this.editable) {
       this.editable.setFocus();
       this.editable.setCaret();
     }
   }
-  componentDidMount() {
-    console.log("editableRef1", this.editable);
-  }
+  componentDidMount() {}
 
   renderText = props => {
     const textProps = {

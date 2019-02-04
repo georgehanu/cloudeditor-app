@@ -208,8 +208,6 @@ class ContentEditable extends React.Component {
       ...props
     } = this.props;
 
-    console.log("editable render");
-
     return (
       <Element
         {...omit(props, Object.keys(propTypes))}

@@ -1,0 +1,9 @@
+.itemLabel {
+  width: 50%;
+  height: 50%;
+  top: 10%;
+  left: 10%;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+}

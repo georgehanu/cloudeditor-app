@@ -382,7 +382,7 @@ body,
   height: 100%;
 }
 
-.slick-slide div {
+.slick-slide > div {
   height: 100%;
 }
 
@@ -934,6 +934,10 @@ section.dropzone {
   .MenuDataModalContainer {
     margin-left: 20px;
     margin-right: 20px;
+  }
+
+  .productSliderContainer {
+    width: 100%;
   }
 }
 

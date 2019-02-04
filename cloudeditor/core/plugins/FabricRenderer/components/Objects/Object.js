@@ -61,8 +61,6 @@ class ObjectBlock extends React.PureComponent {
       block = applyZoomScaleToTarget(block, scale, defaultPaths);
     }
 
-    console.log("scaledBlockscaledBlock", block);
-
     const { type, left, top, id } = block;
 
     let text = block.text || {};
@@ -139,12 +137,6 @@ const mapStateToProps = (state, props) => {
 
   const variables = scaledBlock["variables"];
 
-  console.log(
-    "mapStateToPropsforvar",
-    variables,
-    scaledBlock["scaledBlock"].text
-  );
-
   let Block = scaledBlock["scaledBlock"];
   if (variables.length) {
     Block = { ...Block };
@@ -155,15 +147,9 @@ const mapStateToProps = (state, props) => {
     });
   }
 
-  console.log("scaledBlockscaledBlock", scaledBlock);
   return {
     block: Block
   };
 };
-
-// module.exports = connect(
-//   mapStateToProps,
-//   null
-// )(ObjectBlock);
 
 module.exports = ObjectBlock;

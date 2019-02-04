@@ -63,20 +63,15 @@ class Page extends React.Component {
         >
           <Objects
             objects={objects}
+            stateObjects={this.props.stateObjects}
+            variables={this.props.variables}
+            configs={this.props.configs}
             pageOffsetX={pageOffsetX}
             pageOffsetY={pageOffsetY}
             scale={scale}
             viewOnly={viewOnly}
             designerCallbacks={this.props.designerCallbacks}
           />
-          {/* <Boxes
-            boxes={this.props.boxes}
-            offsetX={pageOffsetX}
-            offsetY={pageOffsetY}
-            width={this.props.width}
-            height={this.props.height}
-            scale={scale}
-          /> */}
         </Fabric>
       </React.Fragment>
     );
@@ -115,9 +110,15 @@ const makeMapStateToProps = (state, props) => {
     const scaledPage = getScaledDisplayedPageSelector(state, props);
     return {
       ...scaledPage,
-      objectsOffsetList: getObjectsOffsetsList(state, props)
+      objectsOffsetList: getObjectsOffsetsList(state, props),
+      stateObjects: state.project.objects,
+      variables: state.variables.variables,
+      configs: state.project.configs.objects
     };
   };
   return mapStateToProps;
 };
-module.exports = hot(module)(connect(makeMapStateToProps)(Page));
+module.exports = connect(
+  makeMapStateToProps,
+  null
+)(Page);

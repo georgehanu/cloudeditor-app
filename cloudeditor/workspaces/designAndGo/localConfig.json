@@ -22,5 +22,12 @@
       "width": 500,
       "height": 500
     }
-  }
+  },
+  "translations": {
+    "baseUrl": "http://localhost:8081/",
+    "publicPath": "",
+    "basePath": "locales"
+  },
+  "baseUrl": "http://localhost:8081/",
+  "publicPath": ""
 }

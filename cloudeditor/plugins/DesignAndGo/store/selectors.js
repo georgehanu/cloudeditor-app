@@ -5,6 +5,9 @@ const {
   variablesVariableSelector
 } = require("../../../core/stores/selectors/variables");
 
+const dagRealDimensionSelector = state =>
+  pathOr({ width: 0, height: 0 }, ["designAndGo", "realDimension"], state);
+
 const dagLoadingSelector = state =>
   (state && state.designAndGo && state.designAndGo.loading) || false;
 
@@ -22,6 +25,9 @@ const dagImagePathSelector = state =>
 
 const dagSliderDataSelector = state =>
   (state && state.designAndGo && state.designAndGo.sliderData) || [];
+
+const dagProductsSelector = state =>
+  pathOr([], ["designAndGo", "products"], state);
 
 const dagActiveSliderSelector = state =>
   (state && state.designAndGo && state.designAndGo.activeSlider) || 0;
@@ -73,7 +79,6 @@ const getVariablesByFilter = createCachedSelector(
   state => pathOr({}, ["variables", "variables"], state),
   (state, filterStr) => filterStr,
   (variables, filterStr) => {
-    console.log("getVariablesByFilter", filterStr);
     const filteredVar = filter(
       pathEq(["general", "displayFilter"], filterStr),
       variables
@@ -83,10 +88,12 @@ const getVariablesByFilter = createCachedSelector(
 )((state, filterStr) => `variableFilter${filterStr}`);
 
 module.exports = {
+  dagRealDimensionSelector,
   dagLoadingSelector,
   dagErrorMessageSelector,
   dagImagePathSelector,
   dagSliderDataSelector,
+  dagProductsSelector,
   dagActiveSliderSelector,
   dagShowUploadImageSelector,
   dagColorsSelector,

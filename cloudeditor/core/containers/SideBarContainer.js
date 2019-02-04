@@ -39,7 +39,6 @@ class SideBarContainer extends React.Component {
     return this.props.tools.map((tool, i) => {
       const Tool = this.getTool(tool);
       const toolCfg = this.getToolConfig(tool);
-      console.log(tool, "Toold");
 
       const iconStyle = "icon " + (tool.icon ? tool.icon : "");
       return (

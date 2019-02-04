@@ -6,11 +6,11 @@ Arrows.PrevArrow.prototype.clickHandler = function clickHandler(options, e) {
   }
   let returnValue = window.changeSlider(true, false);
   if (returnValue) {
-    this.forceUpdate();
+    //this.forceUpdate();
     this.props.clickHandler(options, e);
     setTimeout(() => {
       window.changeSlider(false, undefined);
-      this.forceUpdate();
+      //this.forceUpdate();
     }, 500);
   }
 };
@@ -21,11 +21,11 @@ Arrows.NextArrow.prototype.clickHandler = function clickHandler(options, e) {
   }
   let returnValue = window.changeSlider(true, true);
   if (returnValue) {
-    this.forceUpdate();
+    //this.forceUpdate();
     this.props.clickHandler(options, e);
     setTimeout(() => {
       window.changeSlider(false, undefined);
-      this.forceUpdate();
+      //this.forceUpdate();
     }, 500);
   }
 };

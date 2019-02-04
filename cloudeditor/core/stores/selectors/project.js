@@ -103,12 +103,10 @@ const groupsSelector = state => {
 };
 
 const objectsSelector = state => {
-  console.log("objectsSelector");
   return (state && state.project && state.project.objects) || {};
 };
 
 const getObjectByIdSelector = (state, obId) => {
-  console.log("getObjectByIdSelector", obId);
   return pathOr({}, ["project", "objects", obId], state);
 };
 

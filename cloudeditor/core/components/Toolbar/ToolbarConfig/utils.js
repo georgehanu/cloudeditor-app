@@ -59,7 +59,6 @@ const imageQuality = (activeItem, options) => {
     result =
       Math.sqrt(Math.pow(cropWidth, 2) + Math.pow(cropHeight, 2)) /
       Math.sqrt(Math.pow(width_i, 2) + Math.pow(height_i, 2));
-  console.log("image dpi is ", result);
   return result;
 };
 

@@ -1,11 +1,15 @@
 const React = require("react");
 const CustomSlider = require("../ReWrite/CustomSlider");
 const UploadImage = require("../LayoutItems/UploadImage");
+
+const { dagRealDimensionSelector } = require("../../../store/selectors");
 const { dagChangeSlider } = require("../../../store/actions");
 const { changePage } = require("../../../../../core/stores/actions/project");
 const { getCanvasImage } = require("../../../../../core/utils/GlobalUtils");
 
 const { connect } = require("react-redux");
+
+const SliderItem = require("./SliderItem/SliderItem");
 
 class SliderCarousel extends React.Component {
   state = {
@@ -14,43 +18,36 @@ class SliderCarousel extends React.Component {
     labels: {}
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const currentSlider = prevState.currentSlider;
-    return {
-      labels: {
-        [currentSlider]: getCanvasImage()
-      }
-    };
+  componentDidUpdate(previousProps, previousState) {
+    if (previousProps.renderId !== this.props.renderId) {
+      const currentSlider = this.state.currentSlider;
+      this.setState({
+        labels: {
+          ...this.state.labels,
+          [currentSlider]: getCanvasImage()
+        }
+      });
+    }
   }
 
   changeSlider = (value, increment) => {
     if (value && this.state.showFullSlider) {
       return false;
     }
-    this.setState({ showFullSlider: !this.state.showFullSlider });
+    //this.setState({ showFullSlider: !this.state.showFullSlider });
     if (increment !== undefined) {
-      this.props.dagChangeSlider(increment);
+      //this.props.dagChangeSlider(increment);
     }
     return !this.state.showFullSlider;
   };
 
   beforeChangeHandler = (onldIndex, newIndex) => {
-    const pageIndex = this.props.sliderData[newIndex].pageNo;
+    const pageIndex = this.props.products[newIndex].pageNo;
     this.props.changePage(this.props.pagesOrder[pageIndex]);
     this.setState({
       currentSlider: newIndex
     });
   };
-
-  // afterChangeHandler = index => {
-  //   this.setState({
-  //     currentSlider: index,
-  //     labels: {
-  //       ...this.state.labels,
-  //       [index]: getCanvasImage()
-  //     }
-  //   });
-  // };
 
   componentDidMount() {
     window.changeSlider = this.changeSlider;
@@ -59,35 +56,23 @@ class SliderCarousel extends React.Component {
 
   render() {
     const className =
-      "SliderCarousel " + (this.state.showFullSlider ? "" : "SmallSlider");
-    const pages = this.props.sliderData.map((el, index) => {
-      const label = this.state.labels[index] || null;
-      let labelStyle = {
-        left: el.labelArea.left + "%",
-        top: el.labelArea.top + "%",
-        width: el.labelArea.width + "%",
-        height: el.labelArea.height + "%"
-      };
+      "SliderCarousel " +
+      (this.state.showFullSlider ? "SmallSlider" : "SmallSlider");
 
-      if (label) {
-        labelStyle["backgroundImage"] = "url(" + label + ")";
-      }
+    const { labelRealDimension } = this.props;
+    const productsSlider = this.props.products.map((product, index) => {
+      const active = this.state.currentSlider === index;
       return (
-        <div key={index}>
-          <div className="SliderPage">
-            <div className="productContainer">
-              <img
-                src={"editorImages/" + el.productImage}
-                className="productImage"
-                alt=""
-              />
-              <div className="productLabel" style={labelStyle} />
-            </div>
-          </div>
-          {/* {el.upload && <UploadImage alwaysShow={false} />} */}
-        </div>
+        <SliderItem
+          key={product.id}
+          active={active}
+          {...product}
+          labelImage={this.state.labels[index]}
+          labelRealDimension={labelRealDimension}
+        />
       );
     });
+
     var settings = {
       dots: false,
       infinite: true,
@@ -97,6 +82,8 @@ class SliderCarousel extends React.Component {
       swipe: false,
       draggable: false,
       verticalSwiping: false,
+      className: "testClassName",
+      centerPadding: "0px",
       // afterChange: index => {
       //   this.afterChangeHandler(index);
       // },
@@ -106,7 +93,7 @@ class SliderCarousel extends React.Component {
     };
     return (
       <div className={className}>
-        <CustomSlider {...settings}>{pages}</CustomSlider>
+        <CustomSlider {...settings}>{productsSlider}</CustomSlider>
       </div>
     );
   }
@@ -115,9 +102,8 @@ class SliderCarousel extends React.Component {
 const mapStateToProps = state => {
   return {
     pagesOrder: state.project.pagesOrder,
-    // variables: state.variables.variables,
-    // objects: state.project.objects,
-    renderId: state.designAndGo.renderId
+    renderId: state.designAndGo.renderId,
+    labelRealDimension: dagRealDimensionSelector(state)
   };
 };
 

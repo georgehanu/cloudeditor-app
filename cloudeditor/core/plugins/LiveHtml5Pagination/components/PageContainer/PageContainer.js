@@ -65,7 +65,6 @@ class PageContainer extends React.PureComponent {
     this.updateContainerDimensions();
   }
   render() {
-    console.log("testactivepage", this.props.activePage);
     const { classes, page_id, mode } = this.props;
     if (mode === "hide") return null;
     const { pageReady, containerWidth, containerHeight } = this.state;

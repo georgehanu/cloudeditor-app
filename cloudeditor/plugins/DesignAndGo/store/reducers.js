@@ -18,12 +18,72 @@ const {
 const { handleActions } = require("redux-actions");
 
 const initialState = {
+  realDimension: {
+    width: 30,
+    height: 42.95
+  },
   loading: false,
   imagePath: null,
   errorMessage: null,
   loadingSignIn: false,
   errorMessageSignIn: null,
   activeSlider: 0,
+  products: [
+    {
+      id: 1,
+      label: "Wine 1",
+      pageNo: 0,
+      mainImage: {
+        src:
+          "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2.png",
+        width: 1200,
+        height: 1400
+      },
+      cropArea: {
+        left: 278,
+        top: 450,
+        width: 654,
+        height: 752
+      },
+      realDimension: {
+        width: 40,
+        height: 45.99
+      },
+      effects: [
+        "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2_effect.png"
+      ],
+      hasUpload: true,
+      hasCustomPallete: true,
+      collorPallets: [{ color: "rgb(255,94,94)" }, { color: "rgb(61,39,255)" }]
+    },
+    {
+      id: 2,
+      label: "Wine 2",
+      pageNo: 1,
+      mainImage: {
+        src:
+          "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1.png",
+        width: 1200,
+        height: 1400
+      },
+      cropArea: {
+        width: 656,
+        height: 796,
+        top: 410,
+        left: 286
+      },
+      realDimension: {
+        width: 40,
+        height: 48.53
+      },
+      effects: [
+        "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1_effect.png"
+      ],
+      hasUpload: true,
+      hasCustomPallete: true,
+      collorPallets: [{ color: "rgb(255,94,94)" }, { color: "rgb(61,39,255)" }]
+    }
+  ],
   sliderData: [
     {
       productImage: "Jam1.png",
@@ -124,7 +184,7 @@ module.exports = handleActions(
       };
     },
     [DAG_CHANGE_SLIDER]: (state, action) => {
-      const sliderElements = state.sliderData.length;
+      const sliderElements = state.products.length;
       let newActiveSlider = state.activeSlider;
       if (action.payload === null) {
         newActiveSlider = 0;

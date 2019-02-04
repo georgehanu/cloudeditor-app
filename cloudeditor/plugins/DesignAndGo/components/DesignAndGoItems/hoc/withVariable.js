@@ -15,7 +15,6 @@ const {
 const withVariables = WrappedComponent => {
   class WithVariables extends React.PureComponent {
     render() {
-      console.log("getted variable", this.props.variable);
       const { variable: inputVar, configs, ...otherProps } = this.props;
 
       const variable = getCompleteVariable(inputVar, configs);

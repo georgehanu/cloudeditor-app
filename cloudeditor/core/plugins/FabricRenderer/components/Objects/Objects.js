@@ -44,17 +44,18 @@ const objects = props => {
   });
 };
 
-const mapStateToProps = (state, props) => {
-  return {
-    //items: dagDataItemsSelector(state),
-    //completeObjects: pick(keys(props.objects), state.project.objects),
-    stateObjects: state.project.objects,
-    variables: state.variables.variables,
-    configs: state.project.configs.objects
-  };
-};
+module.exports = objects;
+// const mapStateToProps = (state, props) => {
+//   return {
+//     //items: dagDataItemsSelector(state),
+//     //completeObjects: pick(keys(props.objects), state.project.objects),
+//     stateObjects: state.project.objects,
+//     variables: state.variables.variables,
+//     configs: state.project.configs.objects
+//   };
+// };
 
-module.exports = connect(
-  mapStateToProps,
-  null
-)(objects);
+// module.exports = connect(
+//   mapStateToProps,
+//   null
+// )(objects);

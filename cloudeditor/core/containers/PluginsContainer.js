@@ -1,18 +1,32 @@
 const React = require("react");
 const PropTypes = require("prop-types");
 const { componentFromProp } = require("recompose");
+const isEqual = require("react-fast-compare");
 const PluginsUtils = require("../utils/PluginsUtils");
-const logger = require("../utils/LoggerUtils");
-const { hot } = require("react-hot-loader");
 
 const Component = componentFromProp("component");
 
 class PluginsContainer extends React.Component {
   state = {
-    additionalClasses: []
+    additionalClasses: [],
+    test: 1
   };
 
-  addContainerClasses = (pluginName, newClassesArray) => {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
+  }
+  getPluginDescriptor = plugin => {
+    return PluginsUtils.getPluginDescriptor(
+      this.getStore,
+      this.props.plugins,
+      this.props.pluginsConfig[this.props.mode],
+      plugin
+    );
+  };
+  addContainerClasses = (pluginName, newClassesArray, resizePageEvent) => {
     let newClasses = [...this.state.additionalClasses];
     let index = newClasses.findIndex((el, index) => {
       return el.pluginName === pluginName;
@@ -22,20 +36,16 @@ class PluginsContainer extends React.Component {
     } else {
       newClasses[index] = { pluginName, pluginClasses: newClassesArray };
     }
-    this.setState({ additionalClasses: newClasses });
-  };
-
-  getPluginDescriptor = plugin => {
-    return PluginsUtils.getPluginDescriptor(
-      this.getStore,
-      this.props.plugins,
-      this.props.pluginsConfig[this.props.mode],
-      plugin
-    );
+    /* Change to have an additional param */
+    this.setState({ additionalClasses: newClasses }, () => {
+      if (resizePageEvent) {
+        var event = new Event("resizePage");
+        window.dispatchEvent(event);
+      }
+    });
   };
 
   renderPlugins = plugins => {
-    logger.info("plugins", plugins);
     return plugins
       .filter(
         Plugin =>
@@ -53,7 +63,6 @@ class PluginsContainer extends React.Component {
         <Plugin.impl
           key={Plugin.id}
           {...this.props.params}
-          {...Plugin.cfg}
           pluginCfg={Plugin.cfg}
           items={Plugin.items}
           addContainerClasses={this.addContainerClasses}
@@ -62,8 +71,11 @@ class PluginsContainer extends React.Component {
   };
 
   getStore = () => {
-    return this.context.store;
+    return this.props.store;
   };
+
+  componentDidMount() {}
+  componentDidUpdate() {}
 
   render() {
     const pluginsConfig =
@@ -82,14 +94,12 @@ class PluginsContainer extends React.Component {
         }),
         {}
       );
-
       let newClasses = [];
       for (let plugin in this.state.additionalClasses) {
         newClasses.push(...this.state.additionalClasses[plugin].pluginClasses);
       }
 
       const classes = [this.props.className, ...newClasses].join(" ");
-
       return (
         <Component
           id={this.props.id}
@@ -141,8 +151,4 @@ PluginsContainer.defaultProps = {
   defaultMode: "desktop"
 };
 
-PluginsContainer.contextTypes = {
-  store: PropTypes.object
-};
-
-module.exports = hot(module)(PluginsContainer);
+module.exports = PluginsContainer;
