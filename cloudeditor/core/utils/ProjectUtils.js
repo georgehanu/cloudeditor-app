@@ -1718,6 +1718,10 @@ const getEmptyAssets = cfg => {
         loadingDelete: false,
         loadingFiles: 0,
         uploadedFiles: []
+      },
+      graphics: {
+        loading: false,
+        items: []
       }
     },
     cfg || {}

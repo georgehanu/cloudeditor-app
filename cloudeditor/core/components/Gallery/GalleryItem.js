@@ -8,10 +8,10 @@ const PageSource = {
   beginDrag(props) {
     return {
       id: uuidv4(),
-      type: type,
+      type: props.type,
       subType: props.type,
       image_src: props.image_src,
-      imagePath: props.image_path,
+      image_path: props.image_path,
       imageWidth: props.imageWidth,
       imageHeight: props.imageHeight
     };
@@ -54,5 +54,13 @@ const galleryItem = props => {
   );
 };
 module.exports = hot(module)(
-  connect(null)(DragSource(type, PageSource, collectDrag)(galleryItem))
+  connect(null)(
+    DragSource(
+      props => {
+        return props.type;
+      },
+      PageSource,
+      collectDrag
+    )(galleryItem)
+  )
 );

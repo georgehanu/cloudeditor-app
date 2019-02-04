@@ -178,7 +178,9 @@ class ObjectBlock extends React.Component {
       active: props.active,
       width: props.width,
       height: props.height,
-      image_src: props.image_src
+      image_src: props.image_src,
+      onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler
     };
 
     const block = <GraphicBlock {...graphicProps} />;

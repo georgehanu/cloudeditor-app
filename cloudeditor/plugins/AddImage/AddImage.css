@@ -155,9 +155,6 @@
   right: 13px;
 }
 
-.uploadGalleryItem.uploadGalleryItemSelected {
-  border: 1px solid red;
-}
 #sidebar-wrapper .toggleSidebarContainer {
   display: none;
 }

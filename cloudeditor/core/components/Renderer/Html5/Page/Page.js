@@ -12,7 +12,7 @@ const {
 } = require("ramda");
 const now = require("performance-now");
 
-const type = ["image", "text"];
+const type = ["image", "graphics"];
 const Objects = require("../Objects/Object/Objects");
 
 const {
@@ -66,6 +66,7 @@ const PageTarget = {
         case "image":
           aspectRatio = object.imageHeight / object.imageWidth;
           break;
+
         default:
           break;
       }

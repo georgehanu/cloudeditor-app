@@ -63,7 +63,7 @@ const importItem = props => {
               type: "graphics",
               subType: "graphics",
               image_src: IMAGE_SRC_URL + props.image,
-              imagePath: props.image
+              image_path: "html5_files/grouped_images/" + props.image
             });
             props.closeModal();
           }}
@@ -87,7 +87,7 @@ const importItem = props => {
                   type: "graphics",
                   subType: "graphics",
                   image_src: IMAGE_SRC_URL + props.image,
-                  imagePath: props.image
+                  image_path: "html5_files/grouped_images/" + props.image
                 });
                 props.closeModal();
               }}

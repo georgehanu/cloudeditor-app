@@ -6,7 +6,6 @@ const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponen
 const { changeBackground } = require("../../core/stores/actions/project");
 
 require("./Background.css");
-
 const Background = props => {
   return (
     <div
