@@ -101,6 +101,13 @@ const headerConfigSelector = state => {
 const footerConfigSelector = state => {
   return pathOr(false, ["project", "configs", "document", "footer"], state);
 };
+const projectHeaderConfigSelector = state => {
+  return pathOr(false, ["configs", "document", "header"], state);
+};
+
+const projectFooterConfigSelector = state => {
+  return pathOr(false, ["configs", "document", "footer"], state);
+};
 /* End Document Config Selectors */
 
 /* Start Pages Config Selectors */
@@ -420,5 +427,7 @@ module.exports = {
   projLoadErrorMessageProjectSelector,
   activePageWithObjectsSelector,
 
-  pageColumnsNoSelector
+  pageColumnsNoSelector,
+  projectHeaderConfigSelector,
+  projectFooterConfigSelector
 };

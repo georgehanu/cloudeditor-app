@@ -9,6 +9,7 @@ const {
   head,
   last,
   omit,
+  pick,
   forEachObjIndexed
 } = require("ramda");
 const {
@@ -63,6 +64,10 @@ const {
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
+const {
+  projectHeaderConfigSelector,
+  projectFooterConfigSelector
+} = require("../selectors/project");
 const uuidv4 = require("uuid/v4");
 
 const addPages = (state, action) => {
@@ -150,6 +155,13 @@ const changePagesOrder = (state, action) => {
 
 const addObject = (state, action) => {
   const object = ProjectUtils.getEmptyObject(action);
+  const headerSelector = projectHeaderConfigSelector(state);
+  const footerSelector = projectFooterConfigSelector(state);
+  if (headerSelector.mode === "edit") {
+    return addObjectToHeaderFooter(state, action, "header");
+  } else if (footerSelector.mode === "edit") {
+    return addObjectToHeaderFooter(state, action, "footer");
+  }
   const pageId = state.activePage;
   return {
     ...state,
@@ -166,6 +178,26 @@ const addObject = (state, action) => {
     }
   };
 };
+
+const addObjectToHeaderFooter = (state, action, pageHF) => {
+  const object = ProjectUtils.getEmptyObject(action);
+  const headerA = pick([pageHF], state.objects);
+  if (!headerA) {
+    return state;
+  }
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      [pageHF]: {
+        ...state.objects[pageHF],
+        objectsIds: append(object.id, state.objects[pageHF].objectsIds)
+      },
+      [object.id]: object
+    }
+  };
+};
+
 const addTable = (state, action) => {
   const object = ProjectUtils.getEmptyObject(action);
   const pageId = state.activePage;
