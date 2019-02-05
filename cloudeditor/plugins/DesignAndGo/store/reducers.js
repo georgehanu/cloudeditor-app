@@ -18,17 +18,19 @@ const {
 const { handleActions } = require("redux-actions");
 
 const initialState = {
-  realDimension: {
+  realDimension1: {
     width: 30,
     height: 42.95
   },
+  realDimension: projectConfigGlobal["realDimension"],
   loading: false,
   imagePath: null,
   errorMessage: null,
   loadingSignIn: false,
   errorMessageSignIn: null,
   activeSlider: 0,
-  products: [
+  products: projectConfigGlobal["products"],
+  products1: [
     {
       id: 1,
       label: "Wine 1",
@@ -144,12 +146,14 @@ const initialState = {
     description: [
       {
         type: Types.TEXT,
-        text: "Create your own jar label",
+        text: projectConfigGlobal["title"],
+        text1: "Create your own jar label",
         class: "DescriptionHeader"
       },
       {
         type: Types.TEXT,
-        text:
+        text: projectConfigGlobal["description"],
+        text1:
           "Add the details about your beer and a custom label will be created for you. Use the arrows beside the bottle to try out different designs.",
         class: "Description"
       }

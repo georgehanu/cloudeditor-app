@@ -1,6 +1,9 @@
 const uuidv4 = require("uuid/v4");
 const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
+const ConfigUtils = require("../utils/ConfigUtils");
 const randomcolor = require("randomcolor");
+
+const config = ConfigUtils.getDefaults();
 
 const getObjectColorTemplate = cfg => {
   return merge(
@@ -692,7 +695,6 @@ const getDGProject = cfg => {
 
   const page_1_bg = require("../../workspaces/designAndGo/svg/page1.svg");
   const page_2_blue_bg = require("../../workspaces/designAndGo/svg/page_2_blue.svg");
-  const page_2_gold_bg = require("../../workspaces/designAndGo/svg/page_2_gold.svg");
 
   let bg1 = getEmptyObject({
     type: "graphics",
@@ -700,7 +702,7 @@ const getDGProject = cfg => {
     height: 733,
     left: 0,
     top: 0,
-    src: page_1_bg
+    src: config.baseUrl + config.publicPath + page_1_bg
   });
   let bg2 = getEmptyObject({
     type: "graphics",
@@ -708,7 +710,7 @@ const getDGProject = cfg => {
     height: 663,
     left: 0,
     top: 0,
-    src: page_2_blue_bg
+    src: config.baseUrl + config.publicPath + page_2_blue_bg
   });
 
   let page1JamName = getEmptyObject({

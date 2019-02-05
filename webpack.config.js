@@ -5,6 +5,8 @@ const workspace = argv.workspace || "admin";
 const prod = (argv.mode || "production") === "production" ? 1 : 0;
 const namespace = "cloudeditor";
 
+let publicPath = "";
+
 const config = {
   namespace,
   entry: {
@@ -26,7 +28,7 @@ const config = {
     )
   },
   prod,
-  publicPath: "",
+  publicPath,
   sourcemaps: !prod,
   resourceRoot: "/",
   fileLoaderDirs: {
@@ -39,9 +41,20 @@ const config = {
   copyFrom: []
 };
 
-if (workspace === "designAndGo")
-  config["copyFrom"].push({
-    from: "./" + namespace + "/themes/" + workspace + "/images/*",
-    to: "./editorImages/[name].[ext]"
-  });
+//overwrites
+switch (workspace) {
+  case "designandgo":
+    if (prod) {
+      publicPath = "/hp/avery-external/public/default/designandgo/";
+    } else {
+    }
+
+    config["copyFrom"].push({
+      from: "./" + namespace + "/themes/" + workspace + "/images/*",
+      to: "./editorImages/[name].[ext]"
+    });
+    break;
+  default:
+    break;
+}
 module.exports = require("./buildConfig")(config);
