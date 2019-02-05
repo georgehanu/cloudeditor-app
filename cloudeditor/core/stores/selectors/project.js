@@ -101,13 +101,16 @@ const headerConfigSelector = state => {
 const footerConfigSelector = state => {
   return pathOr(false, ["project", "configs", "document", "footer"], state);
 };
-const projectHeaderConfigSelector = state => {
-  return pathOr(false, ["configs", "document", "header"], state);
+
+const projectHeaderEnabledSelector = state => {
+  const header = pathOr(false, ["configs", "document", "header"], state);
+  return header.mode === "edit" && header.activeOn === "all";
+};
+const projectFooterEnabledSelector = state => {
+  const footer = pathOr(false, ["configs", "document", "footer"], state);
+  return footer.mode === "edit" && footer.activeOn === "all";
 };
 
-const projectFooterConfigSelector = state => {
-  return pathOr(false, ["configs", "document", "footer"], state);
-};
 /* End Document Config Selectors */
 
 /* Start Pages Config Selectors */
@@ -435,6 +438,6 @@ module.exports = {
   getNumberOfPagesSelector,
 
   pageColumnsNoSelector,
-  projectHeaderConfigSelector,
-  projectFooterConfigSelector
+  projectHeaderEnabledSelector,
+  projectFooterEnabledSelector
 };

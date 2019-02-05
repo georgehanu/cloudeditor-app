@@ -28,7 +28,9 @@ const { addObject } = require("../../../../stores/actions/project");
 const {
   activePageIdSelector,
   headerConfigSelector,
-  footerConfigSelector
+  footerConfigSelector,
+  projectHeaderEnabledSelector,
+  projectFooterEnabledSelector
 } = require("../../../../stores/selectors/project");
 const BlockMessage = require("../BlockMesage/BlockMessage");
 
@@ -70,7 +72,7 @@ const PageTarget = {
         default:
           break;
       }
-      if (props.headerConfig.mode === "edit") {
+      if (props.headerEnabled) {
         object.height = parseInt(props.headerConfig.height, 10);
         object.width = object.height / aspectRatio;
         const headerFooterOverlay = document.getElementById(
@@ -86,7 +88,7 @@ const PageTarget = {
 
         props.onAddObjectHandler(object);
         return;
-      } else if (props.footerConfig.mode === "edit") {
+      } else if (props.footerEnabled) {
         object.height = parseInt(props.footerConfig.height, 10);
         object.width = object.height / aspectRatio;
         const headerFooterOverlay = document.getElementById(
@@ -120,10 +122,7 @@ const PageTarget = {
   },
   canDrop(props, monitor) {
     const position = monitor.getSourceClientOffset();
-    if (
-      props.headerConfig.mode === "edit" ||
-      props.footerConfig.mode === "edit"
-    ) {
+    if (props.headerEnabled || props.footerEnabled) {
       const headerFooterOverlay = document.getElementById(
         "headerFooterOverlayId"
       );
@@ -504,6 +503,8 @@ const makeMapStateToProps = (state, props) => {
       globalObjectsIds: globalObjectsIdsSelector(state),
       headerConfig: headerConfigSelector(state),
       footerConfig: footerConfigSelector(state),
+      headerEnabled: projectHeaderEnabledSelector(state.project),
+      footerEnabled: projectFooterEnabledSelector(state.project),
       objectsOffsetList: getObjectsOffsetsList(state, props)
     };
   };

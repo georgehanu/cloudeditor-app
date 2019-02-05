@@ -66,8 +66,8 @@ const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
 const {
-  projectHeaderConfigSelector,
-  projectFooterConfigSelector
+  projectHeaderEnabledSelector,
+  projectFooterEnabledSelector
 } = require("../selectors/project");
 const uuidv4 = require("uuid/v4");
 
@@ -156,11 +156,11 @@ const changePagesOrder = (state, action) => {
 
 const addObject = (state, action) => {
   const object = ProjectUtils.getEmptyObject(action);
-  const headerSelector = projectHeaderConfigSelector(state);
-  const footerSelector = projectFooterConfigSelector(state);
-  if (headerSelector.mode === "edit") {
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
     return addObjectToHeaderFooter(state, action, "header");
-  } else if (footerSelector.mode === "edit") {
+  } else if (footerSelector) {
     return addObjectToHeaderFooter(state, action, "footer");
   }
   const pageId = state.activePage;
@@ -196,6 +196,24 @@ const addObjectToHeaderFooter = (state, action, pageHF) => {
       },
       [object.id]: object
     }
+  };
+};
+
+deleteObjectFromHeaderFooter = (state, action, pageHF) => {
+  let newObjects = omit([action.payload.id], state.objects);
+  const newhfItem = {
+    ...state.objects[pageHF],
+    objectsIds: state.objects[pageHF].objectsIds.filter(el => {
+      return el !== action.payload.id;
+    })
+  };
+  return {
+    ...state,
+    objects: {
+      ...newObjects,
+      [pageHF]: newhfItem
+    },
+    selectedObjectsIds: []
   };
 };
 
@@ -651,6 +669,14 @@ module.exports = handleActions(
       return addObject(state, duplicateObj);
     },
     [DELETE_OBJ]: (state, action) => {
+      const headerSelector = projectHeaderEnabledSelector(state);
+      const footerSelector = projectFooterEnabledSelector(state);
+      if (headerSelector) {
+        return deleteObjectFromHeaderFooter(state, action, "header");
+      } else if (footerSelector) {
+        return deleteObjectFromHeaderFooter(state, action, "footer");
+      }
+
       let newObjects = { ...state.objects };
       delete newObjects[action.payload.id];
 
