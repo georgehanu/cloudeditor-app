@@ -57,3 +57,8 @@
 #sidebar-wrapper-container .zoom .sidebarButton {
   height: 40px;
 }
+
+.zoom {
+  position: absolute;
+  bottom: 90px;
+}
