@@ -11,7 +11,7 @@ const assetsLayoutLoadingSelector = state =>
 const assetsLayoutSelector = state =>
   pathOr([], ["assets", "layout", "items"], state);
 
-const selectCategory = (_, props) => props.category_id;
+const selectCategory = (_, props) => 1;
 
 const assetsLayoutForActivePageSelector = createSelector(
   [
