@@ -72,6 +72,19 @@ const PageTarget = {
       if (props.headerConfig.mode === "edit") {
         object.height = parseInt(props.headerConfig.height, 10);
         object.width = object.height / aspectRatio;
+        const headerFooterOverlay = document.getElementById(
+          "headerFooterOverlayId"
+        );
+        const overlayDimensions = headerFooterOverlay.getBoundingClientRect();
+        const positionHeader = monitor.getSourceClientOffset();
+
+        object.left =
+          (-1 * (componentBounding.x - positionHeader.x)) / props.zoomScale;
+        object.top =
+          (-1 * (componentBounding.y - positionHeader.y)) / props.zoomScale;
+
+        props.onAddObjectHandler(object);
+        return;
       } else if (props.footerConfig.mode === "edit") {
         object.height = parseInt(props.footerConfig.height, 10);
         object.width = object.height / aspectRatio;
