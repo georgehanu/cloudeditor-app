@@ -325,6 +325,11 @@ const CreatePayload = (activeitem, itemPayload) => {
     case Types.SLIDER_INLINE_IMAGE:
       attrs = { leftSlider: itemPayload.value };
       break;
+
+    case Types.GALLERY_PREVIEW_WND:
+      attrs = { image: itemPayload.value };
+      break;
+
     default:
       break;
   }

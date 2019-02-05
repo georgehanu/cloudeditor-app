@@ -1,4 +1,5 @@
 {
   "Add pages": "Add pages",
-  "You can drag and drop pages along with their content": "You can drag and drop pages along with their content"
+  "You can drag and drop pages along with their content": "You can drag and drop pages along with their content",
+  "Invalid number of pages. It should be a multiply of 4.": "Invalid number of pages. It should be a multiply of 4."
 }

@@ -14,6 +14,8 @@ const { projLoadLayout } = require("../../core/stores/actions/project");
 const { assetsLayoutSelector } = require("../../core/stores/selectors/assets");
 
 const SweetAlert = require("sweetalert-react").default;
+const isEqual = require("react-fast-compare");
+const LayoutsHeader = require("./components/LayoutsHeader");
 
 require("./Layouts.css");
 
@@ -22,11 +24,30 @@ class Layouts extends React.Component {
     activePageId: null,
     showAlert: false,
     saText: "",
-    layoutId: null
+    layoutId: null,
+    categories: [],
+    selectedCategory: { value: "", label: "" }
+  };
+
+  onCategoryChange = selectedCategory => {
+    this.setState({ selectedCategory });
+  };
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
   };
 
   componentDidMount() {
     this.props.assetsLayoutStart();
+    const categories = [
+      { value: "1", label: "Categ 1" },
+      { value: "2", label: "Categ 2" },
+      { value: "3", label: "Categ 3" }
+    ];
+    this.setState({ categories, selectedCategory: categories[0] });
   }
 
   selectImageHandler = layoutId => {
@@ -48,17 +69,26 @@ class Layouts extends React.Component {
           show={this.state.showAlert}
           type="warning"
           title={this.props.t("Warning")}
-          text={this.props.t(
-            "Are you sure you want to load this layout ?\nAll changes for this page will be overwritten."
-          )}
+          text={
+            this.props.t("Are you sure you want to load this layout ?") +
+            "\n" +
+            this.props.t("All changes for this page will be overwritten")
+          }
           showCancelButton={true}
           onConfirm={() => this.loadLayout()}
           onCancel={() => this.setState({ showAlert: false })}
+        />
+        <LayoutsHeader
+          title={this.props.t("Categories")}
+          options={this.state.categories}
+          selectedOption={this.state.selectedCategory}
+          onChange={this.onCategoryChange}
         />
         <LayoutContainer
           addContainerClasses={this.props.addContainerClasses}
           loading={this.props.loading}
           selectImage={this.selectImageHandler}
+          category_id={this.state.selectedCategory.value}
         />
       </React.Fragment>
     );

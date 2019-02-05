@@ -18,6 +18,7 @@ const ToggleTable = props => {
         text={props.TableName}
         expanded={props.expanded}
         handleClick={props.handleClick}
+        t={props.t}
       />
       {props.expanded && props.children}
     </React.Fragment>

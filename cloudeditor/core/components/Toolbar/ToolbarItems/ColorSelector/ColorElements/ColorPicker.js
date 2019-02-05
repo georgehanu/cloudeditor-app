@@ -1,6 +1,7 @@
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
 const $ = require("jquery");
+const { PICKER_MODE_VIEW, PICKER_MODE_ADD } = require("./ColorTabTypes");
 
 class ColorPicker extends React.Component {
   state = {
@@ -51,6 +52,17 @@ class ColorPicker extends React.Component {
       this.setState({ RGB_B: event.target.value });
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.activeColor.htmlRGB !== this.props.activeColor.htmlRGB) {
+      jQuery("#colorPickerColorId").chromoselector(
+        "setColor",
+        "rgb(" + nextProps.activeColor.htmlRGB + ")"
+      );
+    }
+
+    return true;
+  }
+
   componentDidMount() {
     const picker = this;
     jQuery("#colorPickerColorId").chromoselector({
@@ -77,6 +89,11 @@ class ColorPicker extends React.Component {
         picker.changeColor(CMYK, Hex, RGB, htmlRGB);
       }
     });
+
+    jQuery("#colorPickerColorId").chromoselector(
+      "setColor",
+      "rgb(" + this.props.activeColor.htmlRGB + ")"
+    );
   }
   onChangeColorHandler = event => {};
 
@@ -102,7 +119,7 @@ class ColorPicker extends React.Component {
     });
   };
 
-  onOkHandler = () => {
+  onAddColorHandler = () => {
     const CMYK =
       "" +
       this.state.CMYK.c.toFixed(3) +
@@ -135,7 +152,21 @@ class ColorPicker extends React.Component {
     this.props.closePickerWnd();
   };
 
+  okHandler = () => {
+    this.props.mode === PICKER_MODE_VIEW
+      ? this.props.useColorHandler()
+      : this.onAddColorHandler();
+  };
+
+  removeHandler = () => {
+    this.props.uiRemoveColorHandler({
+      color: this.props.activeColor,
+      activeTab: this.props.tabType
+    });
+  };
+
   render() {
+    const okLabel = this.props.mode === PICKER_MODE_VIEW ? "Use" : "Add";
     const className =
       "colorPickerContainer " +
       (this.props.visible ? "" : "hideColorPickerContainer");
@@ -190,10 +221,17 @@ class ColorPicker extends React.Component {
                 />
               </li>
             </ul>
-
-            <button onClick={this.onApplyCMYK}>
-              {this.props.t("Change CMYK")}
-            </button>
+            <div className="colorPickerButtonsContainer">
+              <button onClick={this.onApplyCMYK}>
+                {this.props.t("Preview CMYK")}
+              </button>
+              {this.props.mode === PICKER_MODE_VIEW &&
+                this.props.activeColor.new && (
+                  <button onClick={this.removeHandler}>
+                    {this.props.t("Remove")}
+                  </button>
+                )}
+            </div>
           </div>
           <div className="colorPickerRGBContainer">
             <ul>
@@ -225,16 +263,24 @@ class ColorPicker extends React.Component {
                 />
               </li>
             </ul>
-            <button onClick={this.onApplyRGB}>
-              {this.props.t("Change RGB")}
-            </button>
+            <div className="colorPickerButtonsContainer">
+              <button onClick={this.onApplyRGB}>
+                {this.props.t("Preview RGB")}
+              </button>
+
+              {this.props.mode === PICKER_MODE_VIEW && (
+                <button onClick={this.onAddColorHandler}>
+                  {this.props.t("Add")}
+                </button>
+              )}
+            </div>
           </div>
           <div className="colorPickerOKContainer">
             <button onClick={this.closeWndHanlder}>
               {this.props.t("Cancel")}
             </button>
-            <button className="buttonOk" onClick={this.onOkHandler}>
-              {this.props.t("OK")}
+            <button className="buttonOk" onClick={this.okHandler}>
+              {this.props.t(okLabel)}
             </button>
           </div>
         </div>

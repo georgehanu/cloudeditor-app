@@ -851,7 +851,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .colorPickerContainer {
   width: 384px;
-  height: 200px;
+  height: 210px;
   background-color: white;
   display: block;
   top: 138px;
@@ -901,6 +901,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 .colorPickerRGBContainer,
 .colorPickerCMYKContainer {
   float: left;
+  height: 151px;
 }
 .colorPickerRGBContainer {
   margin-left: 30px;
@@ -915,7 +916,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   padding: 0px;
   outline: none;
   cursor: pointer;
-  margin-top: 0px;
+  margin-top: 6px;
 }
 
 .colorPickerOKContainer button {
@@ -954,4 +955,54 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .whiteColorSquare {
   border: 1px solid #ccc;
+}
+
+.colorPickerButtonsContainer {
+  width: 96px;
+}
+
+.toolbarGalleryPreviewContainer {
+  width: 433px;
+  height: 346px;
+  background-color: white;
+  border: 1px solid #c7c7c7;
+  border-top: none;
+  position: absolute;
+}
+
+.backdropSpinnerContainerFromToolbar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.backdropSpinnerContainerFromToolbar .loader {
+  color: #737373;
+}
+
+.ToolbarContainer .uploadLabel {
+  background-color: #f9fafc;
+  border: 1px solid #dcdee1;
+  margin-top: 10px;
+}
+
+.toolbarGalleryPreviewContent {
+  height: 280px;
+  overflow: auto;
+}
+
+.ToolbarContainer .uploadGallery {
+  margin-right: 1px !important;
+}
+
+.ToolbarContainer .uploadGallery .uploadGalleryLi {
+  margin-left: 9px;
+}
+
+.ToolbarContainer .loader {
+  color: #737373;
 }

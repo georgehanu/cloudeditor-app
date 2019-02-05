@@ -39,5 +39,6 @@
   "Standings_Loses": "N",
   "Standings_Goals": "Tore",
   "Standings_Goals_Diff": "Diff",
-  "Standings_Points": "P"
+  "Standings_Points": "P",
+  "Loading": "Loading"
 }

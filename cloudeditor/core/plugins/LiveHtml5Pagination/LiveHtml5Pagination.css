@@ -288,3 +288,13 @@
 .pageSelectorContainer .pageContainer.page * {
   cursor: pointer;
 }
+
+.pageHeaderMessage {
+  position: absolute;
+  left: 50%;
+  margin-left: 40px;
+  top: 4px;
+  font-family: ArialMT;
+  font-size: 14px;
+  color: #666666;
+}

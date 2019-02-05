@@ -1,3 +1,14 @@
 .projectMenuContainer .projectMenuButtonContainer.buttonMenuItemManual {
   float: right !important;
 }
+
+.manualContainer {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+
+.manualWnd {
+  height: 500px;
+  width: 900px;
+}

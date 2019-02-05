@@ -216,6 +216,7 @@ class LiveHtml5Pagination extends React.Component {
               showExtend={this.state.size !== "extended"}
               showMinimized={this.state.size !== "minimized"}
               showAddPages={this.showAddPages}
+              nrPages={this.props.pagesOrder.length}
             />
             <div ref={this.paginationContainer} className={className}>
               {groupContainer}

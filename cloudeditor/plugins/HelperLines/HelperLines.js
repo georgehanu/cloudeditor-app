@@ -87,6 +87,7 @@ class HelperLines extends React.PureComponent {
             poptextName="pages"
             items={this.state.poptextPages.items}
             open={this.state.poptextPages.open}
+            t={this.props.t}
           />
         </div>
       </div>

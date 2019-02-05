@@ -10,6 +10,11 @@ const uuidv4 = require("uuid/v4");
 const axios = require("axios");
 const isEqual = require("react-fast-compare");
 const { debounce } = require("underscore");
+const posed = require("react-pose").default;
+const Box = posed.div({
+  visible: { top: 30 },
+  hidden: { top: 0 }
+});
 
 const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
@@ -160,13 +165,28 @@ class MenuItemHeaderFooter extends React.Component {
 
     switch (type) {
       case "edit":
-        this.setState({
-          poptextEdit: {
-            ...this.state.poptextEdit,
-            open: false,
-            active: value
+        this.setState(
+          {
+            poptextEdit: {
+              ...this.state.poptextEdit,
+              open: false,
+              active: value
+            }
+          },
+          () => {
+            if (this.state.poptextEdit.active === "Header") {
+              this.props.onUpdateHeaderFooterConfigPropsHandler({
+                header: { prop: "mode", value: "edit" },
+                footer: { prop: "mode", value: "read" }
+              });
+            } else {
+              this.props.onUpdateHeaderFooterConfigPropsHandler({
+                header: { prop: "mode", value: "read" },
+                footer: { prop: "mode", value: "edit" }
+              });
+            }
           }
-        });
+        );
         break;
       case "insert":
         this.setState({
@@ -261,13 +281,39 @@ class MenuItemHeaderFooter extends React.Component {
         this.props.addContainerClasses("submenuHeaderFooter", [], true);
       }
 
-      payload = {
-        prop: "mode",
-        value: this.state.submenuOpened ? "edit" : "read"
-      };
-
-      this.props.onUpdateHeaderFooterConfigPropsHandler(payload);
+      if (this.state.submenuOpened === false) {
+        this.props.onUpdateHeaderFooterConfigPropsHandler({
+          header: { prop: "mode", value: "read" },
+          footer: { prop: "mode", value: "read" }
+        });
+      } else {
+        if (this.state.poptextEdit.active === "Header") {
+          this.props.onUpdateHeaderConfigHandler({
+            prop: "mode",
+            value: "edit"
+          });
+        } else {
+          this.props.onUpdateFooterConfigHandler({
+            prop: "mode",
+            value: "edit"
+          });
+        }
+      }
     });
+  };
+
+  resetInitialHeight = () => {
+    if (this.state.poptextEdit.active === "Header") {
+      this.props.onUpdateHeaderConfigHandler({
+        prop: "height",
+        value: this.props.headerCfg.initialHeight
+      });
+    } else {
+      this.props.onUpdateFooterConfigHandler({
+        prop: "height",
+        value: this.props.footerCfg.initialHeight
+      });
+    }
   };
 
   render() {
@@ -302,17 +348,24 @@ class MenuItemHeaderFooter extends React.Component {
         break;
     }
 
+    const classNameSubMenu = "submenuItemHeaderFooter";
+
     return (
       <React.Fragment>
         <div className={className}>
           <ProjectMenuButton
             active={this.props.active}
             clicked={() => this.toggleMenuHandler(true)}
+            onMouseEnter={this.props.onMouseEnter}
+            onMouseLeave={this.props.onMouseLeave}
           >
             {this.props.t(this.props.text)}
           </ProjectMenuButton>
         </div>
-        {this.state.submenuOpened && (
+        <Box
+          className={classNameSubMenu}
+          pose={this.state.submenuOpened ? "visible" : "hidden"}
+        >
           <div className="submenuItemHeaderFooter">
             <div className="submenuItemHeaderFooterEdit">
               <span>{this.props.t("Edit")}:</span>
@@ -323,6 +376,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="edit"
                 items={this.state.poptextEdit.items}
                 open={this.state.poptextEdit.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -335,6 +389,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="insert"
                 items={this.state.poptextInsert.items}
                 open={this.state.poptextInsert.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -346,6 +401,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="layouts"
                 items={this.state.poptextLayouts.items}
                 open={this.state.poptextLayouts.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -358,6 +414,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="layoutMirror"
                 items={this.state.poptextLayoutMirror.items}
                 open={this.state.poptextLayoutMirror.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -370,6 +427,7 @@ class MenuItemHeaderFooter extends React.Component {
                 poptextName="active"
                 items={this.state.poptextActive.items}
                 open={this.state.poptextActive.open}
+                t={this.props.t}
               />
             </div>
             <span className="submenuSepatator">{"|"}</span>
@@ -386,6 +444,12 @@ class MenuItemHeaderFooter extends React.Component {
                 }
               />
               <span>{this.props.t("mm")}</span>
+              <button
+                className="submenuItemHeaderFooterHeightReset"
+                onClick={this.resetInitialHeight}
+              >
+                {this.props.t("Reset Height")}
+              </button>
             </div>
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterClose">
@@ -394,7 +458,7 @@ class MenuItemHeaderFooter extends React.Component {
               </button>
             </div>
           </div>
-        )}
+        </Box>
       </React.Fragment>
     );
   }

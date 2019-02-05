@@ -63,7 +63,6 @@ class ObjectBlock extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     const list = [];
-
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
     if (equals(nProps, cProps)) {
@@ -162,6 +161,7 @@ class ObjectBlock extends React.Component {
       deleteMissingImages: this.props.deleteMissingImages,
       setMissingImages: this.props.setMissingImages,
       missingImage: this.props.missingImage,
+      bgColor: props.bgColor,
       contrast: this.props.contrast
     };
 
@@ -352,6 +352,13 @@ class ObjectBlock extends React.Component {
       position: "absolute"
     };
 
+    const overlayStyle = {
+      width: props.width,
+      top: type === "header" ? props.height : 0,
+      position: "absolute",
+      paddingBottom: props.height
+    };
+
     const innerBlocks = React.Children.map(this.props.children, innerBlock => {
       let offsetTop = 0;
       let offsetLeft =
@@ -405,11 +412,24 @@ class ObjectBlock extends React.Component {
         viewOnly: childViewOnly
       });
     });
+
+    const activeHeader = props.modeHeader === "edit" && type === "header";
+    const activeFooter = props.modeFooter === "edit" && type === "footer";
     return (
-      <div className={classes} style={style}>
-        {innerBlocks}
-        <div className="helperName">{this.props.t(typeText)}</div>
-      </div>
+      <React.Fragment>
+        <div className={classes} style={style}>
+          {innerBlocks}
+          <div className="helperName">{this.props.t(typeText)}</div>
+        </div>
+        {this.props.viewOnly === 0 && (activeHeader || activeFooter) && (
+          <div className="headerFooterOverlay" style={overlayStyle}>
+            <div
+              className="headerFooterOverlayInner"
+              id="headerFooterOverlayId"
+            />
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 

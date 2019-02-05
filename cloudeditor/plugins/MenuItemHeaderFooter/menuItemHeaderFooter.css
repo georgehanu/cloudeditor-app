@@ -4,6 +4,11 @@
   position: absolute;
   left: 0;
   height: 30px;
+
+  /*  display: none;*/
+}
+
+.showHeaderFooter .submenuItemHeaderFooter {
   border-top: 1px solid #dcdee1;
   border-bottom: 1px solid #dcdee1;
 }
@@ -114,7 +119,8 @@
   float: right;
 }
 
-.submenuItemHeaderFooterClose button {
+.submenuItemHeaderFooterClose button,
+.submenuItemHeaderFooterHeightReset {
   -webkit-box-shadow: none;
   box-shadow: none;
   border-radius: 0;
@@ -199,3 +205,12 @@
 .submenuLayoutContainer li img {
   cursor: pointer;
 }
+
+.submenuItemHeaderFooter {
+  z-index: -1;
+}
+/*
+.showHeaderFooter .submenuItemHeaderFooter {
+  display: block;
+}
+*/
