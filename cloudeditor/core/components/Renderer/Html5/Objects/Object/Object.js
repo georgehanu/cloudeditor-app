@@ -238,6 +238,7 @@ class ObjectBlock extends React.Component {
       subType,
       active && !viewOnly ? "active" : "",
       backgroundblock && !viewOnly ? "backgroundblock" : "",
+      backgroundblock && viewOnly ? "backgroundblockPagination" : "",
       editable ? "editable" : "",
       !viewOnly ? "block_" + props.id : ""
     ].join(" ");

@@ -63,7 +63,8 @@ const PageTarget = {
       const activePageId = props.activePageId;
       innerPage = props.activePage.innerPages[activePageId];
       let aspectRatio = innerPage.height / innerPage.width;
-      width = innerPage.width / 6;
+      const columns = innerPage.columnsNo > 0 ? innerPage.columnsNo : 6;
+      width = innerPage.width / columns;
       switch (object.type) {
         case "image":
           aspectRatio = object.imageHeight / object.imageWidth;

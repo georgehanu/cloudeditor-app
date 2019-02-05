@@ -10,6 +10,7 @@ module.exports = (plugins, requires, localConfig) => {
     const ConfigUtils = require("./core/utils/ConfigUtils");
     const PluginsUtils = require("./core/utils/PluginsUtils");
     const StandardStore = require("./core/stores/StandardStore");
+    const ErrorBoundary = require("./core/components/ErrorBoundary/ErrorBoundary");
 
     ConfigUtils.loadConfiguration(localConfig);
 
@@ -26,7 +27,9 @@ module.exports = (plugins, requires, localConfig) => {
 
     ReactDOM.render(
       <AppContainer>
-        <Editor {...editorConfig} {...mainComponentCfg} />
+        <ErrorBoundary>
+          <Editor {...editorConfig} {...mainComponentCfg} />
+        </ErrorBoundary>
       </AppContainer>,
       document.getElementById("app")
     );

@@ -182,3 +182,8 @@
 .headerFooterOverlay {
   display: none;
 }
+
+.pageBlock.backgroundblockPagination {
+  pointer-events: none;
+  z-index: 0;
+}
