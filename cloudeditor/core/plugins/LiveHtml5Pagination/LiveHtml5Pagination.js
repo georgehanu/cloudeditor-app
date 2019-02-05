@@ -26,7 +26,7 @@ const {
   facingPagesSelector
 } = require("../../stores/selectors/project");
 const {
-  rerenderPage,
+  rerendierPage,
   checkChangedProps
 } = require("../../../core/utils/UtilUtils");
 const AddPages = require("./components/AddPages/AddPages");

@@ -63,14 +63,6 @@ class ObjectBlock extends React.Component {
   }
   shouldComponentUpdate(nextProps, nextState) {
     const list = [];
-    if (nextProps.viewOnly) {
-      /* console.log(
-        "text ",
-        nextProps.uuid,
-        nextProps.deleteMissingImages,
-        nextProps.viewOnly
-      );*/
-    }
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
     if (equals(nProps, cProps)) {
@@ -169,6 +161,7 @@ class ObjectBlock extends React.Component {
       deleteMissingImages: this.props.deleteMissingImages,
       setMissingImages: this.props.setMissingImages,
       missingImage: this.props.missingImage,
+      bgColor: props.bgColor,
       contrast: this.props.contrast
     };
 
@@ -185,7 +178,9 @@ class ObjectBlock extends React.Component {
       active: props.active,
       width: props.width,
       height: props.height,
-      image_src: props.image_src
+      image_src: props.image_src,
+      onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler
     };
 
     const block = <GraphicBlock {...graphicProps} />;
@@ -233,7 +228,8 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       mirrored,
-      parent
+      parent,
+      backgroundblock
     } = props;
 
     const classes = [
@@ -241,7 +237,9 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       active && !viewOnly ? "active" : "",
-      editable ? "editable" : ""
+      backgroundblock && !viewOnly ? "backgroundblock" : "",
+      editable ? "editable" : "",
+      !viewOnly ? "block_" + props.id : ""
     ].join(" ");
 
     const style = {
@@ -257,7 +255,15 @@ class ObjectBlock extends React.Component {
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-
+    const styleBorderColor = {
+      width: width + parseFloat(borderWidth),
+      height: height + parseFloat(borderWidth),
+      borderColor:
+        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
+      top: (-1 * parseFloat(borderWidth)) / 2,
+      left: (-1 * parseFloat(borderWidth)) / 2
+    };
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
@@ -271,7 +277,7 @@ class ObjectBlock extends React.Component {
       );
     }
     let deleteHandle = null;
-    if (this.props.deletable && !viewOnly) {
+    if (this.props.deletable && !viewOnly && !this.props.backgroundblock) {
       deleteHandle = (
         <div
           onClick={event => {
@@ -281,6 +287,7 @@ class ObjectBlock extends React.Component {
             this.props.onDeleteObjectHandler({
               id: this.props.id
             });
+            // this.props.deleteMissingImages(this.props.id);
           }}
           className={"deleteBlockHandler"}
         >
@@ -300,7 +307,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        {/* <div className={"blockBorder"} style={styleBorderColor} /> */}
+        {<div className={"blockBorder"} style={styleBorderColor} />}
         <u style={{ width, height }} />
 
         {rotatableHandle}
@@ -429,10 +436,6 @@ class ObjectBlock extends React.Component {
   render() {
     let element = null;
 
-    //console.log("renderElement", this.props.id);
-    if (this.props.viewOnly) {
-      //console.log("apo", this.props.deleteMissingImages);
-    }
     switch (this.props.subType) {
       case "textflow":
       case "text":

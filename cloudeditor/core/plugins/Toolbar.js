@@ -10,6 +10,7 @@ const ToolbarArea = require("../../core/components/Toolbar/ToolbarItems/ToolbarA
 const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/SettingsWnd/SettingsWnd");
 const ImageToolbar = require("../components/Toolbar/ToolbarTypes/image");
 const TextToolbar = require("../components/Toolbar/ToolbarTypes/text");
+const BackgroundToolbar = require("../components/Toolbar/ToolbarTypes/background");
 
 const { setObjectFromToolbar } = require("../stores/actions/toolbar");
 const {
@@ -25,6 +26,7 @@ const { uiFontsSelector } = require("../../core/stores/selectors/ui");
 
 const textToolbar = { width: 396, height: 92 };
 const imageToolbar = { width: 445, height: 47 };
+const backgroundToolbar = { width: 485, height: 47 };
 
 class Toolbar extends React.Component {
   state = {
@@ -164,7 +166,20 @@ class Toolbar extends React.Component {
 
     let attributes = {};
     let toolbarType = null;
-    if (activeItem.type === "image") {
+    if (activeItem.type === "image" && activeItem.backgroundblock) {
+      toolbarType = backgroundToolbar;
+      toolbarData = Utils.LoadImageSettings(
+        BackgroundToolbar,
+        activeItem,
+        this.props.activeLayer,
+        {
+          pageDimmensions: this.props.pageDimmensions,
+          uiPageOffset: this.props.uiPageOffset
+        },
+        true
+      );
+      attributes = Utils.LoadImageAdditionalInfo(activeItem, true);
+    } else if (activeItem.type === "image") {
       toolbarType = imageToolbar;
       toolbarData = Utils.LoadImageSettings(
         ImageToolbar,

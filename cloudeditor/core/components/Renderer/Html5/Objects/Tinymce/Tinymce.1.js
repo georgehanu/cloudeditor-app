@@ -56,7 +56,6 @@ class Tinymce extends React.Component {
   };
 
   onClickHandler = event => {
-    console.log("onClick");
     event.preventDefault();
   };
   onObjectResizeHandler = (event, editor) => {

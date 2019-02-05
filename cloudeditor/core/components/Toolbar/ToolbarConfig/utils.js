@@ -1,5 +1,6 @@
 const Types = require("../ToolbarConfig/types");
 const Operation = require("../ToolbarConfig/operation");
+const { mergeAll, clone } = require("ramda");
 
 const MergeClassName = (defaultClass, newClass) => {
   if (newClass === null || newClass === undefined) {
@@ -62,7 +63,13 @@ const imageQuality = (activeItem, options) => {
   return 300;
 };
 
-const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
+const LoadImageSettings = (
+  toolbar,
+  activeItem,
+  activeLayer,
+  options,
+  background = false
+) => {
   for (let groupIndex in toolbar.groups) {
     let group = toolbar.groups[groupIndex];
     for (let itemIndex in group.items) {
@@ -91,13 +98,22 @@ const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
       if (item.type === Types.SIMPLE_ICON_QUALITY) {
         item.threshold = imageQuality(activeItem, options);
       }
+
+      if (background) {
+        if (item.type === Types.COLOR_SELECTOR_BACKGROUND) {
+          //item.color = activeItem.fill;
+          item.color = activeItem.bgColor
+            ? "rgb(" + activeItem.bgColor.htmlRGB + ")"
+            : activeItem.fill;
+        }
+      }
     }
   }
   return toolbar;
 };
 
-const LoadImageAdditionalInfo = activeItem => {
-  return {
+const LoadImageAdditionalInfo = (activeItem, background = false) => {
+  let info = {
     [Types.CHANGE_SHAPE_WND]: { image: activeItem.image_src, startValue: 180 },
     [Types.SPECIAL_EFFECTS_WND]: {
       image: activeItem.image_src,
@@ -108,6 +124,15 @@ const LoadImageAdditionalInfo = activeItem => {
     },
     [Types.SLIDER_OPACITY_WND]: { defaultValue: activeItem.imge_src }
   };
+
+  if (background) {
+    info[Types.COLOR_SELECTOR_WND] = {
+      selected: {
+        [Types.COLOR_TAB_BG]: 0
+      }
+    };
+  }
+  return info;
 };
 
 const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
@@ -242,6 +267,17 @@ const CreatePayload = (activeitem, itemPayload) => {
           ...itemPayload.value
         }
       };
+
+      if (activeitem.backgroundblock && activeitem.imagePath) {
+        const removeImage = {
+          imagePath: null,
+          image_src: null,
+          image: null,
+          imageWidth: 0,
+          imageHeight: 0
+        };
+        attrs = mergeAll([clone(attrs), removeImage]);
+      }
       break;
 
     case Types.COLOR_TAB_BORDER_COLOR:

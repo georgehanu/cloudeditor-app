@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const CropperImage = require("../../CropperImage/CropperImage");
 const type = ["image"];
+require("./Image.css");
 const ImageTarget = {
   drop(props, monitor, component) {
     if (monitor.isOver()) {
@@ -15,7 +16,8 @@ const ImageTarget = {
           cropW: 0,
           cropX: 0,
           cropY: 0,
-          cropH: 0
+          cropH: 0,
+          missingImage: false
         }
       });
     }
@@ -65,7 +67,7 @@ class ImageBlock extends React.PureComponent {
       top: top
     };
     let cropper = null;
-    if (this.state.ready) {
+    if (this.state.ready && !this.props.missingImage) {
       cropper = (
         <CropperImage
           targetWidth={this.props.width}
@@ -92,6 +94,7 @@ class ImageBlock extends React.PureComponent {
           renderId={this.props.renderId}
           workingPercent={this.props.workingPercent}
           onUpdatePropsHandler={this.props.onUpdateProps}
+          bgColor={this.props.bgColor}
           onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
         />
       );

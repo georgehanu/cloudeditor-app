@@ -58,7 +58,8 @@ const {
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
-  PROJ_LOAD_LAYOUT
+  PROJ_LOAD_LAYOUT,
+  CHANGE_BACKGROUND
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -489,6 +490,18 @@ loadLayout = (state, payload) => {
     }
   };
 };
+changeBackground = (state, _) => {
+  const activePageId = state.activePage;
+  const objectsIds = state.pages[activePageId].objectsIds;
+  const backgroundObject = objectsIds.filter(el => {
+    return state.objects[el].backgroundblock;
+  });
+  let selectedObjectsIds = [];
+  if (backgroundObject.length) {
+    selectedObjectsIds.push(head(backgroundObject));
+  }
+  return { ...state, selectedObjectsIds };
+};
 
 module.exports = handleActions(
   {
@@ -775,6 +788,9 @@ module.exports = handleActions(
     },
     [PROJ_LOAD_LAYOUT]: (state, action) => {
       return loadLayout(state, action.payload);
+    },
+    [CHANGE_BACKGROUND]: (state, action) => {
+      return changeBackground(state, action.payload);
     }
   },
   initialState

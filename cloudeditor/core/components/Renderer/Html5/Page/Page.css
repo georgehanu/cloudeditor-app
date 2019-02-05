@@ -5,6 +5,7 @@
   margin: 0 auto;
   background-size: 100%;
   background-repeat: no-repeat;
+  z-index: 1;
 }
 .pageNameContainer {
   margin-left: 150px;

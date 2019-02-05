@@ -1,0 +1,7 @@
+.graphicElementsContainer .uploadGalleryLi .galleryItemActions .delete {
+  display: none;
+}
+.graphicElementsContainer .uploadGalleryLi:hover .galleryItemActions .select {
+  left: 50%;
+  transform: translateX(-50%);
+}

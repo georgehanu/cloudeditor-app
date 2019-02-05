@@ -6,6 +6,7 @@ const initialState = {
   enabled: false,
   loading: false,
   pageUrl: null,
+  imageUrls: {},
   errorMessage: null
 };
 
@@ -18,11 +19,20 @@ module.exports = handleActions(
         enabled: true
       };
     },
-
-    [actionTypes.PREVIEW_LOAD_PAGE_SUCCESS]: (state, action) => {
+    [actionTypes.PREVIEW_GET_PAGE]: (state, action) => {
       return {
         ...state,
-        pageUrl: action.payload,
+        loading: true,
+        enabled: true
+      };
+    },
+
+    [actionTypes.PREVIEW_LOAD_PAGE_SUCCESS]: (state, action) => {
+      const { pageUrl, imageUrls } = action.payload;
+      return {
+        ...state,
+        pageUrl: pageUrl,
+        imageUrls: { ...imageUrls },
         errorMessage: null,
         loading: false
       };
@@ -38,7 +48,7 @@ module.exports = handleActions(
     },
 
     [actionTypes.PREVIEW_DISABLE_MODE]: (state, action) => {
-      return { ...state, enabled: false };
+      return { ...state, enabled: false, imageUrls: {} };
     }
   },
   initialState

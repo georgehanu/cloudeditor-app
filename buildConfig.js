@@ -78,7 +78,8 @@ const build = config => {
                       if (
                         selector.startsWith(".sweet-overlay") ||
                         selector.startsWith(".sweet-alert") ||
-                        selector.startsWith(".rc-")
+                        selector.startsWith(".rc-") ||
+                        selector.startsWith(".preview_image")
                       ) {
                         return selector;
                       } else {

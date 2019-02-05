@@ -380,6 +380,12 @@ const pageColumnsNoSelector = createSelector(
     return 0;
   }
 );
+const getNumberOfPagesSelector = createSelector(
+  pagesOrderSelector,
+  pages => {
+    return pages.length;
+  }
+);
 
 module.exports = {
   pagesSelector,
@@ -426,6 +432,7 @@ module.exports = {
   projLoadLoadingProjectSelector,
   projLoadErrorMessageProjectSelector,
   activePageWithObjectsSelector,
+  getNumberOfPagesSelector,
 
   pageColumnsNoSelector,
   projectHeaderConfigSelector,

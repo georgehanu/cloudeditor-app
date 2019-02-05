@@ -2,6 +2,20 @@ const uuidv4 = require("uuid/v4");
 const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
 const randomColor = require("randomColor");
 
+const getObjectColorTemplateFill = cfg => {
+  return merge(
+    {
+      colorSpace: "DeviceRGB",
+      htmlRGB: null,
+      RGB: "0 0 0",
+      CMYK: "0 0 0 1",
+      separation: null,
+      separationColorSpace: null,
+      separationColor: null
+    },
+    cfg || {}
+  );
+};
 const getObjectColorTemplate = cfg => {
   return merge(
     {
@@ -79,7 +93,7 @@ const getObjectsDefaults = cfg => {
       type: "image",
       subType: "image",
       alternateZoom: 0,
-      backgroundBlock: 0,
+      backgroundblock: 0,
       borderWidth: 0,
       contrast: 0,
       luminosite: 0,
@@ -131,7 +145,7 @@ const getObjectsDefaults = cfg => {
       bold: 0,
       charSpacing: 0,
       circleText: 0,
-      fillColor: getObjectColorTemplate((text && text.fillColor) || {}),
+      fillColor: getObjectColorTemplateFill((text && text.fillColor) || {}),
       bgColor: getObjectColorTemplate((text && text.bgColor) || {}),
       borderColor: getObjectColorTemplate((text && text.borderColor) || {}),
       deviationX: 0,
@@ -449,7 +463,8 @@ const getUIPermissionsTemplate = cfg => {
       moveBlocks: 1,
       rotateBlocks: 1,
       resizeBlocks: 1,
-      snapBlocks: 1
+      snapBlocks: 1,
+      alertOnExit: 0
     },
     cfg || {}
   );
@@ -486,7 +501,7 @@ const getEmptyProject = cfg => {
     top: 10,
     isPageNrBlock: 1,
     value: "",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 12
   });
   const logoHeader = getEmptyObject({
@@ -518,7 +533,7 @@ const getEmptyProject = cfg => {
     left: 17.308244475806433,
     top: 5,
     value: "Footer text",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 12,
     fill: "red"
   });
@@ -1455,7 +1470,7 @@ const getRandomProject1 = cfg => {
     left: 0,
     top: 0,
     value: "Enter text here",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 12,
     fill: "red"
   });
@@ -1469,7 +1484,7 @@ const getRandomProject1 = cfg => {
     left: 500,
     top: 20,
     value: "Header text here",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 20,
     fill: "red"
   });
@@ -1482,7 +1497,7 @@ const getRandomProject1 = cfg => {
     left: 150,
     top: 60,
     value: "Footer text here",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 20,
     fill: "red"
   });
@@ -1564,7 +1579,7 @@ const getRandomProject = cfg => {
     left: 0,
     top: 0,
     value: "Header text here",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 20,
     fill: "red"
   });
@@ -1577,7 +1592,7 @@ const getRandomProject = cfg => {
     left: 0,
     top: 0,
     value: "Footer text here",
-    fontFamily: "Dax",
+    fontFamily: "Helvetica",
     fontSize: 20,
     fill: "red"
   });
@@ -1609,7 +1624,7 @@ const getRandomProject = cfg => {
         left: Math.random() * 300,
         top: Math.random() * 300,
         value: "Enter text here",
-        fontFamily: "Dax",
+        fontFamily: "Helvetica",
         fontSize: 5 + Math.random() * 50
       });
       page.objectsIds.push(object.id);
@@ -1707,6 +1722,10 @@ const getEmptyAssets = cfg => {
         loadingDelete: false,
         loadingFiles: 0,
         uploadedFiles: []
+      },
+      graphics: {
+        loading: false,
+        items: []
       }
     },
     cfg || {}
