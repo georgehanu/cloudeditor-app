@@ -26,7 +26,8 @@ module.exports = {
       priority: 1,
       text: "Graphic Elements",
       icon: "fupa-graphics",
-      showMore: true
+      showMore: true,
+      tooltip: { title: "Graphics", description: "Add a new Graphic element" }
     }
   })
 };

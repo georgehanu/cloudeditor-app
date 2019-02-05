@@ -124,7 +124,7 @@ module.exports = {
       text: "Layouts",
       icon: "fupa-layout",
       showMore: true,
-      tooltip: { title: "Layouts", description: "Layouts" }
+      tooltip: { title: "Layouts", description: "Load a new layout" }
     }
   })
 };

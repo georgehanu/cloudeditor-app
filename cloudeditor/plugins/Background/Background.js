@@ -15,7 +15,10 @@ const Background = props => {
         if (background.length) background[0].click();
       }}
     >
-      <SidebarButton clicked={props.zoomIn}>
+      <SidebarButton
+        tooltip={{ title: "Background", description: "Change the background" }}
+        clicked={props.zoomIn}
+      >
         <div className="iconContainer">
           <div className="icon fupa-background" />
         </div>
