@@ -102,7 +102,7 @@ class MenuItemHeaderFooter extends React.Component {
     });
   };
 
-  togglePoptextHandler = type => {
+  togglePoptextHandler = (type, hide = false) => {
     if (type === "edit") {
       if (this.state.poptextEdit.open === false) {
         this.closePoptext();
@@ -111,7 +111,7 @@ class MenuItemHeaderFooter extends React.Component {
       this.setState({
         poptextEdit: {
           ...this.state.poptextEdit,
-          open: !this.state.poptextEdit.open
+          open: hide ? false : !this.state.poptextEdit.open
         }
       });
     } else if (type === "insert") {
@@ -121,7 +121,7 @@ class MenuItemHeaderFooter extends React.Component {
       this.setState({
         poptextInsert: {
           ...this.state.poptextInsert,
-          open: !this.state.poptextInsert.open
+          open: hide ? false : !this.state.poptextInsert.open
         }
       });
     } else if (type === "layoutMirror") {
@@ -132,7 +132,7 @@ class MenuItemHeaderFooter extends React.Component {
       this.setState({
         poptextLayoutMirror: {
           ...this.state.poptextLayoutMirror,
-          open: !this.state.poptextLayoutMirror.open
+          open: hide ? false : !this.state.poptextLayoutMirror.open
         }
       });
     } else if (type === "active") {
@@ -142,7 +142,7 @@ class MenuItemHeaderFooter extends React.Component {
       this.setState({
         poptextActive: {
           ...this.state.poptextActive,
-          open: !this.state.poptextActive.open
+          open: hide ? false : !this.state.poptextActive.open
         }
       });
     } else if (type === "layouts") {
@@ -152,7 +152,7 @@ class MenuItemHeaderFooter extends React.Component {
       this.setState({
         poptextLayouts: {
           ...this.state.poptextLayouts,
-          open: !this.state.poptextLayouts.open
+          open: hide ? false : !this.state.poptextLayouts.open
         }
       });
     }

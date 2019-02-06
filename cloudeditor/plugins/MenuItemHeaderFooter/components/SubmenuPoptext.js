@@ -14,7 +14,10 @@ const submenuPoptext = props => {
     return null;
   });
   return (
-    <div className="submenuPoptextContainer">
+    <div
+      className="submenuPoptextContainer"
+      onMouseLeave={() => props.togglePoptext(props.poptextName, true)}
+    >
       <span
         className="activeItem"
         onClick={() => props.togglePoptext(props.poptextName)}

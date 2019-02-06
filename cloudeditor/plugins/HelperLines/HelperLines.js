@@ -36,12 +36,12 @@ class HelperLines extends React.PureComponent {
     return { poptextPages: { ...state.poptextPages, active: active } };
   }
 
-  togglePoptextHandler = type => {
+  togglePoptextHandler = (type, hide = false) => {
     if (type === "pages") {
       this.setState({
         poptextPages: {
           ...this.state.poptextPages,
-          open: !this.state.poptextPages.open
+          open: hide ? false : !this.state.poptextPages.open
         }
       });
     }
