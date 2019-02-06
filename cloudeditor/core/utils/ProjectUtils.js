@@ -31,6 +31,45 @@ const getObjectColorTemplate = cfg => {
     cfg || {}
   );
 };
+const getEmptyLayoutTemplateConfig = cfg => {
+  return merge(
+    {
+      duplicateChecked: false,
+      isDefaultPoptext: {
+        options: [{ value: "1", label: "Yes" }, { value: "no", label: "No" }],
+        selectedOption: { value: "0", label: "Yes" },
+        title: "Project is Default"
+      },
+      projectPagePoptext: {
+        options: [],
+        selectedOption: { value: "", label: "" },
+        title: "Project Page"
+      },
+      projectCategoryPoptext: {
+        options: [],
+        selectedOption: { value: "", label: "" },
+        title: "Project Category"
+      },
+      projectStatusPoptext: {
+        options: [
+          { value: "1", label: "Active" },
+          { value: "0", label: "Inctive" }
+        ],
+        selectedOption: { value: "Active", label: "Active" },
+        title: "Project Status"
+      },
+      projectTitle: "",
+      projectDescription: "",
+      projectOrder: "",
+      showAlert: false,
+      saText: "",
+      projectIcon: null,
+      projectIconSrc: null,
+      loading: false
+    },
+    cfg || {}
+  );
+};
 
 const getObjectsDefaults = cfg => {
   const {
@@ -1779,7 +1818,8 @@ const ProjectUtils = {
   getFontMetricTemplate,
   getEmptyProductInformation,
   getEmptyAssets,
-  getEmptyAuth
+  getEmptyAuth,
+  getEmptyLayoutTemplateConfig
 };
 
 module.exports = ProjectUtils;
