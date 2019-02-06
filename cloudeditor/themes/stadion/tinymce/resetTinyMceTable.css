@@ -3,6 +3,7 @@ html {
 }
 body {
   padding: 0px !important;
+  margin: 0px !important;
   overflow-x: hidden !important;
   width: 10000px;
   height: 10000px;
@@ -11,6 +12,7 @@ body {
 table {
   width: auto;
   height: auto;
+  transform-origin: top left;
 }
 body,
 td,
@@ -102,4 +104,12 @@ html body {
   width: 10px !important;
   height: 10px !important;
   background-color: #646464 !important;
+}
+
+.ephox-snooker-resizer-rows {
+  width: 100% !important;
+}
+
+.ephox-snooker-resizer-cols {
+  height: 100% !important;
 }

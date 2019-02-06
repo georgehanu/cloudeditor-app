@@ -539,8 +539,6 @@ const getEmptyProject = cfg => {
     id: "table",
     type: "tinymceTable",
     subType: "tinymceTable",
-    // width: 790.82688,
-    // height: 545,
     width: null,
     height: null,
     left: 16.55 + 8.50394,

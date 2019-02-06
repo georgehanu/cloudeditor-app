@@ -261,7 +261,7 @@ class ObjectBlock extends React.Component {
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
-      styleNorth = { width: width + 16, height: height + 16 };
+      styleNorth = { width, height };
     }
 
     let rotatableHandle = null;
