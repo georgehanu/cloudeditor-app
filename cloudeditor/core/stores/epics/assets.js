@@ -63,41 +63,6 @@ module.exports = {
         })
       )
     ),
-  onEpicLayouts: (action$, state$) =>
-    action$.pipe(
-      ofType(ASSETS_LAYOUT_START),
-      mergeMap(action$ =>
-        Observable.create(obs => {
-          let serverData = new FormData();
-          axios
-            .post(LAYOUTS_URL, serverData)
-            .then(resp => resp.data)
-            .then(data => {
-              if (data.success) {
-                obs.next({
-                  type: ASSETS_LAYOUT_SUCCESS,
-                  payload: {
-                    data: data.data
-                  }
-                });
-              } else {
-                obs.next({
-                  type: ASSETS_LAYOUT_FAILED,
-                  payload: { message: data.message }
-                });
-                obs.complete();
-              }
-            })
-            .catch(error => {
-              obs.next({
-                type: ASSETS_LAYOUT_FAILED,
-                payload: { message: "Error message: " + error.message }
-              });
-              obs.complete();
-            });
-        })
-      )
-    ),
   onEpicDeleteAsset: (action$, state$) =>
     action$.pipe(
       ofType(REMOVE_ASSET_FROM_GALLERY_START),

@@ -21,6 +21,10 @@ const projectStatusPoptextSelector = state =>
 const projectTitleSelector = state =>
   pathOr("", ["layoutTemplate", "projectTitle"], state);
 
+const templateIdSelector = state =>
+  pathOr(0, ["layoutTemplate", "template_id"], state);
+const projectIdSelector = state => pathOr(0, ["layoutTemplate", "id"], state);
+
 const projectDescriptionSelector = state =>
   pathOr("", ["layoutTemplate", "projectDescription"], state);
 
@@ -90,5 +94,7 @@ module.exports = {
   projectIconSrcSelector,
   projectLoadingSelector,
   projectShowAlertSelector,
-  projectMessageSelector
+  projectMessageSelector,
+  projectIdSelector,
+  templateIdSelector
 };

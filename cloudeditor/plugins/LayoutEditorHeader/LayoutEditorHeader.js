@@ -28,7 +28,9 @@ const {
   projectIconSrcSelector,
   projectLoadingSelector,
   projectShowAlertSelector,
-  projectMessageSelector
+  projectMessageSelector,
+  projectIdSelector,
+  templateIdSelector
 } = require("../../core/stores/selectors/layout_template");
 const {
   pagesOrderSelector,
@@ -94,7 +96,7 @@ class LayoutEditorHeader extends React.Component {
         isDefaultPoptext: { selectedOption }
       });
     } else if (name === "projectPage") {
-      this.props.onChangePageHandler({ page_id: selectedOption.value.id });
+      this.props.onChangePageHandler({ page_id: selectedOption.value });
       this.props.updateLayoutTemplateHandler({
         projectPagePoptext: { selectedOption }
       });
@@ -131,20 +133,22 @@ class LayoutEditorHeader extends React.Component {
     }
 
     let serverData = {
-      id: "1",
+      id: this.props.projectId,
       title: this.props.projectTitle,
+      page_id: this.props.projectPagePoptext.selectedOption.value,
       description: this.props.projectDescription,
-      category_id: "1",
-      page_no: this.props.projectPagePoptext.selectedOption.value.index,
+      category_id: this.props.projectCategoryPoptext.selectedOption.value,
+      page_no:
+        this.props.pagesOrder.indexOf(
+          this.props.projectPagePoptext.selectedOption.value
+        ) + 1,
       pdf_file: "pdf",
       icon: this.props.projectIcon,
       sort_order: this.props.projectOrder,
-
       is_default: this.props.isDefaultPoptext.selectedOption.value,
       status: this.props.projectStatusPoptext.selectedOption.value,
-      template_id: "1",
+      template_id: this.props.templateId,
       duplicate: this.props.duplicateChecked ? "1" : "0",
-
       saved_data: JSON.stringify({
         activePage: this.props.activePage
       })
@@ -285,7 +289,9 @@ const mapStateToProps = state => {
     projectIconSrc: projectIconSrcSelector(state),
     loading: projectLoadingSelector(state),
     showAlert: projectShowAlertSelector(state),
-    message: projectMessageSelector(state)
+    message: projectMessageSelector(state),
+    projectId: projectIdSelector(state),
+    templateId: templateIdSelector(state)
   };
 };
 

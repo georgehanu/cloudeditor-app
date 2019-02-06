@@ -11,11 +11,9 @@ const {
   SAVE_ICON_TEMPLATE_SUCCESS
 } = require("../actionTypes/layout_template");
 
-const SAVE_LAYOUT_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/saveProject";
+const SAVE_LAYOUT_URL = saveProjectURL;
 
-const STORE_ICON_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/uploadProjectIcon";
+const STORE_ICON_URL = uploadProjectIconUrl;
 
 module.exports = {
   onEpicSaveLayout: (action$, state$) =>
@@ -27,6 +25,7 @@ module.exports = {
           for (var key in action$.payload) {
             formData.append(key, action$.payload[key]);
           }
+          formData.append("form_key", formKey);
           axios
             .post(SAVE_LAYOUT_URL, formData)
             .then(resp => resp.data)
@@ -63,6 +62,7 @@ module.exports = {
           for (var key in action$.payload) {
             formData.append(key, action$.payload[key]);
           }
+          formData.append("form_key", formKey);
           axios
             .post(STORE_ICON_URL, formData)
             .then(resp => resp.data)

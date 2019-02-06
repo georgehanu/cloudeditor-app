@@ -4,6 +4,7 @@ const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 const LayoutContainer = require("./components/LayoutsContainer");
 const { activePageIdSelector } = require("../../core/stores/selectors/project");
+const { categoriesSelector } = require("../../core/stores/selectors/assets");
 const {
   assetsLayoutLoadingSelector
 } = require("../../core/stores/selectors/assets");
@@ -25,12 +26,11 @@ class Layouts extends React.Component {
     showAlert: false,
     saText: "",
     layoutId: null,
-    categories: [],
     selectedCategory: { value: "", label: "" }
   };
 
   onCategoryChange = selectedCategory => {
-    this.setState({ selectedCategory });
+    this.setState({ selectedCategory: selectedCategory });
   };
 
   shouldComponentUpdate = (nextProps, nextState) => {
@@ -41,13 +41,9 @@ class Layouts extends React.Component {
   };
 
   componentDidMount() {
-    this.props.assetsLayoutStart();
-    const categories = [
-      { value: "1", label: "Categ 1" },
-      { value: "2", label: "Categ 2" },
-      { value: "3", label: "Categ 3" }
-    ];
-    this.setState({ categories, selectedCategory: categories[0] });
+    // this.props.assetsLayoutStart();
+    if (typeof this.props.categories[0] != "undefined")
+      this.setState({ selectedCategory: this.props.categories[0] });
   }
 
   selectImageHandler = layoutId => {
@@ -80,7 +76,7 @@ class Layouts extends React.Component {
         />
         <LayoutsHeader
           title={this.props.t("Categories")}
-          options={this.state.categories}
+          options={this.props.categories}
           selectedOption={this.state.selectedCategory}
           onChange={this.onCategoryChange}
         />
@@ -98,6 +94,7 @@ class Layouts extends React.Component {
 const mapStateToProps = state => {
   return {
     activePageId: activePageIdSelector(state),
+    categories: categoriesSelector(state),
     pagesOrder: pagesOrderSelector(state),
     loading: assetsLayoutLoadingSelector(state),
     assetsLayout: assetsLayoutSelector(state)

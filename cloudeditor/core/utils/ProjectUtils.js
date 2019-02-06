@@ -1765,6 +1765,11 @@ const getEmptyAssets = cfg => {
       graphics: {
         loading: false,
         items: []
+      },
+      layout: {
+        loading: false,
+        items: [],
+        categories: []
       }
     },
     cfg || {}

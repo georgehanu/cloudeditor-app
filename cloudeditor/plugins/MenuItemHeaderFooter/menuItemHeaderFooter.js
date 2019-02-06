@@ -58,39 +58,11 @@ class MenuItemHeaderFooter extends React.Component {
     }
   };
 
-  componentDidMount() {
-    this.loadLayouts();
-  }
+  componentDidMount() {}
 
   shouldComponentUpdate(nextProps, nextState) {
     return true;
-    // console.log("render footer should update");
-    // return !isEqual(nextProps, this.props);
   }
-
-  loadLayouts = () => {
-    axios
-      .post(LOAD_LAYOUTS_URL)
-      .then(resp => resp.data)
-      .then(data => {
-        if (data.status === "success") {
-          let items = [];
-          for (let idx in data.items) {
-            items.push({
-              id: uuidv4(),
-              src: data.items[idx]
-            });
-          }
-          this.setState({
-            poptextLayouts: { ...this.state.poptextLayouts, items }
-          });
-        } else {
-        }
-      })
-      .catch(error => {
-        console.log(error, "error");
-      });
-  };
 
   closePoptext = () => {
     this.setState({
