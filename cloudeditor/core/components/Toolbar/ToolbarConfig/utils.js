@@ -1,5 +1,6 @@
 const Types = require("../ToolbarConfig/types");
 const Operation = require("../ToolbarConfig/operation");
+const { mergeAll, clone } = require("ramda");
 
 const MergeClassName = (defaultClass, newClass) => {
   if (newClass === null || newClass === undefined) {
@@ -266,6 +267,17 @@ const CreatePayload = (activeitem, itemPayload) => {
           ...itemPayload.value
         }
       };
+
+      if (activeitem.backgroundblock && activeitem.imagePath) {
+        const removeImage = {
+          imagePath: null,
+          image_src: null,
+          image: null,
+          imageWidth: 0,
+          imageHeight: 0
+        };
+        attrs = mergeAll([clone(attrs), removeImage]);
+      }
       break;
 
     case Types.COLOR_TAB_BORDER_COLOR:
