@@ -316,8 +316,6 @@ const activePageSelector = createSelector(
 const selectedObjectSelector = createSelector(
   [objectsSelector, selectedObjectsIdsSelector],
   (objects, selectedObjectsIds) => {
-    selectedObjectsIds = [Object.keys(objects)[0]];
-
     const activeObjects = {
       objects: pick(selectedObjectsIds, objects)
     };

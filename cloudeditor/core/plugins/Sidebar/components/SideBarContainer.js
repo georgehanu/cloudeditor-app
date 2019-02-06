@@ -24,19 +24,30 @@ class SideBarContainer extends React.Component {
     return tool.plugin;
   };
 
-  showPlugin = pluginIndex => {
-    if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
-      this.setState({ showPane: false, pluginIndex: null }, () => {
-        this.props.addContainerClasses("sideBar", [], true);
-      });
+  showPlugin = (pluginIndex, embededButton = false, func = null) => {
+    if (embededButton) {
+      if (this.state.showPane) {
+        this.setState({ showPane: false, pluginIndex }, () => {
+          this.props.addContainerClasses("sideBar", [], true);
+        });
+      } else {
+        this.setState({ pluginIndex });
+      }
+      func();
     } else {
-      this.setState({ showPane: true, pluginIndex }, () => {
-        this.props.addContainerClasses(
-          "sideBar",
-          ["sidebarContainerExpand"],
-          true
-        );
-      });
+      if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
+        this.setState({ showPane: false, pluginIndex: null }, () => {
+          this.props.addContainerClasses("sideBar", [], true);
+        });
+      } else {
+        this.setState({ showPane: true, pluginIndex }, () => {
+          this.props.addContainerClasses(
+            "sideBar",
+            ["sidebarContainerExpand"],
+            true
+          );
+        });
+      }
     }
   };
 
@@ -51,7 +62,15 @@ class SideBarContainer extends React.Component {
       return (
         <li key={i} className="sidebarButtonContainer">
           {tool.embedButtonPlugin === true ? (
-            <Tool cfg={tool.cfg || {}} items={tool.items || []} />
+            <Tool
+              cfg={tool.cfg || {}}
+              items={tool.items || []}
+              //clicked={() => this.showPlugin(i, true)}
+              clicked={this.showPlugin}
+              index={i}
+              selected={i === this.state.pluginIndex ? true : false}
+              showPane={this.state.showPane}
+            />
           ) : (
             <React.Fragment>
               <SidebarButton
