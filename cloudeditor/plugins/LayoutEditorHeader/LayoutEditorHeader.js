@@ -16,6 +16,9 @@ require("sweetalert/dist/sweetalert.css");
 require("./LayoutEditorHeader.css");
 
 const {
+  getCheckedDuplicateSelector
+} = require("../../core/stores/selectors/layout_template");
+const {
   pagesOrderSelector,
   pagesSelector,
   activePageWithObjectsSelector
@@ -333,7 +336,7 @@ class LayoutEditorHeader extends React.Component {
         <div className="layoutEditorHeaderContainer">
           <div className="layouHeaderTop">
             <Duplicate
-              checked={this.state.duplicateChecked}
+              checked={this.props.duplicateChecked}
               label={this.props.t("Duplicate")}
               onChange={this.onChange}
               name="duplicate"
@@ -393,6 +396,7 @@ class LayoutEditorHeader extends React.Component {
 const mapStateToProps = state => {
   return {
     //projectTitle: titleSelector(state),
+    duplicateChecked: getCheckedDuplicateSelector(state),
     pagesLabel: pagesLabelSelector(state),
     pagesOrder: pagesOrderSelector(state),
     activePage: activePageWithObjectsSelector(state)
