@@ -193,6 +193,8 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
             { value: "sendtoback", disabled: true }
           ];
         }
+      } else if (item.type === Types.REFRESH_TABLE) {
+        item.refreshLoading = activeItem.refreshLoading;
       }
     }
   }

@@ -93,21 +93,31 @@ module.exports = {
                   type: UPDATE_OBJECT_PROPS,
                   payload: {
                     id: action$.payload.id,
-                    props: { tableContent: formattedTable, toolbarUpdate: true }
+                    props: {
+                      tableContent: formattedTable,
+                      toolbarUpdate: true,
+                      refreshLoading: false
+                    }
                   }
                 });
               } else {
                 obs.next({
-                  type: REFRESH_TABLE_FAILED,
-                  payload: "Error refreshing table"
+                  type: UPDATE_OBJECT_PROPS,
+                  payload: {
+                    id: action$.payload.id,
+                    props: { refreshLoading: false }
+                  }
                 });
               }
               obs.complete();
             })
             .catch(error => {
               obs.next({
-                type: REFRESH_TABLE_FAILED,
-                payload: "Error message: " + error.message
+                type: UPDATE_OBJECT_PROPS,
+                payload: {
+                  id: action$.payload.id,
+                  props: { refreshLoading: false }
+                }
               });
               obs.complete();
             });

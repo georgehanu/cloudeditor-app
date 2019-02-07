@@ -60,6 +60,7 @@ const {
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
   CHANGE_BACKGROUND,
+  REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED
 } = require("../actionTypes/project");
 
@@ -821,6 +822,12 @@ module.exports = handleActions(
     },
     [REFRESH_TABLE_FAILED]: (state, action) => {
       return state;
+    },
+    [REFRESH_TABLE_START]: (state, action) => {
+      return updateObjectProps(state, {
+        id: action.payload.id,
+        props: { refreshLoading: true }
+      });
     }
   },
   initialState
