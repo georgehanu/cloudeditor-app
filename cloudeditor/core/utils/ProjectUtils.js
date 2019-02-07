@@ -1781,6 +1781,7 @@ const getEmptyProductInformation = cfg => {
     {
       name: "",
       productId: null,
+      templateId: null,
       qty: 1,
       productOptions: {}
     },
