@@ -8,10 +8,9 @@ const actionTypes = require("./actionTypes");
 const actions = require("./actions");
 const axios = require("../axios");
 const {
-  teamCompetitionSelector,
-  teamSelector,
-  currentTeamSelector,
-  currentClubSelector
+  teamMatchesQuerySelector,
+  teamStandingsQuerySelector,
+  teamPlayersQuerySelector
 } = require("./selectors");
 
 module.exports = {
@@ -72,13 +71,11 @@ module.exports = {
     action$.pipe(
       ofType(actionTypes.CHANGE_CURRENT_TEAM),
       switchMap(action => {
-        const competition = teamCompetitionSelector(store.value);
+        const teamStandingsQuery = teamStandingsQuerySelector(store.value);
         return Rx.from(
           axios
-            .get("/standings", {
-              params: {
-                competition: competition
-              }
+            .get(teamStandingsQuery.query, {
+              params: teamStandingsQuery.data
             })
             .then(res => res.data)
         ).pipe(
@@ -97,20 +94,12 @@ module.exports = {
     action$.pipe(
       ofType(actionTypes.CHANGE_CURRENT_TEAM),
       switchMap(action => {
-        const club = currentClubSelector(store.value);
-        const competition = teamCompetitionSelector(store.value);
-        const team = teamSelector(store.value);
-        const teamSlug = team.ageGroup.slug + team.level;
+        const teamMatchesQuery = teamMatchesQuerySelector(store.value);
 
         return Rx.from(
           axios
-            .get("/matches", {
-              params: {
-                club: club,
-                competition: competition,
-                team: teamSlug,
-                limit: 0
-              }
+            .get(teamMatchesQuery.query, {
+              params: teamMatchesQuery.data
             })
             .then(res => res.data)
         ).pipe(
@@ -130,18 +119,11 @@ module.exports = {
     action$.pipe(
       ofType(actionTypes.CHANGE_CURRENT_TEAM),
       switchMap(action => {
-        const club = currentClubSelector(store.value);
-        const team = teamSelector(store.value);
-        const teamSlug = team.ageGroup.slug + team.level;
+        const teamStandingsQuery = teamPlayersQuerySelector(store.value);
         return Rx.from(
           axios
-            .get("/teamPlayers", {
-              params: {
-                team: teamSlug,
-                club: club,
-                role: "player",
-                orderBy: "-playerRole.total.matches"
-              }
+            .get(teamStandingsQuery.query, {
+              params: teamStandingsQuery.data
             })
             .then(res => res.data)
         ).pipe(
