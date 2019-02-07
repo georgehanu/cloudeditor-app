@@ -3,6 +3,7 @@ require("./Standings.css");
 const Colors = require("../Utils/Colors");
 const TableStyles = require("../Utils/TableStyles");
 const { mergeDeepRight } = require("ramda");
+const { withNamespaces } = require("react-i18next");
 
 const StandingsTable = ({ tableStyle = "default", ...props }) => {
   let thisStyle = TableStyles.Standings.default;
@@ -127,4 +128,4 @@ const StandingsTable = ({ tableStyle = "default", ...props }) => {
   );
 };
 
-module.exports = StandingsTable;
+module.exports = withNamespaces("fupa")(StandingsTable);

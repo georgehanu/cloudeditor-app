@@ -387,6 +387,11 @@ const Config = {
   [Types.GALLERY_PREVIEW_WND]: {
     baseType: Types.GALLERY_PREVIEW_WND,
     type: Types.GALLERY_PREVIEW_WND
+  },
+  [Types.REFRESH_TABLE]: {
+    baseType: Types.BUTTON,
+    className: "icon printqicon-bold",
+    parentClassName: "LetterItem"
   }
 };
 module.exports = Config;

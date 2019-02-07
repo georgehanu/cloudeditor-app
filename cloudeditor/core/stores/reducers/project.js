@@ -59,7 +59,8 @@ const {
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
-  CHANGE_BACKGROUND
+  CHANGE_BACKGROUND,
+  REFRESH_TABLE_FAILED
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -817,6 +818,9 @@ module.exports = handleActions(
     },
     [CHANGE_BACKGROUND]: (state, action) => {
       return changeBackground(state, action.payload);
+    },
+    [REFRESH_TABLE_FAILED]: (state, action) => {
+      return state;
     }
   },
   initialState

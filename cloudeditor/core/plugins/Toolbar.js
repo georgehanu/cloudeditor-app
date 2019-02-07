@@ -11,6 +11,7 @@ const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/Settings
 const ImageToolbar = require("../components/Toolbar/ToolbarTypes/image");
 const TextToolbar = require("../components/Toolbar/ToolbarTypes/text");
 const BackgroundToolbar = require("../components/Toolbar/ToolbarTypes/background");
+const TinymceToolbar = require("../components/Toolbar/ToolbarTypes/tinymce");
 
 const { setObjectFromToolbar } = require("../stores/actions/toolbar");
 const {
@@ -27,6 +28,7 @@ const { uiFontsSelector } = require("../../core/stores/selectors/ui");
 const textToolbar = { width: 396, height: 92 };
 const imageToolbar = { width: 445, height: 47 };
 const backgroundToolbar = { width: 485, height: 47 };
+const tinymceToolbar = { width: 396, height: 92 };
 
 class Toolbar extends React.Component {
   state = {
@@ -196,12 +198,20 @@ class Toolbar extends React.Component {
       activeItem.type === "textbox" ||
       activeItem.type === "textflow" ||
       activeItem.type === "textline" ||
-      activeItem.type === "text" ||
-      activeItem.type === "tinymce"
+      activeItem.type === "text"
     ) {
       toolbarType = textToolbar;
       toolbarData = Utils.LoadTextSettings(
         TextToolbar,
+        activeItem,
+        this.props.activeLayer,
+        this.props.uiFonts
+      );
+      attributes = Utils.LoadTextAdditionalInfo(activeItem);
+    } else if (activeItem.type === "tinymceTable") {
+      toolbarType = tinymceToolbar;
+      toolbarData = Utils.LoadTextSettings(
+        TinymceToolbar,
         activeItem,
         this.props.activeLayer,
         this.props.uiFonts

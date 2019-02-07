@@ -3,6 +3,7 @@ require("./Matches.css");
 const Colors = require("../Utils/Colors");
 const TableStyles = require("../Utils/TableStyles");
 const { mergeDeepRight } = require("ramda");
+const { withNamespaces } = require("react-i18next");
 
 const matchesWeekDay = [
   "Match_Monday",
@@ -147,4 +148,4 @@ const MatchesTable = ({ tableStyle = "default", ...props }) => {
   );
 };
 
-module.exports = MatchesTable;
+module.exports = withNamespaces("fupa")(MatchesTable);

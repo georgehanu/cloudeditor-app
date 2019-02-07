@@ -342,6 +342,15 @@ const CreatePayload = (activeitem, itemPayload) => {
       attrs = { image: itemPayload.value };
       break;
 
+    case Types.REFRESH_TABLE:
+      if (activeitem.fupaData === undefined || activeitem.fupaData === null)
+        return null;
+      return {
+        id: activeitem.id,
+        fupaData: activeitem.fupaData,
+        action: "refreshTable"
+      };
+
     default:
       break;
   }

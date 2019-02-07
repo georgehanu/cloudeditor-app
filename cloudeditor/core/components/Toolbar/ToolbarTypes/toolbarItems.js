@@ -85,6 +85,9 @@ const SliderInlineImage = {
 const SimpleIconQuality = {
   type: Types.SIMPLE_ICON_QUALITY
 };
+const RefreshTable = {
+  type: Types.REFRESH_TABLE
+};
 
 module.exports = {
   Bold,
@@ -108,5 +111,6 @@ module.exports = {
   ColorSelectorBackground,
   ImageShapeMenuPoptext,
   SliderInlineImage,
-  SimpleIconQuality
+  SimpleIconQuality,
+  RefreshTable
 };

@@ -12,7 +12,10 @@ const { compose } = require("redux");
 const {
   teamMatchesQuerySelector,
   teamStandingsQuerySelector,
-  teamPlayersQuerySelector
+  teamPlayersQuerySelector,
+  teamMatchesSelector,
+  teamStandingsSelector,
+  teamPlayersSelector
 } = require("..//store/selectors");
 const { renderToString } = require("react-dom/server");
 const ShowTable = require("../components/TeamSelection/ShowTable/ShowTable");
@@ -43,12 +46,16 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
       width = props.width ? props.width : tableDimensions.width;
 
       let queryData = {};
+      let tableData = {};
       if (TableName === "Standings") {
         queryData = props.teamStandingsQuery;
+        tableData = props.teamStandings;
       } else if (TableName === "Matches") {
         queryData = props.teamMatchesQuery;
+        tableData = props.teamMatches;
       } else if (TableName === "Players") {
         queryData = props.teamPlayersQuery;
+        tableData = props.teamPlayers;
       }
 
       const fupaData = {
@@ -56,42 +63,27 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
         queryData
       };
 
-      this.loadTable(fupaData);
+      const formattedTable = renderToString(
+        <ShowTable
+          tableData={tableData}
+          tableName={fupaData.type}
+          fupaData={fupaData}
+          tableStyle="small"
+        />
+      );
+
+      props.addTable({
+        ...emptyTable,
+        tableContent: formattedTable,
+        id: uuidv4(),
+        width: null,
+        height: null,
+        tableWidth: null,
+        tableHeight: null,
+        fupaData
+      });
     };
 
-    loadTable = fupaData => {
-      axios
-        .get(fupaData.queryData.query, {
-          params: fupaData.queryData.data
-        })
-        .then(resp => resp.data)
-        .then(data => {
-          if (data.errors === false) {
-            const formattedTable = renderToString(
-              <ShowTable
-                {...props}
-                tableData={data.data}
-                tableName={fupaData.type}
-                fupaData={fupaData}
-                tableStyle="small"
-              />
-            );
-
-            props.addTable({
-              ...emptyTable,
-              tableContent: formattedTable,
-              id: uuidv4(),
-              width: null,
-              height: null,
-              tableWidth: null,
-              tableHeight: null,
-              fupaData
-            });
-          } else {
-          }
-        })
-        .catch(error => {});
-    };
     render() {
       return (
         <div className="Container">
@@ -118,7 +110,10 @@ const mapStateToProps = state => {
     activePage: state.project.activePage,
     teamMatchesQuery: teamMatchesQuerySelector(state),
     teamStandingsQuery: teamStandingsQuerySelector(state),
-    teamPlayersQuery: teamPlayersQuerySelector(state)
+    teamPlayersQuery: teamPlayersQuerySelector(state),
+    teamMatches: teamMatchesSelector(state),
+    teamPlayers: teamPlayersSelector(state),
+    teamStandings: teamStandingsSelector(state)
   };
 };
 
