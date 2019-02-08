@@ -43,6 +43,7 @@ const {
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
   CHANGE_BACKGROUND,
+  CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED
 } = require("../actionTypes/project");
@@ -94,6 +95,7 @@ const {
   projLoadProjectClearMessage,
   projLoadLayout,
   changeBackground,
+  changeMagnetic,
   refreshTableStart,
   refreshTableFailed
 } = createActions(
@@ -142,6 +144,7 @@ const {
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
   CHANGE_BACKGROUND,
+  CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED
 );
@@ -191,6 +194,7 @@ module.exports = {
   projLoadProjectClearMessage,
   projLoadLayout,
   changeBackground,
+  changeMagnetic,
   refreshTableStart,
   refreshTableFailed
 };

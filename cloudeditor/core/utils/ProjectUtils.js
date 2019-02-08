@@ -1,6 +1,7 @@
 const uuidv4 = require("uuid/v4");
 const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
 const randomColor = require("randomColor");
+const axios = require("axios");
 
 const getObjectColorTemplateFill = cfg => {
   return merge(
@@ -294,7 +295,7 @@ const getDocumentDefaults = cfg => {
       singleFirstLastPage: true,
       groupSize: 2,
       includeBoxes: true,
-      includeMagentic: false,
+      includeMagnetic: true,
       showTrimbox: false,
       allowSafeCut: true,
       allowSnapBlocks: false,
@@ -425,6 +426,15 @@ const getProjectPageTemplate = cfg => {
     type: "color",
     color: randomColor()
   };
+  const boxes = {
+    trimbox: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+    }
+  };
+
   return {
     id: pathOr(uuidv4(), ["id"], cfg),
     label: pathOr("Page %no%", ["label"], cfg),
@@ -435,7 +445,8 @@ const getProjectPageTemplate = cfg => {
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
     objectsIds: pathOr([], ["objectsIds"], cfg),
-    background: pathOr(background, ["background"], cfg)
+    background: pathOr(background, ["background"], cfg),
+    boxes: pathOr(boxes, ["boxes"], cfg)
   };
 };
 
@@ -572,6 +583,7 @@ const getEmptyProject = cfg => {
     left: 17.308244475806433,
     top: 5,
     value: "Footer text",
+    text: "Footer text",
     fontFamily: "Helvetica",
     fontSize: 12,
     fill: "red"
@@ -1521,6 +1533,7 @@ const getRandomProject1 = cfg => {
     left: 500,
     top: 20,
     value: "Header text here",
+    text: "Header text here",
     fontFamily: "Helvetica",
     fontSize: 20,
     fill: "red"
@@ -1781,12 +1794,25 @@ const getEmptyProductInformation = cfg => {
       productId: null,
       templateId: null,
       qty: 1,
-      productOptions: {}
+      productOptions: {},
+      total_price: false
     },
     cfg || {}
   );
 };
-
+const getPrice = (serverData, callbackSuccess, callbackFailure, obs) => {
+  axios
+    .post(ATTACH_URL, serverData)
+    .then(resp => resp.data)
+    .then(data => {
+      if (data.success) {
+        callbackSuccess(data);
+      } else {
+        callbackFailure(data);
+      }
+      obs.complete();
+    });
+};
 const getRandomUI = cfg => {
   const ui = getEmptyUI(cfg);
   const color1 = getEmptyColor({ id: 1, label: "white", htmlRGB: "#fff" });

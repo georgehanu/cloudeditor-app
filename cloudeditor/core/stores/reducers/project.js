@@ -60,6 +60,7 @@ const {
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
   CHANGE_BACKGROUND,
+  CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED
 } = require("../actionTypes/project");
@@ -298,14 +299,17 @@ const updateImageProps = (state, payload) => {
     value: payload.props.image.image_src.substring(
       payload.props.image.image_src.lastIndexOf("/") + 1
     ),
-    imagePath: payload.props.image.image_path,
+    image_path: payload.props.image.image_path,
     cropX: 0,
     cropY: 0,
     cropW: 0,
     cropH: 0,
     imageWidth: payload.props.image.imageWidth,
     imageHeight: payload.props.image.imageHeight,
-    image: payload.props.image
+    ratioWidth: payload.props.image.ratioWidth,
+    ratioHeight: payload.props.image.ratioHeight,
+    image: payload.props.image,
+    subType: payload.props.image.subType
   };
   return {
     ...state,
@@ -521,6 +525,19 @@ changeBackground = (state, _) => {
     selectedObjectsIds.push(head(backgroundObject));
   }
   return { ...state, selectedObjectsIds };
+};
+changeMagnetic = (state, payload) => {
+  "configs", "document", "allowSafeCut";
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        includeMagnetic: payload.allowMagnetic
+      }
+    }
+  };
 };
 
 module.exports = handleActions(
@@ -819,6 +836,9 @@ module.exports = handleActions(
     },
     [CHANGE_BACKGROUND]: (state, action) => {
       return changeBackground(state, action.payload);
+    },
+    [CHANGE_MAGNETIC]: (state, action) => {
+      return changeMagnetic(state, action.payload);
     },
     [REFRESH_TABLE_FAILED]: (state, action) => {
       return state;

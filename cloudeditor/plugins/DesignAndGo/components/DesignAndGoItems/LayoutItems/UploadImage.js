@@ -85,7 +85,7 @@ class UploadImage extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: dagLoadingSelector(state),
-    imagePath: dagImagePathSelector(state),
+    image_path: dagImagePathSelector(state),
     errorMessage: dagErrorMessageSelector(state),
     showUploadImage: dagShowUploadImageSelector(state)
   };

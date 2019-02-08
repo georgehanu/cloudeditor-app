@@ -1,6 +1,10 @@
 const React = require("react");
 const Line = require("./Line");
 require("./Box.css");
+const { connect } = require("react-redux");
+const {
+  allowMagneticSelector
+} = require("../../../../../core/stores/selectors/project");
 const box = props => {
   const {
     top,
@@ -13,7 +17,12 @@ const box = props => {
     type,
     inlineClass
   } = props;
-
+  if (
+    (type === "magneticSnap" || type === "magneticSnapEdge") &&
+    !props.useMagentic
+  ) {
+    return null;
+  }
   const classes = [type, "boxLine", inlineClass].join(" ");
   const topStyle = {
     top,
@@ -49,5 +58,10 @@ const box = props => {
     </React.Fragment>
   );
 };
-
-module.exports = box;
+const mapStateToProps = state => {
+  return { useMagentic: allowMagneticSelector(state) };
+};
+module.exports = connect(
+  mapStateToProps,
+  null
+)(box);

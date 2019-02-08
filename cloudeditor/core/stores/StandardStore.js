@@ -25,7 +25,8 @@ module.exports = (
     productInformation: require("../stores/reducers/productinformation"),
     auth: require("../../plugins/ProjectMenu/store/reducers"),
     undoHistory: undoHistoryReducer,
-    layoutTemplate: require("../stores/reducers/layout_template")
+    layoutTemplate: require("../stores/reducers/layout_template"),
+    globalLoading: require("../stores/reducers/globalLoading")
   });
 
   const rootEpic = combineEpics(plugins, { ...appEpics, ...standardEpics });

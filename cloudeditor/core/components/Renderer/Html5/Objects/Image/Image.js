@@ -67,7 +67,7 @@ class ImageBlock extends React.PureComponent {
       top: top
     };
     let cropper = null;
-    if (this.state.ready && !this.props.missingImage) {
+    if (this.state.ready && !this.props.missingImage && this.props.image_src) {
       cropper = (
         <CropperImage
           targetWidth={this.props.width}
@@ -95,6 +95,8 @@ class ImageBlock extends React.PureComponent {
           workingPercent={this.props.workingPercent}
           onUpdatePropsHandler={this.props.onUpdateProps}
           bgColor={this.props.bgColor}
+          subType={this.props.subType}
+          backgroundblock={this.props.backgroundblock}
           onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
         />
       );
