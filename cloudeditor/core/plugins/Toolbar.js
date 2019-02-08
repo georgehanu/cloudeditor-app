@@ -10,6 +10,7 @@ const ToolbarArea = require("../../core/components/Toolbar/ToolbarItems/ToolbarA
 const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/SettingsWnd/SettingsWnd");
 const ImageToolbar = require("../components/Toolbar/ToolbarTypes/image");
 const TextToolbar = require("../components/Toolbar/ToolbarTypes/text");
+const TinymcetableToolbar = require("../components/Toolbar/ToolbarTypes/tinymcetable");
 
 const { setObjectFromToolbar } = require("../stores/actions/toolbar");
 const {
@@ -181,12 +182,20 @@ class Toolbar extends React.Component {
       activeItem.type === "textbox" ||
       activeItem.type === "textflow" ||
       activeItem.type === "textline" ||
-      activeItem.type === "text" ||
-      activeItem.type === "tinymce"
+      activeItem.type === "text"
     ) {
       toolbarType = textToolbar;
       toolbarData = Utils.LoadTextSettings(
         TextToolbar,
+        activeItem,
+        this.props.activeLayer,
+        this.props.uiFonts
+      );
+      attributes = Utils.LoadTextAdditionalInfo(activeItem);
+    } else if (activeItem.type === "tinymceTable") {
+      toolbarType = textToolbar;
+      toolbarData = Utils.LoadTinymceTableSettings(
+        TinymcetableToolbar,
         activeItem,
         this.props.activeLayer,
         this.props.uiFonts
