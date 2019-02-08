@@ -51,17 +51,31 @@ const Standings = {
       padding: "0px"
     },
     tbodyStyle: {
-      fontSize: "9px",
+      fontSize: "7px",
       lineHeight: "13px"
     },
     fupaImageWrapperPicture: {
-      width: "10px",
-      height: "10px"
+      width: "6px",
+      height: "6px"
     },
     cols: {
+      1: {
+        width: "12px"
+      },
       2: {
-        padding: "0px 2px"
-      }
+        width: "15px",
+        padding: "px 2px"
+      },
+      3: {
+        width: "100px"
+      },
+      4: { width: "9px" },
+      5: { width: "9px" },
+      6: { width: "9px" },
+      7: { width: "9px" },
+      8: { width: "20px" },
+      9: { width: "9px" },
+      10: { width: "10px" }
     }
   }
 };
@@ -96,7 +110,7 @@ const Players = {
   },
   small: {
     fupaTdBase: { padding: "0px" },
-    tbodyStyle: { fontSize: "9px", lineHeight: "13px" }
+    tbodyStyle: { fontSize: "7px", lineHeight: "13px" }
   }
 };
 const Matches = {
@@ -151,14 +165,14 @@ const Matches = {
   },
   small: {
     fupaTdBase: { padding: "0px" },
-    tbodyStyle: { fontSize: "9px", lineHeight: "13px" },
+    tbodyStyle: { fontSize: "7px", lineHeight: "13px" },
     fupaImageWrapperPicture: {
-      width: "10px",
-      height: "10px"
+      width: "6px",
+      height: "6px"
     },
     scoreCard: {
-      fontSize: "9px",
-      height: "14px"
+      fontSize: "7px",
+      height: "12px"
     },
     cols: {
       4: {

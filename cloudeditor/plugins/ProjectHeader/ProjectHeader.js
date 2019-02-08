@@ -3,10 +3,12 @@ const { connect } = require("react-redux");
 const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 const isEqual = require("react-fast-compare");
+const AddToCartButton = require("./components/AddToCartButton");
 
 const {
   titleSelector,
-  getNumberOfPagesSelector
+  getNumberOfPagesSelector,
+  pagesOrderSelector
 } = require("../../core/stores/selectors/project");
 const {
   getProductNameSelector
@@ -47,6 +49,11 @@ class ProjectHeader extends React.Component {
   };
 
   render() {
+    const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
+    const addToCartTooltip = showPagesWarning
+      ? "Invalid number of pages"
+      : null;
+    console.log(addToCartTooltip, "addToCartTooltip ");
     return (
       <div className="projectHeaderContainer">
         <div className="projectHeaderLogo" />
@@ -77,11 +84,11 @@ class ProjectHeader extends React.Component {
               {this.props.t("pages")}
             </div>
           </div>
-          <div className="projectRightAddContainer">
-            <button className="projectRightAddContainerButton">
-              {this.props.t("Add to cart")}
-            </button>
-          </div>
+          <AddToCartButton
+            t={this.props.t}
+            tooltip={addToCartTooltip}
+            active={!showPagesWarning}
+          />
         </div>
       </div>
     );
@@ -91,7 +98,8 @@ const mapStateToProps = state => {
   return {
     projectTitle: titleSelector(state),
     productName: getProductNameSelector(state),
-    numberOfPages: getNumberOfPagesSelector(state)
+    numberOfPages: getNumberOfPagesSelector(state),
+    pagesOrder: pagesOrderSelector(state)
   };
 };
 
