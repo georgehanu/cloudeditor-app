@@ -189,6 +189,19 @@ class ObjectBlock extends React.Component {
 
   renderTable = () => {
     const props = { ...this.props };
+
+    const tableProps = {
+      fontFamily: props.fontFamily,
+      fontSize: props.fontSize,
+      textAlign: props.textAlign,
+      underline: props.underline,
+      bold: props.bold,
+      italic: props.italic,
+      fillColor: props.fillColor.htmlRGB,
+      bgColor: props.bgColor.htmlRGB,
+      borderColor: props.borderColor.htmlRGB,
+      toolbarUpdate: props.toolbarUpdate
+    };
     const block = (
       <Tinymce
         key={this.props.id}
@@ -204,6 +217,7 @@ class ObjectBlock extends React.Component {
         zoomScale={this.props.zoomScale}
         viewOnly={this.props.viewOnly}
         active={this.props.active}
+        {...tableProps}
       />
     );
 
@@ -268,7 +282,7 @@ class ObjectBlock extends React.Component {
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
-      styleNorth = { width: width + 16, height: height + 16 };
+      styleNorth = { width, height };
     }
 
     let rotatableHandle = null;

@@ -28,8 +28,8 @@
   background: transparent;
 }
 .tinymceTable .north {
-  top: 0;
-  left: 0;
+  top: -8px;
+  left: -8px;
   position: relative;
 }
 .mce-tinymce.mce-container.mce-panel {
@@ -53,15 +53,4 @@
   left: 0;
   z-index: 99999;
   position: absolute;
-}
-
-.dummyTableContainer {
-  display: block;
-  transform-origin: top left;
-  white-space: normal;
-}
-
-.dummyTableContainer table {
-  width: 100% !important;
-  height: 100% !important;
 }

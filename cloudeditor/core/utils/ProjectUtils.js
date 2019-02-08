@@ -595,13 +595,11 @@ const getEmptyProject = cfg => {
     id: "table",
     type: "tinymceTable",
     subType: "tinymceTable",
-    // width: 790.82688,
-    // height: 545,
     width: null,
     height: null,
     left: 16.55 + 8.50394,
     top: 16.55 + 8.50394,
-    tableContent: `<table style="width:auto; height: auto; border-spacing: 0px; color: black;">
+    tableContent: `<table style="width:688px; height: auto; border-spacing: 0px; color: black;">
 <tbody>
   <tr>
       <td style="padding: 4px 0px; margin: 0px; border: none; text-align: center; font-size: 12px; line-height: 12px; background-color: white;"></td>
