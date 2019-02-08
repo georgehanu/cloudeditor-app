@@ -66,3 +66,7 @@
 #sidebar-wrapper-container .zoom button {
   width: 98px;
 }
+
+.showHeaderFooter .zoom {
+  bottom: 120px;
+}

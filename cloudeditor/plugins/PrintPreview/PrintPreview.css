@@ -97,6 +97,11 @@
   display: none;
 }
 
+.showPrintPreview .pageSelectorContainer,
+.showPrintPreview .buttonMenuItemTable {
+  display: none;
+}
+
 .magnifier-image {
   /*max-height: -webkit-fill-available;
   max-width: -webkit-fill-available;*/

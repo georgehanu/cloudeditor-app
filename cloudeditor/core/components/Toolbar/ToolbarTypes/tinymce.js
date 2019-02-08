@@ -13,7 +13,8 @@ const {
   JustifyAligned,
   VAlignPoptext,
   TextSpaceingSlider,
-  RefreshTable
+  RefreshTable,
+  Duplicate
 } = require("./toolbarItems");
 const Types = require("../ToolbarConfig/types");
 
@@ -37,7 +38,7 @@ const tinymce = {
     {
       location: Types.Position.OTHER,
       position: 1,
-      items: [MenuPoptext]
+      items: [Duplicate]
     },
     {
       location: Types.Position.BOTTOM,
@@ -57,11 +58,6 @@ const tinymce = {
     {
       location: Types.Position.BOTTOM,
       position: 4,
-      items: [VAlignPoptext]
-    },
-    {
-      location: Types.Position.BOTTOM,
-      position: 5,
       items: [RefreshTable]
     },
     {

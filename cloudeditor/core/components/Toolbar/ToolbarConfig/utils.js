@@ -195,6 +195,10 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
         }
       } else if (item.type === Types.REFRESH_TABLE) {
         item.refreshLoading = activeItem.refreshLoading;
+        item.visible =
+          activeItem.fupaData === undefined || activeItem.fupaData === null
+            ? false
+            : true;
       }
     }
   }
@@ -416,6 +420,9 @@ const CreatePayload = (activeitem, itemPayload) => {
         fupaData: activeitem.fupaData,
         action: "refreshTable"
       };
+
+    case Types.BUTTON_DUPLICATE:
+      return { id: activeitem.id, props: attrs, action: "duplicate" };
 
     default:
       break;

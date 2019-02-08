@@ -51,6 +51,7 @@ const Group = props => {
           className={item.parentClassName}
           tooltip={item.tooltip}
           loading={item.refreshLoading}
+          visible={item.visible}
           clicked={() =>
             item.settingsHandler === undefined
               ? props.ToolbarHandler({
