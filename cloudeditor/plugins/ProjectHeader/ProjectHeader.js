@@ -53,7 +53,6 @@ class ProjectHeader extends React.Component {
     const addToCartTooltip = showPagesWarning
       ? "Invalid number of pages"
       : null;
-    console.log(addToCartTooltip, "addToCartTooltip ");
     return (
       <div className="projectHeaderContainer">
         <div className="projectHeaderLogo" />
