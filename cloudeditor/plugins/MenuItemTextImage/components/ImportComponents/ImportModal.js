@@ -148,7 +148,7 @@ class ImportModal extends React.Component {
           pageSelected={this.state.pageSelected}
         />
 
-        {this.state.errorMessage === null ? (
+        {this.state.errorMessage === null || this.state.loading ? (
           <ImportBody
             page={this.state.page}
             textSelectedId={this.state.textSelectedId}

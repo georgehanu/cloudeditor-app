@@ -281,6 +281,10 @@
   cursor: pointer;
 }
 
+.pageSelectorContainer {
+  z-index: 1000;
+}
+
 .pageHeaderButtonsContainer {
   text-align: center;
 }
@@ -297,4 +301,8 @@
   font-family: ArialMT;
   font-size: 14px;
   color: #666666;
+}
+
+.pageHeaderTextTitleContainer.pageHeaderTextTitleContainerDisabled {
+  cursor: not-allowed;
 }
