@@ -552,7 +552,7 @@ const getEmptyProject = cfg => {
     left: 526.1277667114695,
     top: 10,
     image_src:
-      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs//media/personalization/local_files/cw_logo.png",
+      "https://stadionzeitung02.bestinprint.de/media/personalization/local_files/cw_logo.png",
     imagePath: "local_files/cw_logo.png",
     imageWidth: 237,
     imageHeight: 121,

@@ -17,7 +17,7 @@ const ConfigUtils = require("../../utils/ConfigUtils");
 const config = ConfigUtils.getDefaults();
 
 const LAYOUTS_ASSETS_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/media/personalization/layouts/projects/";
+  "https://stadionzeitung02.bestinprint.de/media/personalization/layouts/projects/";
 
 const initialState = ProjectUtils.getEmptyAssets(config.assets);
 uploadFileStart = (state, action) => {
