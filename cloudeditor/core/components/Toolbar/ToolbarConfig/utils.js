@@ -268,9 +268,9 @@ const CreatePayload = (activeitem, itemPayload) => {
         }
       };
 
-      if (activeitem.backgroundblock && activeitem.imagePath) {
+      if (activeitem.backgroundblock && activeitem.image_path) {
         const removeImage = {
-          imagePath: null,
+          image_path: null,
           image_src: null,
           image: null,
           imageWidth: 0,

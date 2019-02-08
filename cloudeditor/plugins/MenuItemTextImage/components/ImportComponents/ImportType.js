@@ -10,7 +10,7 @@ const orCategories = [
   "Birthday",
   "Invitation",
   "Wedding",
-  "Thanksgiving"
+  "Thanksgiving32323232323"
 ];
 
 const orFavourite = ["All", "Favourite"];

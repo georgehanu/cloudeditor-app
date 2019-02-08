@@ -162,6 +162,8 @@ class ObjectBlock extends React.Component {
       setMissingImages: this.props.setMissingImages,
       missingImage: this.props.missingImage,
       bgColor: props.bgColor,
+      subType: props.subType,
+      backgroundblock: props.backgroundblock,
       contrast: this.props.contrast
     };
 

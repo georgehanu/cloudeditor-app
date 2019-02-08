@@ -95,6 +95,8 @@ class ImageBlock extends React.PureComponent {
           workingPercent={this.props.workingPercent}
           onUpdatePropsHandler={this.props.onUpdateProps}
           bgColor={this.props.bgColor}
+          subType={this.props.subType}
+          backgroundblock={this.props.backgroundblock}
           onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
         />
       );

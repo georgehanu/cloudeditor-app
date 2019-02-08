@@ -42,7 +42,8 @@ const {
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
-  CHANGE_BACKGROUND
+  CHANGE_BACKGROUND,
+  CHANGE_MAGNETIC
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -91,7 +92,8 @@ const {
   projLoadProjectFailed,
   projLoadProjectClearMessage,
   projLoadLayout,
-  changeBackground
+  changeBackground,
+  changeMagnetic
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -137,7 +139,8 @@ const {
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
-  CHANGE_BACKGROUND
+  CHANGE_BACKGROUND,
+  CHANGE_MAGNETIC
 );
 
 module.exports = {
@@ -184,5 +187,6 @@ module.exports = {
   projLoadProjectFailed,
   projLoadProjectClearMessage,
   projLoadLayout,
-  changeBackground
+  changeBackground,
+  changeMagnetic
 };

@@ -19,6 +19,13 @@ module.exports = handleActions(
         enabled: true
       };
     },
+    [actionTypes.ATTACH_PREVIEW]: (state, action) => {
+      return {
+        ...state,
+        loading: true,
+        enabled: true
+      };
+    },
     [actionTypes.PREVIEW_GET_PAGE]: (state, action) => {
       return {
         ...state,

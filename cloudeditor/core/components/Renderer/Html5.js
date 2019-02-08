@@ -10,6 +10,11 @@ const { computeZoomScale } = require("../../utils/UtilUtils");
 
 const { changeWorkareaProps } = require("../../stores/actions/ui");
 const { removeSelection, changePage } = require("../../stores/actions/project");
+const GlobalLoading = require("./Html5/GlobalLoading/GlobalLoading");
+const {
+  getLoadingStatusSelector,
+  getEnabledStatusSelector
+} = require("../../stores/selectors/globalLoading");
 const {
   displayedPageSelector,
   groupsSelector,
@@ -150,26 +155,37 @@ class Html5 extends React.Component {
 
   render() {
     const { pageReady } = this.state;
+    let globalSpinner = null;
+    if (this.props.globalSpinnerEnabled) {
+      globalSpinner = (
+        <div className={"globalSpinner"}>
+          <GlobalLoading />
+        </div>
+      );
+    }
     return (
-      <Canvas
-        containerUuid={this.props.uuid}
-        getCanvasRef={this.getCanvasReference}
-        getContainerRef={this.getContainerReference}
-        activePage={this.props.activePage}
-        zoomScale={this.state.zoomScale}
-        zoom={this.props.zoom}
-        containerWidth={this.props.canvasDimm.workingWidth}
-        containerHeight={this.props.canvasDimm.workingHeight}
-        bottomContainer={this.state.bottomContainer}
-        pageReady={pageReady}
-        labels={this.props.labels}
-        activePageId={this.props.activePageId}
-        rerenderId={this.props.rerenderId}
-        viewOnly={0}
-        onChangePage={this.props.onChangePageHandler}
-        deleteMissingImages={this.deleteMissingImages}
-        setMissingImages={this.setMissingImages}
-      />
+      <React.Fragment>
+        {globalSpinner}
+        <Canvas
+          containerUuid={this.props.uuid}
+          getCanvasRef={this.getCanvasReference}
+          getContainerRef={this.getContainerReference}
+          activePage={this.props.activePage}
+          zoomScale={this.state.zoomScale}
+          zoom={this.props.zoom}
+          containerWidth={this.props.canvasDimm.workingWidth}
+          containerHeight={this.props.canvasDimm.workingHeight}
+          bottomContainer={this.state.bottomContainer}
+          pageReady={pageReady}
+          labels={this.props.labels}
+          activePageId={this.props.activePageId}
+          rerenderId={this.props.rerenderId}
+          viewOnly={0}
+          onChangePage={this.props.onChangePageHandler}
+          deleteMissingImages={this.deleteMissingImages}
+          setMissingImages={this.setMissingImages}
+        />
+      </React.Fragment>
     );
   }
 }
@@ -214,7 +230,8 @@ const makeMapStateToProps = (state, props) => {
       selectedLength: getSelectedObjectsLengthSelector(state),
       rerenderId: rerenderIdSelector(state),
       activePageId: activePageIdSelector(state, props),
-      permissions: permissionsSelector(state, props)
+      permissions: permissionsSelector(state, props),
+      globalSpinnerEnabled: getLoadingStatusSelector(state)
     };
   };
   return mapStateToProps;

@@ -10,3 +10,18 @@
   padding-bottom: 230px;
   padding-right: 40px;
 }
+.globalSpinner {
+  z-index: 999999;
+  width: 100%;
+  height: 100%;
+  position: ABSOLUTE;
+  top: 0px;
+  left: 0px;
+  background: #cccc;
+}
+.globalSpinner .loader {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0px;
+  left: 50%;
+}

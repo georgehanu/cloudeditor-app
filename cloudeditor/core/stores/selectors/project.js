@@ -54,6 +54,13 @@ const singleFirstLastPageSelector = state => {
     state
   );
 };
+const allowMagneticSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "includeMagnetic"],
+    state
+  );
+};
 const groupSizeSelector = state => {
   return pathOr(false, ["project", "configs", "document", "groupSize"], state);
 };
@@ -434,7 +441,7 @@ module.exports = {
   projLoadErrorMessageProjectSelector,
   activePageWithObjectsSelector,
   getNumberOfPagesSelector,
-
+  allowMagneticSelector,
   pageColumnsNoSelector,
   projectHeaderEnabledSelector,
   projectFooterEnabledSelector

@@ -2,6 +2,7 @@ const { mapTo } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { mergeMap } = require("rxjs/operators");
 const axios = require("axios");
+const qs = require("qs");
 const { Observable } = require("rxjs");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
@@ -19,8 +20,15 @@ const {
   PROJ_LOAD_DELETE_FAILED,
   PROJ_LOAD_PROJECT_START,
   PROJ_LOAD_PROJECT_SUCCESS,
-  PROJ_LOAD_PROJECT_FAILED
+  PROJ_LOAD_PROJECT_FAILED,
+  ADD_PAGES,
+  DELETE_PAGE
 } = require("../actionTypes/project");
+const {
+  START_GLOBAL_LOADING,
+  STOP_GLOBAL_LOADING
+} = require("../actionTypes/globalLoading");
+const { CALCULATE_PRICE } = require("../actionTypes/productInformation");
 
 const SAVE_PROJ =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/save";
@@ -33,10 +41,40 @@ const DELETE_PROJ =
 const LOAD_ONE_PROJ =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/loadProject";
 
+const CALCULATE_PRICE_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/webproduct/printoption/changeOptions/";
+
 const dispachEvent = () => {
   setTimeout(() => {
     // rerenderPage();
   }, 0);
+};
+const calculatePrice = (serverData, obs) => {
+  obs.next({
+    type: START_GLOBAL_LOADING
+  });
+  axios
+    .post(CALCULATE_PRICE_URL, qs.stringify(serverData))
+    .then(resp => resp.data)
+    .then(data => {
+      if (data) {
+        obs.next({
+          type: CALCULATE_PRICE,
+          total_price: data.total_price,
+          print_options: serverData.print_options
+        });
+      }
+      obs.next({
+        type: STOP_GLOBAL_LOADING
+      });
+      obs.complete();
+    })
+    .catch(error => {
+      obs.next({
+        type: STOP_GLOBAL_LOADING
+      });
+      obs.complete();
+    });
 };
 module.exports = {
   onEpic: (action$, state$) =>
@@ -208,6 +246,67 @@ module.exports = {
               });
               obs.complete();
             });
+        })
+      )
+    ),
+
+  onEpiceCalculatePrice: (action$, state$) =>
+    action$.pipe(
+      ofType(ADD_PAGES),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          const productInformation = { ...state$.value.productInformation };
+          let print_options = {
+            ...productInformation.productOptions.print_options
+          };
+          Object.keys(print_options).map(obKey => {
+            if (
+              typeof productInformation.productOptions.print_options[obKey][
+                "pages"
+              ] != "undefined"
+            )
+              productInformation.productOptions.print_options[obKey]["pages"] =
+                "p" + state$.value.project.pagesOrder.length;
+          });
+
+          const serverData = {
+            product: productInformation.productId,
+            related_product: false,
+            qty: productInformation.qty,
+            print_options: productInformation.productOptions.print_options,
+            options: productInformation.productOptions.options
+          };
+          calculatePrice(serverData, obs);
+        })
+      )
+    ),
+  onEpiceDeleteCalculatePrice: (action$, state$) =>
+    action$.pipe(
+      ofType(DELETE_PAGE),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          const productInformation = { ...state$.value.productInformation };
+          let print_options = {
+            ...productInformation.productOptions.print_options
+          };
+          Object.keys(print_options).map(obKey => {
+            if (
+              typeof productInformation.productOptions.print_options[obKey][
+                "pages"
+              ] != "undefined"
+            )
+              productInformation.productOptions.print_options[obKey]["pages"] =
+                "p" + state$.value.project.pagesOrder.length;
+          });
+
+          const serverData = {
+            product: productInformation.productId,
+            related_product: false,
+            qty: productInformation.qty,
+            print_options: productInformation.productOptions.print_options,
+            options: productInformation.productOptions.options
+          };
+          calculatePrice(serverData, obs);
         })
       )
     )

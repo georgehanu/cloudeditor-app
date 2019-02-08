@@ -18,7 +18,9 @@ const PageSource = {
       image_src: props.image_src,
       image_path: props.image_path,
       imageWidth: props.imageWidth,
-      imageHeight: props.imageHeight
+      imageHeight: props.imageHeight,
+      ratioWidth: props.ratioWidth,
+      ratioHeight: props.ratioHeight
     };
   },
   canDrag(props, monitor) {

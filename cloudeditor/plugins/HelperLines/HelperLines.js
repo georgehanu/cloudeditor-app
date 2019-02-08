@@ -8,10 +8,14 @@ const { createSelector } = require("reselect");
 const {
   activePageIdSelector,
   pageColumnsNoSelector,
-  allowLayoutColumnsSelector
+  allowLayoutColumnsSelector,
+  allowMagneticSelector
 } = require("../../core/stores/selectors/project");
 
-const { updatePageProps } = require("../../core/stores/actions/project");
+const {
+  updatePageProps,
+  changeMagnetic
+} = require("../../core/stores/actions/project");
 
 require("./HelperLines.css");
 const SubmenuPoptext = require("../MenuItemHeaderFooter/components/SubmenuPoptext");
@@ -68,12 +72,22 @@ class HelperLines extends React.PureComponent {
       this.props.updatePagePropsHandler(payload);
     }
   };
+  onChangeHandler = event => {
+    this.props.changeMagenticHandler({
+      allowMagnetic: Number(event.target.value)
+    });
+  };
 
   render() {
     return (
       <div className="helperLinesContainer">
         <div className="magneticLines">
-          <input type="checkbox" className="magneticLinesCheckbox" />
+          <input
+            type="checkbox"
+            className="magneticLinesCheckbox"
+            checked={this.props.useMagentic}
+            onChange={this.onChangeHandler}
+          />
           <span className="magneticLinesDescription">
             {this.props.t("Magnetic helper lines")}
           </span>
@@ -84,7 +98,6 @@ class HelperLines extends React.PureComponent {
             activeItem={this.state.poptextPages.active}
             togglePoptext={this.togglePoptextHandler}
             toggleSelectPoptext={this.toggleSelectPoptext}
-            poptextName="pages"
             items={this.state.poptextPages.items}
             open={this.state.poptextPages.open}
             t={this.props.t}
@@ -99,13 +112,15 @@ const mapStateToProps = state => {
   return {
     pageId: activePageIdSelector(state),
     columnsNo: pageColumnsNoSelector(state),
-    allowColumns: allowLayoutColumnsSelector(state)
+    allowColumns: allowLayoutColumnsSelector(state),
+    useMagentic: allowMagneticSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updatePagePropsHandler: payload => dispatch(updatePageProps(payload))
+    updatePagePropsHandler: payload => dispatch(updatePageProps(payload)),
+    changeMagenticHandler: payload => dispatch(changeMagnetic(payload))
   };
 };
 

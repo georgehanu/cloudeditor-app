@@ -2,7 +2,8 @@ const {
   PREVIEW_LOAD_PAGE,
   PREVIEW_GET_PAGE,
   PREVIEW_LOAD_PAGE_SUCCESS,
-  PREVIEW_LOAD_PAGE_FAILED
+  PREVIEW_LOAD_PAGE_FAILED,
+  ATTACH_PREVIEW
 } = require("./actionTypes");
 const axios = require("axios");
 const qs = require("qs");
@@ -15,6 +16,9 @@ const PRINT_PREVIEW_URL =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/previewCloudeditor";
 const PRINT_GET_PAGE_URL =
   "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/getPageCloudeditor";
+const ATTACH_URL =
+  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/attachCloudEditor";
+
 const getPage = (state$, obs, payload) => {
   const index = state$.value.project.pagesOrder.indexOf(payload.page_id);
   let imageUrls = { ...state$.value.preview.imageUrls };
@@ -141,6 +145,56 @@ module.exports = {
           } else {
             getPage(state$, obs, payload);
           }
+        })
+      )
+    ),
+  onEpicAttach: (action$, state$) =>
+    action$.pipe(
+      ofType(ATTACH_PREVIEW),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          const project = {
+            pages: { ...state$.value.project.pages },
+            objects: { ...state$.value.project.objects },
+            pagesOrder: { ...state$.value.project.pagesOrder },
+            configs: {
+              ...state$.value.project.configs.document,
+              objects: { ...state$.value.project.configs.objects }
+            },
+            fontsLoadUrl:
+              "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/loadFonts/id/" +
+              state$.value.productInformation.templateId
+          };
+          const serverData = {
+            project,
+            productId: state$.value.productInformation.productId,
+            templateId: state$.value.productInformation.templateId,
+            productInformation: state$.value.productInformation,
+            selection: state$.value.selection,
+            fonts: state$.value.ui.fonts,
+            preview: state$.value.preview.imageUrls[0]
+          };
+          axios
+            .post(ATTACH_URL, qs.stringify(serverData))
+            .then(resp => resp.data)
+            .then(data => {
+              if (data.success) {
+                window.location = data.cartUrl;
+              } else {
+                obs.next({
+                  type: PREVIEW_LOAD_PAGE_FAILED,
+                  payload: data.message
+                });
+              }
+              obs.complete();
+            })
+            .catch(error => {
+              obs.next({
+                type: PREVIEW_LOAD_PAGE_FAILED,
+                payload: data.message
+              });
+              obs.complete();
+            });
         })
       )
     )
