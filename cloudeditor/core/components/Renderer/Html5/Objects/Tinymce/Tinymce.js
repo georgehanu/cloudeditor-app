@@ -247,22 +247,24 @@ class Tinymce extends React.PureComponent {
   };
 
   onEditorChangeHandler = event => {
-    let content = this.tinyEditor.getContent();
+    if (this.tinyEditor) {
+      let content = this.tinyEditor.getContent();
 
-    if (!content.startsWith("<table")) content = "";
+      if (!content.startsWith("<table")) content = "";
 
-    const tableSize = this.getTableSize(this.tinyEditor);
+      const tableSize = this.getTableSize(this.tinyEditor);
 
-    this.props.onUpdateProps({
-      id: this.props.id,
-      props: {
-        tableContent: content,
-        width: tableSize.width,
-        height: tableSize.height
-      }
-    });
+      this.props.onUpdateProps({
+        id: this.props.id,
+        props: {
+          tableContent: content,
+          width: tableSize.width,
+          height: tableSize.height
+        }
+      });
 
-    this.resetTableDim();
+      this.resetTableDim();
+    }
   };
   componentDidMount() {
     if (this.tinyEditor) {
