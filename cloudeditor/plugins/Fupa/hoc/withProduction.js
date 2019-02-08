@@ -107,7 +107,6 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
 const mapStateToProps = state => {
   return {
-    activePage: state.project.activePage,
     teamMatchesQuery: teamMatchesQuerySelector(state),
     teamStandingsQuery: teamStandingsQuerySelector(state),
     teamPlayersQuery: teamPlayersQuerySelector(state),
