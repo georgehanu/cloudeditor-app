@@ -1,7 +1,7 @@
 const { mapTo } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { mergeMap } = require("rxjs/operators");
-const axios = require("axios");
+const axios = require("../../axios/project/axios");
 const { Observable } = require("rxjs");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
@@ -22,16 +22,10 @@ const {
   PROJ_LOAD_PROJECT_FAILED
 } = require("../actionTypes/project");
 
-const SAVE_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/save";
-const LOAD_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/getAllProjects";
-
-const DELETE_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/deleteProject";
-
-const LOAD_ONE_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/loadProject";
+const SAVE_PROJ = "/personalize/cloudeditorprojects/save";
+const LOAD_PROJ = "/personalize/cloudeditorprojects/getAllProjects";
+const DELETE_PROJ = "/personalize/cloudeditorprojects/deleteProject";
+const LOAD_ONE_PROJ = "/personalize/cloudeditorprojects/loadProject";
 
 const dispachEvent = () => {
   setTimeout(() => {

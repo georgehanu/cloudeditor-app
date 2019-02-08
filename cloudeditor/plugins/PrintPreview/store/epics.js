@@ -4,17 +4,16 @@ const {
   PREVIEW_LOAD_PAGE_SUCCESS,
   PREVIEW_LOAD_PAGE_FAILED
 } = require("./actionTypes");
-const axios = require("axios");
+const axios = require("../../../core/axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { head, forEachObjIndexed, findIndex } = require("ramda");
 
-const PRINT_PREVIEW_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/previewCloudeditor";
-const PRINT_GET_PAGE_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/getPageCloudeditor";
+const PRINT_PREVIEW_URL = "/personalize/index/previewCloudeditor";
+const PRINT_GET_PAGE_URL = "/personalize/index/getPageCloudeditor";
+
 const getPage = (state$, obs, payload) => {
   const index = state$.value.project.pagesOrder.indexOf(payload.page_id);
   let imageUrls = { ...state$.value.preview.imageUrls };

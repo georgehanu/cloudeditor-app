@@ -8,7 +8,6 @@ const HeaderPoptext = require("./components/HeaderPoptext/HeaderPoptext");
 const UploadOneImage = require("./components/UploadOneImage/UploadOneImage");
 const Input = require("./components/Input/Input");
 const Loading = require("./components/Loading/Loading");
-const axios = require("axios");
 
 const SweetAlert = require("sweetalert-react").default;
 require("sweetalert/dist/sweetalert.css");
