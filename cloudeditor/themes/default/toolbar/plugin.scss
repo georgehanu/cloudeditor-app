@@ -1006,3 +1006,15 @@ input[type="range"]::-webkit-slider-runnable-track {
 .ToolbarContainer .loader {
   color: #737373;
 }
+
+.refreshTableButton .loader {
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+  font-size: 3px;
+  top: 51px;
+}
+
+.refreshTableButton .loader .spinnerText {
+  display: none;
+}

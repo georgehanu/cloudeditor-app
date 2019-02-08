@@ -149,6 +149,10 @@ class LiveHtml5Pagination extends React.Component {
   };
   render() {
     //console.log("renderlive");
+    const allowPageAdding = !this.props.pages[this.props.activePageId]
+      .lockPosition;
+    const tooltip = allowPageAdding ? null : "Select a different page";
+
     const { groups, className, mode } = this.props;
     let groupContainer = null;
     if (this.state.size !== "minimized")
@@ -217,6 +221,8 @@ class LiveHtml5Pagination extends React.Component {
               showMinimized={this.state.size !== "minimized"}
               showAddPages={this.showAddPages}
               nrPages={this.props.pagesOrder.length}
+              allowPageAdding={allowPageAdding}
+              tooltip={tooltip}
             />
             <div ref={this.paginationContainer} className={className}>
               {groupContainer}

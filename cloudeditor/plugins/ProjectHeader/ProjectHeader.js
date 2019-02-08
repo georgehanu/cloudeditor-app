@@ -5,10 +5,12 @@ const assign = require("object-assign");
 const isEqual = require("react-fast-compare");
 const axios = require("axios");
 const qs = require("qs");
+const AddToCartButton = require("./components/AddToCartButton");
 
 const {
   titleSelector,
-  getNumberOfPagesSelector
+  getNumberOfPagesSelector,
+  pagesOrderSelector
 } = require("../../core/stores/selectors/project");
 const {
   getProductNameSelector,
@@ -94,6 +96,10 @@ class ProjectHeader extends React.Component {
       });
   };
   render() {
+    const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
+    const addToCartTooltip = showPagesWarning
+      ? "Invalid number of pages"
+      : null;
     return (
       <div className="projectHeaderContainer">
         <div className="projectHeaderLogo" />
@@ -124,14 +130,12 @@ class ProjectHeader extends React.Component {
               {this.props.t("pages")}
             </div>
           </div>
-          <div className="projectRightAddContainer">
-            <button
-              className="projectRightAddContainerButton"
-              onClick={this.attachPreview}
-            >
-              {this.props.t("Add to cart")}
-            </button>
-          </div>
+          <AddToCartButton
+            t={this.props.t}
+            tooltip={addToCartTooltip}
+            active={!showPagesWarning}
+            clicked={this.attachPreview}
+          />
         </div>
       </div>
     );
@@ -144,7 +148,8 @@ const mapStateToProps = state => {
     numberOfPages: getNumberOfPagesSelector(state),
     totalPrice: getTotalPriceSelector(state),
     qty: getQtySelector(state),
-    productInformation: getProductInformationSelector(state)
+    productInformation: getProductInformationSelector(state),
+    pagesOrder: pagesOrderSelector(state)
   };
 };
 

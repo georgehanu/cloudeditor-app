@@ -193,6 +193,76 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
             { value: "sendtoback", disabled: true }
           ];
         }
+      } else if (item.type === Types.REFRESH_TABLE) {
+        item.refreshLoading = activeItem.refreshLoading;
+        item.visible =
+          activeItem.fupaData === undefined || activeItem.fupaData === null
+            ? false
+            : true;
+      }
+    }
+  }
+  return toolbar;
+};
+
+const LoadTinymceTableSettings = (toolbar, activeItem, activeLayer, fonts) => {
+  for (let groupIndex in toolbar.groups) {
+    let group = toolbar.groups[groupIndex];
+    for (let itemIndex in group.items) {
+      let item = group.items[itemIndex];
+
+      if (item.type === Types.POPTEXT_VALIGN) {
+        item.selected = activeItem.vAlign + "_valign";
+      } else if (item.type === Types.BUTTON_LEFT_ALIGNED) {
+        item.selected = activeItem.textAlign === "left";
+      } else if (item.type === Types.BUTTON_RIGHT_ALIGNED) {
+        item.selected = activeItem.textAlign === "right";
+      } else if (item.type === Types.BUTTON_CENTER_ALIGNED) {
+        item.selected = activeItem.textAlign === "center";
+      } else if (item.type === Types.BUTTON_JUSTIFY_ALIGNED) {
+        item.selected = activeItem.textAlign === "justify";
+      } else if (item.type === Types.BUTTON_LETTER_BOLD) {
+        item.selected = activeItem.bold;
+      } else if (item.type === Types.BUTTON_LETTER_ITALIC) {
+        item.selected = activeItem.italic;
+      } else if (item.type === Types.BUTTON_LETTER_UNDERLINE) {
+        item.selected = activeItem.underline;
+      } else if (item.type === Types.COLOR_SELECTOR) {
+        //item.color = activeItem.fill;
+        item.color = activeItem.fillColor
+          ? "rgb(" + activeItem.fillColor.htmlRGB + ")"
+          : activeItem.fill;
+      } else if (item.type === Types.SLIDER_TEXT_SPACEING) {
+        item.defaultValue = parseInt(activeItem.charSpacing);
+      } else if (item.type === Types.INCREMENTAL_FONT_SIZE) {
+        item.fontSize = activeItem.fontSize;
+      } else if (item.type === Types.POPTEXT_FONT) {
+        item.value = activeItem.fontFamily;
+        item.operation = Operation.NEW_DATA;
+        item.newData = fonts.map((el, index) => {
+          return {
+            value: el,
+            label: el,
+            className: "",
+            fontFamily: el
+          };
+        });
+      } else if (item.type === Types.POPTEXT_LAYER) {
+        item.operation = Operation.MERGE_DATA;
+        item.newData = [];
+        if (activeLayer.front !== undefined && activeLayer.front === false) {
+          item.newData = [
+            { value: "bringtofront", disabled: true },
+            { value: "bringforward", disabled: true }
+          ];
+        }
+        if (activeLayer.back !== undefined && activeLayer.back === false) {
+          item.newData = [
+            ...item.newData,
+            { value: "sendbackward", disabled: true },
+            { value: "sendtoback", disabled: true }
+          ];
+        }
       }
     }
   }
@@ -342,6 +412,18 @@ const CreatePayload = (activeitem, itemPayload) => {
       attrs = { image: itemPayload.value };
       break;
 
+    case Types.REFRESH_TABLE:
+      if (activeitem.fupaData === undefined || activeitem.fupaData === null)
+        return null;
+      return {
+        id: activeitem.id,
+        fupaData: activeitem.fupaData,
+        action: "refreshTable"
+      };
+
+    case Types.BUTTON_DUPLICATE:
+      return { id: activeitem.id, props: attrs, action: "duplicate" };
+
     default:
       break;
   }
@@ -377,6 +459,7 @@ module.exports = {
   LoadImageSettings,
   LoadImageAdditionalInfo,
   LoadTextSettings,
+  LoadTinymceTableSettings,
   LoadTextAdditionalInfo,
   CreatePayload,
   calculateToolBarPosition

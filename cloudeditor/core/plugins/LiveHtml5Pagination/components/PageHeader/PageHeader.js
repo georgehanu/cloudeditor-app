@@ -1,18 +1,18 @@
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
+const AddPagesButton = require("./AddPagesButton");
 
 const PageHeader = props => {
   const showPagesWarning = props.nrPages % 4 ? true : false;
   return (
     <div className="pageSelectorHeader">
       <div className="pageHeaderText">
-        <div
-          className="pageHeaderTextTitleContainer"
-          onClick={props.showAddPages}
-        >
-          <span className="icon fupa-add-pages" />
-          <span className="pageHeaderTextTitle">{props.t("Add pages")}</span>
-        </div>
+        <AddPagesButton
+          active={props.allowPageAdding}
+          t={props.t}
+          tooltip={props.tooltip}
+          showAddPages={props.showAddPages}
+        />
         <div className="pageHeaderTextInfoContainer">
           <span className="icon fupa-info" />
           <span className="pageHeaderTextTitle">

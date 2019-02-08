@@ -196,3 +196,7 @@
   height: 100%;
   padding-bottom: 110px;
 }
+
+.tableContainerExternalHidden {
+  display: none;
+}

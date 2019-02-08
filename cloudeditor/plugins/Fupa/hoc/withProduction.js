@@ -2,12 +2,23 @@ const React = require("react");
 const InsertInProduction = require("../components/TeamSelection/InsertInProduction/InsertInProduction");
 const ToggleTable = require("../components/TeamSelection/ToggleTable/ToggleTable");
 const uuidv4 = require("uuid/v4");
+const axios = require("../axios");
 
 const { connect } = require("react-redux");
 const { getEmptyObject } = require("../../../core/utils/ProjectUtils");
 
 const { addTable } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
+const {
+  teamMatchesQuerySelector,
+  teamStandingsQuerySelector,
+  teamPlayersQuerySelector,
+  teamMatchesSelector,
+  teamStandingsSelector,
+  teamPlayersSelector
+} = require("..//store/selectors");
+const { renderToString } = require("react-dom/server");
+const ShowTable = require("../components/TeamSelection/ShowTable/ShowTable");
 
 const emptyTable = getEmptyObject({
   type: "tinymceTable",
@@ -34,16 +45,45 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       width = props.width ? props.width : tableDimensions.width;
 
+      let queryData = {};
+      let tableData = {};
+      if (TableName === "Standings") {
+        queryData = props.teamStandingsQuery;
+        tableData = props.teamStandings;
+      } else if (TableName === "Matches") {
+        queryData = props.teamMatchesQuery;
+        tableData = props.teamMatches;
+      } else if (TableName === "Players") {
+        queryData = props.teamPlayersQuery;
+        tableData = props.teamPlayers;
+      }
+
+      const fupaData = {
+        type: TableName,
+        queryData
+      };
+
+      const formattedTable = renderToString(
+        <ShowTable
+          tableData={tableData}
+          tableName={fupaData.type}
+          fupaData={fupaData}
+          tableStyle="small"
+        />
+      );
+
       props.addTable({
         ...emptyTable,
-        tableContent: tableContent,
+        tableContent: formattedTable,
         id: uuidv4(),
         width: null,
         height: null,
         tableWidth: null,
-        tableHeight: null
+        tableHeight: null,
+        fupaData
       });
     };
+
     render() {
       return (
         <div className="Container">
@@ -67,7 +107,12 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
 const mapStateToProps = state => {
   return {
-    activePage: state.project.activePage
+    teamMatchesQuery: teamMatchesQuerySelector(state),
+    teamStandingsQuery: teamStandingsQuerySelector(state),
+    teamPlayersQuery: teamPlayersQuerySelector(state),
+    teamMatches: teamMatchesSelector(state),
+    teamPlayers: teamPlayersSelector(state),
+    teamStandings: teamStandingsSelector(state)
   };
 };
 

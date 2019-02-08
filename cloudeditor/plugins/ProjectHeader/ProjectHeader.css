@@ -102,3 +102,13 @@
 .printPreviewButton {
   width: 150px;
 }
+
+.projectHeaderContainer {
+  z-index: 1010;
+}
+
+.projectHeaderContainer
+  .projectRightAddContainerButton.projectRightAddContainerButtonDisabled:hover {
+  background-color: #484747;
+  cursor: not-allowed;
+}

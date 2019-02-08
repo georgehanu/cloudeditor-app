@@ -60,7 +60,9 @@ const {
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
   PROJ_LOAD_LAYOUT,
   CHANGE_BACKGROUND,
-  CHANGE_MAGNETIC
+  CHANGE_MAGNETIC,
+  REFRESH_TABLE_START,
+  REFRESH_TABLE_FAILED
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -834,6 +836,15 @@ module.exports = handleActions(
     },
     [CHANGE_MAGNETIC]: (state, action) => {
       return changeMagnetic(state, action.payload);
+    },
+    [REFRESH_TABLE_FAILED]: (state, action) => {
+      return state;
+    },
+    [REFRESH_TABLE_START]: (state, action) => {
+      return updateObjectProps(state, {
+        id: action.payload.id,
+        props: { refreshLoading: true }
+      });
     }
   },
   initialState

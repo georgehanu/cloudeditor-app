@@ -10,7 +10,7 @@
 .projectPreviewContainer {
   width: 100%;
   height: 100%;
-  padding-bottom: 160px;
+  padding-bottom: 10px;
   background-color: white;
   /* should depend also on pagination height */
 }
@@ -94,6 +94,11 @@
 
 .showPrintPreview .renderContainer .zoomContainer,
 .showPrintPreview .helperLinesContainer {
+  display: none;
+}
+
+.showPrintPreview .pageSelectorContainer,
+.showPrintPreview .buttonMenuItemTable {
   display: none;
 }
 
