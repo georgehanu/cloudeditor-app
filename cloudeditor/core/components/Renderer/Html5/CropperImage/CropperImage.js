@@ -194,10 +194,6 @@ class CropperImage extends React.Component {
     const targetHeight = this.props.height;
     let result = {};
     if (image) {
-      let subType = this.props.subType;
-      if (this.props.backgroundblock) {
-        subType = "image";
-      }
       const bgColor = { ...this.props.bgColor };
       bgColor.RGB = null;
       bgColor.RGB = null;
@@ -209,8 +205,7 @@ class CropperImage extends React.Component {
         cropH: Math.round(targetHeight / workingPercent),
         workingPercent,
         missingImage: false,
-        bgColor,
-        subType
+        bgColor
       };
       this.props.onUpdateNoUndoRedoPropsHandler({
         id: this.props.id,

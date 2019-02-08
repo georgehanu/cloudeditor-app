@@ -12,7 +12,7 @@ const AddToCartButton = props => {
         {...props.tooltipData}
         onClick={() => {
           if (!props.active) return;
-          console.log("add to cart");
+          props.clicked();
         }}
       >
         {props.t("Add to cart")}

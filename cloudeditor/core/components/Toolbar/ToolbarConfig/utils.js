@@ -338,13 +338,16 @@ const CreatePayload = (activeitem, itemPayload) => {
         }
       };
 
-      if (activeitem.backgroundblock && activeitem.image_path) {
+      if (activeitem.backgroundblock) {
         const removeImage = {
           image_path: null,
           image_src: null,
           image: null,
           imageWidth: 0,
-          imageHeight: 0
+          imageHeight: 0,
+          cropW: 0,
+          cropH: 0,
+          subType: "image"
         };
         attrs = mergeAll([clone(attrs), removeImage]);
       }

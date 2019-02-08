@@ -67,7 +67,7 @@ class ImageBlock extends React.PureComponent {
       top: top
     };
     let cropper = null;
-    if (this.state.ready && !this.props.missingImage) {
+    if (this.state.ready && !this.props.missingImage && this.props.image_src) {
       cropper = (
         <CropperImage
           targetWidth={this.props.width}

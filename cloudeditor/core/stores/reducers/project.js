@@ -306,7 +306,10 @@ const updateImageProps = (state, payload) => {
     cropH: 0,
     imageWidth: payload.props.image.imageWidth,
     imageHeight: payload.props.image.imageHeight,
-    image: payload.props.image
+    ratioWidth: payload.props.image.ratioWidth,
+    ratioHeight: payload.props.image.ratioHeight,
+    image: payload.props.image,
+    subType: payload.props.image.subType
   };
   return {
     ...state,

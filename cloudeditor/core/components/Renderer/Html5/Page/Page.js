@@ -12,7 +12,7 @@ const {
 } = require("ramda");
 const now = require("performance-now");
 
-const type = ["image", "graphics"];
+const type = ["image", "graphics", "pdf"];
 const Objects = require("../Objects/Object/Objects");
 
 const {
@@ -355,8 +355,7 @@ class Page extends React.Component {
       height,
       marginLeft,
       marginTop,
-      backgroundColor: "rgb(" + background.color.htmlRGB + ")",
-      backgroundImage: `url(${background.image_src})`
+      backgroundColor: "rgb(" + background.color.htmlRGB + ")"
     };
     let boxes = null;
     let snapBoxes = null;
