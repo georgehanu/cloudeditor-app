@@ -2,7 +2,8 @@ const React = require("react");
 const { withNamespaces } = require("react-i18next");
 
 const IMAGE_SRC_URL =
-  "https://stadionzeitung02.bestinprint.de/personalization/html5_files/grouped_images/";
+  require("../../../../core/utils/URLUtils").baseURL +
+  "/personalization/html5_files/grouped_images/";
 
 const importItem = props => {
   if (props.isText)

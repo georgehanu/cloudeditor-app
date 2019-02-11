@@ -563,7 +563,8 @@ const getEmptyProject = cfg => {
     left: 526.1277667114695,
     top: 10,
     image_src:
-      "https://stadionzeitung02.bestinprint.de/media/personalization/local_files/cw_logo.png",
+      require("./URLUtils").baseURL +
+      "/media/personalization/local_files/cw_logo.png",
     image_path: "local_files/cw_logo.png",
     imageWidth: 237,
     imageHeight: 121,

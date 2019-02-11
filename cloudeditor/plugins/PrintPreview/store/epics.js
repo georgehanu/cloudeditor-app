@@ -82,7 +82,8 @@ const getPreview = (state$, obs) => {
       objects: { ...state$.value.project.configs.objects }
     },
     fontsLoadUrl:
-      "https://stadionzeitung02.bestinprint.de/personalize/index/loadFonts/id/" +
+      require("../../../core/utils/URLUtils").baseURL +
+      "/personalize/index/loadFonts/id/" +
       state$.value.productInformation.templateId
   };
   const serverData = {
@@ -159,7 +160,8 @@ module.exports = {
               objects: { ...state$.value.project.configs.objects }
             },
             fontsLoadUrl:
-              "https://stadionzeitung02.bestinprint.de/personalize/index/loadFonts/id/" +
+              require("../../../core/utils/URLUtils").baseURL +
+              "/personalize/index/loadFonts/id/" +
               state$.value.productInformation.templateId
           };
           const serverData = {

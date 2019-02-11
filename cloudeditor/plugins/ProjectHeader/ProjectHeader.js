@@ -71,7 +71,8 @@ class ProjectHeader extends React.Component {
   };
   calculatePrice = () => {
     const CALCULATE_PRICE_URL =
-      "https://stadionzeitung02.bestinprint.de/webproduct/printoption/changeOptions/";
+      require("../../core/utils/URLUtils").baseURL +
+      "/webproduct/printoption/changeOptions/";
 
     const productInformation = { ...this.props.productInformation };
     const serverData = {

@@ -50,10 +50,10 @@
     "className": "container"
   },
   "translations": {
-    "baseUrl": "https://stadionzeitung02.bestinprint.de/",
+    "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs",
     "publicPath": "cloudeditor/",
     "basePath": "locales"
   },
-  "baseUrl": "https://stadionzeitung02.bestinprint.de/",
+  "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs",
   "publicPath": "cloudeditor/"
 }

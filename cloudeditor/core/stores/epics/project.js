@@ -36,7 +36,8 @@ const DELETE_PROJ = "/personalize/cloudeditorprojects/deleteProject";
 const LOAD_ONE_PROJ = "/personalize/cloudeditorprojects/loadProject";
 
 const CALCULATE_PRICE_URL =
-  "https://stadionzeitung02.bestinprint.de/webproduct/printoption/changeOptions/";
+  require("../../utils/URLUtils").baseURL +
+  "/webproduct/printoption/changeOptions/";
 
 const dispachEvent = () => {
   setTimeout(() => {
