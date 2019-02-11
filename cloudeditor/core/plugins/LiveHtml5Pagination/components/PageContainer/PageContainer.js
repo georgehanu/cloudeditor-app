@@ -35,6 +35,10 @@ const { indexOf, without } = require("ramda");
 const PageSource = {
   beginDrag(props) {
     props.highlightHoverPage(null);
+    if (props.activePage.selectable) {
+      const { page_id } = props;
+      props.onChangePage({ page_id });
+    }
     return {
       type: PAGES,
       page_id: props.page_id,
