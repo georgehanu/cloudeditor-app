@@ -47,7 +47,7 @@ const teamStandingsQuerySelector = createSelector(
   [teamCompetitionSelector, currentTeamSelector],
   (competition, teamId) => {
     return {
-      query: "/standings",
+      query: "?action=standings",
       data: {
         competition: competition
       },
@@ -66,7 +66,7 @@ const teamMatchesQuerySelector = createSelector(
   (club, competition, team, teamId) => {
     const teamSlug = team.ageGroup.slug + team.level;
     return {
-      query: "/matches",
+      query: "?action=matches",
       data: {
         club: club,
         competition: competition,
@@ -83,7 +83,7 @@ const teamPlayersQuerySelector = createSelector(
   (club, team) => {
     const teamSlug = team.ageGroup.slug + team.level;
     return {
-      query: "/teamPlayers",
+      query: "?action=teamPlayers",
       data: {
         team: teamSlug,
         club: club,

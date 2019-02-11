@@ -71,7 +71,7 @@ class ProjectHeader extends React.Component {
   };
   calculatePrice = () => {
     const CALCULATE_PRICE_URL =
-      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/webproduct/printoption/changeOptions/";
+      "https://stadionzeitung02.bestinprint.de/webproduct/printoption/changeOptions/";
 
     const productInformation = { ...this.props.productInformation };
     const serverData = {

@@ -13,6 +13,10 @@
   pointer-events: none;
   z-index: 0;
 }
+
+.pageBlock.backgroundblock u {
+  display: none !important;
+}
 .pageBlock .blockOrientation {
   position: relative;
   z-index: 1;

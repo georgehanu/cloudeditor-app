@@ -28,7 +28,7 @@ module.exports = {
       switchMap(action => {
         const { payload } = action;
         return Rx.from(
-          axios.get("/search/club/" + payload).then(res => res.data)
+          axios.get("?action=search&club=" + payload).then(res => res.data)
         ).pipe(
           switchMap(data => {
             if (data.errors === false)
@@ -48,7 +48,7 @@ module.exports = {
         const { payload } = action;
         return Rx.from(
           axios
-            .get("/teams", {
+            .get("?action=teams", {
               params: {
                 club: payload,
                 additionalFields: "competition"

@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const instance = axios.create({
-  baseURL: "http://work.cloudlab.at:9012/hp/asgard/public/en/api/fupa/"
+  baseURL: "https://stadionzeitung02.bestinprint.de/fupa/"
 });
 
 module.exports = instance;

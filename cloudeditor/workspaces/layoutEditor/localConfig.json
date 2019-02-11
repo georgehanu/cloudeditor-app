@@ -23,9 +23,9 @@
   },
   "translations": {
     "baseUrl": "https://stadionzeitung02.bestinprint.de/",
-    "publicPath": "cloudeditor/",
+    "publicPath": "layouteditor/",
     "basePath": "locales"
   },
   "baseUrl": "https://stadionzeitung02.bestinprint.de/",
-  "publicPath": "cloudeditor/"
+  "publicPath": "layouteditor/"
 }

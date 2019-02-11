@@ -159,7 +159,7 @@ module.exports = {
               objects: { ...state$.value.project.configs.objects }
             },
             fontsLoadUrl:
-              "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/loadFonts/id/" +
+              "https://stadionzeitung02.bestinprint.de/personalize/index/loadFonts/id/" +
               state$.value.productInformation.templateId
           };
           const serverData = {

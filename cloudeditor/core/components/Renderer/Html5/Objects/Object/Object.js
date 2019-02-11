@@ -58,7 +58,9 @@ class ObjectBlock extends React.Component {
         blockContainer: this.$el.get(0),
         blockId: this.props.id
       };
-      this.props.checkErrorMessages(params);
+      if (!this.props.backgroundblock) {
+        this.props.checkErrorMessages(params);
+      }
     }
   }
   shouldComponentUpdate(nextProps, nextState) {

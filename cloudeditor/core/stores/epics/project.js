@@ -36,7 +36,7 @@ const DELETE_PROJ = "/personalize/cloudeditorprojects/deleteProject";
 const LOAD_ONE_PROJ = "/personalize/cloudeditorprojects/loadProject";
 
 const CALCULATE_PRICE_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/webproduct/printoption/changeOptions/";
+  "https://stadionzeitung02.bestinprint.de/webproduct/printoption/changeOptions/";
 
 const dispachEvent = () => {
   setTimeout(() => {

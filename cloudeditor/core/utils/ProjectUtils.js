@@ -564,7 +564,7 @@ const getEmptyProject = cfg => {
     top: 10,
     image_src:
       "https://stadionzeitung02.bestinprint.de/media/personalization/local_files/cw_logo.png",
-    imagePath: "local_files/cw_logo.png",
+    image_path: "local_files/cw_logo.png",
     imageWidth: 237,
     imageHeight: 121,
     cropX: 0,
@@ -1490,8 +1490,8 @@ const getEmptyProject = cfg => {
 </table>`
   });
 
-  project.objects[table.id] = table;
-  project.pages["page_1"]["objectsIds"] = [table.id];
+  //project.objects[table.id] = table;
+  //project.pages["page_1"]["objectsIds"] = [table.id];
   project.objects[header.id] = header;
   project.objects[footer.id] = footer;
   project.objects[textHeader.id] = textHeader;
