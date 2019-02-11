@@ -545,6 +545,12 @@ button.ButtonSelected .icon {
 .PoptextValueText {
   float: left;
   line-height: 38px;
+  text-overflow: ellipsis;
+  height: 43px;
+  white-space: nowrap;
+  width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .SimpleIcon.icon {

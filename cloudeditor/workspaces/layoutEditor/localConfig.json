@@ -22,10 +22,8 @@
     "className": "container"
   },
   "translations": {
-    "baseUrl": "https://stadionzeitung02.bestinprint.de/",
-    "publicPath": "layouteditor/",
     "basePath": "locales"
   },
-  "baseUrl": "https://stadionzeitung02.bestinprint.de/",
+  "baseUrl": "http://localhost:8081/",
   "publicPath": "layouteditor/"
 }

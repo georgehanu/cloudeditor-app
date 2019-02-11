@@ -12,8 +12,10 @@ const {
   getDisplayedPageBlockActions
 } = require("../../core/stores/selectors/Html5Renderer");
 const axios = require("../../core/axios/project/axios");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
-const GET_CATEGORIES_URL = "/personalize/editor/getGroups";
+const GET_CATEGORIES_URL =
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/editor/getGroups";
 require("./MenuItemTextImage.css");
 class MenuItemTextImage extends React.Component {
   state = {

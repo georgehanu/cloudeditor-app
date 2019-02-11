@@ -1,7 +1,8 @@
 const axios = require("axios");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
 
 let instance = axios.create({
-  baseURL: "https://stadionzeitung02.bestinprint.de"
+  baseURL: ConfigUtils.getConfigProp("baseUrl")
 });
 
 module.exports = instance;

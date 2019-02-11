@@ -6,6 +6,7 @@ const isEqual = require("react-fast-compare");
 const axios = require("axios");
 const qs = require("qs");
 const AddToCartButton = require("./components/AddToCartButton");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 const {
   titleSelector,
@@ -71,7 +72,8 @@ class ProjectHeader extends React.Component {
   };
   calculatePrice = () => {
     const CALCULATE_PRICE_URL =
-      "https://stadionzeitung02.bestinprint.de/webproduct/printoption/changeOptions/";
+      ConfigUtils.getConfigProp("baseUrl") +
+      "webproduct/printoption/changeOptions/";
 
     const productInformation = { ...this.props.productInformation };
     const serverData = {

@@ -1,7 +1,8 @@
 const axios = require("axios");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 const instance = axios.create({
-  baseURL: "https://stadionzeitung02.bestinprint.de/fupa/"
+  baseURL: ConfigUtils.getConfigProp("baseUrl") + "fupa/"
 });
 
 module.exports = instance;
