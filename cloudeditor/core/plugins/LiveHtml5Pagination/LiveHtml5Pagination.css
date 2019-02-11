@@ -281,10 +281,6 @@
   cursor: pointer;
 }
 
-.pageSelectorContainer {
-  z-index: 1000;
-}
-
 .pageHeaderButtonsContainer {
   text-align: center;
 }

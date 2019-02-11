@@ -89,9 +89,6 @@ class MenuItemMyProject extends React.Component {
           <li className="submenuItem" onClick={this.showLoadWnd}>
             {this.props.t("Load")}
           </li>
-          <li className="submenuItem">
-            {this.props.t("Send draft by e-mail")}
-          </li>
         </React.Fragment>
       );
     }
