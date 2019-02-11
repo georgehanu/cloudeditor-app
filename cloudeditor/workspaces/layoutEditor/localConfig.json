@@ -5,9 +5,13 @@
       "SideBar",
       "Html5Renderer",
       "Toolbar",
+      "Fupa",
       "AddImage",
       "AddPdf",
       "Layouts",
+      "Zoom",
+      "Background",
+      "GraphicElements",
       "LayoutEditorHeader"
     ]
   },
