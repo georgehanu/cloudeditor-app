@@ -167,8 +167,9 @@ const Config = {
     className: "icon printqicon-opacity ButtonTextSpaceing",
     parentClassName: "",
     min: "0",
-    max: "200",
-    step: "2"
+    max: "100",
+    step: "1",
+    settingsHandler: Types.SLIDER_OPACITY_WND
   },
   [Types.SLIDER_INLINE]: {
     baseType: Types.SLIDER_INLINE,

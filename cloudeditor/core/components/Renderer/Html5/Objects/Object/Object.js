@@ -166,7 +166,8 @@ class ObjectBlock extends React.Component {
       bgColor: props.bgColor,
       subType: props.subType,
       backgroundblock: props.backgroundblock,
-      contrast: this.props.contrast
+      contrast: this.props.contrast,
+      opacity: this.props.opacity
     };
 
     const block = <ImageBlock {...imageProps} />;

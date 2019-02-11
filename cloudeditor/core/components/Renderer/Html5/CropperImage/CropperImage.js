@@ -294,12 +294,13 @@ class CropperImage extends React.Component {
     this.options = merge({ ...this.options }, { focalPoint });
   };
   render() {
-    const { width, height } = this.props;
+    const { width, height, opacity } = this.props;
     const styleWrapper = {
       overflow: "hidden",
       position: "relative",
       width: width,
-      height: height
+      height: height,
+      opacity: opacity
     };
     let filterString = "";
     let flipStyle = "";

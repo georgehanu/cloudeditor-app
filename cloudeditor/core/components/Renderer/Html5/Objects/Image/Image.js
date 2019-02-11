@@ -98,6 +98,7 @@ class ImageBlock extends React.PureComponent {
           subType={this.props.subType}
           backgroundblock={this.props.backgroundblock}
           onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
+          opacity={this.props.opacity}
         />
       );
     }
