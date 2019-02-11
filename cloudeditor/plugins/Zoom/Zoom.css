@@ -70,3 +70,7 @@
 .showHeaderFooter .zoom {
   bottom: 120px;
 }
+
+.showPrintPreview.showHeaderFooter .zoom {
+  bottom: 98px;
+}

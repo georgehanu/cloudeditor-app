@@ -13,6 +13,7 @@ module.exports = (plugins, requires, localConfig) => {
     const ErrorBoundary = require("./core/components/ErrorBoundary/ErrorBoundary");
 
     ConfigUtils.loadConfiguration(localConfig);
+    require("./core/axios/project/axios").baseURL = ConfigUtils.getDefaults().baseUrl;
 
     const store = StandardStore({}, {}, {}, plugins);
     const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");

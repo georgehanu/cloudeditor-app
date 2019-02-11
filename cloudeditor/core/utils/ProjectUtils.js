@@ -563,7 +563,7 @@ const getEmptyProject = cfg => {
     left: 526.1277667114695,
     top: 10,
     image_src:
-      require("./URLUtils").baseURL +
+      require("./ConfigUtils").getDefaults().baseUrl +
       "/media/personalization/local_files/cw_logo.png",
     image_path: "local_files/cw_logo.png",
     imageWidth: 237,

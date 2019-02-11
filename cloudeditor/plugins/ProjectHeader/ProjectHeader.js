@@ -71,7 +71,7 @@ class ProjectHeader extends React.Component {
   };
   calculatePrice = () => {
     const CALCULATE_PRICE_URL =
-      require("../../core/utils/URLUtils").baseURL +
+      require("../../core/utils/ConfigUtils").getDefaults().baseUrl +
       "/webproduct/printoption/changeOptions/";
 
     const productInformation = { ...this.props.productInformation };
@@ -99,7 +99,7 @@ class ProjectHeader extends React.Component {
   render() {
     const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
     const addToCartTooltip = showPagesWarning
-      ? "Invalid number of pages"
+      ? { title: "Invalid number of pages", position: "left" }
       : null;
     return (
       <div className="projectHeaderContainer">

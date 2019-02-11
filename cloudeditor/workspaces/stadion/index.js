@@ -7,8 +7,8 @@ if (!PRODUCTION) {
   localConfig.translations.baseUrl = "http://localhost:8081/";
   localConfig.translations.publicPath = "";
 
-  localConfig.baseUrl = "http://localhost:8081/";
-  localConfig.publicPath = "";
+  //localConfig.baseUrl = "http://localhost:8081/";
+  //localConfig.publicPath = "";
 }
 const i18n = require("./i18n")(localConfig.translations);
 localConfig = merge(localConfig, projectConfigGlobal || {});

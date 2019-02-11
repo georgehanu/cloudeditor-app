@@ -82,7 +82,7 @@ const getPreview = (state$, obs) => {
       objects: { ...state$.value.project.configs.objects }
     },
     fontsLoadUrl:
-      require("../../../core/utils/URLUtils").baseURL +
+      require("../../../core/utils/ConfigUtils").getDefaults().baseUrl +
       "/personalize/index/loadFonts/id/" +
       state$.value.productInformation.templateId
   };
@@ -160,7 +160,7 @@ module.exports = {
               objects: { ...state$.value.project.configs.objects }
             },
             fontsLoadUrl:
-              require("../../../core/utils/URLUtils").baseURL +
+              require("../../../core/utils/ConfigUtils").getDefaults().baseUrl +
               "/personalize/index/loadFonts/id/" +
               state$.value.productInformation.templateId
           };

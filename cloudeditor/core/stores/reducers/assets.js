@@ -17,7 +17,7 @@ const ConfigUtils = require("../../utils/ConfigUtils");
 const config = ConfigUtils.getDefaults();
 
 const LAYOUTS_ASSETS_URL =
-  require("../../utils/URLUtils").baseURL +
+  require("../../utils/ConfigUtils").getDefaults().baseUrl +
   "/media/personalization/layouts/projects/";
 
 const initialState = ProjectUtils.getEmptyAssets(config.assets);

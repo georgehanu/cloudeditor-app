@@ -36,7 +36,7 @@ const DELETE_PROJ = "/personalize/cloudeditorprojects/deleteProject";
 const LOAD_ONE_PROJ = "/personalize/cloudeditorprojects/loadProject";
 
 const CALCULATE_PRICE_URL =
-  require("../../utils/URLUtils").baseURL +
+  require("../../utils/ConfigUtils").getDefaults().baseUrl +
   "/webproduct/printoption/changeOptions/";
 
 const dispachEvent = () => {

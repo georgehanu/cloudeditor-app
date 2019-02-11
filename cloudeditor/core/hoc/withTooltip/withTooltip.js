@@ -28,6 +28,9 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
         "data-for": elementId
       };
     }
+    if (props.tooltip.position) {
+      position = props.tooltip.position;
+    }
     if (props.tooltip.imageSrc) {
       className += " tooltipImage";
       position = "right";
@@ -72,9 +75,11 @@ const withTooltip = (WrappedComponent, nameSpace) => props => {
                 {props.tooltip.title ? (
                   <React.Fragment>
                     <p className="tooltipTitle">{t(props.tooltip.title)}</p>
-                    <p className="tooltipDesc">
-                      {t(props.tooltip.description)}
-                    </p>
+                    {props.tooltip.description && (
+                      <p className="tooltipDesc">
+                        {t(props.tooltip.description)}
+                      </p>
+                    )}
                   </React.Fragment>
                 ) : props.tooltip.imageSrc ? (
                   <React.Fragment>{tooltipIcon}</React.Fragment>

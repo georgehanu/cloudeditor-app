@@ -2,7 +2,7 @@ const React = require("react");
 const { withNamespaces } = require("react-i18next");
 
 const IMAGE_SRC_URL =
-  require("../../../../core/utils/URLUtils").baseURL +
+  require("../../../../core/utils/ConfigUtils").getDefaults().baseUrl +
   "/personalization/html5_files/grouped_images/";
 
 const importItem = props => {
