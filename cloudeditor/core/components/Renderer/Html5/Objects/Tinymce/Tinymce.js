@@ -290,6 +290,8 @@ class Tinymce extends React.PureComponent {
             false,
             "rgb(" + this.props.fillColor + ")"
           );
+        if (prevProps.fontFamily !== this.props.fontFamily)
+          this.tinyEditor.execCommand("FontName", false, this.props.fontFamily);
         if (prevProps.bgColor !== this.props.bgColor)
           this.tinyEditor.execCommand(
             "HiliteColor",
@@ -420,9 +422,25 @@ class Tinymce extends React.PureComponent {
         this.tinyEditor.queryCommandValue("Underline") === "true"
           ? true
           : false;
-      const fontSize = parseFloat(
-        this.tinyEditor.queryCommandValue("FontSize")
-      );
+      let tmpFontSize = this.tinyEditor.queryCommandValue("FontSize");
+      let fontSize = parseFloat(
+        this.tinyEditor
+          .getWin()
+          .getComputedStyle(this.tinyEditor.selection.getNode())
+          .getPropertyValue("font-size")
+      ).toPrecision(3);
+      // if (tmpFontSize.substr(-2) === "em") {
+      //   fontSize = parseFloat(tmpFontSize);
+      // }
+      // if (tmpFontSize.substr(-2) === "rem") {
+      //   fontSize = parseFloat(tmpFontSize);
+      // }
+      // if (tmpFontSize.substr(-2) === "pt") {
+      //   fontSize = parseFloat(tmpFontSize) / 0.75;
+      // }
+      // if (tmpFontSize.substr(-2) === "px") {
+      //   fontSize = parseFloat(tmpFontSize);
+      // }
       const fontFamily = this.tinyEditor.queryCommandValue("FontName");
       const fillColor = {
         htmlRGB: this.tinyEditor
@@ -522,10 +540,16 @@ class Tinymce extends React.PureComponent {
             toolbar: false,
             table_toolbar:
               "tableprops tabledelete | tablerowprops tableinsertrowbefore tableinsertrowafter tabledeleterow | tablecellprops tableinsertcolbefore tableinsertcolafter tabledeletecol",
-            content_css:
+            content_css: [
+              PRODUCTION
+                ? globalConfig.baseUrl +
+                  globalConfig.publicPath +
+                  "tinymce/resetTinyMceTable.css"
+                : "http://localhost:8081/tinymce/resetTinyMceTable.css",
               globalConfig.baseUrl +
-              globalConfig.publicPath +
-              "tinymce/resetTinyMceTable.css",
+                "personalize/index/loadFonts/id/" +
+                (templateId || 0)
+            ],
             menubar: false,
             resize: !this.props.viewOnly,
             object_resizing: !this.props.viewOnly,

@@ -1,9 +1,8 @@
 const axios = require("axios");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
 
 let instance = axios.create({
-  //baseURL: "https://stadionzeitung02.bestinprint.de"
-  //baseURL: "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs"
-  baseURL: ""
+  baseURL: ConfigUtils.getConfigProp("baseUrl")
 });
 
 module.exports = instance;

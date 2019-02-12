@@ -1,13 +1,18 @@
 const React = require("react");
 const Button = require("../Button/Button");
 const Utils = require("../../ToolbarConfig/utils");
+const $ = require("jquery");
 
 class Incremental extends React.Component {
-  render() {
-    const parentClassName = Utils.MergeClassName(
-      "Incremental",
-      this.props.parentClassName
-    );
+  constructor(props) {
+    super(props);
+    this.input = React.createRef();
+  }
+  shouldComponentUpdate(prevProps) {
+    return prevProps.fontSize !== this.props.fontSize;
+  }
+
+  checkUpdatedValue() {
     let value = this.props.fontSize;
     if (value === null) {
       value = this.props.defaultValue;
@@ -17,26 +22,59 @@ class Incremental extends React.Component {
       value += ".00";
     }
 
+    return parseFloat(value).toPrecision(3);
+  }
+
+  componentDidMount() {
+    if (this.input) {
+      const $input = $(this.input.current);
+      $input.val(this.checkUpdatedValue());
+      $input.on("blur", event => {
+        this.updateOnChange(event);
+      });
+      $input.on("keypress", event => {
+        if (event.key === "Enter") {
+          this.updateOnChange(event);
+        }
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.input) {
+      const $input = $(this.input.current);
+      $input.val(this.checkUpdatedValue());
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.input) {
+      const $input = $(this.input.current);
+      $input.off("blur");
+      $input.off("keypress");
+    }
+  }
+
+  render() {
+    const parentClassName = Utils.MergeClassName(
+      "Incremental",
+      this.props.parentClassName
+    );
+
     return (
       <div className={parentClassName}>
-        <input
-          type="text"
-          className="IncrementalText"
-          onKeyPress={this.handleOnKeyPress}
-          onChange={this.handleInputChanged}
-          value={value}
-        />
+        <input ref={this.input} type="text" className="IncrementalText" />
         <span className="IncrementalUnit">pt</span>
         <div className="IncrementalOp">
           <Button
             className="IncrementalAdd"
-            clicked={() => this.handleIncrement(true, value)}
+            clicked={() => this.handleIncrement(true, this.props.fontSize)}
           >
             <span>+</span>
           </Button>
           <Button
             className="IncrementalSub"
-            clicked={() => this.handleIncrement(false, value)}
+            clicked={() => this.handleIncrement(false, this.props.fontSize)}
           >
             <span>-</span>
           </Button>
@@ -108,23 +146,24 @@ class Incremental extends React.Component {
     }
   };
 
-  handleInputChanged = event => {
-    //this.setstate({ value: event.target.value });
+  updateOnChange(event) {
+    let val = this.validateInput(event.target.value);
+    if (val === null) {
+      val = this.props.defaultValue;
+    }
     this.props.ToolbarHandler({
       mainHandler: true,
-      payloadMainHandler: { type: this.props.type, value: event.target.value }
+      payloadMainHandler: { type: this.props.type, value: val }
     });
+  }
+
+  handleInputChanged = event => {
+    //this.setstate({ value: event.target.value });
+    this.updateOnChange(event);
   };
   handleOnKeyPress = event => {
     if (event.key === "Enter") {
-      let val = this.validateInput(event.target.value);
-      if (val === null) {
-        val = this.props.defaultValue;
-      }
-      this.props.ToolbarHandler({
-        mainHandler: true,
-        payloadMainHandler: { type: this.props.type, value: val }
-      });
+      this.updateOnChange(event);
     }
   };
 
@@ -145,6 +184,10 @@ class Incremental extends React.Component {
       mainHandler: true,
       payloadMainHandler: { type: this.props.type, value: val }
     });
+  };
+
+  onChangeHandler = event => {
+    this.setState(this.setState({ fontSize: event.target.value }));
   };
 }
 module.exports = Incremental;

@@ -1,4 +1,4 @@
-module.exports = (plugins, requires, localConfig) => {
+module.exports = (plugins, requires) => {
   const startApp = () => {
     const React = require("react");
     const ReactDOM = require("react-dom");
@@ -11,9 +11,9 @@ module.exports = (plugins, requires, localConfig) => {
     const PluginsUtils = require("./core/utils/PluginsUtils");
     const StandardStore = require("./core/stores/StandardStore");
     const ErrorBoundary = require("./core/components/ErrorBoundary/ErrorBoundary");
+    const axios = require("./core/axios/project/axios");
 
-    ConfigUtils.loadConfiguration(localConfig);
-    require("./core/axios/project/axios").baseURL = ConfigUtils.getDefaults().baseUrl;
+    axios.baseURL = ConfigUtils.getConfigProp("baseUrl");
 
     const store = StandardStore({}, {}, {}, plugins);
     const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");

@@ -6,6 +6,7 @@ const qs = require("qs");
 const { Observable } = require("rxjs");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
 const { ADD_IMAGE_FROM_BUTTON } = require("../actionTypes/addButton");
 const {
   CHANGE_PAGE,
@@ -36,8 +37,8 @@ const DELETE_PROJ = "/personalize/cloudeditorprojects/deleteProject";
 const LOAD_ONE_PROJ = "/personalize/cloudeditorprojects/loadProject";
 
 const CALCULATE_PRICE_URL =
-  require("../../utils/ConfigUtils").getDefaults().baseUrl +
-  "/webproduct/printoption/changeOptions/";
+  ConfigUtils.getConfigProp("baseUrl") +
+  "webproduct/printoption/changeOptions/";
 
 const dispachEvent = () => {
   setTimeout(() => {

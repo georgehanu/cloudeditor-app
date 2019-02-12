@@ -12,9 +12,14 @@ const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { head, forEachObjIndexed, findIndex } = require("ramda");
 
-const PRINT_PREVIEW_URL = "/personalize/index/previewCloudeditor";
-const PRINT_GET_PAGE_URL = "/personalize/index/getPageCloudeditor";
-const ATTACH_URL = "/personalize/index/attachCloudEditor";
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+
+const PRINT_PREVIEW_URL =
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/previewCloudeditor";
+const PRINT_GET_PAGE_URL =
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/getPageCloudeditor";
+const ATTACH_URL =
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/attachCloudEditor";
 
 const getPage = (state$, obs, payload) => {
   const index = state$.value.project.pagesOrder.indexOf(payload.page_id);
@@ -82,8 +87,8 @@ const getPreview = (state$, obs) => {
       objects: { ...state$.value.project.configs.objects }
     },
     fontsLoadUrl:
-      require("../../../core/utils/ConfigUtils").getDefaults().baseUrl +
-      "/personalize/index/loadFonts/id/" +
+      ConfigUtils.getConfigProp("baseUrl") +
+      "personalize/index/loadFonts/id/" +
       state$.value.productInformation.templateId
   };
   const serverData = {
@@ -160,8 +165,8 @@ module.exports = {
               objects: { ...state$.value.project.configs.objects }
             },
             fontsLoadUrl:
-              require("../../../core/utils/ConfigUtils").getDefaults().baseUrl +
-              "/personalize/index/loadFonts/id/" +
+              ConfigUtils.getConfigProp("baseUrl") +
+              "personalize/index/loadFonts/id/" +
               state$.value.productInformation.templateId
           };
           const serverData = {

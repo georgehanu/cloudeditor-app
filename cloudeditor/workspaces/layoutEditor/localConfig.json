@@ -5,9 +5,13 @@
       "SideBar",
       "Html5Renderer",
       "Toolbar",
+      "Fupa",
       "AddImage",
       "AddPdf",
       "Layouts",
+      "Zoom",
+      "Background",
+      "GraphicElements",
       "LayoutEditorHeader"
     ]
   },
@@ -22,10 +26,8 @@
     "className": "container"
   },
   "translations": {
-    "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs",
-    "publicPath": "layouteditor/",
     "basePath": "locales"
   },
-  "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs",
+  "baseUrl": "http://localhost:8081/",
   "publicPath": "layouteditor/"
 }
