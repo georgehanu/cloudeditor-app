@@ -68,6 +68,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
           tableName={fupaData.type}
           fupaData={fupaData}
           tableStyle="small"
+          t={props.t}
         />
       );
 

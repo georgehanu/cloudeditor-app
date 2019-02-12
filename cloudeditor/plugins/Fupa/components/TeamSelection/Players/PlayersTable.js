@@ -2,7 +2,6 @@ const React = require("react");
 const Colors = require("../Utils/Colors");
 const TableStyles = require("../Utils/TableStyles");
 const { mergeDeepRight } = require("ramda");
-const { withNamespaces } = require("react-i18next");
 
 const showColumnsPlayers = [
   "ID",
@@ -180,4 +179,4 @@ const PlayersTable = ({ tableStyle = "default", ...props }) => {
   );
 };
 
-module.exports = withNamespaces("fupa")(PlayersTable);
+module.exports = PlayersTable;
