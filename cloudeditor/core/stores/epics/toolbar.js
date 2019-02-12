@@ -6,6 +6,7 @@ const { Observable } = require("rxjs");
 const React = require("react");
 const ShowTable = require("../../../plugins/Fupa/components/TeamSelection/ShowTable/ShowTable");
 const { renderToString } = require("react-dom/server");
+const { NamespacesConsumer } = require("react-i18next");
 
 const {
   UPDATE_LAYER_PROP,
@@ -82,12 +83,17 @@ module.exports = {
             .then(data => {
               if (data.errors === false) {
                 const formattedTable = renderToString(
-                  <ShowTable
-                    tableData={data.data}
-                    tableName={fupaData.type}
-                    fupaData={fupaData}
-                    tableStyle="small"
-                  />
+                  <NamespacesConsumer ns={["fupa"]}>
+                    {(t, { i18n, ready }) => (
+                      <ShowTable
+                        tableData={data.data}
+                        tableName={fupaData.type}
+                        fupaData={fupaData}
+                        tableStyle="small"
+                        t={t}
+                      />
+                    )}
+                  </NamespacesConsumer>
                 );
                 obs.next({
                   type: UPDATE_OBJECT_PROPS,
