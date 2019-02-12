@@ -1,11 +1,12 @@
 const { mapTo } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { mergeMap } = require("rxjs/operators");
-const axios = require("axios");
+const axios = require("../../axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
 const { ADD_IMAGE_FROM_BUTTON } = require("../actionTypes/addButton");
 const {
   CHANGE_PAGE,
@@ -30,19 +31,14 @@ const {
 } = require("../actionTypes/globalLoading");
 const { CALCULATE_PRICE } = require("../actionTypes/productInformation");
 
-const SAVE_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/save";
-const LOAD_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/getAllProjects";
-
-const DELETE_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/deleteProject";
-
-const LOAD_ONE_PROJ =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorprojects/loadProject";
+const SAVE_PROJ = "/personalize/cloudeditorprojects/save";
+const LOAD_PROJ = "/personalize/cloudeditorprojects/getAllProjects";
+const DELETE_PROJ = "/personalize/cloudeditorprojects/deleteProject";
+const LOAD_ONE_PROJ = "/personalize/cloudeditorprojects/loadProject";
 
 const CALCULATE_PRICE_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/webproduct/printoption/changeOptions/";
+  ConfigUtils.getConfigProp("baseUrl") +
+  "webproduct/printoption/changeOptions/";
 
 const dispachEvent = () => {
   setTimeout(() => {

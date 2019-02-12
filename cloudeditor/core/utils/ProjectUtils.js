@@ -2,7 +2,7 @@ const uuidv4 = require("uuid/v4");
 const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
 const randomColor = require("randomColor");
 const axios = require("axios");
-
+const ConfigUtils = require("./ConfigUtils");
 const getObjectColorTemplateFill = cfg => {
   return merge(
     {
@@ -566,7 +566,8 @@ const getEmptyProject = cfg => {
     left: 526.1277667114695,
     top: 10,
     image_src:
-      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs//media/personalization/local_files/cw_logo.png",
+      ConfigUtils.getConfigProp("baseUrl") +
+      "media/personalization/local_files/cw_logo.png",
     image_path: "local_files/cw_logo.png",
     imageWidth: 237,
     imageHeight: 121,
@@ -1493,8 +1494,8 @@ const getEmptyProject = cfg => {
 </table>`
   });
 
-  project.objects[table.id] = table;
-  project.pages["page_1"]["objectsIds"] = [table.id];
+  //project.objects[table.id] = table;
+  //project.pages["page_1"]["objectsIds"] = [table.id];
   project.objects[header.id] = header;
   project.objects[footer.id] = footer;
   project.objects[textHeader.id] = textHeader;

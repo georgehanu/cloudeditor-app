@@ -5,18 +5,12 @@ const ProjectMenuButton = require("../ProjectMenu/components/ProjectMenuButton")
 const SubmenuPoptext = require("./components/SubmenuPoptext");
 const SubmenuLayout = require("./components/SubmenuLayout");
 const { withNamespaces } = require("react-i18next");
-const URL = "http://work.cloudlab.at:9012/ig/uploads/";
-const uuidv4 = require("uuid/v4");
-const axios = require("axios");
-const isEqual = require("react-fast-compare");
 const { debounce } = require("underscore");
 const posed = require("react-pose").default;
 const Box = posed.div({
   visible: { top: 30 },
   hidden: { top: 0 }
 });
-
-const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
 const {
   headerConfigSelector,

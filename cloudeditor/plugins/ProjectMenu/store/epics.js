@@ -3,14 +3,13 @@ const {
   AUTH_SIGNIN_SUCCESS,
   AUTH_SIGNIN_FAILED
 } = require("./actionTypes");
-const axios = require("axios");
+const axios = require("../../../core/axios/project/axios");
 
 const { Observable } = require("rxjs");
 const { mapTo, map, mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-const LOGIN_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditor/logincustomer";
+const LOGIN_URL = "/personalize/cloudeditor/logincustomer";
 
 module.exports = {
   onEpicLogin: (action$, state$) =>

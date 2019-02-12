@@ -41,7 +41,7 @@ class HelperLines extends React.PureComponent {
   }
 
   togglePoptextHandler = (type, hide = false) => {
-    if (type === "pages") {
+    if (type === "columns") {
       this.setState({
         poptextPages: {
           ...this.state.poptextPages,
@@ -52,7 +52,7 @@ class HelperLines extends React.PureComponent {
   };
 
   toggleSelectPoptext = (type, value) => {
-    if (type === "pages") {
+    if (type === "columns") {
       this.setState({
         poptextPages: {
           ...this.state.poptextPages,
@@ -74,7 +74,7 @@ class HelperLines extends React.PureComponent {
   };
   onChangeHandler = event => {
     this.props.changeMagenticHandler({
-      allowMagnetic: Number(event.target.value)
+      allowMagnetic: event.target.checked
     });
   };
 
@@ -98,6 +98,7 @@ class HelperLines extends React.PureComponent {
             activeItem={this.state.poptextPages.active}
             togglePoptext={this.togglePoptextHandler}
             toggleSelectPoptext={this.toggleSelectPoptext}
+            poptextName="columns"
             items={this.state.poptextPages.items}
             open={this.state.poptextPages.open}
             t={this.props.t}

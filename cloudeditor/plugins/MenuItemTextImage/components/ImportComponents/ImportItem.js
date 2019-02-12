@@ -1,8 +1,11 @@
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
 
+const ConfigUtils = require("../../../../core/utils/ConfigUtils");
+
 const IMAGE_SRC_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/media//personalization/html5_files/grouped_images/";
+  ConfigUtils.getConfigProp("baseUrl") +
+  "personalization/html5_files/grouped_images/";
 
 const importItem = props => {
   if (props.isText)

@@ -8,20 +8,15 @@ const {
   REMOVE_ASSET_FROM_GALLERY_FAILED,
   REMOVE_ASSET_FROM_GALLERY_SUCCESS
 } = require("../actionTypes/assets");
-const axios = require("axios");
+const axios = require("../../axios/project/axios");
 
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-const URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/editorUpload";
+const URL = "/personalize/index/editorUpload";
+const REMOVE_ASSET_URL = "/personalize/cloudeditor/deleteAsset";
 
-const LAYOUTS_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/loadLayouts";
-
-const REMOVE_ASSET_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditor/deleteAsset";
 module.exports = {
   onEpicFile: (action$, state$) =>
     action$.pipe(

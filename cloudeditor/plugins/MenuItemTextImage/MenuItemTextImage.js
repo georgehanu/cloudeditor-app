@@ -11,11 +11,11 @@ const uuidv4 = require("uuid/v4");
 const {
   getDisplayedPageBlockActions
 } = require("../../core/stores/selectors/Html5Renderer");
-const axios = require("axios");
+const axios = require("../../core/axios/project/axios");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 const GET_CATEGORIES_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/editor/getGroups";
-
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/editor/getGroups";
 require("./MenuItemTextImage.css");
 class MenuItemTextImage extends React.Component {
   state = {

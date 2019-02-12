@@ -2,7 +2,6 @@ const React = require("react");
 const InsertInProduction = require("../components/TeamSelection/InsertInProduction/InsertInProduction");
 const ToggleTable = require("../components/TeamSelection/ToggleTable/ToggleTable");
 const uuidv4 = require("uuid/v4");
-const axios = require("../axios");
 
 const { connect } = require("react-redux");
 const { getEmptyObject } = require("../../../core/utils/ProjectUtils");

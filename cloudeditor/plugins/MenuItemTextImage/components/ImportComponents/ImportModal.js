@@ -2,17 +2,12 @@ const React = require("react");
 const ImportHeader = require("../ImportComponents/ImportHeader");
 const ImportBody = require("../ImportComponents/ImportBody");
 const { withNamespaces } = require("react-i18next");
-const axios = require("axios");
+const axios = require("../../../../core/axios/project/axios");
 const qs = require("qs");
 
-const TEXT_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/editor/texts";
-
-const SET_COOKIE_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/editor/setcontentcookie";
-
-const IMAGE_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/editor/images";
+const TEXT_URL = "/personalize/editor/texts";
+const SET_COOKIE_URL = "/personalize/editor/setcontentcookie";
+const IMAGE_URL = "/personalize/editor/images";
 
 class ImportModal extends React.Component {
   state = {

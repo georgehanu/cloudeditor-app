@@ -5,19 +5,21 @@ const {
   PREVIEW_LOAD_PAGE_FAILED,
   ATTACH_PREVIEW
 } = require("./actionTypes");
-const axios = require("axios");
+const axios = require("../../../core/axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 const { head, forEachObjIndexed, findIndex } = require("ramda");
 
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+
 const PRINT_PREVIEW_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/previewCloudeditor";
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/previewCloudeditor";
 const PRINT_GET_PAGE_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/getPageCloudeditor";
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/getPageCloudeditor";
 const ATTACH_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/attachCloudEditor";
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/attachCloudEditor";
 
 const getPage = (state$, obs, payload) => {
   const index = state$.value.project.pagesOrder.indexOf(payload.page_id);
@@ -85,7 +87,8 @@ const getPreview = (state$, obs) => {
       objects: { ...state$.value.project.configs.objects }
     },
     fontsLoadUrl:
-      "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/loadFonts/id/" +
+      ConfigUtils.getConfigProp("baseUrl") +
+      "personalize/index/loadFonts/id/" +
       state$.value.productInformation.templateId
   };
   const serverData = {
@@ -162,7 +165,8 @@ module.exports = {
               objects: { ...state$.value.project.configs.objects }
             },
             fontsLoadUrl:
-              "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/index/loadFonts/id/" +
+              ConfigUtils.getConfigProp("baseUrl") +
+              "personalize/index/loadFonts/id/" +
               state$.value.productInformation.templateId
           };
           const serverData = {
