@@ -2,6 +2,7 @@ const { ofType } = require("redux-observable");
 const { mergeMap } = require("rxjs/operators");
 const axios = require("axios");
 const { Observable } = require("rxjs");
+const { forEach } = require("ramda");
 const {
   SAVE_LAYOUT_TEMPLATE_START,
   SAVE_LAYOUT_TEMPLATE_FAILED,
@@ -10,8 +11,14 @@ const {
   SAVE_ICON_TEMPLATE_FAILED,
   SAVE_ICON_TEMPLATE_SUCCESS
 } = require("../actionTypes/layout_template");
-
-const SAVE_LAYOUT_URL = saveProjectURL;
+const recursiveParseBlocks = (objectsIds, objects, returnData) => {
+  forEach(function(id) {
+    if (objects[id].hasOwnProperty("objectsIds"))
+      recursiveParseBlocks(objects[id]["objectsIds"], objects, returnData);
+    returnData[id] = objects[id];
+  }, objectsIds);
+  return returnData;
+};
 
 const STORE_ICON_URL = uploadProjectIconUrl;
 
@@ -26,8 +33,48 @@ module.exports = {
             formData.append(key, action$.payload[key]);
           }
           formData.append("form_key", formKey);
+
+          if (state$.value.project.configs.document.headerEditor) {
+            const header = { ...state$.value.project.configs.document.header };
+            const returnData = {};
+            const blocks = recursiveParseBlocks(
+              header.objectsIds,
+              state$.value.project.objects,
+              returnData
+            );
+            const savedData = {
+              header: {
+                height: header.height
+              },
+              blocks
+            };
+            formData.append("type", "header");
+            formData.append("hfData", JSON.stringify(savedData));
+          } else {
+            if (state$.value.project.configs.document.footer) {
+              const footer = {
+                ...state$.value.project.configs.document.footer
+              };
+              const returnData = {};
+              const blocks = recursiveParseBlocks(
+                footer.objectsIds,
+                state$.value.project.objects,
+                returnData
+              );
+              const savedData = {
+                header: {
+                  height: footer.height
+                },
+                blocks
+              };
+              formData.append("type", "footer");
+              formData.append("hfData", JSON.stringify(savedData));
+            } else {
+              formData.append("type", "page");
+            }
+          }
           axios
-            .post(SAVE_LAYOUT_URL, formData)
+            .post(saveProjectURL, formData)
             .then(resp => resp.data)
             .then(data => {
               //console.log(data, "d");

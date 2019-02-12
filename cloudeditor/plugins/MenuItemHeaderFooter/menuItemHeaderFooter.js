@@ -20,7 +20,9 @@ const LOAD_LAYOUTS_URL = "http://work.cloudlab.at:9012/ig/tests/upload.php";
 
 const {
   headerConfigSelector,
-  footerConfigSelector
+  footerConfigSelector,
+  getHeaderEditorSelector,
+  getFooterEditorSelector
 } = require("../../core/stores/selectors/project");
 
 const {
@@ -58,7 +60,50 @@ class MenuItemHeaderFooter extends React.Component {
     }
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.props.headerEditor) {
+      this.setState({
+        submenuOpened: true,
+        poptextEdit: {
+          items: ["Header"],
+          active: "Header",
+          open: false
+        },
+        poptextInsert: {
+          items: ["yes"],
+          open: false
+        },
+        poptextLayoutMirror: null,
+        poptextActive: {
+          items: ["all"],
+          active: "all",
+          open: false
+        },
+        poptextLayouts: null
+      });
+    }
+    if (this.props.footerEditor) {
+      this.setState({
+        submenuOpened: true,
+        poptextEdit: {
+          items: ["Footer"],
+          active: "Footer",
+          open: false
+        },
+        poptextInsert: {
+          items: ["yes"],
+          open: false
+        },
+        poptextLayoutMirror: null,
+        poptextActive: {
+          items: ["all"],
+          active: "all",
+          open: false
+        },
+        poptextLayouts: null
+      });
+    }
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
     return true;
@@ -320,7 +365,8 @@ class MenuItemHeaderFooter extends React.Component {
         break;
     }
 
-    const classNameSubMenu = "submenuItemHeaderFooter";
+    const classNameSubMenu =
+      "submenuItemHeaderFooter submenuItemHeaderFooterFirst";
 
     return (
       <React.Fragment>
@@ -340,67 +386,87 @@ class MenuItemHeaderFooter extends React.Component {
         >
           <div className="submenuItemHeaderFooter">
             <div className="submenuItemHeaderFooterEdit">
-              <span>{this.props.t("Edit")}:</span>
-              <SubmenuPoptext
-                activeItem={this.state.poptextEdit.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="edit"
-                items={this.state.poptextEdit.items}
-                open={this.state.poptextEdit.open}
-                t={this.props.t}
-              />
+              {!this.props.headerEditor && !this.props.footerEditor && (
+                <React.Fragment>
+                  <span>{this.props.t("Edit")}:</span>
+                  <SubmenuPoptext
+                    activeItem={this.state.poptextEdit.active}
+                    togglePoptext={this.togglePoptextHandler}
+                    toggleSelectPoptext={this.toggleSelectPoptext}
+                    poptextName="edit"
+                    items={this.state.poptextEdit.items}
+                    open={this.state.poptextEdit.open}
+                    t={this.props.t}
+                  />
+                </React.Fragment>
+              )}
             </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterInsert">
-              <span>{this.props.t("Enabled")}:</span>
-              <SubmenuPoptext
-                activeItem={enabled}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="insert"
-                items={this.state.poptextInsert.items}
-                open={this.state.poptextInsert.open}
-                t={this.props.t}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterLayouts">
-              <SubmenuLayout
-                activeItem={this.state.poptextLayouts.active}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="layouts"
-                items={this.state.poptextLayouts.items}
-                open={this.state.poptextLayouts.open}
-                t={this.props.t}
-              />
-            </div>
-            <span className="submenuSepatator">{"|"}</span>
-            <div className="submenuItemHeaderFooterLayoutMirror">
-              <span>{this.props.t("Mirror Layout")}:</span>
-              <SubmenuPoptext
-                activeItem={mirrored}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="layoutMirror"
-                items={this.state.poptextLayoutMirror.items}
-                open={this.state.poptextLayoutMirror.open}
-                t={this.props.t}
-              />
-            </div>
+            {!this.props.headerEditor && !this.props.footerEditor && (
+              <React.Fragment>
+                <span className="submenuSepatator">{"|"}</span>
+                <div className="submenuItemHeaderFooterInsert">
+                  <span>{this.props.t("Enabled")}:</span>
+                  <SubmenuPoptext
+                    activeItem={enabled}
+                    togglePoptext={this.togglePoptextHandler}
+                    toggleSelectPoptext={this.toggleSelectPoptext}
+                    poptextName="insert"
+                    items={this.state.poptextInsert.items}
+                    open={this.state.poptextInsert.open}
+                    t={this.props.t}
+                  />
+                </div>
+              </React.Fragment>
+            )}
+            {!this.props.headerEditor && !this.props.footerEditor && (
+              <React.Fragment>
+                <span className="submenuSepatator">{"|"}</span>
+                <div className="submenuItemHeaderFooterLayouts">
+                  <SubmenuLayout
+                    activeItem={this.state.poptextLayouts.active}
+                    togglePoptext={this.togglePoptextHandler}
+                    toggleSelectPoptext={this.toggleSelectPoptext}
+                    poptextName="layouts"
+                    items={this.state.poptextLayouts.items}
+                    open={this.state.poptextLayouts.open}
+                    t={this.props.t}
+                  />
+                </div>{" "}
+              </React.Fragment>
+            )}
+            {!this.props.headerEditor && !this.props.footerEditor && (
+              <React.Fragment>
+                <span className="submenuSepatator">{"|"}</span>
+                <div className="submenuItemHeaderFooterLayoutMirror">
+                  <span>{this.props.t("Mirror Layout")}:</span>
+                  <SubmenuPoptext
+                    activeItem={mirrored}
+                    togglePoptext={this.togglePoptextHandler}
+                    toggleSelectPoptext={this.toggleSelectPoptext}
+                    poptextName="layoutMirror"
+                    items={this.state.poptextLayoutMirror.items}
+                    open={this.state.poptextLayoutMirror.open}
+                    t={this.props.t}
+                  />
+                </div>{" "}
+              </React.Fragment>
+            )}
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterActive">
-              <span>{this.props.t("Active on")}:</span>
-              <SubmenuPoptext
-                activeItem={activeOn}
-                togglePoptext={this.togglePoptextHandler}
-                toggleSelectPoptext={this.toggleSelectPoptext}
-                poptextName="active"
-                items={this.state.poptextActive.items}
-                open={this.state.poptextActive.open}
-                t={this.props.t}
-              />
+              {!this.props.headerEditor && !this.props.footerEditor && (
+                <React.Fragment>
+                  <span>{this.props.t("Active on")}:</span>
+                  <SubmenuPoptext
+                    activeItem={activeOn}
+                    togglePoptext={this.togglePoptextHandler}
+                    toggleSelectPoptext={this.toggleSelectPoptext}
+                    poptextName="active"
+                    items={this.state.poptextActive.items}
+                    open={this.state.poptextActive.open}
+                    t={this.props.t}
+                  />
+                </React.Fragment>
+              )}
             </div>
             <span className="submenuSepatator">{"|"}</span>
             <div className="submenuItemHeaderFooterHeight">
@@ -439,7 +505,9 @@ class MenuItemHeaderFooter extends React.Component {
 const mapStateToProps = state => {
   return {
     headerCfg: headerConfigSelector(state),
-    footerCfg: footerConfigSelector(state)
+    footerCfg: footerConfigSelector(state),
+    headerEditor: getHeaderEditorSelector(state),
+    footerEditor: getFooterEditorSelector(state)
   };
 };
 

@@ -299,8 +299,11 @@ const getDocumentDefaults = cfg => {
       showTrimbox: false,
       allowSafeCut: true,
       allowSnapBlocks: false,
+      isCustom: false,
       allowLayoutColumns: false,
       predefinedGroups: false, //[2,2]or false
+      headerEditor: false, //[2,2]or false
+      footerEditor: false, //[2,2]or false
       groups: {
         group_1: ["page_1"],
         group_3: ["page_4", "page_2", "page_3"]

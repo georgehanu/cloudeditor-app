@@ -8,6 +8,7 @@
       "AddImage",
       "AddPdf",
       "Layouts",
+      "MenuItemHeaderFooter",
       "LayoutEditorHeader"
     ]
   },

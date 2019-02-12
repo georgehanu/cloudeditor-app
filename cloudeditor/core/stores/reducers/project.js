@@ -527,7 +527,6 @@ changeBackground = (state, _) => {
   return { ...state, selectedObjectsIds };
 };
 changeMagnetic = (state, payload) => {
-  "configs", "document", "allowSafeCut";
   return {
     ...state,
     configs: {

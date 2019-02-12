@@ -369,13 +369,6 @@ class ObjectBlock extends React.Component {
       position: "absolute"
     };
 
-    const overlayStyle = {
-      width: props.width,
-      top: type === "header" ? props.height : 0,
-      position: "absolute",
-      paddingBottom: props.height
-    };
-
     const innerBlocks = React.Children.map(this.props.children, innerBlock => {
       let offsetTop = 0;
       let offsetLeft =
@@ -432,6 +425,13 @@ class ObjectBlock extends React.Component {
 
     const activeHeader = props.modeHeader === "edit" && type === "header";
     const activeFooter = props.modeFooter === "edit" && type === "footer";
+    const overlayStyle = {
+      width: props.width,
+      top: type === "header" ? props.height : 0,
+      position: "absolute",
+      paddingBottom: props.height,
+      display: "block"
+    };
     return (
       <React.Fragment>
         <div className={classes} style={style}>

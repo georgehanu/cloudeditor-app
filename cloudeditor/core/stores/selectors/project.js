@@ -61,6 +61,20 @@ const allowMagneticSelector = state => {
     state
   );
 };
+const getHeaderEditorSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "headerEditor"],
+    state
+  );
+};
+const getFooterEditorSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "footerEditor"],
+    state
+  );
+};
 const groupSizeSelector = state => {
   return pathOr(false, ["project", "configs", "document", "groupSize"], state);
 };
@@ -444,5 +458,7 @@ module.exports = {
   allowMagneticSelector,
   pageColumnsNoSelector,
   projectHeaderEnabledSelector,
-  projectFooterEnabledSelector
+  projectFooterEnabledSelector,
+  getHeaderEditorSelector,
+  getFooterEditorSelector
 };
