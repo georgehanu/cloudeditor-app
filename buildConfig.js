@@ -79,7 +79,11 @@ const build = config => {
                         selector.startsWith(".sweet-overlay") ||
                         selector.startsWith(".sweet-alert") ||
                         selector.startsWith(".rc-") ||
-                        selector.startsWith(".preview_image")
+                        selector.startsWith(".preview_image") ||
+                        selector.startsWith(
+                          ".mce-tinymce.mce-tinymce-inline"
+                        ) ||
+                        selector.startsWith("body")
                       ) {
                         return selector;
                       } else {

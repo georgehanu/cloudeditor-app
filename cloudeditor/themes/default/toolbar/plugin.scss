@@ -1018,9 +1018,77 @@ input[type="range"]::-webkit-slider-runnable-track {
   padding: 0px;
   margin: 0px;
   font-size: 3px;
-  top: 51px;
+  top: 6px;
+  right: 6px;
 }
 
 .refreshTableButton .loader .spinnerText {
   display: none;
+}
+
+.fupaImageLogo {
+  background-image: url(../../stadion/assets/start_fupa_logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 45px;
+  width: 126px;
+}
+
+.fupaImageLogoGroup {
+  padding: 0;
+}
+
+.fupaText {
+  color: white;
+  background-color: #666666;
+  width: 73px;
+  line-height: 22px;
+}
+
+.fupaTextGroup {
+  background-color: #666666;
+}
+
+.refreshTableButtonContainer {
+  background-color: #666666;
+  color: white;
+}
+
+.refreshTableTextContainer {
+  line-height: 21px;
+  height: 45px;
+  float: left;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+
+  /*padding-left: 10px;
+  padding-right: 10px;*/
+}
+.refreshTableText {
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+
+.refreshTableButton {
+  float: left;
+  width: 40px;
+}
+
+.refreshTableButton button {
+  background-color: #666666;
+  margin-left: 7px;
+}
+
+.refreshTableButton .icon {
+  color: white;
+}
+
+.refreshTableTextContainer span {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.fupaRefreshTableGroup {
+  background-color: #666666;
+  padding-right: 0px;
 }

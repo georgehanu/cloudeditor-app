@@ -24,8 +24,8 @@ class HelperLines extends React.PureComponent {
   state = {
     submenuOpened: false,
     poptextPages: {
-      items: ["2 Columns", "3 Columns", "4 Columns", "None"],
-      mapItems: [2, 3, 4, 0],
+      items: ["1 Column", "2 Columns", "3 Columns", "4 Columns", "None"],
+      mapItems: [1, 2, 3, 4, 0],
       open: false
     }
   };
@@ -34,8 +34,8 @@ class HelperLines extends React.PureComponent {
     const { columnsNo } = nextProps;
 
     let active = "None";
-    if (columnsNo > 1 && columnsNo <= 4) {
-      active = columnsNo + " Columns";
+    if (columnsNo > 0 && columnsNo <= 4) {
+      active = state.poptextPages.items[columnsNo - 1];
     }
     return { poptextPages: { ...state.poptextPages, active: active } };
   }

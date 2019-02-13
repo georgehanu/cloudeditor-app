@@ -102,7 +102,14 @@ module.exports = {
                     props: {
                       tableContent: formattedTable,
                       toolbarUpdate: true,
-                      refreshLoading: false
+                      refreshLoading: false,
+                      fupaData: {
+                        ...fupaData,
+                        queryData: {
+                          ...fupaData.queryData,
+                          queryTime: new Date().getTime()
+                        }
+                      }
                     }
                   }
                 });

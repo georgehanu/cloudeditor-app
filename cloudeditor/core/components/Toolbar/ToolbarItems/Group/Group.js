@@ -12,6 +12,7 @@ const Incremental = require("../Incremental/Incremental");
 const ColorSelector = require("../ColorSelector/ColorSelector");
 const InlineSlider = require("../InlineSlider/InlineSlider");
 const SimpleIcon = require("../SimpleIcon/SimpleIcon");
+const SimpleText = require("../SimpleText/SimpleText");
 
 const Group = props => {
   const className = Utils.MergeClassName("GroupArea", props.className);
@@ -51,6 +52,7 @@ const Group = props => {
           className={item.parentClassName}
           tooltip={item.tooltip}
           loading={item.refreshLoading}
+          lastRefreshTime={item.lastRefreshTime}
           visible={item.visible}
           clicked={() =>
             item.settingsHandler === undefined
@@ -105,6 +107,8 @@ const Group = props => {
       );
     else if (item.baseType === Types.SIMPLE_ICON)
       return <SimpleIcon {...item} key={idx} />;
+    else if (item.baseType === Types.SIMPLE_TEXT)
+      return <SimpleText {...item} key={idx} />;
     return null;
   });
 

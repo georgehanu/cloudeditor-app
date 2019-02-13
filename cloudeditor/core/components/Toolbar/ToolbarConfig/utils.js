@@ -191,10 +191,12 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
         }
       } else if (item.type === Types.REFRESH_TABLE) {
         item.refreshLoading = activeItem.refreshLoading;
-        item.visible =
-          activeItem.fupaData === undefined || activeItem.fupaData === null
-            ? false
-            : true;
+        if (activeItem.fupaData) {
+          item.visible = true;
+          item.lastRefreshTime = activeItem.fupaData.queryData.queryTime;
+        } else {
+          item.visible = false;
+        }
       }
     }
   }

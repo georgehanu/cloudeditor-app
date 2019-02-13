@@ -26,7 +26,10 @@ const {
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
-const { permissionsSelector } = require("../../../../../stores/selectors/ui");
+const {
+  permissionsSelector,
+  uiFontsTinymceSelector
+} = require("../../../../../stores/selectors/ui");
 require("./Object.css");
 
 const TextBlock = require("../Text/Text");
@@ -222,6 +225,7 @@ class ObjectBlock extends React.Component {
         zoomScale={this.props.zoomScale}
         viewOnly={this.props.viewOnly}
         active={this.props.active}
+        uiFonts={this.props.uiFonts}
         {...tableProps}
       />
     );
@@ -532,7 +536,8 @@ const mapStateToProps = (state, props) => {
   return {
     ...scaledObject,
     active: getActivePropSelector(state, props),
-    permissions: permissionsSelector(state, props)
+    permissions: permissionsSelector(state, props),
+    uiFonts: uiFontsTinymceSelector(state)
   };
 };
 

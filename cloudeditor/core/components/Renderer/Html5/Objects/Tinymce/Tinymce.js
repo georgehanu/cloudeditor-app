@@ -441,6 +441,12 @@ class Tinymce extends React.PureComponent {
       // if (tmpFontSize.substr(-2) === "px") {
       //   fontSize = parseFloat(tmpFontSize);
       // }
+      //console.log(fontSize, "fontSize");
+      const elem = document.getElementById("tinymceFontValue");
+      if (elem !== null) {
+        const textEleme = elem.getElementsByClassName("mce-txt")[0];
+        textEleme.innerHTML = fontSize + "px";
+      }
       const fontFamily = this.tinyEditor.queryCommandValue("FontName");
       const fillColor = {
         htmlRGB: this.tinyEditor
@@ -509,12 +515,16 @@ class Tinymce extends React.PureComponent {
     let pasteContent = this.pasteContent;
     if (this.tinyEditor && this.tinyEditor.hasFocus()) pasteContent = "";
 
+    const labelTableName = this.props.t("Table");
+    const labelRowsName = this.props.t("Rows");
+    const labelColumnsName = this.props.t("Columns");
+
     return (
       <React.Fragment>
         <Editor
           value={tableContent === "" ? pasteContent : tableContent}
           init={{
-            plugins: "table autoresize paste",
+            plugins: "table autoresize paste textcolor colorpicker",
             paste_retain_style_properties: "all",
             paste_webkit_styles: "all",
             paste_retain_style_properties: "all",
@@ -538,8 +548,11 @@ class Tinymce extends React.PureComponent {
               }
             },
             toolbar: false,
+            fontsize_formats: "px",
+            font_formats: this.props.uiFonts,
+
             table_toolbar:
-              "tableprops tabledelete | tablerowprops tableinsertrowbefore tableinsertrowafter tabledeleterow | tablecellprops tableinsertcolbefore tableinsertcolafter tabledeletecol",
+              "tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor backcolor fontselect decrementFontSize fontsizeselect fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
             content_css: [
               PRODUCTION
                 ? globalConfig.baseUrl +
@@ -553,7 +566,70 @@ class Tinymce extends React.PureComponent {
             menubar: false,
             resize: !this.props.viewOnly,
             object_resizing: !this.props.viewOnly,
-            body_class: "TinymceContainer"
+            body_class: "TinymceContainer",
+
+            setup: function(editor) {
+              editor.addButton("tableText", {
+                text: labelTableName,
+                classes: "tableLabels"
+              });
+              editor.addButton("rowsText", {
+                text: labelRowsName,
+                classes: "tableLabels"
+              });
+              editor.addButton("colsText", {
+                text: labelColumnsName,
+                classes: "tableLabels"
+              });
+              editor.addButton("fontValue", {
+                text: "7px",
+                classes: "tableLabels",
+                id: "tinymceFontValue"
+              });
+
+              editor.addButton("decrementFontSize", {
+                text: "-",
+                onclick: event => {
+                  let fontSize = (
+                    parseFloat(
+                      editor
+                        .getWin()
+                        .getComputedStyle(editor.selection.getNode())
+                        .getPropertyValue("font-size")
+                    ) - 1
+                  ).toPrecision(3);
+                  const fontSizePx = fontSize + "px";
+                  event.control.parent()._items[5].text(fontSizePx);
+                  editor.execCommand(
+                    "FontSize",
+                    false,
+                    //(fontSize ) / zoomScale + "px"
+                    fontSizePx
+                  );
+                }
+              });
+              editor.addButton("incrementFontSize", {
+                text: "+",
+                onclick: event => {
+                  let fontSize = (
+                    parseFloat(
+                      editor
+                        .getWin()
+                        .getComputedStyle(editor.selection.getNode())
+                        .getPropertyValue("font-size")
+                    ) + 1
+                  ).toPrecision(3);
+                  const fontSizePx = fontSize + "px";
+                  event.control.parent()._items[5].text(fontSizePx);
+                  editor.execCommand(
+                    "FontSize",
+                    false,
+                    //(fontSize ) / zoomScale + "px"
+                    fontSizePx
+                  );
+                }
+              });
+            }
           }}
           onInit={this.onInitHandler}
           onFocus={this.onFocusHandler}

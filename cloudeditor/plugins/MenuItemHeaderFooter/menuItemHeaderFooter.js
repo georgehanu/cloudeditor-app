@@ -237,6 +237,7 @@ class MenuItemHeaderFooter extends React.Component {
 
     this.setState({ submenuOpened: show }, () => {
       if (this.state.submenuOpened !== false) {
+        document.body.classList.add("submenuHeaderFooter");
         this.props.addContainerClasses(
           "submenuHeaderFooter",
           ["showHeaderFooter"],
@@ -244,6 +245,8 @@ class MenuItemHeaderFooter extends React.Component {
         );
       } else {
         this.closePoptext();
+        document.body.classList.remove("submenuHeaderFooter");
+
         this.props.addContainerClasses("submenuHeaderFooter", [], true);
       }
 

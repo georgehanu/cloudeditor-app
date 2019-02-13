@@ -393,6 +393,15 @@ const Config = {
     baseType: Types.REFRESH_TABLE,
     className: "icon printqicon-rotate_handler",
     parentClassName: "LetterItem"
+  },
+  [Types.FUPA_SIMPLE_IMAGE]: {
+    baseType: Types.SIMPLE_TEXT,
+    className: "fupaImageLogo"
+  },
+  [Types.FUPA_TEXT]: {
+    baseType: Types.SIMPLE_TEXT,
+    className: "fupaText",
+    text: "Contents of Fupa.net"
   }
 };
 module.exports = Config;

@@ -12,6 +12,7 @@ const ImageToolbar = require("../components/Toolbar/ToolbarTypes/image");
 const TextToolbar = require("../components/Toolbar/ToolbarTypes/text");
 const BackgroundToolbar = require("../components/Toolbar/ToolbarTypes/background");
 const TinymceToolbar = require("../components/Toolbar/ToolbarTypes/tinymce");
+const FupaToolbar = require("../components/Toolbar/ToolbarTypes/fupa");
 
 const { setObjectFromToolbar } = require("../stores/actions/toolbar");
 const {
@@ -29,6 +30,7 @@ const textToolbar = { width: 396, height: 92 };
 const imageToolbar = { width: 445, height: 47 };
 const backgroundToolbar = { width: 485, height: 47 };
 const tinymceToolbar = { width: 396, height: 92 };
+const fupaToolbar = { width: 402, height: 92 };
 
 class Toolbar extends React.Component {
   state = {
@@ -209,13 +211,24 @@ class Toolbar extends React.Component {
       );
       attributes = Utils.LoadTextAdditionalInfo(activeItem);
     } else if (activeItem.type === "tinymceTable") {
-      toolbarType = tinymceToolbar;
-      toolbarData = Utils.LoadTextSettings(
-        TinymceToolbar,
-        activeItem,
-        this.props.activeLayer,
-        this.props.uiFonts
-      );
+      if (activeItem.fupaData === undefined || activeItem.fupaData === null) {
+        toolbarType = tinymceToolbar;
+        toolbarData = Utils.LoadTextSettings(
+          TinymceToolbar,
+          activeItem,
+          this.props.activeLayer,
+          this.props.uiFonts
+        );
+      } else {
+        toolbarType = fupaToolbar;
+        toolbarData = Utils.LoadTextSettings(
+          FupaToolbar,
+          activeItem,
+          this.props.activeLayer,
+          this.props.uiFonts
+        );
+      }
+
       attributes = Utils.LoadTextAdditionalInfo(activeItem);
     }
     if (toolbarData === null) return null;

@@ -612,6 +612,18 @@ const getEmptyProject = cfg => {
     height: null,
     left: 16.55 + 8.50394,
     top: 16.55 + 8.50394,
+    fupaData: {
+      type: "Standings",
+      queryData: {
+        query: "?action=standings",
+        data: {
+          competition: "bundesliga",
+          teamId: 568319
+        },
+        queryTime: 1550062541648
+      }
+    },
+
     tableContent: `<table style="width:688px; height: auto; border-spacing: 0px; color: black;">
 <tbody>
   <tr>
@@ -1492,7 +1504,7 @@ const getEmptyProject = cfg => {
   });
 
   //project.objects[table.id] = table;
-  //project.pages["page_1"]["objectsIds"] = [table.id];
+  //project.pages["page_0"]["objectsIds"] = [table.id];
   project.objects[header.id] = header;
   project.objects[footer.id] = footer;
   project.objects[textHeader.id] = textHeader;

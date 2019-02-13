@@ -78,6 +78,17 @@ const uiFontsSelector = state => {
   return pathOr([], ["ui", "fonts"], state);
 };
 
+const uiFontsTinymceSelector = createSelector(
+  uiFontsSelector,
+  uiFonts => {
+    let fonts = "";
+    uiFonts.map(el => {
+      fonts += el + "=" + el + ";";
+    });
+    return fonts;
+  }
+);
+
 module.exports = {
   zoomSelector,
   scaleSelector,
@@ -88,5 +99,6 @@ module.exports = {
   rerenderIdSelector,
   lastUsedColorsSelector,
   permissionsSelector,
-  uiFontsSelector
+  uiFontsSelector,
+  uiFontsTinymceSelector
 };
