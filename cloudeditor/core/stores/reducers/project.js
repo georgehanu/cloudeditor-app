@@ -200,22 +200,15 @@ deleteObjectFromHeaderFooter = (state, action, pageHF) => {
 };
 
 const addTable = (state, action) => {
-  const object = ProjectUtils.getEmptyObject(action);
-  const pageId = state.activePage;
-  return {
-    ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
-    objects: {
-      ...state.objects,
-      [object.id]: object
-    }
-  };
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
+    return addObjectMiddle(state, action);
+  } else if (footerSelector) {
+    return addObjectMiddle(state, action);
+  }
+
+  return addCreatedObject(state, action, ProjectUtils.getEmptyObject(action));
 };
 const changePage = (state, payload) => {
   return {

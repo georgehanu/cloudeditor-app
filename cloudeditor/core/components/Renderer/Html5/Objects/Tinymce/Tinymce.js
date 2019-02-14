@@ -277,6 +277,7 @@ class Tinymce extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.tinyEditor && this.tinyEditor.selection === null) return;
     if (
       this.tinyEditor &&
       this.tinyEditor.selection.getNode() !== this.tinyEditor.getBody()
