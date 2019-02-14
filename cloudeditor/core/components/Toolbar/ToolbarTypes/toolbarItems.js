@@ -94,6 +94,11 @@ const FupaSimpleImage = {
 const FupaText = {
   type: Types.FUPA_TEXT
 };
+
+const FupaDownArrow = {
+  type: Types.FUPA_DOWN_ARROW
+};
+
 module.exports = {
   Bold,
   Italic,
@@ -119,5 +124,6 @@ module.exports = {
   SimpleIconQuality,
   RefreshTable,
   FupaSimpleImage,
-  FupaText
+  FupaText,
+  FupaDownArrow
 };

@@ -402,6 +402,11 @@ const Config = {
     baseType: Types.SIMPLE_TEXT,
     className: "fupaText",
     text: "Contents of Fupa.net"
+  },
+  [Types.FUPA_DOWN_ARROW]: {
+    baseType: Types.BUTTON,
+    className: "icon printqicon-lefttriangle fupaDownArrow",
+    parentClassName: "fupaDownArrowContainer"
   }
 };
 module.exports = Config;

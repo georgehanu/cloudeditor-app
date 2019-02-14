@@ -14,7 +14,7 @@ const RefreshTableButton = props => {
     "." +
     zeroPadding(month) +
     "." +
-    lastData.getFullYear();
+    (lastData.getFullYear() + "").substring(2);
   const showTime =
     zeroPadding(lastData.getHours()) + ":" + zeroPadding(lastData.getMinutes());
   return (

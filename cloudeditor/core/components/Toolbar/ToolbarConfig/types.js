@@ -68,6 +68,7 @@ const REFRESH_TABLE = "REFRESH_TABLE";
 const SIMPLE_TEXT = "SIMPLE_TEXT";
 const FUPA_SIMPLE_IMAGE = "FUPA_SIMPLE_IMAGE";
 const FUPA_TEXT = "FUPA_TEXT";
+const FUPA_DOWN_ARROW = "FUPA_DOWN_ARROW";
 
 module.exports = {
   Position,
@@ -119,5 +120,6 @@ module.exports = {
   REFRESH_TABLE,
   SIMPLE_TEXT,
   FUPA_SIMPLE_IMAGE,
-  FUPA_TEXT
+  FUPA_TEXT,
+  FUPA_DOWN_ARROW
 };

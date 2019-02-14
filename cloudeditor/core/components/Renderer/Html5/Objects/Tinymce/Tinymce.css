@@ -106,3 +106,7 @@ body.submenuHeaderFooter
 .mce-tinymce.mce-tinymce-inline .mce-tableLabels:hover {
   border: none !important;
 }
+
+#tinymceFontValue {
+  width: 60px;
+}

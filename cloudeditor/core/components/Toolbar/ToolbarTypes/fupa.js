@@ -1,4 +1,9 @@
-const { FupaSimpleImage, RefreshTable, FupaText } = require("./toolbarItems");
+const {
+  FupaSimpleImage,
+  RefreshTable,
+  FupaText,
+  FupaDownArrow
+} = require("./toolbarItems");
 const Types = require("../ToolbarConfig/types");
 
 const fupa = {
@@ -13,7 +18,7 @@ const fupa = {
       location: Types.Position.TOP,
       position: 2,
       className: "fupaTextGroup",
-      items: [FupaText]
+      items: [FupaText, FupaDownArrow]
     },
     {
       location: Types.Position.TOP,

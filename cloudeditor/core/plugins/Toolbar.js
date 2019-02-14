@@ -212,13 +212,14 @@ class Toolbar extends React.Component {
       attributes = Utils.LoadTextAdditionalInfo(activeItem);
     } else if (activeItem.type === "tinymceTable") {
       if (activeItem.fupaData === undefined || activeItem.fupaData === null) {
-        toolbarType = tinymceToolbar;
+        return null;
+        /*toolbarType = tinymceToolbar;
         toolbarData = Utils.LoadTextSettings(
           TinymceToolbar,
           activeItem,
           this.props.activeLayer,
           this.props.uiFonts
-        );
+        );*/
       } else {
         toolbarType = fupaToolbar;
         toolbarData = Utils.LoadTextSettings(
