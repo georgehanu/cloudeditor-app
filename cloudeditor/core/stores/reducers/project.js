@@ -62,7 +62,8 @@ const {
   CHANGE_BACKGROUND,
   CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
-  REFRESH_TABLE_FAILED
+  REFRESH_TABLE_FAILED,
+  CHANGE_HEADER_FOOTER_LAYOUT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -406,6 +407,40 @@ const removeActionSelection = (state, payload) => {
     selectedActionObjectsIds: []
   };
 };
+const changeHeaderFooterLayout = (state, payload) => {
+  const layout = { ...payload.layout };
+  const objects = { ...state.objects };
+  const savedData = JSON.parse(layout.saved_data);
+  const type = layout.type;
+  let skipIds = [];
+  skipIds = ProjectUtils.getObjectHeaderFooterIds(
+    state.configs.document[layout.type].objectsIds,
+    state.objects,
+    []
+  );
+  let newObjects = {};
+  Object.keys(objects).map(function(key) {
+    if (skipIds.indexOf(key) === -1) {
+      newObjects[key] = objects[key];
+    }
+  });
+  newObjects = merge(newObjects, savedData.blocks);
+  return {
+    ...state,
+    objects: newObjects,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        [type]: {
+          ...state.configs.document[type],
+          height: parseInt(savedData[type]["height"]),
+          objectsIds: savedData[type]["objectsIds"]
+        }
+      }
+    }
+  };
+};
 
 const config = ConfigUtils.getDefaults();
 //const emptyProject = ProjectUtils.getRandomProject(config.project);
@@ -488,7 +523,8 @@ loadLayout = (state, payload) => {
   const savedData = JSON.parse(payload.saved_data);
   const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
     const id = uuidv4();
-    return { ...savedData.activePage.objects[key], id: id };
+    if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds"))
+      return { ...savedData.activePage.objects[key], id: id };
   });
   // store the new keys into objectsIds
   const addPageObj = {};
@@ -597,6 +633,9 @@ module.exports = handleActions(
     },
     [REMOVE_ACTION_SELECTION]: (state, action) => {
       return removeActionSelection(state, action.payload);
+    },
+    [CHANGE_HEADER_FOOTER_LAYOUT]: (state, action) => {
+      return changeHeaderFooterLayout(state, action.payload);
     },
     [UPDATE_SELECTION_OBJECTS_COORDS]: (state, action) => {
       let objectsChanges = reduce(

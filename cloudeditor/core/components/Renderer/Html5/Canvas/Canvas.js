@@ -9,6 +9,10 @@ const Zoom = require("../Zoom/Zoom");
 
 require("./Canvas.css");
 
+const {
+  groupsSelector
+} = require("../../../../stores/selectors/Html5Renderer");
+const { facingPagesSelector } = require("../../../../stores/selectors/project");
 const centerPage = ({ width, height, containerWidth, containerHeight }) => {
   const marginTop = !(height > containerHeight)
     ? (containerHeight - height) / 2
@@ -54,32 +58,22 @@ class Canvas extends React.Component {
 
     let pageNumbers = null;
     if (!viewOnly) {
-      const innerPages = this.props.activePage.innerPages;
-      const pages = Object.keys(innerPages).map(pageKey => {
-        const pageNameStyle = {
-          left:
-            (innerPages[pageKey]["offset"]["left"] +
-              this.props.activePage.offset.left) *
-            this.props.zoomScale,
-          width:
-            (innerPages[pageKey]["width"] + this.props.activePage.offset.left) *
-            this.props.zoomScale
-        };
-        const classes = [
-          "pageName",
-          pageKey === this.props.activePageId ? "isActive" : ""
-        ].join(" ");
-        return (
-          <div key={pageKey} className={classes} style={pageNameStyle}>
-            <div>{this.props.labels[pageKey]["longLabel"]}</div>
-          </div>
-        );
+      const pages = this.props.groups.map(group => {
+        if (group.indexOf(this.props.activePageId) > -1)
+          return group.map(pageKey => {
+            const classes = [
+              "pageName",
+              pageKey === this.props.activePageId ? "isActive" : ""
+            ].join(" ");
+            return (
+              <div key={pageKey} className={classes}>
+                <div>{this.props.labels[pageKey]["longLabel"]}</div>
+              </div>
+            );
+          });
       });
-      pageNumbers = (
-        <div style={pageNamesStyle} className={"pageNameContainer"}>
-          {pages}
-        </div>
-      );
+
+      pageNumbers = <div className={"pageNameContainer"}>{pages}</div>;
     }
     return pageNumbers;
   };
@@ -134,28 +128,11 @@ class Canvas extends React.Component {
     } = this.props;
     width *= zoomScale;
     height *= zoomScale;
-    const margins = centerPage({
-      width,
-      height,
-      containerWidth,
-      containerHeight
-    });
     if (bottomContainer === undefined) return null;
-    const leftStyle = {
-      top:
-        bottomContainer -
-        margins.marginTop -
-        (containerHeight - margins.marginTop * 2) / 2,
-      left: margins.marginLeft
-    };
-    if (viewOnly) return null;
     let leftSide = null;
     if (this.props.activePage.prevGroup)
       leftSide = (
-        <div
-          style={leftStyle}
-          className={"sidePaginationItem sidePaginationItemLeft"}
-        >
+        <div className={"sidePaginationItem sidePaginationItemLeft"}>
           <div
             className={"sidePaginationSubItem"}
             onClick={() => {
@@ -167,19 +144,10 @@ class Canvas extends React.Component {
         </div>
       );
     let rightSide = null;
-    const rightStyle = {
-      top:
-        bottomContainer -
-        margins.marginTop -
-        (containerHeight - margins.marginTop * 2) / 2,
-      left: margins.marginLeft + (containerWidth - margins.marginLeft * 2)
-    };
+
     if (this.props.activePage.nextGroup)
       rightSide = (
-        <div
-          style={rightStyle}
-          className={"sidePaginationItem sidePaginationItemRight"}
-        >
+        <div className={"sidePaginationItem sidePaginationItemRight"}>
           <div
             className={"sidePaginationSubItem"}
             onClick={() => {
@@ -209,7 +177,7 @@ class Canvas extends React.Component {
 
     return (
       <div className="canvasContainer" ref={getCanvasRef}>
-        <Zoom {...otherProps} />
+        <Zoom {...otherProps} onChangePage={this.onClickChangePageHandler} />
         {pageNumbers}
         {bottomPagination}
         {sidePagination}
@@ -236,6 +204,17 @@ Canvas.defaultProps = {
   zoomScale: 1,
   pageReady: false
 };
+const mapStateToProps = (state, props) => {
+  const getGroupsSelector = groupsSelector(facingPagesSelector);
+  return {
+    groups: getGroupsSelector(state)
+  };
+};
 
-const CanvasComponent = hot(module)(connect(null)(Canvas));
+const CanvasComponent = hot(module)(
+  connect(
+    mapStateToProps,
+    null
+  )(Canvas)
+);
 module.exports = CanvasComponent;

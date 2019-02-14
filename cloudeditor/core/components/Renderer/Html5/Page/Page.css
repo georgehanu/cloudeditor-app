@@ -8,7 +8,6 @@
   z-index: 1;
 }
 .pageNameContainer {
-  margin-left: 150px;
   position: absolute;
   bottom: 0px;
   left: 0px;
@@ -18,9 +17,7 @@
   overflow: hidden;
   max-width: 100%;
 }
-.sidebarContainerExpand .pageNameContainer {
-  margin-left: 550px;
-}
+
 .pageName {
   position: relative;
   position: absolute;
@@ -42,9 +39,7 @@
   display: inline-block;
   font-size: 12px;
 }
-.pageName:first-child {
-  left: 0px !important;
-}
+
 .pageSelectorMinimized .paginationBottomContainer {
   padding-bottom: 57px;
 }
@@ -88,17 +83,16 @@
 }
 .sidePaginationItem {
   position: absolute;
-  width: 30px;
-  transform: translate(-100%, -50%);
-  margin-left: 150px;
+  z-index: 501;
+}
+.sidePaginationItemLeft {
+  transform: translateX(-100%);
+  margin-right: 10px;
+}
+.sidePaginationItemRight {
+  margin-left: 10px;
 }
 
-.sidebarContainerExpand .sidePaginationItem {
-  margin-left: 550px;
-}
-.sidebarContainerExpand .sidePaginationItemRight {
-  margin-left: 530px;
-}
 .sidePaginationItem .sidePaginationSubItem {
   width: 25px;
   height: 40px;
@@ -107,8 +101,52 @@
   text-align: center;
   cursor: pointer;
   line-height: 40px;
+  z-index: 501;
 }
-.sidePaginationItemRight {
-  transform: translate(100%, -50%);
-  margin-left: 130px;
+
+.page_wrapper {
+  height: 100%;
+  margin: 0px;
+  float: left;
+  display: inline-flex;
+}
+.page_wrapper .pageContainer {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+.zoomContainer .page_wrapper:first-child .pageContainer {
+  float: right;
+}
+.zoomContainer .page_wrapper:first-child {
+  justify-content: flex-end;
+}
+.zoomContainer .page_wrapper:last-child {
+  justify-content: flex-start;
+}
+.zoomContainer .page_wrapper:last-child .pageContainer {
+  float: left;
+}
+.overlaySideBySide {
+  display: none;
+}
+.zoomContainer .page_wrapper.overlay .overlaySideBySide {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.3;
+  z-index: 99999;
+  cursor: pointer;
+  position: absolute;
+}
+.secondZoom {
+  width: 100%;
+  height: 100%;
+}
+.page_wrapper.overlay {
+  overflow: hidden;
+}
+.zoomContainer .page_wrapper.no_overlay {
+  position: relative;
+  z-index: 501;
 }

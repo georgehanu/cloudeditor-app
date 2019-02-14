@@ -39,11 +39,13 @@ module.exports = {
             const returnData = {};
             const blocks = recursiveParseBlocks(
               header.objectsIds,
+
               state$.value.project.objects,
               returnData
             );
             const savedData = {
               header: {
+                objectsIds: header.objectsIds,
                 height: header.height
               },
               blocks
@@ -51,7 +53,7 @@ module.exports = {
             formData.append("type", "header");
             formData.append("hfData", JSON.stringify(savedData));
           } else {
-            if (state$.value.project.configs.document.footer) {
+            if (state$.value.project.configs.document.footerEditor) {
               const footer = {
                 ...state$.value.project.configs.document.footer
               };
@@ -62,8 +64,9 @@ module.exports = {
                 returnData
               );
               const savedData = {
-                header: {
-                  height: footer.height
+                footer: {
+                  height: footer.height,
+                  objectsIds: footer.objectsIds
                 },
                 blocks
               };

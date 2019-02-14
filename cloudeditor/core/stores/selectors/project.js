@@ -75,6 +75,13 @@ const getFooterEditorSelector = state => {
     state
   );
 };
+const getBackendEditorSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "backendEditor"],
+    state
+  );
+};
 const groupSizeSelector = state => {
   return pathOr(false, ["project", "configs", "document", "groupSize"], state);
 };
@@ -377,6 +384,8 @@ const projLoadLoadingProjectSelector = state =>
 
 const projLoadErrorMessageProjectSelector = state =>
   pathOr(null, ["project", "load", "errorMessageProject"], state);
+const getFooterHeaderLayoutsSelector = state =>
+  pathOr([], ["assets", "footerheader"], state);
 
 const activePageWithObjectsSelector = createSelector(
   [objectsSelector, pagesSelector, activePageIdSelector],
@@ -460,5 +469,7 @@ module.exports = {
   projectHeaderEnabledSelector,
   projectFooterEnabledSelector,
   getHeaderEditorSelector,
-  getFooterEditorSelector
+  getFooterEditorSelector,
+  getFooterHeaderLayoutsSelector,
+  getBackendEditorSelector
 };

@@ -2,7 +2,7 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
-
+const Storeviews = require("./components/StoreViews/StoreViews");
 const Duplicate = require("./components/Duplicate/Duplicate");
 const HeaderPoptext = require("./components/HeaderPoptext/HeaderPoptext");
 const UploadOneImage = require("./components/UploadOneImage/UploadOneImage");
@@ -29,7 +29,8 @@ const {
   projectShowAlertSelector,
   projectMessageSelector,
   projectIdSelector,
-  templateIdSelector
+  templateIdSelector,
+  getStoreViewPoptextSelector
 } = require("../../core/stores/selectors/layout_template");
 const {
   pagesOrderSelector,
@@ -107,6 +108,10 @@ class LayoutEditorHeader extends React.Component {
       this.props.updateLayoutTemplateHandler({
         projectStatusPoptext: { selectedOption }
       });
+    } else if (name === "storeViews") {
+      this.props.updateLayoutTemplateHandler({
+        projectStoreViewPopText: { selectedOption }
+      });
     }
   };
 
@@ -146,6 +151,7 @@ class LayoutEditorHeader extends React.Component {
       sort_order: this.props.projectOrder,
       is_default: this.props.isDefaultPoptext.selectedOption.value,
       status: this.props.projectStatusPoptext.selectedOption.value,
+      websites: this.props.storeViewPoptext.selectedOption,
       template_id: this.props.templateId,
       duplicate: this.props.duplicateChecked ? "1" : "0",
       saved_data: JSON.stringify({
@@ -219,6 +225,13 @@ class LayoutEditorHeader extends React.Component {
               name="duplicateChecked"
             />
             {isDefaultPoptext}
+            <Storeviews
+              className={"headerSubContainer"}
+              onChange={this.onPoptextChange}
+              {...this.props.storeViewPoptext}
+              name={"storeViews"}
+            />
+
             {projectPagePoptext}
             <Input
               type="text"
@@ -278,6 +291,7 @@ const mapStateToProps = state => {
     pagesOrder: pagesOrderSelector(state),
     activePage: activePageWithObjectsSelector(state),
     isDefaultPoptext: getIsDefaultPoptextSelector(state),
+    storeViewPoptext: getStoreViewPoptextSelector(state),
     projectPagePoptext: getProjectPagePoptextSelector(state),
     projectCategoryPoptext: getProjectCategoryPoptextSelector(state),
     projectStatusPoptext: getProjectStatusPoptextSelector(state),

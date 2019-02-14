@@ -453,11 +453,14 @@ class Page extends React.Component {
       >
         {/*<div className="pageOverlay" id="pageOverlay" />*/}
         {this.renderObjects()}
-
         {boxes}
         {snapBoxes}
         {withColumns}
         {this.renderErrorMessages()}
+        <div
+          onClick={() => this.props.onChangePage(this.props.activePage.page_id)}
+          className={"overlaySideBySide"}
+        />
       </div>
     );
   }

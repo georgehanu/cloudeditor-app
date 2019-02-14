@@ -98,16 +98,22 @@ class Html5 extends React.Component {
     }
   };
   updateContainerDimensions = () => {
-    if (this.containerRef) {
+    let containerRef = this.containerRef;
+    if (!containerRef) {
+      containerRef = document.querySelectorAll(
+        ".renderContainer .zoomContainer"
+      )[0];
+    }
+    if (containerRef) {
       const parent = {
-        width: this.containerRef.offsetWidth,
-        height: this.containerRef.offsetHeight
+        width: containerRef.offsetWidth,
+        height: containerRef.offsetHeight
       };
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
       };
-      const boundingContainer = this.containerRef.getBoundingClientRect();
+      const boundingContainer = containerRef.getBoundingClientRect();
       this.setState({
         zoomScale: computeZoomScale(this.props.zoom, parent, child),
         bottomContainer: boundingContainer.bottom,
@@ -132,6 +138,9 @@ class Html5 extends React.Component {
       this.updateContainerDimensions();
     }
     if (prevProps.rerenderId !== this.props.rerenderId) {
+      this.updateContainerDimensions();
+    }
+    if (prevProps.activePageId !== this.props.activePageId) {
       this.updateContainerDimensions();
     }
   }

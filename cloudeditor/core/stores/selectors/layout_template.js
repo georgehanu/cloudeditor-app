@@ -11,6 +11,8 @@ const isDefaultPoptextSelector = state =>
 
 const projectPagePoptextSelector = state =>
   pathOr(false, ["layoutTemplate", "projectPagePoptext"], state);
+const getStoreViewPoptextSelector = state =>
+  pathOr(false, ["layoutTemplate", "projectStoreViewPopText"], state);
 
 const projectCategoryPoptextSelector = state =>
   pathOr(false, ["layoutTemplate", "projectCategoryPoptext"], state);
@@ -96,5 +98,6 @@ module.exports = {
   projectShowAlertSelector,
   projectMessageSelector,
   projectIdSelector,
-  templateIdSelector
+  templateIdSelector,
+  getStoreViewPoptextSelector
 };
