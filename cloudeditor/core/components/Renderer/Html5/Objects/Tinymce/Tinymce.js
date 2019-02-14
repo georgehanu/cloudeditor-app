@@ -241,8 +241,12 @@ class Tinymce extends React.PureComponent {
 
   onBlurHandler = e => {
     if (this.tinyEditor) {
-      if (!this.checkTableContent())
+      if (!this.checkTableContent()) {
         this.tinyEditor.setContent(this.pasteContent);
+      } else {
+        this.tinyEditor.setContent(this.props.tableContent);
+        this.tinyEditor.selection.collapse();
+      }
     }
   };
 
