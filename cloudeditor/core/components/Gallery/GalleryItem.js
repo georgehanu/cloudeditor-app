@@ -70,7 +70,7 @@ class galleryItem extends React.Component {
         )}
         <div className="galleryItemActions">
           {this.props.connectDragSource(
-            <span className="select icon printqicon-ok" />
+            <span className="select icon printqicon-move_cursor " />
           )}
           <span
             className="delete icon printqicon-delete"
