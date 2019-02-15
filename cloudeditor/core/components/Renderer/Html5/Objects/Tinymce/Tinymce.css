@@ -60,10 +60,14 @@
   transform-origin: top left;
   white-space: normal;
 }
-
 .dummyTableContainer table {
   width: 100% !important;
   height: 100% !important;
+  box-sizing: content-box !important;
+}
+
+.dummyTableContainer table * {
+  box-sizing: content-box !important;
 }
 
 .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
