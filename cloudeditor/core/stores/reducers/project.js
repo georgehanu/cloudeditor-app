@@ -79,19 +79,31 @@ const addPages = (state, action) => {
   const { activePage, pages, pagesOrder } = state;
   let newPages = { ...pages };
   const { nrPagesToInsert, location } = action;
+  const newObjects = {};
   let newIds = [];
   let newOrder = clone(pagesOrder);
   const firstPage = newPages[head(pagesOrder)];
   const firstPageWidth = firstPage["width"];
   const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
+    const newObject = ProjectUtils.getEmptyObject({
+      type: "image",
+      backgroundblock: 1,
+      width: firstPageWidth,
+      height: firstPageHeight,
+      left: 0,
+      top: 0,
+      subType: "pdf"
+    });
     const emptyPage = ProjectUtils.getEmptyPage({
       width: firstPageWidth,
       height: firstPageHeight
     });
+    emptyPage.objectsIds = [newObject.id];
     const { id } = emptyPage;
     newPages[id] = emptyPage;
     newIds.push(id);
+    newObjects[newObject.id] = newObject;
   }
   let pageIndex = pagesOrder.findIndex(el => {
     return el === activePage;
@@ -117,6 +129,10 @@ const addPages = (state, action) => {
     pages: {
       ...state.pages,
       ...newPages
+    },
+    objects: {
+      ...state.objects,
+      ...newObjects
     },
     pagesOrder: newOrder
   };

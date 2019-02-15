@@ -56,7 +56,8 @@ class ObjectBlock extends React.Component {
     if (this.$el) {
       const params = {
         blockContainer: this.$el.get(0),
-        blockId: this.props.id
+        blockId: this.props.id,
+        dragging: this.props.dragging
       };
       if (!this.props.backgroundblock) {
         this.props.checkErrorMessages(params);

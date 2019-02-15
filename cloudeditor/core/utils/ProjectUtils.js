@@ -394,7 +394,9 @@ const getPagesDefaults = cfg => {
   );
   return defaults;
 };
-
+const getEmptyBackground = cfg => {
+  return mergeDeepRight({}, cfg);
+};
 const getProjectTemplate = cfg => {
   const project = mergeDeepRight(
     {

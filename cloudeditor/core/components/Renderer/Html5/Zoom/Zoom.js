@@ -56,10 +56,18 @@ class Zoom extends React.Component {
     const firstElement = pageContainers[0];
     const boundingFirst = firstElement.getBoundingClientRect();
     const boundingLast = lastElement.getBoundingClientRect();
-    if (rightPagination.length)
-      rightPagination[0].style.left = boundingLast.right + "px";
-    if (leftPagination.length)
-      leftPagination[0].style.left = boundingFirst.left + "px";
+    if (rightPagination.length) {
+      const boundingZoom = zoomContainer.getBoundingClientRect();
+      if (boundingLast.right > boundingZoom.right)
+        rightPagination[0].style.left = boundingZoom.right + "px";
+      else rightPagination[0].style.left = boundingLast.right + "px";
+    }
+    if (leftPagination.length) {
+      const boundingZoom = zoomContainer.getBoundingClientRect();
+      if (boundingFirst.left < boundingZoom.left)
+        leftPagination[0].style.left = boundingZoom.left + "px";
+      else leftPagination[0].style.left = boundingFirst.left + "px";
+    }
     let width = 0;
     pageContainers.forEach((element, key) => {
       width += element.scrollWidth;
@@ -101,6 +109,7 @@ class Zoom extends React.Component {
                       {...this.props}
                       activePage={this.props.groupedPages[page_id]}
                       activePageId={page_id}
+                      page_id={page_id}
                       viewOnly={1}
                       containerWidth={this.props.containerWidth / 2}
                     />
@@ -183,7 +192,7 @@ const mapStateToProps = (state, props) => {
         if (group.indexOf(activePageId) > -1)
           group.map(page_id => {
             const groupSelector = (state, props) => {
-              return [page_id];
+              return group;
             };
             const activePage = (_, props) => {
               return page_id;

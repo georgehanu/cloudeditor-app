@@ -164,11 +164,12 @@ class Page extends React.Component {
     };
   }
 
-  getIfMessage = (pageBounding, blockBounding) => {
+  getIfMessage = (pageBounding, blockBounding, dragging) => {
     let type = 0;
     let snapTolerance = this.props.activePage.snapTolerance;
     const { zoomScale } = this.props;
     snapTolerance *= zoomScale;
+    if (dragging) return type;
     if (
       blockBounding.left < pageBounding.left + snapTolerance ||
       blockBounding.right > pageBounding.right - snapTolerance ||
@@ -186,13 +187,13 @@ class Page extends React.Component {
     return type;
   };
   checkErrorMessages = params => {
-    const { blockContainer, blockId } = params;
+    const { blockContainer, blockId, dragging } = params;
     let { errorMessages } = this.state;
     const pageBounding = ReactDOM.findDOMNode(this).getBoundingClientRect();
     const blockContainerBounding = blockContainer.getBoundingClientRect();
 
     errorMessages[blockId] = {
-      type: this.getIfMessage(pageBounding, blockContainerBounding),
+      type: this.getIfMessage(pageBounding, blockContainerBounding, dragging),
       left:
         blockContainerBounding.left -
         pageBounding.left +
