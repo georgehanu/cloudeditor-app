@@ -20,7 +20,8 @@ class ColorTab extends React.Component {
     showPickerWnd: false,
     pickerWndMode: "",
     activeColor: null,
-    type: null
+    type: null,
+    editMode: false
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -51,7 +52,17 @@ class ColorTab extends React.Component {
       separationColorSpace,
       separationColor
     } = this.state.activeColor;
-    this.props.uiAddLastUsedColor(this.state.activeColor.id);
+    if (this.state.activeColor.id) {
+      this.props.uiAddLastUsedColor(this.state.activeColor.id);
+    } else {
+      const colors = this.props.colors.filter(el => {
+        return el.htmlRGB === this.state.activeColor.htmlRGB;
+      });
+      if (colors.length > 0) {
+        this.props.uiAddLastUsedColor(colors[0].id);
+      }
+    }
+
     this.props.selectColor({
       mainHandler: true,
       payloadMainHandler: {
@@ -71,6 +82,24 @@ class ColorTab extends React.Component {
   deleteColorHandler = payload => {
     this.props.uiRemoveColor(payload);
     this.setState({ showPickerWnd: false });
+  };
+
+  toggleEditMode = () => {
+    this.setState({ editMode: !this.state.editMode }, () => {
+      this.togglePickerWnd(
+        this.state.editMode,
+        PICKER_MODE_VIEW,
+        this.state.activeColor
+      );
+    });
+  };
+
+  onColorSelect = color => {
+    if (this.state.editMode) {
+      this.togglePickerWnd(true, PICKER_MODE_VIEW, color);
+    } else {
+      this.setState({ activeColor: color }, () => this.useColorHandler());
+    }
   };
 
   render() {
@@ -95,7 +124,7 @@ class ColorTab extends React.Component {
             (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
-            this.togglePickerWnd(true, PICKER_MODE_VIEW, color);
+            this.onColorSelect(color);
           }}
         >
           {selectedColor && <b className="icon printqicon-ok SelectedColor" />}
@@ -115,6 +144,21 @@ class ColorTab extends React.Component {
         {"+"}
       </li>
     );
+    colors.push(
+      <li
+        key={-2}
+        className={
+          "ColorSquare EditMode " +
+          (this.state.editMode ? "EditModeEnabled" : "")
+        }
+        onClick={() => {
+          this.toggleEditMode();
+        }}
+        id="editMode"
+      >
+        <span className="icon printqicon-edit" />
+      </li>
+    );
 
     lastUsedColors = this.props.lastUsedColors.map((color, index) => {
       let colorCode1 = "";
@@ -129,7 +173,7 @@ class ColorTab extends React.Component {
             (color.htmlRGB === "255,255,255" ? "whiteColorSquare" : "")
           }
           onClick={() => {
-            this.togglePickerWnd(true, PICKER_MODE_VIEW, color);
+            this.onColorSelect(color);
           }}
         />
       );

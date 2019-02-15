@@ -699,31 +699,50 @@ module.exports = handleActions(
       };
     },
     [UPDATE_LAYER_PROP]: (state, action) => {
+      const headerSelector = projectHeaderEnabledSelector(state);
+      const footerSelector = projectFooterEnabledSelector(state);
       const objId = action.payload.id;
       const layerAction = action.payload.props.action;
+      let typeHF = null;
 
-      let newObjectsId = [...state.pages[state.activePage].objectsIds];
+      let orObjects = [];
+      if (headerSelector || footerSelector) {
+        typeHF = headerSelector ? "header" : "footer";
+        orObjects = state.objects[typeHF].objectsIds;
+      } else {
+        orObjects = state.pages[state.activePage].objectsIds;
+      }
+      let newObjectsId = [...orObjects];
+
       const objIndex = newObjectsId.findIndex(el => {
         return el === objId;
       });
 
       if (layerAction === "bringtofront") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          ...newObjectsId,
-          state.pages[state.activePage].objectsIds[objIndex]
-        ];
+        newObjectsId = [...newObjectsId, orObjects[objIndex]];
       } else if (layerAction === "bringforward") {
         newObjectsId = swap(objIndex, objIndex + 1, newObjectsId);
       } else if (layerAction === "sendbackward") {
         newObjectsId = swap(objIndex, objIndex - 1, newObjectsId);
       } else if (layerAction === "sendtoback") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          state.pages[state.activePage].objectsIds[objIndex],
-          ...newObjectsId
-        ];
+        newObjectsId = [orObjects[objIndex], ...newObjectsId];
       }
+
+      if (headerSelector || footerSelector) {
+        return {
+          ...state,
+          objects: {
+            ...state.objects,
+            [typeHF]: {
+              ...state.objects[typeHF],
+              objectsIds: newObjectsId
+            }
+          }
+        };
+      }
+
       return {
         ...state,
         pages: {
