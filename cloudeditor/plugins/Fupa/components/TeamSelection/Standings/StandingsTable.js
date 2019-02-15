@@ -92,11 +92,11 @@ const StandingsTable = ({ tableStyle = "default", ...props }) => {
         </td>
 
         <td style={{ ...fupaTd, ...thisStyle.cols[2] }}>
-          <img
-            src={imageUrl}
-            title={el.team.name.full}
-            alt={el.team.name.full}
-            style={{ ...fupaImageWrapperPicture }}
+          <div
+            style={{
+              ...fupaImageWrapperPicture,
+              backgroundImage: "url(" + imageUrl + ")"
+            }}
           />
         </td>
 

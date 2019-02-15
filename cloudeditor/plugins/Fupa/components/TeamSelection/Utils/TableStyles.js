@@ -9,11 +9,11 @@ const Standings = {
       fontFamily: "Arial"
     },
     fupaImageWrapperPicture: {
-      objectFit: "contain",
-      height: "inherit",
-      width: "inherit",
-      width: "25px",
-      height: "25px"
+      backgroundPosition: "center center",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "contain",
+      height: "100%",
+      width: "auto"
     },
     tableStyle: {
       borderSpacing: "0",
@@ -30,7 +30,8 @@ const Standings = {
       },
       2: {
         width: "30px",
-        padding: "1px 2px"
+        padding: "1px 2px",
+        height: "25px"
       },
       3: {
         width: "162px",
@@ -54,17 +55,15 @@ const Standings = {
       fontSize: "7px",
       lineHeight: "13px"
     },
-    fupaImageWrapperPicture: {
-      width: "6px",
-      height: "6px"
-    },
+    fupaImageWrapperPicture: {},
     cols: {
       1: {
         width: "12px"
       },
       2: {
         width: "15px",
-        padding: "px 2px"
+        padding: "1px 2px",
+        height: "15px"
       },
       3: {
         width: "100px"
@@ -124,10 +123,11 @@ const Matches = {
       border: "none"
     },
     fupaImageWrapperPicture: {
-      objectFit: "contain",
-      height: "25px",
-      width: "25px",
-      marginLeft: "3px"
+      backgroundPosition: "center center",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "contain",
+      height: "100%",
+      width: "auto"
     },
     scoreCard: {
       color: "#212121",
@@ -135,9 +135,9 @@ const Matches = {
       position: "relative",
       textAlign: "center",
       width: "60px",
-      fontWeight: "normal !important",
-      backgroundColor: "#3bba27",
-      height: "24px"
+      fontWeight: "normal ",
+      backgroundColor: "#3bba27"
+      //height: "24px"
     },
 
     tableStyle: {
@@ -157,26 +157,24 @@ const Matches = {
       },
       2: {},
       3: { fontWeight: "bold" },
-      4: { padding: "1px 2px", width: "30px" },
+      4: { padding: "1px 2px", width: "30px", height: "25px" },
       5: { textAlign: "left" },
       6: {},
-      7: { paddingRight: "0px" }
+      7: {} //padding: "0px" }
     }
   },
   small: {
     fupaTdBase: { padding: "0px" },
     tbodyStyle: { fontSize: "7px", lineHeight: "13px" },
-    fupaImageWrapperPicture: {
-      width: "6px",
-      height: "6px"
-    },
+    fupaImageWrapperPicture: {},
     scoreCard: {
       fontSize: "7px",
-      height: "12px"
+      width: "40px"
     },
     cols: {
       4: {
-        padding: "0px 2px"
+        padding: "1px 2px",
+        height: "13px"
       }
     }
   }
