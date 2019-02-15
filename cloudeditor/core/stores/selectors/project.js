@@ -139,6 +139,14 @@ const projectFooterEnabledSelector = state => {
   return footer.mode === "edit" && footer.activeOn === "all";
 };
 
+const projectHeaderConfigSelector = state => {
+  return pathOr(false, ["configs", "document", "header"], state);
+};
+
+const projectFooterConfigSelector = state => {
+  return pathOr(false, ["configs", "document", "footer"], state);
+};
+
 /* End Document Config Selectors */
 
 /* Start Pages Config Selectors */
@@ -471,5 +479,7 @@ module.exports = {
   getHeaderEditorSelector,
   getFooterEditorSelector,
   getFooterHeaderLayoutsSelector,
-  getBackendEditorSelector
+  getBackendEditorSelector,
+  projectHeaderConfigSelector,
+  projectFooterConfigSelector
 };

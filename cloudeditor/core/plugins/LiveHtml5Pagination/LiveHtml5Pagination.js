@@ -151,7 +151,9 @@ class LiveHtml5Pagination extends React.Component {
     //console.log("renderlive");
     const allowPageAdding = !this.props.pages[this.props.activePageId]
       .lockPosition;
-    const tooltip = allowPageAdding ? null : "Select a different page";
+    const tooltip = allowPageAdding
+      ? null
+      : { title: "Select a different page", position: "right" };
 
     const { groups, className, mode } = this.props;
     let groupContainer = null;

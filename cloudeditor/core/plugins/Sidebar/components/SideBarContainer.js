@@ -38,8 +38,10 @@ class SideBarContainer extends React.Component {
       if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
         this.setState({ showPane: false, pluginIndex: null }, () => {
           this.props.addContainerClasses("sideBar", [], true);
+          document.body.classList.remove("sidebarContainerExpand");
         });
       } else {
+        document.body.classList.add("sidebarContainerExpand");
         this.setState({ showPane: true, pluginIndex }, () => {
           this.props.addContainerClasses(
             "sideBar",

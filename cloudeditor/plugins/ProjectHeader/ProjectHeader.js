@@ -100,7 +100,7 @@ class ProjectHeader extends React.Component {
   render() {
     const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
     const addToCartTooltip = showPagesWarning
-      ? "Invalid number of pages"
+      ? { title: "Invalid number of pages", position: "left" }
       : null;
     return (
       <div className="projectHeaderContainer">

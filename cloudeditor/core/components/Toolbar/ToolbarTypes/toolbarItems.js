@@ -88,6 +88,16 @@ const SimpleIconQuality = {
 const RefreshTable = {
   type: Types.REFRESH_TABLE
 };
+const FupaSimpleImage = {
+  type: Types.FUPA_SIMPLE_IMAGE
+};
+const FupaText = {
+  type: Types.FUPA_TEXT
+};
+
+const FupaDownArrow = {
+  type: Types.FUPA_DOWN_ARROW
+};
 
 module.exports = {
   Bold,
@@ -112,5 +122,8 @@ module.exports = {
   ImageShapeMenuPoptext,
   SliderInlineImage,
   SimpleIconQuality,
-  RefreshTable
+  RefreshTable,
+  FupaSimpleImage,
+  FupaText,
+  FupaDownArrow
 };

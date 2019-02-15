@@ -128,4 +128,4 @@ const StandingsTable = ({ tableStyle = "default", ...props }) => {
   );
 };
 
-module.exports = withNamespaces("fupa")(StandingsTable);
+module.exports = StandingsTable;

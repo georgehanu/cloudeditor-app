@@ -269,20 +269,17 @@
   width: 170px;
   text-align: left;
 }
-.pageSelectorNormal .html5LivePaginationContainer {
+/*.pageSelectorNormal*/
+.html5LivePaginationContainer {
   padding: 14px 0px 7px 0px;
 }
 
 .pageSelectorNormal .html5LivePaginationContainer .paginationPage {
-  height: 82px;
+  height: 90px;
 }
 
 .pageHeaderTextTitleContainer {
   cursor: pointer;
-}
-
-.pageSelectorContainer {
-  z-index: 1000;
 }
 
 .pageHeaderButtonsContainer {

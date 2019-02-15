@@ -167,8 +167,9 @@ const Config = {
     className: "icon printqicon-opacity ButtonTextSpaceing",
     parentClassName: "",
     min: "0",
-    max: "200",
-    step: "2"
+    max: "100",
+    step: "1",
+    settingsHandler: Types.SLIDER_OPACITY_WND
   },
   [Types.SLIDER_INLINE]: {
     baseType: Types.SLIDER_INLINE,
@@ -392,6 +393,20 @@ const Config = {
     baseType: Types.REFRESH_TABLE,
     className: "icon printqicon-rotate_handler",
     parentClassName: "LetterItem"
+  },
+  [Types.FUPA_SIMPLE_IMAGE]: {
+    baseType: Types.SIMPLE_TEXT,
+    className: "fupaImageLogo"
+  },
+  [Types.FUPA_TEXT]: {
+    baseType: Types.SIMPLE_TEXT,
+    className: "fupaText",
+    text: "Contents of Fupa.net"
+  },
+  [Types.FUPA_DOWN_ARROW]: {
+    baseType: Types.BUTTON,
+    className: "icon printqicon-lefttriangle fupaDownArrow",
+    parentClassName: "fupaDownArrowContainer"
   }
 };
 module.exports = Config;

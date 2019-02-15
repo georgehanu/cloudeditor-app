@@ -71,7 +71,9 @@ const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
 const {
   projectHeaderEnabledSelector,
-  projectFooterEnabledSelector
+  projectFooterEnabledSelector,
+  projectHeaderConfigSelector,
+  projectFooterConfigSelector
 } = require("../selectors/project");
 const uuidv4 = require("uuid/v4");
 
@@ -175,33 +177,10 @@ const changePagesOrder = (state, action) => {
 };
 
 const addObject = (state, action) => {
-  const object = ProjectUtils.getEmptyObject(action);
-  const headerSelector = projectHeaderEnabledSelector(state);
-  const footerSelector = projectFooterEnabledSelector(state);
-  if (headerSelector) {
-    return addObjectToHeaderFooter(state, action, "header");
-  } else if (footerSelector) {
-    return addObjectToHeaderFooter(state, action, "footer");
-  }
-  const pageId = state.activePage;
-  return {
-    ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
-    objects: {
-      ...state.objects,
-      [object.id]: object
-    }
-  };
+  return addCreatedObject(state, action, ProjectUtils.getEmptyObject(action));
 };
 
-const addObjectToHeaderFooter = (state, action, pageHF) => {
-  const object = ProjectUtils.getEmptyObject(action);
+const addObjectToHeaderFooter = (state, action, pageHF, object) => {
   const headerA = pick([pageHF], state.objects);
   if (!headerA) {
     return state;
@@ -238,22 +217,15 @@ deleteObjectFromHeaderFooter = (state, action, pageHF) => {
 };
 
 const addTable = (state, action) => {
-  const object = ProjectUtils.getEmptyObject(action);
-  const pageId = state.activePage;
-  return {
-    ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
-    objects: {
-      ...state.objects,
-      [object.id]: object
-    }
-  };
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
+    return addObjectMiddle(state, action);
+  } else if (footerSelector) {
+    return addObjectMiddle(state, action);
+  }
+
+  return addCreatedObject(state, action, ProjectUtils.getEmptyObject(action));
 };
 const changePage = (state, payload) => {
   return {
@@ -488,6 +460,9 @@ addObjectMiddle = (state, action) => {
   const pageId = state.activePage;
   const page = state.pages[pageId];
   const { width, height } = page;
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  let defaultBlock = {};
   let blockWidth = width / 6;
   let blockHeight = blockWidth * (height / width);
   if (width > height) {
@@ -496,14 +471,43 @@ addObjectMiddle = (state, action) => {
   }
   const left = (width - blockWidth) / 2;
   const top = (height - blockHeight) / 2;
-  const defaultBlock = {
+  defaultBlock = {
     ...action,
     left,
     top,
     width: blockWidth,
     height: blockHeight
   };
-  const object = ProjectUtils.getEmptyObject(defaultBlock);
+
+  if (headerSelector) {
+    defaultBlock = {
+      ...defaultBlock,
+      top: 0,
+      height: projectHeaderConfigSelector(state).height
+    };
+  } else if (footerSelector) {
+    defaultBlock = {
+      ...defaultBlock,
+      top: 0,
+      height: projectFooterConfigSelector(state).height
+    };
+  }
+  return addCreatedObject(
+    state,
+    action,
+    ProjectUtils.getEmptyObject(defaultBlock)
+  );
+};
+
+const addCreatedObject = (state, action, object) => {
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
+    return addObjectToHeaderFooter(state, action, "header", object);
+  } else if (footerSelector) {
+    return addObjectToHeaderFooter(state, action, "footer", object);
+  }
+  const pageId = state.activePage;
   return {
     ...state,
     pages: {

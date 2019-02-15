@@ -27,7 +27,7 @@ const image = {
       items: [
         SimpleIconQuality,
         ImageMenuChangeBackground,
-        ImageMenuChangeShape,
+        //ImageMenuChangeShape,
         ImageMenuPoptext
       ]
     },

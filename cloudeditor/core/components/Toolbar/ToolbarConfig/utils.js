@@ -91,15 +91,11 @@ const LoadImageSettings = (
             { value: "sendtoback", disabled: true }
           ];
         }
-      }
-      if (item.type === Types.SLIDER_INLINE_IMAGE) {
+      } else if (item.type === Types.SLIDER_INLINE_IMAGE) {
         item.defaultValue = parseInt(activeItem.leftSlider);
-      }
-      if (item.type === Types.SIMPLE_ICON_QUALITY) {
+      } else if (item.type === Types.SIMPLE_ICON_QUALITY) {
         item.threshold = imageQuality(activeItem, options);
-      }
-
-      if (background) {
+      } else if (background) {
         if (item.type === Types.COLOR_SELECTOR_BACKGROUND) {
           //item.color = activeItem.fill;
           item.color = activeItem.bgColor
@@ -122,7 +118,7 @@ const LoadImageAdditionalInfo = (activeItem, background = false) => {
       filter: activeItem.filter,
       flip: activeItem.flip
     },
-    [Types.SLIDER_OPACITY_WND]: { defaultValue: activeItem.imge_src }
+    [Types.SLIDER_OPACITY_WND]: { defaultValue: 100 * activeItem.opacity }
   };
 
   if (background) {
@@ -195,10 +191,12 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
         }
       } else if (item.type === Types.REFRESH_TABLE) {
         item.refreshLoading = activeItem.refreshLoading;
-        item.visible =
-          activeItem.fupaData === undefined || activeItem.fupaData === null
-            ? false
-            : true;
+        if (activeItem.fupaData) {
+          item.visible = true;
+          item.lastRefreshTime = activeItem.fupaData.queryData.queryTime;
+        } else {
+          item.visible = false;
+        }
       }
     }
   }
@@ -384,9 +382,6 @@ const CreatePayload = (activeitem, itemPayload) => {
     case Types.POPTEXT_FONT:
       attrs = { fontFamily: itemPayload.value };
       break;
-    case Types.brightness:
-      attrs = { fontFamily: itemPayload.value };
-      break;
 
     case Types.POPTEXT_LAYER:
       attrs = { action: itemPayload.value };
@@ -426,6 +421,10 @@ const CreatePayload = (activeitem, itemPayload) => {
 
     case Types.BUTTON_DUPLICATE:
       return { id: activeitem.id, props: attrs, action: "duplicate" };
+
+    case Types.SLIDER_OPACITY_WND:
+      attrs = { opacity: itemPayload.value / 100 };
+      break;
 
     default:
       break;

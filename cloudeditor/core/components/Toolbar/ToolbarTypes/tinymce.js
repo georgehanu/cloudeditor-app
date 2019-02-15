@@ -55,11 +55,11 @@ const tinymce = {
       position: 3,
       items: [LeftAligned, CenterAligned, RightAligned, JustifyAligned]
     },
-    {
+    /*{
       location: Types.Position.BOTTOM,
       position: 4,
       items: [RefreshTable]
-    },
+    },*/
     {
       /* used to fill subElements */
       location: Types.Position.HIDDEN,

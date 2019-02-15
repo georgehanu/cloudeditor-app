@@ -59,7 +59,10 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       const fupaData = {
         type: TableName,
-        queryData
+        queryData: {
+          ...queryData,
+          queryTime: new Date().getTime()
+        }
       };
 
       const formattedTable = renderToString(
@@ -68,6 +71,7 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
           tableName={fupaData.type}
           fupaData={fupaData}
           tableStyle="small"
+          t={props.t}
         />
       );
 
