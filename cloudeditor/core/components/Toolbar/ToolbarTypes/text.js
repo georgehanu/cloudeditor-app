@@ -12,7 +12,7 @@ const {
   CenterAligned,
   JustifyAligned,
   VAlignPoptext,
-  TextSpaceingSlider
+  PoptextLineHeight
 } = require("./toolbarItems");
 const Types = require("../ToolbarConfig/types");
 
@@ -56,12 +56,7 @@ const text = {
     {
       location: Types.Position.BOTTOM,
       position: 4,
-      items: [VAlignPoptext]
-    },
-    {
-      location: Types.Position.BOTTOM,
-      position: 5,
-      items: [TextSpaceingSlider]
+      items: [VAlignPoptext, PoptextLineHeight]
     },
     {
       /* used to fill subElements */

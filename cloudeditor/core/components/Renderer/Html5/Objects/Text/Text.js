@@ -53,7 +53,8 @@ class TextBlock extends React.Component {
       textDecoration: this.props.underline ? "underline" : "none",
       fontWeight: this.props.bold ? "bold" : "normal",
       fontStyle: this.props.italic ? "italic" : "normal",
-      justifyContent: vAlign[this.props.vAlign]
+      justifyContent: vAlign[this.props.vAlign],
+      lineHeight: parseFloat(this.props.lineHeight) * 100 + "%"
     };
 
     let content = <div>{this.props.value}</div>;
@@ -107,7 +108,8 @@ TextBlock.defaultProps = {
   lineHeight: "normal",
   wordSpacing: "normal",
   letterSpacing: "normal",
-  fillColor: "#000"
+  fillColor: "#000",
+  lineHeight: "1"
 };
 
 module.exports = TextBlock;

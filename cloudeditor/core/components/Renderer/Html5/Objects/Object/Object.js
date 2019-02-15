@@ -57,6 +57,9 @@ class ObjectBlock extends React.Component {
       this.editable.setCaret();
     }
     if (this.$el) {
+      if (this.props.type === "image") {
+        return;
+      }
       const params = {
         blockContainer: this.$el.get(0),
         blockId: this.props.id,
@@ -130,7 +133,8 @@ class ObjectBlock extends React.Component {
       editableRef: this.getEditableReference,
       zoomScale: this.props.zoomScale,
       renderId: this.props.renderId,
-      contentEditable
+      contentEditable,
+      lineHeight: props.lineHeight
     };
     const block = <TextBlock {...textProps} />;
     return this.renderBaseBlock(props, block);
