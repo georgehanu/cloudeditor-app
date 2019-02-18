@@ -3,6 +3,8 @@ const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const CropperImage = require("../../CropperImage/CropperImage");
+const AvatarEditor = require("react-avatar-editor");
+
 const type = ["image"];
 require("./Image.css");
 const ImageTarget = {
@@ -39,7 +41,9 @@ collectDrop = (connect, monitor) => {
   };
 };
 class ImageBlock extends React.PureComponent {
-  state = {};
+  state = {
+    imagePosition: null
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +72,22 @@ class ImageBlock extends React.PureComponent {
     };
     let cropper = null;
     if (this.state.ready && !this.props.missingImage && this.props.image_src) {
+      const scale = 1 + this.props.leftSlider / 10; // needs to be adjusted
+      const style = this.props.active ? {} : { pointerEvents: "none" };
       cropper = (
+        <AvatarEditor
+          style={{ ...style }}
+          image={this.props.image_src}
+          width={this.props.width}
+          height={this.props.height}
+          position={this.state.imagePosition}
+          border={0}
+          scale={scale}
+          onPositionChange={imagePosition => this.setState({ imagePosition })}
+          disableBoundaryChecks={true}
+          //rotate={0}
+        />
+        /*
         <CropperImage
           targetWidth={this.props.width}
           targetHeight={this.props.height}
@@ -99,7 +118,7 @@ class ImageBlock extends React.PureComponent {
           backgroundblock={this.props.backgroundblock}
           onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
           opacity={this.props.opacity}
-        />
+        />*/
       );
     }
     return this.props.connectDropTarget(
