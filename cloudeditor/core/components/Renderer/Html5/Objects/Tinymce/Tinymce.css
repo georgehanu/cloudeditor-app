@@ -72,12 +72,12 @@
   box-shadow: none;
   border: none;
   height: 30px !important;
-  z-index: 500 !important;
+  z-index: 500000 !important;
 }
 
 body.sidebarContainerExpand
   .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
-  left: 505px !important;
+  left: 512px !important;
 }
 
 body.submenuHeaderFooter
@@ -97,7 +97,7 @@ body.submenuHeaderFooter
 
 .mce-tinymce.mce-tinymce-inline
   .mce-container.mce-panel.mce-floatpanel.mce-menu.mce-animate {
-  z-index: 500 !important;
+  z-index: 500000 !important;
 }
 
 .mce-tinymce.mce-tinymce-inline .mce-tableLabels {
