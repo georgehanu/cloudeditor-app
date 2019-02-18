@@ -3,7 +3,10 @@ const assign = require("object-assign");
 const Renderer = require("../components/Renderer/Html5");
 const { flatten } = require("ramda");
 const uuidv4 = require("uuid/v4");
-
+const { connect } = require("react-redux");
+const {
+  previewEnabeldSelector
+} = require("../../plugins/PrintPreview/store/selectors");
 require("./Html5Renderer/Html5Renderer.css");
 
 class Html5Renderer extends React.Component {
@@ -41,6 +44,9 @@ class Html5Renderer extends React.Component {
   }
 
   render() {
+    if (this.props.previewEnabled) {
+      return null;
+    }
     const blurSelectors = this.getBlurSelectors();
     return (
       <div className="renderContainer">
@@ -56,9 +62,20 @@ class Html5Renderer extends React.Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    previewEnabled: previewEnabeldSelector(state)
+  };
+};
+
+const Html5RendererPlugin = connect(
+  mapStateToProps,
+  null
+)(Html5Renderer);
+
 module.exports = {
-  Html5Renderer: assign(Html5Renderer, {
-    cfg: { facingPages: false }
+  Html5Renderer: assign(Html5RendererPlugin, {
+    cfg: { facingPages: true }
   }),
   reducers: {},
   epics: {}

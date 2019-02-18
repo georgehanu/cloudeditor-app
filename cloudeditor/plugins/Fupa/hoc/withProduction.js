@@ -8,26 +8,25 @@ const { getEmptyObject } = require("../../../core/utils/ProjectUtils");
 
 const { addTable } = require("../../../core/stores/actions/project");
 const { compose } = require("redux");
+const {
+  teamMatchesQuerySelector,
+  teamStandingsQuerySelector,
+  teamPlayersQuerySelector,
+  teamMatchesSelector,
+  teamStandingsSelector,
+  teamPlayersSelector
+} = require("..//store/selectors");
+const { renderToString } = require("react-dom/server");
+const ShowTable = require("../components/TeamSelection/ShowTable/ShowTable");
 
 const emptyTable = getEmptyObject({
   type: "tinymceTable",
   subType: "tinymceTable",
-  width: 100,
-  height: 100,
-  left: 50,
-  top: 50
+  width: null,
+  height: null,
+  left: 17,
+  top: 17
 });
-
-const tableStyle = {
-  width: "100%",
-  borderSpacing: "0",
-  color: "black"
-};
-
-const tbodyStyle = {
-  fontFamily: "Arial",
-  fontSize: "12px"
-};
 
 const withProductionHoc = (WrappedComponent, TableName) => props => {
   const WithProduction = class extends React.Component {
@@ -45,29 +44,58 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
       width = props.width ? props.width : tableDimensions.width;
 
+      let queryData = {};
+      let tableData = {};
+      if (TableName === "Standings") {
+        queryData = props.teamStandingsQuery;
+        tableData = props.teamStandings;
+      } else if (TableName === "Matches") {
+        queryData = props.teamMatchesQuery;
+        tableData = props.teamMatches;
+      } else if (TableName === "Players") {
+        queryData = props.teamPlayersQuery;
+        tableData = props.teamPlayers;
+      }
+
+      const fupaData = {
+        type: TableName,
+        queryData: {
+          ...queryData,
+          queryTime: new Date().getTime()
+        }
+      };
+
+      const formattedTable = renderToString(
+        <ShowTable
+          tableData={tableData}
+          tableName={fupaData.type}
+          fupaData={fupaData}
+          tableStyle="small"
+          t={props.t}
+        />
+      );
+
       props.addTable({
         ...emptyTable,
-        tableContent: tableContent,
+        tableContent: formattedTable,
         id: uuidv4(),
-        width: 100,
-        height: (tableDimensions.height * 100) / tableDimensions.width,
-        tableWidth: tableDimensions.width,
-        tableHeight: tableDimensions.height
+        width: null,
+        height: null,
+        tableWidth: null,
+        tableHeight: null,
+        fupaData
       });
     };
+
     render() {
       return (
         <div className="Container">
-          <InsertInProduction handleClick={this.handleClick} />
+          <InsertInProduction handleClick={this.handleClick} t={props.t} />
           <div className={TableName}>
             <div>
-              <ToggleTable TableName={TableName}>
+              <ToggleTable TableName={TableName} t={props.t}>
                 <div id={this.state.tabelId} className="ContainerTable">
-                  <table style={{ ...tableStyle }}>
-                    <tbody style={{ ...tbodyStyle }}>
-                      <WrappedComponent {...props} />
-                    </tbody>
-                  </table>
+                  <WrappedComponent {...props} />
                 </div>
               </ToggleTable>
             </div>
@@ -82,7 +110,12 @@ const withProductionHoc = (WrappedComponent, TableName) => props => {
 
 const mapStateToProps = state => {
   return {
-    activePage: state.project.activePage
+    teamMatchesQuery: teamMatchesQuerySelector(state),
+    teamStandingsQuery: teamStandingsQuerySelector(state),
+    teamPlayersQuery: teamPlayersQuerySelector(state),
+    teamMatches: teamMatchesSelector(state),
+    teamPlayers: teamPlayersSelector(state),
+    teamStandings: teamStandingsSelector(state)
   };
 };
 

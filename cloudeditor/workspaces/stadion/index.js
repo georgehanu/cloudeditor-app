@@ -1,7 +1,19 @@
 const { merge } = require("ramda");
-const { plugins, requires } = require("./plugins");
 let localConfig = require("./localConfig.json");
-const i18n = require("./i18n")(localConfig.translations);
+const ConfigUtils = require("../../core/utils/ConfigUtils");
+
 localConfig = merge(localConfig, projectConfigGlobal || {});
-require("../../main")(plugins, requires, localConfig, i18n);
+ConfigUtils.loadConfiguration(localConfig);
+
+const { plugins, requires } = require("./plugins");
+
+const translationsCfg = {
+  baseUrl: localConfig.baseUrl,
+  publicPath: localConfig.publicPath,
+  basePath: localConfig.translations.basePath
+};
+
+const i18n = require("../i18n")(translationsCfg);
+
+require("../../main")(plugins, requires, i18n);
 require("./theme");

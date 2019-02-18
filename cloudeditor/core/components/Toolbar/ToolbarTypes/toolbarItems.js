@@ -85,6 +85,23 @@ const SliderInlineImage = {
 const SimpleIconQuality = {
   type: Types.SIMPLE_ICON_QUALITY
 };
+const RefreshTable = {
+  type: Types.REFRESH_TABLE
+};
+const FupaSimpleImage = {
+  type: Types.FUPA_SIMPLE_IMAGE
+};
+const FupaText = {
+  type: Types.FUPA_TEXT
+};
+
+const FupaDownArrow = {
+  type: Types.FUPA_DOWN_ARROW
+};
+
+const PoptextLineHeight = {
+  type: Types.POPTEXT_LINE_HEIGHT
+};
 
 module.exports = {
   Bold,
@@ -108,5 +125,10 @@ module.exports = {
   ColorSelectorBackground,
   ImageShapeMenuPoptext,
   SliderInlineImage,
-  SimpleIconQuality
+  SimpleIconQuality,
+  RefreshTable,
+  FupaSimpleImage,
+  FupaText,
+  FupaDownArrow,
+  PoptextLineHeight
 };

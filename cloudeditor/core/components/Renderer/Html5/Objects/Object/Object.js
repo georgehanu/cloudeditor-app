@@ -26,7 +26,10 @@ const {
 } = require("../../../../../stores/selectors/Html5Renderer");
 
 const { objectsSelector } = require("../../../../../stores/selectors/project");
-const { permissionsSelector } = require("../../../../../stores/selectors/ui");
+const {
+  permissionsSelector,
+  uiFontsTinymceSelector
+} = require("../../../../../stores/selectors/ui");
 require("./Object.css");
 
 const TextBlock = require("../Text/Text");
@@ -54,23 +57,21 @@ class ObjectBlock extends React.Component {
       this.editable.setCaret();
     }
     if (this.$el) {
+      if (this.props.type === "image") {
+        return;
+      }
       const params = {
         blockContainer: this.$el.get(0),
-        blockId: this.props.id
+        blockId: this.props.id,
+        dragging: this.props.dragging
       };
-      this.props.checkErrorMessages(params);
+      if (!this.props.backgroundblock) {
+        this.props.checkErrorMessages(params);
+      }
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
     const list = [];
-    if (nextProps.viewOnly) {
-      console.log(
-        "text ",
-        nextProps.uuid,
-        nextProps.deleteMissingImages,
-        nextProps.viewOnly
-      );
-    }
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
     if (equals(nProps, cProps)) {
@@ -132,7 +133,8 @@ class ObjectBlock extends React.Component {
       editableRef: this.getEditableReference,
       zoomScale: this.props.zoomScale,
       renderId: this.props.renderId,
-      contentEditable
+      contentEditable,
+      lineHeight: props.lineHeight
     };
     const block = <TextBlock {...textProps} />;
     return this.renderBaseBlock(props, block);
@@ -169,7 +171,11 @@ class ObjectBlock extends React.Component {
       deleteMissingImages: this.props.deleteMissingImages,
       setMissingImages: this.props.setMissingImages,
       missingImage: this.props.missingImage,
-      contrast: this.props.contrast
+      bgColor: props.bgColor,
+      subType: props.subType,
+      backgroundblock: props.backgroundblock,
+      contrast: this.props.contrast,
+      opacity: this.props.opacity
     };
 
     const block = <ImageBlock {...imageProps} />;
@@ -185,7 +191,9 @@ class ObjectBlock extends React.Component {
       active: props.active,
       width: props.width,
       height: props.height,
-      image_src: props.image_src
+      image_src: props.image_src,
+      onUpdateProps: props.onUpdatePropsHandler,
+      onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler
     };
 
     const block = <GraphicBlock {...graphicProps} />;
@@ -194,6 +202,19 @@ class ObjectBlock extends React.Component {
 
   renderTable = () => {
     const props = { ...this.props };
+
+    const tableProps = {
+      fontFamily: props.fontFamily,
+      fontSize: props.fontSize,
+      textAlign: props.textAlign,
+      underline: props.underline,
+      bold: props.bold,
+      italic: props.italic,
+      fillColor: props.fillColor.htmlRGB,
+      bgColor: props.bgColor.htmlRGB,
+      borderColor: props.borderColor.htmlRGB,
+      toolbarUpdate: props.toolbarUpdate
+    };
     const block = (
       <Tinymce
         key={this.props.id}
@@ -209,6 +230,8 @@ class ObjectBlock extends React.Component {
         zoomScale={this.props.zoomScale}
         viewOnly={this.props.viewOnly}
         active={this.props.active}
+        uiFonts={this.props.uiFonts}
+        {...tableProps}
       />
     );
 
@@ -233,7 +256,8 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       mirrored,
-      parent
+      parent,
+      backgroundblock
     } = props;
 
     const classes = [
@@ -241,7 +265,10 @@ class ObjectBlock extends React.Component {
       type,
       subType,
       active && !viewOnly ? "active" : "",
-      editable ? "editable" : ""
+      backgroundblock && !viewOnly ? "backgroundblock" : "",
+      backgroundblock && viewOnly ? "backgroundblockPagination" : "",
+      editable ? "editable" : "",
+      !viewOnly ? "block_" + props.id : ""
     ].join(" ");
 
     const style = {
@@ -257,19 +284,19 @@ class ObjectBlock extends React.Component {
     if (mirrored) {
       style["left"] = parent.width - style["left"] - width;
     }
-    // const styleBorderColor = {
-    //   width: width + parseFloat(borderWidth),
-    //   height: height + parseFloat(borderWidth),
-    //   borderColor:
-    //     subType !== "tinymceTable" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-    //   borderWidth: subType !== "tinymceTable" ? parseFloat(borderWidth) : "",
-    //   top: (-1 * parseFloat(borderWidth)) / 2,
-    //   left: (-1 * parseFloat(borderWidth)) / 2
-    // };
+    const styleBorderColor = {
+      width: width + parseFloat(borderWidth),
+      height: height + parseFloat(borderWidth),
+      borderColor:
+        subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
+      top: (-1 * parseFloat(borderWidth)) / 2,
+      left: (-1 * parseFloat(borderWidth)) / 2
+    };
     let styleNorth = {};
 
     if (subType === "tinymceTable") {
-      styleNorth = { width: width + 16, height: height + 16 };
+      styleNorth = { width, height };
     }
 
     let rotatableHandle = null;
@@ -279,7 +306,7 @@ class ObjectBlock extends React.Component {
       );
     }
     let deleteHandle = null;
-    if (this.props.deletable && !viewOnly) {
+    if (this.props.deletable && !viewOnly && !this.props.backgroundblock) {
       deleteHandle = (
         <div
           onClick={event => {
@@ -289,6 +316,7 @@ class ObjectBlock extends React.Component {
             this.props.onDeleteObjectHandler({
               id: this.props.id
             });
+            // this.props.deleteMissingImages(this.props.id);
           }}
           className={"deleteBlockHandler"}
         >
@@ -308,7 +336,7 @@ class ObjectBlock extends React.Component {
         <div style={styleNorth} className={"blockOrientation north "}>
           {block}
         </div>
-        {/* <div className={"blockBorder"} style={styleBorderColor} /> */}
+        {<div className={"blockBorder"} style={styleBorderColor} />}
         <u style={{ width, height }} />
 
         {rotatableHandle}
@@ -406,21 +434,37 @@ class ObjectBlock extends React.Component {
         viewOnly: childViewOnly
       });
     });
+
+    const activeHeader = props.modeHeader === "edit" && type === "header";
+    const activeFooter = props.modeFooter === "edit" && type === "footer";
+    const overlayStyle = {
+      width: props.width,
+      top: type === "header" ? props.height : 0,
+      position: "absolute",
+      paddingBottom: props.height,
+      display: "block"
+    };
     return (
-      <div className={classes} style={style}>
-        {innerBlocks}
-        <div className="helperName">{this.props.t(typeText)}</div>
-      </div>
+      <React.Fragment>
+        <div className={classes} style={style}>
+          {innerBlocks}
+          <div className="helperName">{this.props.t(typeText)}</div>
+        </div>
+        {this.props.viewOnly === 0 && (activeHeader || activeFooter) && (
+          <div className="headerFooterOverlay" style={overlayStyle}>
+            <div
+              className="headerFooterOverlayInner"
+              id="headerFooterOverlayId"
+            />
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 
   render() {
     let element = null;
 
-    //console.log("renderElement", this.props.id);
-    if (this.props.viewOnly) {
-      console.log("apo", this.props.deleteMissingImages);
-    }
     switch (this.props.subType) {
       case "textflow":
       case "text":
@@ -497,7 +541,8 @@ const mapStateToProps = (state, props) => {
   return {
     ...scaledObject,
     active: getActivePropSelector(state, props),
-    permissions: permissionsSelector(state, props)
+    permissions: permissionsSelector(state, props),
+    uiFonts: uiFontsTinymceSelector(state)
   };
 };
 

@@ -8,6 +8,12 @@ const isEqual = require("react-fast-compare");
 const uuidv4 = require("uuid/v4");
 const withTooltip = require("../../../../../core/hoc/withTooltip/withTooltip");
 const PAGES = "PAGES";
+const {
+  previewEnabeldSelector
+} = require("../../../../../plugins/PrintPreview/store/selectors");
+const {
+  previewLoadPage
+} = require("../../../../../plugins/PrintPreview/store/actions");
 
 const withPageGroups = require("../../../../../core/hoc/renderer/withPageGroups");
 
@@ -35,6 +41,10 @@ const { indexOf, without } = require("ramda");
 const PageSource = {
   beginDrag(props) {
     props.highlightHoverPage(null);
+    if (props.activePage.selectable) {
+      const { page_id } = props;
+      props.onChangePage({ page_id });
+    }
     return {
       type: PAGES,
       page_id: props.page_id,
@@ -42,7 +52,10 @@ const PageSource = {
     };
   },
   canDrag(props, monitor) {
-    if (!props.activePage.lockPosition === false) {
+    if (
+      !props.activePage.lockPosition === false ||
+      props.previewEnabeld === true
+    ) {
       return false;
     }
     return true;
@@ -87,14 +100,14 @@ collectDrop = (connect, monitor) => {
   };
 };
 setMissingImages = id => {
-  const missingImages = this.state.missingImages;
+  let missingImages = [...this.state.missingImages];
   if (indexOf(id, missingImages) == -1) {
     missingImages.push(id);
     this.setState({ missingImages });
   }
 };
 deleteMissingImages = id => {
-  const missingImages = this.state.missingImages;
+  let missingImages = [...this.state.missingImages];
   if (indexOf(id, missingImages) != -1) {
     missingImages = without(id, missingImages);
     this.setState({ missingImages });
@@ -157,9 +170,12 @@ class PageContainer extends React.Component {
     this.setState({ isVisible: isVisible(this.pageContainerRef) });
   }
   clickHandler = () => {
+    const { page_id } = this.props;
     if (this.props.activePage.selectable) {
-      const { page_id } = this.props;
       this.props.onChangePage({ page_id });
+    }
+    if (this.props.previewEnabeld) {
+      this.props.previewLoadPage({ page_id });
     }
   };
   onDeletePageHandler = event => {
@@ -170,21 +186,20 @@ class PageContainer extends React.Component {
     }
   };
   setMissingImages = id => {
-    const missingImages = [...this.state.missingImages];
+    let missingImages = [...this.state.missingImages];
     if (indexOf(id, missingImages) == -1) {
       missingImages.push(id);
       this.setState({ missingImages });
     }
   };
   deleteMissingImages = id => {
-    const missingImages = [...this.state.missingImages];
+    let missingImages = [...this.state.missingImages];
     if (indexOf(id, missingImages) != -1) {
       missingImages = without(id, missingImages);
       this.setState({ missingImages });
     }
   };
   render() {
-    //console.log("renderlive renderPageContainer");
     const { classes } = this.props;
     const { pageReady, containerWidth, containerHeight } = this.state;
     let { zoomScale } = this.state;
@@ -321,7 +336,8 @@ const makeMapStateToProps = (state, props) => {
         title: "Missing Image",
         description: "Some Images are missing "
       },
-      id: props.page_id
+      id: props.page_id,
+      previewEnabeld: previewEnabeldSelector(state)
     };
   };
   return mapStateToProps;
@@ -329,7 +345,8 @@ const makeMapStateToProps = (state, props) => {
 const mapDispatchToProps = dispatch => {
   return {
     onChangePage: payload => dispatch(changePage(payload)),
-    onDeletePage: payload => dispatch(deletePage(payload))
+    onDeletePage: payload => dispatch(deletePage(payload)),
+    previewLoadPage: pageNo => dispatch(previewLoadPage(pageNo))
   };
 };
 module.exports = hot(module)(

@@ -1,5 +1,4 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 require("./TableHeader.css");
 
 const TableHeader = props => {
@@ -27,4 +26,4 @@ const TableHeader = props => {
 
 */
 
-module.exports = withNamespaces("fupa")(TableHeader);
+module.exports = TableHeader;

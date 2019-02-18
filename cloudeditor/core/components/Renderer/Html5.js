@@ -10,6 +10,11 @@ const { computeZoomScale } = require("../../utils/UtilUtils");
 
 const { changeWorkareaProps } = require("../../stores/actions/ui");
 const { removeSelection, changePage } = require("../../stores/actions/project");
+const GlobalLoading = require("./Html5/GlobalLoading/GlobalLoading");
+const {
+  getLoadingStatusSelector,
+  getEnabledStatusSelector
+} = require("../../stores/selectors/globalLoading");
 const {
   displayedPageSelector,
   groupsSelector,
@@ -25,6 +30,7 @@ const {
 const {
   canvasSelector,
   zoomSelector,
+  permissionsSelector,
   rerenderIdSelector
 } = require("../../stores/selectors/ui");
 
@@ -92,16 +98,22 @@ class Html5 extends React.Component {
     }
   };
   updateContainerDimensions = () => {
-    if (this.containerRef) {
+    let containerRef = this.containerRef;
+    if (!containerRef) {
+      containerRef = document.querySelectorAll(
+        ".renderContainer .zoomContainer"
+      )[0];
+    }
+    if (containerRef) {
       const parent = {
-        width: this.containerRef.offsetWidth,
-        height: this.containerRef.offsetHeight
+        width: containerRef.offsetWidth,
+        height: containerRef.offsetHeight
       };
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
       };
-      const boundingContainer = this.containerRef.getBoundingClientRect();
+      const boundingContainer = containerRef.getBoundingClientRect();
       this.setState({
         zoomScale: computeZoomScale(this.props.zoom, parent, child),
         bottomContainer: boundingContainer.bottom,
@@ -128,6 +140,9 @@ class Html5 extends React.Component {
     if (prevProps.rerenderId !== this.props.rerenderId) {
       this.updateContainerDimensions();
     }
+    if (prevProps.activePageId !== this.props.activePageId) {
+      this.updateContainerDimensions();
+    }
   }
   setMissingImages = () => {};
   deleteMissingImages = () => {};
@@ -138,30 +153,48 @@ class Html5 extends React.Component {
     window.addEventListener("resize", this.updateContainerDimensions);
     window.addEventListener("resizePage", this.updateContainerDimensions);
     document.addEventListener("mousedown", this.blurAction);
+    window.addEventListener("beforeunload", event => {
+      const { alertOnExit } = this.props.permissions;
+      if (alertOnExit) {
+        event.preventDefault();
+        return (event.returnValue = "Are you sure you want to close");
+      }
+    });
   }
 
   render() {
     const { pageReady } = this.state;
+    let globalSpinner = null;
+    if (this.props.globalSpinnerEnabled) {
+      globalSpinner = (
+        <div className={"globalSpinner"}>
+          <GlobalLoading />
+        </div>
+      );
+    }
     return (
-      <Canvas
-        containerUuid={this.props.uuid}
-        getCanvasRef={this.getCanvasReference}
-        getContainerRef={this.getContainerReference}
-        activePage={this.props.activePage}
-        zoomScale={this.state.zoomScale}
-        zoom={this.props.zoom}
-        containerWidth={this.props.canvasDimm.workingWidth}
-        containerHeight={this.props.canvasDimm.workingHeight}
-        bottomContainer={this.state.bottomContainer}
-        pageReady={pageReady}
-        labels={this.props.labels}
-        activePageId={this.props.activePageId}
-        rerenderId={this.props.rerenderId}
-        viewOnly={0}
-        onChangePage={this.props.onChangePageHandler}
-        deleteMissingImages={this.deleteMissingImages}
-        setMissingImages={this.setMissingImages}
-      />
+      <React.Fragment>
+        {globalSpinner}
+        <Canvas
+          containerUuid={this.props.uuid}
+          getCanvasRef={this.getCanvasReference}
+          getContainerRef={this.getContainerReference}
+          activePage={this.props.activePage}
+          zoomScale={this.state.zoomScale}
+          zoom={this.props.zoom}
+          containerWidth={this.props.canvasDimm.workingWidth}
+          containerHeight={this.props.canvasDimm.workingHeight}
+          bottomContainer={this.state.bottomContainer}
+          pageReady={pageReady}
+          labels={this.props.labels}
+          activePageId={this.props.activePageId}
+          rerenderId={this.props.rerenderId}
+          viewOnly={0}
+          onChangePage={this.props.onChangePageHandler}
+          deleteMissingImages={this.deleteMissingImages}
+          setMissingImages={this.setMissingImages}
+        />
+      </React.Fragment>
     );
   }
 }
@@ -205,7 +238,9 @@ const makeMapStateToProps = (state, props) => {
       zoom: zoomSelector(state),
       selectedLength: getSelectedObjectsLengthSelector(state),
       rerenderId: rerenderIdSelector(state),
-      activePageId: activePageIdSelector(state, props)
+      activePageId: activePageIdSelector(state, props),
+      permissions: permissionsSelector(state, props),
+      globalSpinnerEnabled: getLoadingStatusSelector(state)
     };
   };
   return mapStateToProps;

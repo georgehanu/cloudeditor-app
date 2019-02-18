@@ -8,10 +8,14 @@ const { createSelector } = require("reselect");
 const {
   activePageIdSelector,
   pageColumnsNoSelector,
-  allowLayoutColumnsSelector
+  allowLayoutColumnsSelector,
+  allowMagneticSelector
 } = require("../../core/stores/selectors/project");
 
-const { updatePageProps } = require("../../core/stores/actions/project");
+const {
+  updatePageProps,
+  changeMagnetic
+} = require("../../core/stores/actions/project");
 
 require("./HelperLines.css");
 const SubmenuPoptext = require("../MenuItemHeaderFooter/components/SubmenuPoptext");
@@ -20,8 +24,8 @@ class HelperLines extends React.PureComponent {
   state = {
     submenuOpened: false,
     poptextPages: {
-      items: ["2 Columns", "3 Columns", "4 Columns", "None"],
-      mapItems: [2, 3, 4, 0],
+      items: ["1 Column", "2 Columns", "3 Columns", "4 Columns", "None"],
+      mapItems: [1, 2, 3, 4, 0],
       open: false
     }
   };
@@ -30,25 +34,25 @@ class HelperLines extends React.PureComponent {
     const { columnsNo } = nextProps;
 
     let active = "None";
-    if (columnsNo > 1 && columnsNo <= 4) {
-      active = columnsNo + " Columns";
+    if (columnsNo > 0 && columnsNo <= 4) {
+      active = state.poptextPages.items[columnsNo - 1];
     }
     return { poptextPages: { ...state.poptextPages, active: active } };
   }
 
-  togglePoptextHandler = type => {
-    if (type === "pages") {
+  togglePoptextHandler = (type, hide = false) => {
+    if (type === "columns") {
       this.setState({
         poptextPages: {
           ...this.state.poptextPages,
-          open: !this.state.poptextPages.open
+          open: hide ? false : !this.state.poptextPages.open
         }
       });
     }
   };
 
   toggleSelectPoptext = (type, value) => {
-    if (type === "pages") {
+    if (type === "columns") {
       this.setState({
         poptextPages: {
           ...this.state.poptextPages,
@@ -68,12 +72,22 @@ class HelperLines extends React.PureComponent {
       this.props.updatePagePropsHandler(payload);
     }
   };
+  onChangeHandler = event => {
+    this.props.changeMagenticHandler({
+      allowMagnetic: event.target.checked
+    });
+  };
 
   render() {
     return (
       <div className="helperLinesContainer">
         <div className="magneticLines">
-          <input type="checkbox" className="magneticLinesCheckbox" />
+          <input
+            type="checkbox"
+            className="magneticLinesCheckbox"
+            checked={this.props.useMagentic}
+            onChange={this.onChangeHandler}
+          />
           <span className="magneticLinesDescription">
             {this.props.t("Magnetic helper lines")}
           </span>
@@ -84,9 +98,10 @@ class HelperLines extends React.PureComponent {
             activeItem={this.state.poptextPages.active}
             togglePoptext={this.togglePoptextHandler}
             toggleSelectPoptext={this.toggleSelectPoptext}
-            poptextName="pages"
+            poptextName="columns"
             items={this.state.poptextPages.items}
             open={this.state.poptextPages.open}
+            t={this.props.t}
           />
         </div>
       </div>
@@ -98,13 +113,15 @@ const mapStateToProps = state => {
   return {
     pageId: activePageIdSelector(state),
     columnsNo: pageColumnsNoSelector(state),
-    allowColumns: allowLayoutColumnsSelector(state)
+    allowColumns: allowLayoutColumnsSelector(state),
+    useMagentic: allowMagneticSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updatePagePropsHandler: payload => dispatch(updatePageProps(payload))
+    updatePagePropsHandler: payload => dispatch(updatePageProps(payload)),
+    changeMagenticHandler: payload => dispatch(changeMagnetic(payload))
   };
 };
 

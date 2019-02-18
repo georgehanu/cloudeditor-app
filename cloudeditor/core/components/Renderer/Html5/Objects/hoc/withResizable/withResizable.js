@@ -58,7 +58,6 @@ const withResizable = WrappedComponent => {
     };
     onResizeHandler = (event, ui) => {
       var text = $(event.target).find(".text");
-      var text = $(event.target).find(".text");
       if (text.length) {
         if (text.width() > $(event.target).width()) {
           ui.size.width = text.width();

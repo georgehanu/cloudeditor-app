@@ -25,7 +25,6 @@ class Tinymce extends React.Component {
       message.source.tinyMceIframe
     ) {
       const table = pathOr(null, ["data", "table"], message);
-      console.log("onReceiveMessage", message);
       if (table) {
         // if (table.width === -1 || table.height === -1)
         //   if (

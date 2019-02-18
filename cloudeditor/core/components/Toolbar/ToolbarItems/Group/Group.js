@@ -5,12 +5,14 @@ const Types = require("../../ToolbarConfig/types");
 const Config = require("../../ToolbarConfig/config");
 
 const Button = require("../Button/Button");
+const RefreshTableButton = require("../RefreshTableButton/RefreshTableButton");
 const Poptext = require("../Poptext/Poptext");
 const Slider = require("../Slider/Slider");
 const Incremental = require("../Incremental/Incremental");
 const ColorSelector = require("../ColorSelector/ColorSelector");
 const InlineSlider = require("../InlineSlider/InlineSlider");
 const SimpleIcon = require("../SimpleIcon/SimpleIcon");
+const SimpleText = require("../SimpleText/SimpleText");
 
 const Group = props => {
   const className = Utils.MergeClassName("GroupArea", props.className);
@@ -42,6 +44,31 @@ const Group = props => {
         >
           <span className={item.className} />
         </Button>
+      );
+    } else if (item.baseType === Types.REFRESH_TABLE) {
+      return (
+        <RefreshTableButton
+          key={idx}
+          className={item.parentClassName}
+          tooltip={item.tooltip}
+          loading={item.refreshLoading}
+          lastRefreshTime={item.lastRefreshTime}
+          visible={item.visible}
+          clicked={() =>
+            item.settingsHandler === undefined
+              ? props.ToolbarHandler({
+                  mainHandler: true,
+                  payloadMainHandler: { type: item.type }
+                })
+              : props.ToolbarHandler({
+                  mainHandler: true,
+                  detailsWndComponent: item.settingsHandler,
+                  payloadDetailsComponent: item.settingsPayload
+                })
+          }
+        >
+          <span className={item.className} />
+        </RefreshTableButton>
       );
     } else if (
       item.baseType === Types.POPTEXT_VALUE ||
@@ -80,6 +107,8 @@ const Group = props => {
       );
     else if (item.baseType === Types.SIMPLE_ICON)
       return <SimpleIcon {...item} key={idx} />;
+    else if (item.baseType === Types.SIMPLE_TEXT)
+      return <SimpleText {...item} key={idx} />;
     return null;
   });
 

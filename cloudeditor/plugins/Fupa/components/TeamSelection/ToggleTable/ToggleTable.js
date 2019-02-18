@@ -3,7 +3,7 @@ const TableHeader = require("../TableHeader/TableHeader");
 const { withState, withHandlers, compose } = require("recompose");
 
 const enhance = compose(
-  withState("expanded", "setExpanded", true),
+  withState("expanded", "setExpanded", false),
   withHandlers({
     handleClick: props => event => {
       props.setExpanded(!props.expanded);
@@ -12,14 +12,18 @@ const enhance = compose(
 );
 
 const ToggleTable = props => {
+  const className =
+    "tableContainerExternal " +
+    (props.expanded === false ? "tableContainerExternalHidden" : "");
   return (
     <React.Fragment>
       <TableHeader
         text={props.TableName}
         expanded={props.expanded}
         handleClick={props.handleClick}
+        t={props.t}
       />
-      {props.expanded && props.children}
+      <div className={className}>{props.children}</div>
     </React.Fragment>
   );
 };

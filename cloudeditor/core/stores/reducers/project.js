@@ -9,6 +9,7 @@ const {
   head,
   last,
   omit,
+  pick,
   forEachObjIndexed
 } = require("ramda");
 const {
@@ -57,31 +58,54 @@ const {
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
-  PROJ_LOAD_LAYOUT
+  PROJ_LOAD_LAYOUT,
+  CHANGE_BACKGROUND,
+  CHANGE_MAGNETIC,
+  REFRESH_TABLE_START,
+  REFRESH_TABLE_FAILED,
+  CHANGE_HEADER_FOOTER_LAYOUT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
+const {
+  projectHeaderEnabledSelector,
+  projectFooterEnabledSelector,
+  projectHeaderConfigSelector,
+  projectFooterConfigSelector
+} = require("../selectors/project");
 const uuidv4 = require("uuid/v4");
 
 const addPages = (state, action) => {
   const { activePage, pages, pagesOrder } = state;
   let newPages = { ...pages };
   const { nrPagesToInsert, location } = action;
+  const newObjects = {};
   let newIds = [];
   let newOrder = clone(pagesOrder);
   const firstPage = newPages[head(pagesOrder)];
   const firstPageWidth = firstPage["width"];
   const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
+    const newObject = ProjectUtils.getEmptyObject({
+      type: "image",
+      backgroundblock: 1,
+      width: firstPageWidth,
+      height: firstPageHeight,
+      left: 0,
+      top: 0,
+      subType: "pdf"
+    });
     const emptyPage = ProjectUtils.getEmptyPage({
       width: firstPageWidth,
       height: firstPageHeight
     });
+    emptyPage.objectsIds = [newObject.id];
     const { id } = emptyPage;
     newPages[id] = emptyPage;
     newIds.push(id);
+    newObjects[newObject.id] = newObject;
   }
   let pageIndex = pagesOrder.findIndex(el => {
     return el === activePage;
@@ -107,6 +131,10 @@ const addPages = (state, action) => {
     pages: {
       ...state.pages,
       ...newPages
+    },
+    objects: {
+      ...state.objects,
+      ...newObjects
     },
     pagesOrder: newOrder
   };
@@ -149,40 +177,55 @@ const changePagesOrder = (state, action) => {
 };
 
 const addObject = (state, action) => {
-  const object = ProjectUtils.getEmptyObject(action);
-  const pageId = state.activePage;
+  return addCreatedObject(state, action, ProjectUtils.getEmptyObject(action));
+};
+
+const addObjectToHeaderFooter = (state, action, pageHF, object) => {
+  const headerA = pick([pageHF], state.objects);
+  if (!headerA) {
+    return state;
+  }
   return {
     ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
     objects: {
       ...state.objects,
+      [pageHF]: {
+        ...state.objects[pageHF],
+        objectsIds: append(object.id, state.objects[pageHF].objectsIds)
+      },
       [object.id]: object
     }
   };
 };
-const addTable = (state, action) => {
-  const object = ProjectUtils.getEmptyObject(action);
-  const pageId = state.activePage;
+
+deleteObjectFromHeaderFooter = (state, action, pageHF) => {
+  let newObjects = omit([action.payload.id], state.objects);
+  const newhfItem = {
+    ...state.objects[pageHF],
+    objectsIds: state.objects[pageHF].objectsIds.filter(el => {
+      return el !== action.payload.id;
+    })
+  };
   return {
     ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
     objects: {
-      ...state.objects,
-      [object.id]: object
-    }
+      ...newObjects,
+      [pageHF]: newhfItem
+    },
+    selectedObjectsIds: []
   };
+};
+
+const addTable = (state, action) => {
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
+    return addObjectMiddle(state, action);
+  } else if (footerSelector) {
+    return addObjectMiddle(state, action);
+  }
+
+  return addCreatedObject(state, action, ProjectUtils.getEmptyObject(action));
 };
 const changePage = (state, payload) => {
   return {
@@ -226,11 +269,42 @@ const addObjectIdActionSelected = (state, payload) => {
 };
 
 const updateObjectProps = (state, payload) => {
+  if (payload.props.image) {
+    /* update the image with given imageId */
+    return updateImageProps(state, payload);
+  }
   return {
     ...state,
     objects: {
       ...state.objects,
       [payload.id]: merge(state.objects[payload.id], payload.props)
+    }
+  };
+};
+
+const updateImageProps = (state, payload) => {
+  const imageProps = {
+    image_src: payload.props.image.image_src,
+    value: payload.props.image.image_src.substring(
+      payload.props.image.image_src.lastIndexOf("/") + 1
+    ),
+    image_path: payload.props.image.image_path,
+    cropX: 0,
+    cropY: 0,
+    cropW: 0,
+    cropH: 0,
+    imageWidth: payload.props.image.imageWidth,
+    imageHeight: payload.props.image.imageHeight,
+    ratioWidth: payload.props.image.ratioWidth,
+    ratioHeight: payload.props.image.ratioHeight,
+    image: payload.props.image,
+    subType: payload.props.image.subType
+  };
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      [payload.id]: merge(state.objects[payload.id], imageProps)
     }
   };
 };
@@ -267,11 +341,11 @@ const updateHeaderFooterConfigProps = (state, payload) => {
         ...state.configs.document,
         header: {
           ...state.configs.document.header,
-          [payload.prop]: payload.value
+          [payload.header.prop]: payload.header.value
         },
         footer: {
           ...state.configs.document.footer,
-          [payload.prop]: payload.value
+          [payload.footer.prop]: payload.footer.value
         }
       }
     }
@@ -321,6 +395,40 @@ const removeActionSelection = (state, payload) => {
     selectedActionObjectsIds: []
   };
 };
+const changeHeaderFooterLayout = (state, payload) => {
+  const layout = { ...payload.layout };
+  const objects = { ...state.objects };
+  const savedData = JSON.parse(layout.saved_data);
+  const type = layout.type;
+  let skipIds = [];
+  skipIds = ProjectUtils.getObjectHeaderFooterIds(
+    state.configs.document[layout.type].objectsIds,
+    state.objects,
+    []
+  );
+  let newObjects = {};
+  Object.keys(objects).map(function(key) {
+    if (skipIds.indexOf(key) === -1) {
+      newObjects[key] = objects[key];
+    }
+  });
+  newObjects = merge(newObjects, savedData.blocks);
+  return {
+    ...state,
+    objects: newObjects,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        [type]: {
+          ...state.configs.document[type],
+          height: parseInt(savedData[type]["height"]),
+          objectsIds: savedData[type]["objectsIds"]
+        }
+      }
+    }
+  };
+};
 
 const config = ConfigUtils.getDefaults();
 //const emptyProject = ProjectUtils.getRandomProject(config.project);
@@ -352,6 +460,9 @@ addObjectMiddle = (state, action) => {
   const pageId = state.activePage;
   const page = state.pages[pageId];
   const { width, height } = page;
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  let defaultBlock = {};
   let blockWidth = width / 6;
   let blockHeight = blockWidth * (height / width);
   if (width > height) {
@@ -360,14 +471,43 @@ addObjectMiddle = (state, action) => {
   }
   const left = (width - blockWidth) / 2;
   const top = (height - blockHeight) / 2;
-  const defaultBlock = {
+  defaultBlock = {
     ...action,
     left,
     top,
     width: blockWidth,
     height: blockHeight
   };
-  const object = ProjectUtils.getEmptyObject(defaultBlock);
+
+  if (headerSelector) {
+    defaultBlock = {
+      ...defaultBlock,
+      top: 0,
+      height: projectHeaderConfigSelector(state).height
+    };
+  } else if (footerSelector) {
+    defaultBlock = {
+      ...defaultBlock,
+      top: 0,
+      height: projectFooterConfigSelector(state).height
+    };
+  }
+  return addCreatedObject(
+    state,
+    action,
+    ProjectUtils.getEmptyObject(defaultBlock)
+  );
+};
+
+const addCreatedObject = (state, action, object) => {
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
+    return addObjectToHeaderFooter(state, action, "header", object);
+  } else if (footerSelector) {
+    return addObjectToHeaderFooter(state, action, "footer", object);
+  }
+  const pageId = state.activePage;
   return {
     ...state,
     pages: {
@@ -403,7 +543,8 @@ loadLayout = (state, payload) => {
   const savedData = JSON.parse(payload.saved_data);
   const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
     const id = uuidv4();
-    return { ...savedData.activePage.objects[key], id: id };
+    if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds"))
+      return { ...savedData.activePage.objects[key], id: id };
   });
   // store the new keys into objectsIds
   const addPageObj = {};
@@ -426,6 +567,30 @@ loadLayout = (state, payload) => {
     objects: {
       ...newObjects,
       ...addPageObj
+    }
+  };
+};
+changeBackground = (state, _) => {
+  const activePageId = state.activePage;
+  const objectsIds = state.pages[activePageId].objectsIds;
+  const backgroundObject = objectsIds.filter(el => {
+    return state.objects[el].backgroundblock;
+  });
+  let selectedObjectsIds = [];
+  if (backgroundObject.length) {
+    selectedObjectsIds.push(head(backgroundObject));
+  }
+  return { ...state, selectedObjectsIds };
+};
+changeMagnetic = (state, payload) => {
+  return {
+    ...state,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        includeMagnetic: payload.allowMagnetic
+      }
     }
   };
 };
@@ -489,6 +654,9 @@ module.exports = handleActions(
     [REMOVE_ACTION_SELECTION]: (state, action) => {
       return removeActionSelection(state, action.payload);
     },
+    [CHANGE_HEADER_FOOTER_LAYOUT]: (state, action) => {
+      return changeHeaderFooterLayout(state, action.payload);
+    },
     [UPDATE_SELECTION_OBJECTS_COORDS]: (state, action) => {
       let objectsChanges = reduce(
         (acc, value) => {
@@ -531,31 +699,50 @@ module.exports = handleActions(
       };
     },
     [UPDATE_LAYER_PROP]: (state, action) => {
+      const headerSelector = projectHeaderEnabledSelector(state);
+      const footerSelector = projectFooterEnabledSelector(state);
       const objId = action.payload.id;
       const layerAction = action.payload.props.action;
+      let typeHF = null;
 
-      let newObjectsId = [...state.pages[state.activePage].objectsIds];
+      let orObjects = [];
+      if (headerSelector || footerSelector) {
+        typeHF = headerSelector ? "header" : "footer";
+        orObjects = state.objects[typeHF].objectsIds;
+      } else {
+        orObjects = state.pages[state.activePage].objectsIds;
+      }
+      let newObjectsId = [...orObjects];
+
       const objIndex = newObjectsId.findIndex(el => {
         return el === objId;
       });
 
       if (layerAction === "bringtofront") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          ...newObjectsId,
-          state.pages[state.activePage].objectsIds[objIndex]
-        ];
+        newObjectsId = [...newObjectsId, orObjects[objIndex]];
       } else if (layerAction === "bringforward") {
         newObjectsId = swap(objIndex, objIndex + 1, newObjectsId);
       } else if (layerAction === "sendbackward") {
         newObjectsId = swap(objIndex, objIndex - 1, newObjectsId);
       } else if (layerAction === "sendtoback") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          state.pages[state.activePage].objectsIds[objIndex],
-          ...newObjectsId
-        ];
+        newObjectsId = [orObjects[objIndex], ...newObjectsId];
       }
+
+      if (headerSelector || footerSelector) {
+        return {
+          ...state,
+          objects: {
+            ...state.objects,
+            [typeHF]: {
+              ...state.objects[typeHF],
+              objectsIds: newObjectsId
+            }
+          }
+        };
+      }
+
       return {
         ...state,
         pages: {
@@ -578,6 +765,14 @@ module.exports = handleActions(
       return addObject(state, duplicateObj);
     },
     [DELETE_OBJ]: (state, action) => {
+      const headerSelector = projectHeaderEnabledSelector(state);
+      const footerSelector = projectFooterEnabledSelector(state);
+      if (headerSelector) {
+        return deleteObjectFromHeaderFooter(state, action, "header");
+      } else if (footerSelector) {
+        return deleteObjectFromHeaderFooter(state, action, "footer");
+      }
+
       let newObjects = { ...state.objects };
       delete newObjects[action.payload.id];
 
@@ -715,6 +910,21 @@ module.exports = handleActions(
     },
     [PROJ_LOAD_LAYOUT]: (state, action) => {
       return loadLayout(state, action.payload);
+    },
+    [CHANGE_BACKGROUND]: (state, action) => {
+      return changeBackground(state, action.payload);
+    },
+    [CHANGE_MAGNETIC]: (state, action) => {
+      return changeMagnetic(state, action.payload);
+    },
+    [REFRESH_TABLE_FAILED]: (state, action) => {
+      return state;
+    },
+    [REFRESH_TABLE_START]: (state, action) => {
+      return updateObjectProps(state, {
+        id: action.payload.id,
+        props: { refreshLoading: true }
+      });
     }
   },
   initialState

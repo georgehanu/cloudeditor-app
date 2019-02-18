@@ -37,13 +37,9 @@ const getActiveBlockColors = createSelector(
   (selectId, objects) => {
     const object = objects[selectId];
     let colors = {};
-    colors[Types.COLOR_TAB_FG] = pathOr("", ["fillColor", "htmlRGB"], object);
-    colors[Types.COLOR_TAB_BG] = pathOr("", ["bgColor", "htmlRGB"], object);
-    colors[Types.COLOR_TAB_BORDER_COLOR] = pathOr(
-      "",
-      ["borderColor", "htmlRGB"],
-      object
-    );
+    colors[Types.COLOR_TAB_FG] = pathOr("", ["fillColor"], object);
+    colors[Types.COLOR_TAB_BG] = pathOr("", ["bgColor"], object);
+    colors[Types.COLOR_TAB_BORDER_COLOR] = pathOr("", ["borderColor"], object);
     return colors;
   }
 );
@@ -82,6 +78,17 @@ const uiFontsSelector = state => {
   return pathOr([], ["ui", "fonts"], state);
 };
 
+const uiFontsTinymceSelector = createSelector(
+  uiFontsSelector,
+  uiFonts => {
+    let fonts = "";
+    uiFonts.map(el => {
+      fonts += el + "=" + el + ";";
+    });
+    return fonts;
+  }
+);
+
 module.exports = {
   zoomSelector,
   scaleSelector,
@@ -92,5 +99,6 @@ module.exports = {
   rerenderIdSelector,
   lastUsedColorsSelector,
   permissionsSelector,
-  uiFontsSelector
+  uiFontsSelector,
+  uiFontsTinymceSelector
 };

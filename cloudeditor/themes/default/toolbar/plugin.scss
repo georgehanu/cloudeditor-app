@@ -545,6 +545,12 @@ button.ButtonSelected .icon {
 .PoptextValueText {
   float: left;
   line-height: 38px;
+  text-overflow: ellipsis;
+  height: 43px;
+  white-space: nowrap;
+  width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .SimpleIcon.icon {
@@ -851,7 +857,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .colorPickerContainer {
   width: 384px;
-  height: 200px;
+  height: 210px;
   background-color: white;
   display: block;
   top: 138px;
@@ -901,6 +907,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 .colorPickerRGBContainer,
 .colorPickerCMYKContainer {
   float: left;
+  height: 151px;
 }
 .colorPickerRGBContainer {
   margin-left: 30px;
@@ -915,7 +922,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   padding: 0px;
   outline: none;
   cursor: pointer;
-  margin-top: 0px;
+  margin-top: 6px;
 }
 
 .colorPickerOKContainer button {
@@ -954,4 +961,205 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 .whiteColorSquare {
   border: 1px solid #ccc;
+}
+
+.colorPickerButtonsContainer {
+  width: 96px;
+}
+
+.toolbarGalleryPreviewContainer {
+  width: 433px;
+  height: 346px;
+  background-color: white;
+  border: 1px solid #c7c7c7;
+  border-top: none;
+  position: absolute;
+}
+
+.backdropSpinnerContainerFromToolbar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.backdropSpinnerContainerFromToolbar .loader {
+  color: #737373;
+}
+
+.ToolbarContainer .uploadLabel {
+  background-color: #f9fafc;
+  border: 1px solid #dcdee1;
+  margin-top: 10px;
+}
+
+.toolbarGalleryPreviewContent {
+  height: 280px;
+  overflow: auto;
+}
+
+.ToolbarContainer .uploadGallery {
+  margin-right: 1px !important;
+}
+
+.ToolbarContainer .uploadGallery .uploadGalleryLi {
+  margin-left: 9px;
+}
+
+.ToolbarContainer .loader {
+  color: #737373;
+}
+
+.refreshTableButton .loader {
+  position: absolute;
+  padding: 0px;
+  margin: 0px;
+  font-size: 3px;
+  top: 6px;
+  right: 6px;
+}
+
+.refreshTableButton .loader .spinnerText {
+  display: none;
+}
+
+.fupaImageLogo {
+  background-image: url(../../stadion/assets/start_fupa_logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 45px;
+  width: 126px;
+}
+
+.fupaImageLogoGroup {
+  padding: 0;
+}
+
+.fupaText {
+  background-color: #505960;
+  width: 73px;
+  line-height: 21px;
+}
+
+.fupaTextGroup {
+  background-color: #505960;
+}
+
+.refreshTableButtonContainer {
+  background-color: #505960;
+  color: white;
+}
+
+.refreshTableTextContainer {
+  line-height: 21px;
+  height: 45px;
+  float: left;
+  border-left: 2px solid #272e34;
+  border-right: 2px solid #272e34;
+
+  /*padding-left: 10px;
+  padding-right: 10px;*/
+}
+.refreshTableText {
+  border-bottom: 2px solid #272e34;
+  text-align: center;
+}
+
+.refreshTableButton {
+  float: left;
+  width: 40px;
+}
+
+.refreshTableButton button {
+  background-color: #505960;
+  margin-left: 7px;
+}
+
+.refreshTableButton .icon {
+  color: white;
+}
+
+.refreshTableTextContainer span {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.refreshTableTextContainer span,
+.refreshTableDate span,
+.fupaText {
+  color: #a2a7ad;
+}
+
+.fupaText span,
+.refreshTableButtonContainer {
+  font-size: 12px;
+}
+
+.fupaRefreshTableGroup {
+  background-color: #505960;
+  padding-right: 0px;
+}
+
+.fupaDownArrowContainer {
+  background-color: transparent;
+  height: 11px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  left: 0;
+  pointer-events: none;
+  height: 20px;
+  top: 38px;
+
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.LineHeightPoptext {
+  width: 30px;
+}
+.LineHeightPoptext button {
+  width: 100%;
+  padding: 1px;
+  text-align: right;
+}
+
+.LineHeightPoptext .PoptextValueText {
+  width: 30px;
+}
+
+.LineHeightPoptext .FontPoptextList li {
+  height: 30px;
+  line-height: 25px;
+}
+.LineHeightPoptext .FontPoptextList {
+  top: -55px;
+}
+
+.LineHeightPoptext .DropDownArrow {
+  position: absolute;
+  margin-left: 2px;
+  margin-right: 0px;
+}
+
+.DropDownArrow {
+  position: absolute;
+}
+
+.EditMode span {
+  line-height: 28px;
+}
+
+.EditModeEnabled {
+  border: 1px solid black;
+}
+
+.EditModeEnabled span {
+  line-height: 26px;
 }

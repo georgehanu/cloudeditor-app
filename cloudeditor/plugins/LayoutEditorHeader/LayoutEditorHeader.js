@@ -2,19 +2,36 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
-
+const Storeviews = require("./components/StoreViews/StoreViews");
 const Duplicate = require("./components/Duplicate/Duplicate");
 const HeaderPoptext = require("./components/HeaderPoptext/HeaderPoptext");
 const UploadOneImage = require("./components/UploadOneImage/UploadOneImage");
 const Input = require("./components/Input/Input");
 const Loading = require("./components/Loading/Loading");
-const axios = require("axios");
 
 const SweetAlert = require("sweetalert-react").default;
 require("sweetalert/dist/sweetalert.css");
 
 require("./LayoutEditorHeader.css");
 
+const {
+  getCheckedDuplicateSelector,
+  getIsDefaultPoptextSelector,
+  getProjectPagePoptextSelector,
+  getProjectCategoryPoptextSelector,
+  getProjectStatusPoptextSelector,
+  projectTitleSelector,
+  projectDescriptionSelector,
+  projectOrderSelector,
+  projectIconSelector,
+  projectIconSrcSelector,
+  projectLoadingSelector,
+  projectShowAlertSelector,
+  projectMessageSelector,
+  projectIdSelector,
+  templateIdSelector,
+  getStoreViewPoptextSelector
+} = require("../../core/stores/selectors/layout_template");
 const {
   pagesOrderSelector,
   pagesSelector,
@@ -24,6 +41,11 @@ const {
   createDeepEqualSelector: createSelector
 } = require("../../core/rewrites/reselect/createSelector");
 const { changePage } = require("../../core/stores/actions/project");
+const {
+  updateLayoutTemplate,
+  saveLayoutTemplateStart,
+  saveIconTemplateStart
+} = require("../../core/stores/actions/layout_template");
 
 const pagesLabelSelector = createSelector(
   pagesOrderSelector,
@@ -43,15 +65,6 @@ const pagesLabelSelector = createSelector(
   }
 );
 
-const SAVE_LAYOUT_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/saveProject";
-
-const LOAD_TEMPLATES_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/getTemplateProjects";
-
-const STORE_ICON_URL =
-  "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/personalize/cloudeditorlayout/uploadProjectIcon";
-
 const poptext = (props, name, onPoptextChange, t) => {
   return (
     <HeaderPoptext
@@ -66,249 +79,124 @@ const poptext = (props, name, onPoptextChange, t) => {
 };
 
 class LayoutEditorHeader extends React.Component {
-  state = {
-    duplicateChecked: false,
-    isDefaultPoptext: {
-      options: [{ value: "1", label: "Yes" }, { value: "no", label: "No" }],
-      selectedOption: { value: "0", label: "Yes" },
-      title: "Project is Default"
-    },
-    projectPagePoptext: {
-      options: [],
-      selectedOption: { value: "", label: "" },
-      title: "Project Page"
-    },
-    projectCategoryPoptext: {
-      options: [],
-      selectedOption: { value: "", label: "" },
-      title: "Project Category"
-    },
-    projectStatusPoptext: {
-      options: [
-        { value: "1", label: "Active" },
-        { value: "0", label: "Inctive" }
-      ],
-      selectedOption: { value: "Active", label: "Active" },
-      title: "Project Status"
-    },
-    projectTitle: "",
-    projectDescription: "",
-    projectOrder: "",
-    showAlert: false,
-    saText: "",
-    projectIcon: null,
-    projectIconSrc: null,
-    loading: false
-  };
-
   onChange = event => {
-    if (event.target.name === "duplicate")
-      this.setState({ duplicateChecked: !this.state.duplicateChecked });
-    else if (event.target.name === "projectTitle")
-      this.setState({ projectTitle: event.target.value });
-    else if (event.target.name === "projectDescription")
-      this.setState({ projectDescription: event.target.value });
-    else if (event.target.name === "projectOrder")
-      this.setState({ projectOrder: event.target.value });
+    if (event.target.name === "duplicateChecked")
+      this.props.updateLayoutTemplateHandler({
+        [event.target.name]: !this.props.duplicateChecked
+      });
+    else
+      this.props.updateLayoutTemplateHandler({
+        [event.target.name]: event.target.value
+      });
   };
 
   onPoptextChange = (name, selectedOption) => {
     if (name === "isDefault") {
-      this.setState({
-        isDefaultPoptext: {
-          ...this.state.isDefaultPoptext,
-          selectedOption
-        }
+      this.props.updateLayoutTemplateHandler({
+        isDefaultPoptext: { selectedOption }
       });
     } else if (name === "projectPage") {
-      this.props.onChangePageHandler({ page_id: selectedOption.value.id });
-      this.setState({
-        projectPagePoptext: {
-          ...this.state.projectPagePoptext,
-          selectedOption
-        }
+      this.props.onChangePageHandler({ page_id: selectedOption.value });
+      this.props.updateLayoutTemplateHandler({
+        projectPagePoptext: { selectedOption }
       });
     } else if (name === "projectCategory") {
-      this.setState({
-        projectCategoryPoptext: {
-          ...this.state.projectCategoryPoptext,
-          selectedOption
-        }
+      this.props.updateLayoutTemplateHandler({
+        projectCategoryPoptext: { selectedOption }
       });
     } else if (name === "projectStatus") {
-      this.setState({
-        projectStatusPoptext: {
-          ...this.state.projectStatusPoptext,
-          selectedOption
-        }
+      this.props.updateLayoutTemplateHandler({
+        projectStatusPoptext: { selectedOption }
+      });
+    } else if (name === "storeViews") {
+      this.props.updateLayoutTemplateHandler({
+        projectStoreViewPopText: { selectedOption }
       });
     }
-  };
-
-  componentDidMount() {
-    this.loadTemplateProjects();
-
-    const options = this.props.pagesLabel.map((el, index) => {
-      return { value: { id: el.page_id, index }, label: el.longLabel };
-    });
-
-    this.setState({
-      projectPagePoptext: {
-        ...this.state.projectPagePoptext,
-        options,
-        selectedOption: {
-          value: options[0].value,
-          label: options[0].label
-        }
-      }
-    });
-  }
-
-  loadTemplateProjects = () => {
-    let serverData = new FormData();
-    axios
-      .post(LOAD_TEMPLATES_URL, serverData)
-      .then(resp => resp.data)
-      .then(data => {
-        if (data.success) {
-          const options = data.data.map((el, index) => {
-            return { value: el.id, label: el.name };
-          });
-          this.setState({
-            projectCategoryPoptext: {
-              ...this.state.projectCategoryPoptext,
-              options,
-              selectedOption: {
-                value: options[0].value,
-                label: options[0].label
-              }
-            }
-          });
-        } else {
-          console.log(data, "FAIL LOADING layouts");
-        }
-      })
-      .catch(error => {
-        console.log(error, "ERROR");
-      });
   };
 
   saveProjectHandler = () => {
-    if (this.state.projectTitle === "") {
-      this.setState({
+    if (this.props.projectTitle === "") {
+      this.props.updateLayoutTemplateHandler({
         showAlert: true,
-        saText: this.props.t("Title is required")
+        message: this.props.t("Title is required")
       });
       return;
-    } else if (this.state.projectDescription === "") {
-      this.setState({
+    } else if (this.props.projectDescription === "") {
+      this.props.updateLayoutTemplateHandler({
         showAlert: true,
-        saText: this.props.t("Description is required")
+        message: this.props.t("Description is required")
       });
       return;
-    } else if (this.state.projectOrder === "") {
-      this.setState({
+    } else if (this.props.projectOrder === "") {
+      this.props.updateLayoutTemplateHandler({
         showAlert: true,
-        saText: this.props.t("Order is required")
+        message: this.props.t("Order is required")
       });
       return;
     }
-    this.setState({ loading: true });
 
-    let serverData = new FormData();
-    serverData.append("id", "1");
-    serverData.append("title", this.state.projectTitle);
-    serverData.append("description", this.state.projectDescription);
-    serverData.append("category_id", "1");
-    serverData.append(
-      "page_no",
-      this.state.projectPagePoptext.selectedOption.value.index
-    );
-    serverData.append("pdf_file", "pdf");
-    serverData.append("icon", this.state.projectIcon);
-    serverData.append("sort_order", this.state.projectOrder);
-    serverData.append(
-      "is_default",
-      this.state.isDefaultPoptext.selectedOption.value
-    );
-    serverData.append(
-      "status",
-      this.state.projectStatusPoptext.selectedOption.value
-    );
-    serverData.append("template_id", "1");
-    serverData.append("duplicate", this.state.duplicateChecked ? "1" : "0");
-
-    serverData.append(
-      "saved_data",
-      JSON.stringify({
+    let serverData = {
+      id: this.props.projectId,
+      title: this.props.projectTitle,
+      page_id: this.props.projectPagePoptext.selectedOption.value,
+      description: this.props.projectDescription,
+      category_id: this.props.projectCategoryPoptext.selectedOption.value,
+      page_no:
+        this.props.pagesOrder.indexOf(
+          this.props.projectPagePoptext.selectedOption.value
+        ) + 1,
+      pdf_file: "pdf",
+      icon: this.props.projectIcon,
+      sort_order: this.props.projectOrder,
+      is_default: this.props.isDefaultPoptext.selectedOption.value,
+      status: this.props.projectStatusPoptext.selectedOption.value,
+      websites: this.props.storeViewPoptext.selectedOption,
+      template_id: this.props.templateId,
+      duplicate: this.props.duplicateChecked ? "1" : "0",
+      saved_data: JSON.stringify({
         activePage: this.props.activePage
       })
-    );
+    };
 
-    axios
-      .post(SAVE_LAYOUT_URL, serverData)
-      .then(resp => resp.data)
-      .then(data => {
-        console.log(data, "DATA");
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        console.log(error, "ERROR");
-        this.setState({ loading: false });
-      });
+    this.props.saveLayoutTemplateHandler(serverData);
   };
 
   closeSweetAlert = () => {
-    this.setState({ SweetAlert: false });
+    this.props.updateLayoutTemplateHandler({
+      showAlert: false
+    });
   };
 
   uploadIconHandler = file => {
-    let serverData = new FormData();
-    serverData.append("qqfile", file);
-    this.setState({ loading: true });
+    let serverData = {
+      qqfile: file
+    };
 
-    axios
-      .post(STORE_ICON_URL, serverData)
-      .then(resp => resp.data)
-      .then(data => {
-        if (data.success) {
-          this.setState({
-            projectIcon: data.fileName,
-            projectIconSrc: data.fileSrc,
-            loading: false
-          });
-        } else {
-          console.log(data, "FAIL uploading icon ");
-          this.setState({ loading: false });
-        }
-      })
-      .catch(error => {
-        console.log(error, "ERROR");
-        this.setState({ loading: false });
-      });
+    this.props.saveIconTemplateHandler(serverData);
   };
 
   render() {
     const isDefaultPoptext = poptext(
-      this.state.isDefaultPoptext,
+      this.props.isDefaultPoptext,
       "isDefault",
       this.onPoptextChange,
       this.props.t
     );
     const projectPagePoptext = poptext(
-      this.state.projectPagePoptext,
+      this.props.projectPagePoptext,
       "projectPage",
       this.onPoptextChange,
       this.props.t
     );
     const projectCategoryPoptext = poptext(
-      this.state.projectCategoryPoptext,
+      this.props.projectCategoryPoptext,
       "projectCategory",
       this.onPoptextChange,
       this.props.t
     );
     const projectStatusPoptext = poptext(
-      this.state.projectStatusPoptext,
+      this.props.projectStatusPoptext,
       "projectStatus",
       this.onPoptextChange,
       this.props.t
@@ -317,15 +205,13 @@ class LayoutEditorHeader extends React.Component {
     return (
       <React.Fragment>
         <SweetAlert
-          show={this.state.showAlert}
+          show={this.props.showAlert}
           type="warning"
           title={this.props.t("Warning")}
-          text={this.state.saText}
-          showCancelButton={true}
+          text={this.props.message}
           onConfirm={() => this.closeSweetAlert()}
-          onCancel={() => this.setState({ showAlert: false })}
         />
-        {this.state.loading && (
+        {this.props.loading && (
           <div className="layoutEditorLoadingContainer">
             <Loading loading={true} />
           </div>
@@ -333,18 +219,25 @@ class LayoutEditorHeader extends React.Component {
         <div className="layoutEditorHeaderContainer">
           <div className="layouHeaderTop">
             <Duplicate
-              checked={this.state.duplicateChecked}
+              checked={this.props.duplicateChecked}
               label={this.props.t("Duplicate")}
               onChange={this.onChange}
-              name="duplicate"
+              name="duplicateChecked"
             />
             {isDefaultPoptext}
+            <Storeviews
+              className={"headerSubContainer"}
+              onChange={this.onPoptextChange}
+              {...this.props.storeViewPoptext}
+              name={"storeViews"}
+            />
+
             {projectPagePoptext}
             <Input
               type="text"
               className="projectTitle"
               name="projectTitle"
-              text={this.state.projectTitle}
+              text={this.props.projectTitle}
               onChange={this.onChange}
               label={this.props.t("Project Title")}
             />
@@ -352,7 +245,7 @@ class LayoutEditorHeader extends React.Component {
               type="text"
               className="projectHeaderDescription"
               name="projectDescription"
-              text={this.state.projectDescription}
+              text={this.props.projectDescription}
               onChange={this.onChange}
               label={this.props.t("Description")}
             />
@@ -361,9 +254,9 @@ class LayoutEditorHeader extends React.Component {
               t={this.props.t}
               uploadIcon={this.uploadIconHandler}
               tooltip={
-                this.state.projectIconSrc === null
+                this.props.projectIconSrc === null
                   ? null
-                  : { imageSrc: this.state.projectIconSrc }
+                  : { imageSrc: this.props.projectIconSrc }
               }
             />
             {projectStatusPoptext}
@@ -371,7 +264,7 @@ class LayoutEditorHeader extends React.Component {
               type="number"
               className="projectOrder"
               name="projectOrder"
-              text={this.state.projectOrder}
+              text={this.props.projectOrder}
               onChange={this.onChange}
               label={this.props.t("Order")}
             />
@@ -393,15 +286,36 @@ class LayoutEditorHeader extends React.Component {
 const mapStateToProps = state => {
   return {
     //projectTitle: titleSelector(state),
+    duplicateChecked: getCheckedDuplicateSelector(state),
     pagesLabel: pagesLabelSelector(state),
     pagesOrder: pagesOrderSelector(state),
-    activePage: activePageWithObjectsSelector(state)
+    activePage: activePageWithObjectsSelector(state),
+    isDefaultPoptext: getIsDefaultPoptextSelector(state),
+    storeViewPoptext: getStoreViewPoptextSelector(state),
+    projectPagePoptext: getProjectPagePoptextSelector(state),
+    projectCategoryPoptext: getProjectCategoryPoptextSelector(state),
+    projectStatusPoptext: getProjectStatusPoptextSelector(state),
+    projectTitle: projectTitleSelector(state),
+    projectDescription: projectDescriptionSelector(state),
+    projectOrder: projectOrderSelector(state),
+    projectIcon: projectIconSelector(state),
+    projectIconSrc: projectIconSrcSelector(state),
+    loading: projectLoadingSelector(state),
+    showAlert: projectShowAlertSelector(state),
+    message: projectMessageSelector(state),
+    projectId: projectIdSelector(state),
+    templateId: templateIdSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChangePageHandler: payload => dispatch(changePage(payload))
+    onChangePageHandler: payload => dispatch(changePage(payload)),
+    updateLayoutTemplateHandler: payload =>
+      dispatch(updateLayoutTemplate(payload)),
+    saveLayoutTemplateHandler: payload =>
+      dispatch(saveLayoutTemplateStart(payload)),
+    saveIconTemplateHandler: payload => dispatch(saveIconTemplateStart(payload))
   };
 };
 
@@ -411,5 +325,6 @@ const LayoutEditorHeaderPlugin = connect(
 )(withNamespaces("layoutEditorHeader")(LayoutEditorHeader));
 
 module.exports = {
-  LayoutEditorHeader: assign(LayoutEditorHeaderPlugin)
+  LayoutEditorHeader: assign(LayoutEditorHeaderPlugin),
+  epics: require("../../core/stores/epics/layout_template")
 };

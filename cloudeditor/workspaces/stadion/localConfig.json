@@ -31,11 +31,10 @@
       "MenuItemCancel",
       "MenuItemManual",
       "MenuItemHeaderFooter",
+      "MenuItemTable",
       "HelperLines",
       "Background",
-      "Content",
-      "Advertising",
-      "Asistent",
+
       "GraphicElements",
       "Settings"
     ]
@@ -51,10 +50,8 @@
     "className": "container"
   },
   "translations": {
-    "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/",
-    "publicPath": "cloudeditor/",
     "basePath": "locales"
   },
-  "baseUrl": "http://work.cloudlab.at:9012/pa/cewe_tables/htdocs/",
+  "baseUrl": "http://localhost:8081/",
   "publicPath": "cloudeditor/"
 }

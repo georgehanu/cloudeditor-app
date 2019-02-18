@@ -4,7 +4,7 @@ const { changeSearchValue } = require("../../store/actions");
 
 class ClubsSearch extends React.Component {
   state = {
-    value: "Bayern"
+    value: "" //"Bayern"
   };
 
   inputChangedHandler = value => {
@@ -12,7 +12,7 @@ class ClubsSearch extends React.Component {
   };
 
   _handleKeyPress = e => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && this.state.value !== "") {
       this.props.searchClubs(this.state.value);
     }
   };
@@ -28,7 +28,9 @@ class ClubsSearch extends React.Component {
         />
         <button
           className="OkButton"
-          onClick={() => this.props.searchClubs(this.state.value)}
+          onClick={() =>
+            this.state.value !== "" && this.props.searchClubs(this.state.value)
+          }
         >
           <span className="icon printqicon-search" />
         </button>

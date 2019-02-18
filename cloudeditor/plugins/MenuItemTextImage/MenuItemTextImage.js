@@ -11,13 +11,30 @@ const uuidv4 = require("uuid/v4");
 const {
   getDisplayedPageBlockActions
 } = require("../../core/stores/selectors/Html5Renderer");
+const axios = require("../../core/axios/project/axios");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
+const GET_CATEGORIES_URL =
+  ConfigUtils.getConfigProp("baseUrl") + "personalize/editor/getGroups";
 require("./MenuItemTextImage.css");
 class MenuItemTextImage extends React.Component {
   state = {
     showModalImport: false,
     isFavourite: false,
-    isText: true
+    isText: true,
+    categories: {}
+  };
+
+  componentDidMount = () => {
+    axios
+      .get(GET_CATEGORIES_URL)
+      .then(resp => resp.data)
+      .then(data => {
+        this.setState({ categories: data });
+      })
+      .catch(error => {
+        this.setState({ categories: {} });
+      });
   };
 
   showModalImportHandler = (isFavourite, isText) => {
@@ -52,6 +69,7 @@ class MenuItemTextImage extends React.Component {
             isFavourite={this.state.isFavourite}
             isText={this.state.isText}
             onAddBlock={this.onClickAddBlock}
+            categories={this.state.categories}
           />
         )}
         <div className="projectMenuItemHeader" />

@@ -43,6 +43,57 @@ const teamCompetitionSelector = createSelector(
   }
 );
 
+const teamStandingsQuerySelector = createSelector(
+  [teamCompetitionSelector, currentTeamSelector],
+  (competition, teamId) => {
+    return {
+      query: "?action=standings",
+      data: {
+        competition: competition
+      },
+      teamId
+    };
+  }
+);
+
+const teamMatchesQuerySelector = createSelector(
+  [
+    currentClubSelector,
+    teamCompetitionSelector,
+    teamSelector,
+    currentTeamSelector
+  ],
+  (club, competition, team, teamId) => {
+    const teamSlug = team.ageGroup.slug + team.level;
+    return {
+      query: "?action=matches",
+      data: {
+        club: club,
+        competition: competition,
+        team: teamSlug,
+        limit: 0
+      },
+      teamId
+    };
+  }
+);
+
+const teamPlayersQuerySelector = createSelector(
+  [currentClubSelector, teamSelector],
+  (club, team) => {
+    const teamSlug = team.ageGroup.slug + team.level;
+    return {
+      query: "?action=teamPlayers",
+      data: {
+        team: teamSlug,
+        club: club,
+        role: "player",
+        orderBy: "-playerRole.total.matches"
+      }
+    };
+  }
+);
+
 module.exports = {
   searchValueSelector,
   currentClubSelector,
@@ -58,5 +109,8 @@ module.exports = {
   teamMatchesStateSelector,
   teamMatchesSelector,
   teamPlayersStateSelector,
-  teamPlayersSelector
+  teamPlayersSelector,
+  teamMatchesQuerySelector,
+  teamStandingsQuerySelector,
+  teamPlayersQuerySelector
 };

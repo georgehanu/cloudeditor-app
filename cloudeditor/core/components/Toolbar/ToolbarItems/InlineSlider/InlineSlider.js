@@ -19,7 +19,7 @@ const InlineSlider = props => {
         min={0}
         max={100}
         step={1}
-        defaultValue={startValue}
+        value={startValue}
         onChange={value => {
           props.ToolbarHandler({
             mainHandler: true,

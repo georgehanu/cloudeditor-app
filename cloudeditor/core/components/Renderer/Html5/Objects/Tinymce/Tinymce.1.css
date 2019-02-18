@@ -1,0 +1,56 @@
+.mce-statusbar.mce-container,
+.mce-top-part,
+.mce-toolbar-grp.mce-container {
+  display: none;
+}
+
+.TinymceContainer {
+  background-color: red;
+  color: #000;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+}
+
+.mce-tinymce.mce-container.mce-panel {
+  border: none;
+  z-index: 500;
+  width: 100% !important;
+  height: 100% !important;
+  box-shadow: none;
+}
+.mce-container {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mce-edit-area.mce-container.mce-panel {
+  border: none;
+  background: transparent;
+}
+.tinymceTable .north {
+  top: -8px;
+  left: -8px;
+  position: relative;
+}
+.mce-tinymce.mce-container.mce-panel {
+  background: transparent;
+}
+
+.mce-container,
+.mce-container-body,
+.mce-container iframe {
+  width: 100%;
+  height: 100% !important;
+}
+/* .tinymceTable .ui-resizable-handle {
+  z-index: -1 !important;
+} */
+
+.tinyMceCover {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  position: absolute;
+}

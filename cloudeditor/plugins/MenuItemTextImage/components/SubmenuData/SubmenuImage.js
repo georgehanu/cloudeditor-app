@@ -20,9 +20,6 @@ const submenuImage = props => {
         >
           {props.t("Insert new image area")}
         </p>
-        <p className="submenuItem">
-          {props.t("Select and insert your own pictures / logos")}
-        </p>
         <p
           className="submenuItem"
           onClick={() => props.showModalImportHandler(false, false)}
@@ -32,9 +29,6 @@ const submenuImage = props => {
       </SubmenuData>
       <SubmenuData iconClass="imageFavourite">
         <p className="submenuHeading">{props.t("Your Favourites")}</p>
-        <p className="submenuItem">
-          {props.t("Select and insert images / logos")}
-        </p>
         <p
           className="submenuItem"
           onClick={() => props.showModalImportHandler(true, false)}

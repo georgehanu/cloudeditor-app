@@ -1,5 +1,4 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 
 const submenuPoptext = props => {
   const items = props.items.map((el, index) => {
@@ -15,7 +14,10 @@ const submenuPoptext = props => {
     return null;
   });
   return (
-    <div className="submenuPoptextContainer">
+    <div
+      className="submenuPoptextContainer"
+      onMouseLeave={() => props.togglePoptext(props.poptextName, true)}
+    >
       <span
         className="activeItem"
         onClick={() => props.togglePoptext(props.poptextName)}
@@ -32,4 +34,4 @@ const submenuPoptext = props => {
   );
 };
 
-module.exports = withNamespaces("menuItemHeaderFooter")(submenuPoptext);
+module.exports = submenuPoptext;

@@ -2,6 +2,8 @@ const React = require("react");
 const LoadingItem = require("./LoadingItem");
 const GalleryItem = require("./GalleryItem");
 const GalleryPreviewItem = require("./GalleryPreviewItem");
+const GalleryToolbarPreview = require("./GalleryToolbarPreview");
+
 const LazyLoad = require("react-lazy-load").default;
 const { connect } = require("react-redux");
 const { pathOr } = require("ramda");
@@ -14,7 +16,7 @@ require("sweetalert/dist/sweetalert.css");
 const { withNamespaces } = require("react-i18next");
 const BackdropSpinner = require("../../hoc/withSpinner/backdropSpinner");
 
-class Gallery extends React.Component {
+class Gallery extends React.PureComponent {
   state = {
     showAlert: false,
     itemId: null,
@@ -23,11 +25,12 @@ class Gallery extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.loadingDelete === true && prevState.loadingDelete === false) {
-      nextProps.addContainerClasses(
-        "Gallery",
-        ["containerMaxZindex", "containerMaxZindexGallery"],
-        false
-      );
+      nextProps.addContainerClasses &&
+        nextProps.addContainerClasses(
+          "Gallery",
+          ["containerMaxZindex", "containerMaxZindexGallery"],
+          false
+        );
       return {
         ...prevState,
         loadingDelete: true
@@ -36,7 +39,8 @@ class Gallery extends React.Component {
       nextProps.loadingDelete === false &&
       prevState.loadingDelete === true
     ) {
-      nextProps.addContainerClasses("Gallery", [], false);
+      nextProps.addContainerClasses &&
+        nextProps.addContainerClasses("Gallery", [], false);
       return {
         ...prevState,
         loadingDelete: false
@@ -49,7 +53,8 @@ class Gallery extends React.Component {
     this.setState({ showAlert: false });
     this.props.onDeleteAssetHandler({
       id: this.state.itemId,
-      type: this.props.type
+      type: this.props.type,
+      fromToolbar: this.props.fromToolbar
     });
   };
 
@@ -65,6 +70,20 @@ class Gallery extends React.Component {
       this.props.hideActions === false
     ) {
       items = this.props.items.map((el, index) => {
+        if (this.props.fromToolbar) {
+          return (
+            <li className="uploadGalleryLi" key={index}>
+              <LazyLoad>
+                <GalleryToolbarPreview
+                  image={el}
+                  type={this.props.type}
+                  deleteAsset={this.onDeleteHandler}
+                  selectAsset={this.props.onSelectAssetHandler}
+                />
+              </LazyLoad>
+            </li>
+          );
+        }
         return (
           <li className="uploadGalleryLi" key={index}>
             <LazyLoad>
@@ -72,6 +91,7 @@ class Gallery extends React.Component {
                 {...el}
                 type={this.props.type}
                 deleteAsset={this.onDeleteHandler}
+                addContainerClasses={this.props.addContainerClasses}
               />
             </LazyLoad>
           </li>
@@ -123,7 +143,13 @@ class Gallery extends React.Component {
           onCancel={() => this.setState({ showAlert: false })}
         />
         {this.props.loadingDelete && (
-          <div className="backdropSpinnerContainer">
+          <div
+            className={
+              this.props.fromToolbar
+                ? "backdropSpinnerContainerFromToolbar"
+                : "backdropSpinnerContainer"
+            }
+          >
             <BackdropSpinner loading={true} />
           </div>
         )}
@@ -137,7 +163,11 @@ class Gallery extends React.Component {
 
 const getItemsByType = (state, props) => {
   if (props.type === "layout") {
-    return assetsLayoutForActivePageSelector(state);
+    return assetsLayoutForActivePageSelector(state, {
+      category_id: props.category_id
+    });
+  } else if (props.type == "graphics") {
+    return pathOr([], [props.type, "items"], state.assets);
   } else return pathOr([], [props.type, "uploadedFiles"], state.assets);
 };
 const getLoadingByType = (state, props) => {
@@ -149,6 +179,9 @@ const getLoadingNrByType = (state, props) => {
 };
 
 const getLoadingDeleteByType = (state, props) => {
+  if (props.fromToolbar) {
+    return pathOr(false, [props.type, "loadingDeleteToolbar"], state.assets);
+  }
   return pathOr(false, [props.type, "loadingDelete"], state.assets);
 };
 
@@ -170,4 +203,4 @@ const mapDispatchToProps = dispatch => {
 module.exports = connect(
   mapStateToProps,
   mapDispatchToProps
-)(withNamespaces("gallery")(Gallery));
+)(withNamespaces("gallery", { usePureComponent: true })(Gallery));

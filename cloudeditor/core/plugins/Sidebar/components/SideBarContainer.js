@@ -4,6 +4,8 @@ const ToggleSidebar = require("./subcomponents/ToggleSidebar");
 const React = require("react");
 const PropTypes = require("prop-types");
 const { rerenderPage } = require("../../../../core/utils/UtilUtils");
+const isEqual = require("react-fast-compare");
+
 class SideBarContainer extends React.Component {
   state = {
     showPane: false,
@@ -11,23 +13,43 @@ class SideBarContainer extends React.Component {
     expanded: true
   };
 
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
+  };
+
   getTool = tool => {
     return tool.plugin;
   };
 
-  showPlugin = pluginIndex => {
-    if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
-      this.setState({ showPane: false, pluginIndex: null }, () => {
-        this.props.addContainerClasses("sideBar", [], true);
-      });
+  showPlugin = (pluginIndex, embededButton = false, func = null) => {
+    if (embededButton) {
+      if (this.state.showPane) {
+        this.setState({ showPane: false, pluginIndex }, () => {
+          this.props.addContainerClasses("sideBar", [], true);
+        });
+      } else {
+        this.setState({ pluginIndex });
+      }
+      func();
     } else {
-      this.setState({ showPane: true, pluginIndex }, () => {
-        this.props.addContainerClasses(
-          "sideBar",
-          ["sidebarContainerExpand"],
-          true
-        );
-      });
+      if (this.state.showPane && this.state.pluginIndex === pluginIndex) {
+        this.setState({ showPane: false, pluginIndex: null }, () => {
+          this.props.addContainerClasses("sideBar", [], true);
+          document.body.classList.remove("sidebarContainerExpand");
+        });
+      } else {
+        document.body.classList.add("sidebarContainerExpand");
+        this.setState({ showPane: true, pluginIndex }, () => {
+          this.props.addContainerClasses(
+            "sideBar",
+            ["sidebarContainerExpand"],
+            true
+          );
+        });
+      }
     }
   };
 
@@ -42,7 +64,15 @@ class SideBarContainer extends React.Component {
       return (
         <li key={i} className="sidebarButtonContainer">
           {tool.embedButtonPlugin === true ? (
-            <Tool cfg={tool.cfg || {}} items={tool.items || []} />
+            <Tool
+              cfg={tool.cfg || {}}
+              items={tool.items || []}
+              //clicked={() => this.showPlugin(i, true)}
+              clicked={this.showPlugin}
+              index={i}
+              selected={i === this.state.pluginIndex ? true : false}
+              showPane={this.state.showPane}
+            />
           ) : (
             <React.Fragment>
               <SidebarButton

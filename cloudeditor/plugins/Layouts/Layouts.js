@@ -4,6 +4,7 @@ const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 const LayoutContainer = require("./components/LayoutsContainer");
 const { activePageIdSelector } = require("../../core/stores/selectors/project");
+const { categoriesSelector } = require("../../core/stores/selectors/assets");
 const {
   assetsLayoutLoadingSelector
 } = require("../../core/stores/selectors/assets");
@@ -14,6 +15,8 @@ const { projLoadLayout } = require("../../core/stores/actions/project");
 const { assetsLayoutSelector } = require("../../core/stores/selectors/assets");
 
 const SweetAlert = require("sweetalert-react").default;
+const isEqual = require("react-fast-compare");
+const LayoutsHeader = require("./components/LayoutsHeader");
 
 require("./Layouts.css");
 
@@ -22,11 +25,25 @@ class Layouts extends React.Component {
     activePageId: null,
     showAlert: false,
     saText: "",
-    layoutId: null
+    layoutId: null,
+    selectedCategory: { value: "", label: "" }
+  };
+
+  onCategoryChange = selectedCategory => {
+    this.setState({ selectedCategory: selectedCategory });
+  };
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (isEqual(nextState, this.state) && isEqual(this.props, nextProps)) {
+      return false;
+    }
+    return true;
   };
 
   componentDidMount() {
-    this.props.assetsLayoutStart();
+    // this.props.assetsLayoutStart();
+    if (typeof this.props.categories[0] != "undefined")
+      this.setState({ selectedCategory: this.props.categories[0] });
   }
 
   selectImageHandler = layoutId => {
@@ -48,17 +65,26 @@ class Layouts extends React.Component {
           show={this.state.showAlert}
           type="warning"
           title={this.props.t("Warning")}
-          text={this.props.t(
-            "Are you sure you want to load this layout ?\nAll changes for this page will be overwritten."
-          )}
+          text={
+            this.props.t("Are you sure you want to load this layout ?") +
+            "\n" +
+            this.props.t("All changes for this page will be overwritten")
+          }
           showCancelButton={true}
           onConfirm={() => this.loadLayout()}
           onCancel={() => this.setState({ showAlert: false })}
+        />
+        <LayoutsHeader
+          title={this.props.t("Categories")}
+          options={this.props.categories}
+          selectedOption={this.state.selectedCategory}
+          onChange={this.onCategoryChange}
         />
         <LayoutContainer
           addContainerClasses={this.props.addContainerClasses}
           loading={this.props.loading}
           selectImage={this.selectImageHandler}
+          category_id={this.state.selectedCategory.value}
         />
       </React.Fragment>
     );
@@ -68,6 +94,7 @@ class Layouts extends React.Component {
 const mapStateToProps = state => {
   return {
     activePageId: activePageIdSelector(state),
+    categories: categoriesSelector(state),
     pagesOrder: pagesOrderSelector(state),
     loading: assetsLayoutLoadingSelector(state),
     assetsLayout: assetsLayoutSelector(state)
@@ -94,7 +121,7 @@ module.exports = {
       text: "Layouts",
       icon: "fupa-layout",
       showMore: true,
-      tooltip: { title: "Layouts", description: "Layouts" }
+      tooltip: { title: "Layouts", description: "Load a new layout" }
     }
   })
 };

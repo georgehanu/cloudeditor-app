@@ -41,7 +41,8 @@ const Config = {
   [Types.BUTTON_CHANGE_IMAGE]: {
     baseType: Types.BUTTON,
     className: "icon printqicon-background",
-    parentClassName: "AlignItem"
+    parentClassName: "AlignItem",
+    settingsHandler: Types.GALLERY_PREVIEW_WND
   },
   [Types.BUTTON_CHANGE_SHAPE]: {
     baseType: Types.BUTTON,
@@ -166,8 +167,9 @@ const Config = {
     className: "icon printqicon-opacity ButtonTextSpaceing",
     parentClassName: "",
     min: "0",
-    max: "200",
-    step: "2"
+    max: "100",
+    step: "1",
+    settingsHandler: Types.SLIDER_OPACITY_WND
   },
   [Types.SLIDER_INLINE]: {
     baseType: Types.SLIDER_INLINE,
@@ -382,6 +384,48 @@ const Config = {
   [Types.CHANGE_SHAPE_WND]: {
     baseType: Types.CHANGE_SHAPE_WND,
     type: Types.CHANGE_SHAPE_WND
+  },
+  [Types.GALLERY_PREVIEW_WND]: {
+    baseType: Types.GALLERY_PREVIEW_WND,
+    type: Types.GALLERY_PREVIEW_WND
+  },
+  [Types.REFRESH_TABLE]: {
+    baseType: Types.REFRESH_TABLE,
+    className: "icon printqicon-rotate_handler",
+    parentClassName: "LetterItem"
+  },
+  [Types.FUPA_SIMPLE_IMAGE]: {
+    baseType: Types.SIMPLE_TEXT,
+    className: "fupaImageLogo"
+  },
+  [Types.FUPA_TEXT]: {
+    baseType: Types.SIMPLE_TEXT,
+    className: "fupaText",
+    text: "Contents of Fupa.net"
+  },
+  [Types.FUPA_DOWN_ARROW]: {
+    baseType: Types.BUTTON,
+    className: "icon printqicon-lefttriangle fupaDownArrow",
+    parentClassName: "fupaDownArrowContainer"
+  },
+  [Types.POPTEXT_LINE_HEIGHT]: {
+    baseType: Types.POPTEXT_VALUE,
+    className: "icon printqicon-layers",
+    parentClassName: "LineHeightPoptext",
+    poptextClassName: "FontPoptextList",
+    dropDown: "icon printqicon-selectdown DropDownArrow",
+    data: [
+      { value: "0.9", label: "0.9" },
+      { value: "1", label: "1" },
+      { value: "1.1", label: "1.1" },
+      { value: "1.2", label: "1.2" },
+      { value: "1.3", label: "1.3" },
+      { value: "1.4", label: "1.4" },
+      { value: "1.5", label: "1.5" },
+      { value: "1.6", label: "1.6" },
+      { value: "1.7", label: "1.7" },
+      { value: "1.8", label: "1.8" }
+    ]
   }
 };
 module.exports = Config;

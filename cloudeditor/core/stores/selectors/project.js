@@ -54,6 +54,34 @@ const singleFirstLastPageSelector = state => {
     state
   );
 };
+const allowMagneticSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "includeMagnetic"],
+    state
+  );
+};
+const getHeaderEditorSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "headerEditor"],
+    state
+  );
+};
+const getFooterEditorSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "footerEditor"],
+    state
+  );
+};
+const getBackendEditorSelector = state => {
+  return pathOr(
+    false,
+    ["project", "configs", "document", "backendEditor"],
+    state
+  );
+};
 const groupSizeSelector = state => {
   return pathOr(false, ["project", "configs", "document", "groupSize"], state);
 };
@@ -101,6 +129,41 @@ const headerConfigSelector = state => {
 const footerConfigSelector = state => {
   return pathOr(false, ["project", "configs", "document", "footer"], state);
 };
+
+const projectHeaderEnabledSelector = state => {
+  const header = pathOr(false, ["configs", "document", "header"], state);
+  return header.mode === "edit" && header.activeOn === "all";
+};
+const projectFooterEnabledSelector = state => {
+  const footer = pathOr(false, ["configs", "document", "footer"], state);
+  return footer.mode === "edit" && footer.activeOn === "all";
+};
+
+const projectHeaderConfigSelector = state => {
+  return pathOr(false, ["configs", "document", "header"], state);
+};
+
+const projectFooterConfigSelector = state => {
+  return pathOr(false, ["configs", "document", "footer"], state);
+};
+
+const headerEnabledSelector = state => {
+  const header = pathOr(
+    false,
+    ["project", "configs", "document", "header"],
+    state
+  );
+  return header.mode === "edit" && header.activeOn === "all";
+};
+const footerEnabledSelector = state => {
+  const footer = pathOr(
+    false,
+    ["project", "configs", "document", "footer"],
+    state
+  );
+  return footer.mode === "edit" && footer.activeOn === "all";
+};
+
 /* End Document Config Selectors */
 
 /* Start Pages Config Selectors */
@@ -306,8 +369,6 @@ const activePageSelector = createSelector(
 const selectedObjectSelector = createSelector(
   [objectsSelector, selectedObjectsIdsSelector],
   (objects, selectedObjectsIds) => {
-    selectedObjectsIds = [Object.keys(objects)[0]];
-
     const activeObjects = {
       objects: pick(selectedObjectsIds, objects)
     };
@@ -348,6 +409,8 @@ const projLoadLoadingProjectSelector = state =>
 
 const projLoadErrorMessageProjectSelector = state =>
   pathOr(null, ["project", "load", "errorMessageProject"], state);
+const getFooterHeaderLayoutsSelector = state =>
+  pathOr([], ["assets", "footerheader"], state);
 
 const activePageWithObjectsSelector = createSelector(
   [objectsSelector, pagesSelector, activePageIdSelector],
@@ -371,6 +434,12 @@ const pageColumnsNoSelector = createSelector(
       return columnsNo;
     }
     return 0;
+  }
+);
+const getNumberOfPagesSelector = createSelector(
+  pagesOrderSelector,
+  pages => {
+    return pages.length;
   }
 );
 
@@ -419,6 +488,17 @@ module.exports = {
   projLoadLoadingProjectSelector,
   projLoadErrorMessageProjectSelector,
   activePageWithObjectsSelector,
-
-  pageColumnsNoSelector
+  getNumberOfPagesSelector,
+  allowMagneticSelector,
+  pageColumnsNoSelector,
+  projectHeaderEnabledSelector,
+  projectFooterEnabledSelector,
+  getHeaderEditorSelector,
+  getFooterEditorSelector,
+  getFooterHeaderLayoutsSelector,
+  getBackendEditorSelector,
+  projectHeaderConfigSelector,
+  projectFooterConfigSelector,
+  headerEnabledSelector,
+  footerEnabledSelector
 };

@@ -11,6 +11,7 @@ const layoutsContainer = props => {
         hideActions={true}
         addContainerClasses={props.addContainerClasses}
         selectImage={props.selectImage}
+        category_id={props.category_id}
       />
     </div>
   );

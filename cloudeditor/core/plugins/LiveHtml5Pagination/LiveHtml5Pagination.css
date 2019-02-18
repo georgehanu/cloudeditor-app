@@ -269,12 +269,13 @@
   width: 170px;
   text-align: left;
 }
-.pageSelectorNormal .html5LivePaginationContainer {
+/*.pageSelectorNormal*/
+.html5LivePaginationContainer {
   padding: 14px 0px 7px 0px;
 }
 
 .pageSelectorNormal .html5LivePaginationContainer .paginationPage {
-  height: 82px;
+  height: 90px;
 }
 
 .pageHeaderTextTitleContainer {
@@ -287,4 +288,18 @@
 
 .pageSelectorContainer .pageContainer.page * {
   cursor: pointer;
+}
+
+.pageHeaderMessage {
+  position: absolute;
+  left: 50%;
+  margin-left: 40px;
+  top: 4px;
+  font-family: ArialMT;
+  font-size: 14px;
+  color: #666666;
+}
+
+.pageHeaderTextTitleContainer.pageHeaderTextTitleContainerDisabled {
+  cursor: not-allowed;
 }

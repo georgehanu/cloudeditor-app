@@ -3,18 +3,14 @@ const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
 const SidebarButton = require("../../core/plugins/Sidebar/components/subcomponents/SidebarButton");
+const Gallery = require("../../core/components/Gallery/Gallery");
 
 require("./GraphicElements.css");
-
+const TYPE = "graphics";
 const GraphicElements = props => {
   return (
     <div className="graphicElementsContainer">
-      <SidebarButton clicked={props.zoomIn}>
-        <div className="iconContainer">
-          <div className="icon fupa-graphics" />
-        </div>
-        <div className="iconTitle">{props.t("Graphic Elements")}</div>
-      </SidebarButton>
+      <Gallery type={TYPE} addContainerClasses={props.addContainerClasses} />
     </div>
   );
 };
@@ -28,10 +24,10 @@ module.exports = {
     SideBar: {
       position: 9,
       priority: 1,
-      text: "zoom In",
-      icon: "printqicon-zoom_in",
-      showMore: false,
-      embedButtonPlugin: true
+      text: "Graphic Elements",
+      icon: "fupa-graphics",
+      showMore: true,
+      tooltip: { title: "Graphics", description: "Add a new Graphic element" }
     }
   })
 };

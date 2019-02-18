@@ -17,7 +17,7 @@ const { handleActions } = require("redux-actions");
 
 const initialState = {
   loading: false,
-  imagePath: null,
+  image_path: null,
   errorMessage: null,
   loadingSignIn: false,
   errorMessageSignIn: null,
@@ -188,7 +188,7 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        imagePath: action.payload,
+        image_path: action.payload,
         errorMessage: null
       };
     },
@@ -196,7 +196,7 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        imagePath: null,
+        image_path: null,
         errorMessage: action.payload
       };
     },

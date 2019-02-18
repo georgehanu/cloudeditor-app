@@ -1,12 +1,16 @@
 const React = require("react");
 const { connect } = require("react-redux");
-const { withNamespaces } = require("react-i18next");
 const assign = require("object-assign");
 const ProjectMenuContainer = require("./components/ProjectMenuContainer");
+
 require("./ProjectMenu.css");
 class ProjectMenu extends React.Component {
   getTools = () => {
     return this.props.items.sort((a, b) => a.position - b.position);
+  };
+
+  shouldComponentUpdate = (nextProps, nextState) => {
+    return false;
   };
 
   render() {
@@ -19,10 +23,7 @@ class ProjectMenu extends React.Component {
   }
 }
 
-const ProjectHeaderPlugin = connect(
-  null,
-  null
-)(withNamespaces("projectMenu")(ProjectMenu));
+const ProjectHeaderPlugin = ProjectMenu;
 
 module.exports = {
   ProjectMenu: assign(ProjectHeaderPlugin),

@@ -1,7 +1,6 @@
 .projectMenuContainer .menuItemTextImageContainer {
   position: absolute;
   width: 650px;
-  //left: 140px;
 }
 
 .projectMenuContainer .iconCategory.textContent {
@@ -32,7 +31,7 @@
   float: left;
   width: 49.44%;
   overflow-y: auto;
-  height: 500px;
+  height: 450px;
   margin-bottom: 0;
   padding: 0;
   margin: 0;
@@ -59,4 +58,14 @@
   font-family: "PORTO", Arial, Helvetica, sans-serif;
   font-size: 13px;
   color: #666666;
+}
+
+.projectMenuContainer .menuItemTextImageContainer {
+  position: absolute;
+  width: 650px;
+  /*  left: 140px;*/
+}
+
+.projectMenuContainer .menuItemTextImageContainer .projectMenuItem {
+  padding-bottom: 0px;
 }

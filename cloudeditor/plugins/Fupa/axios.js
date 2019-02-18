@@ -1,7 +1,8 @@
 const axios = require("axios");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 const instance = axios.create({
-  baseURL: "http://work.cloudlab.at:9012/hp/asgard/public/en/api/fupa/"
+  baseURL: ConfigUtils.getConfigProp("baseUrl") + "fupa/"
 });
 
 module.exports = instance;

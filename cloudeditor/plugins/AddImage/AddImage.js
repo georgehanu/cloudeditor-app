@@ -3,6 +3,7 @@ const { connect } = require("react-redux");
 const assign = require("object-assign");
 const { withNamespaces } = require("react-i18next");
 const UploadFile = require("../../core/components/UploadFile/UploadFile");
+const isEqual = require("react-fast-compare");
 
 const ACCEPTED_FILES = "image/*";
 const TYPE = "image";
@@ -11,10 +12,17 @@ require("./AddImage.css");
 const Gallery = require("../../core/components/Gallery/Gallery");
 
 class AddImage extends React.Component {
+  shouldComponentUpdate = (nextProps, nextState) => {
+    return !isEqual(nextProps, this.props);
+  };
   render() {
     return (
       <div className="uploadContainer">
-        <UploadFile acceptedFiles={ACCEPTED_FILES} type={TYPE} />
+        <UploadFile
+          acceptedFiles={ACCEPTED_FILES}
+          type={TYPE}
+          t={this.props.t}
+        />
         <Gallery
           type={TYPE}
           addContainerClasses={this.props.addContainerClasses}

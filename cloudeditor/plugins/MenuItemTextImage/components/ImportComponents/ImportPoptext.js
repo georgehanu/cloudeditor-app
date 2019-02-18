@@ -1,10 +1,11 @@
 const React = require("react");
+const { keys } = require("ramda");
 
 const importPoptext = props => {
-  const options = props.options.map((el, index) => {
+  const options = keys(props.options).map(el => {
     return (
-      <option key={index} value={index}>
-        {el}
+      <option key={el} value={el}>
+        {props.options[el]}
       </option>
     );
   });

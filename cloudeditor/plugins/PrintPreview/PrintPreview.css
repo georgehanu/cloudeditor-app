@@ -10,9 +10,14 @@
 .projectPreviewContainer {
   width: 100%;
   height: 100%;
-  padding-bottom: 160px;
+  padding-bottom: 10px;
   background-color: white;
   /* should depend also on pagination height */
+}
+
+.showPrintPreview .projectPreviewContainer {
+  display: block;
+  padding-bottom: 150px;
 }
 
 .pageSelectorExtended .projectPreviewContainer {
@@ -23,8 +28,8 @@
   padding-bottom: 35px;
 }
 
-.showPrintPreview .projectPreviewContainer {
-  display: block;
+.pageSelectorNormal .projectPreviewContainer {
+  padding-bottom: 150px;
 }
 
 .projectPreviewContainer {
@@ -97,6 +102,10 @@
   display: none;
 }
 
+.showPrintPreview .buttonMenuItemTable {
+  display: none;
+}
+
 .magnifier-image {
   /*max-height: -webkit-fill-available;
   max-width: -webkit-fill-available;*/
@@ -129,4 +138,22 @@
 }
 .previewImagecontainer .loader {
   color: #737373;
+}
+
+.showPrintPreview .pageHeaderTextTitleContainer {
+  pointer-events: none;
+}
+
+.showPrintPreview .html5LivePaginationContainer a {
+  pointer-events: none;
+}
+
+.showPrintPreview .singlePageContainer:hover .deletePage {
+  display: none;
+}
+
+.magnifier-image {
+  height: inherit !important;
+  width: inherit !important;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

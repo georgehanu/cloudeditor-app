@@ -3,6 +3,7 @@
   "test": "test default",
   "OK": "OK",
   "Cancel": "Cancel",
-  "Change CMYK": "Change CMYK",
-  "Change RGB": "Change RGB"
+  "Preview CMYK": "Preview CMYK",
+  "Preview RGB": "Preview RGB",
+  "Contents of Fupa.net": "Contents of Fupa.net"
 }

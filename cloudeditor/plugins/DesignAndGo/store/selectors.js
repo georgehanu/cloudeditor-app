@@ -11,7 +11,7 @@ const dagErrorMessageSignInSelector = state =>
   (state && state.designAndGo && state.designAndGo.errorMessageSignIn) || null;
 
 const dagImagePathSelector = state =>
-  (state && state.designAndGo && state.designAndGo.imagePath) || null;
+  (state && state.designAndGo && state.designAndGo.image_path) || null;
 
 const dagSliderDataSelector = state =>
   (state && state.designAndGo && state.designAndGo.sliderData) || [];

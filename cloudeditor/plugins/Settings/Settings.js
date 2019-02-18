@@ -9,7 +9,10 @@ require("./Settings.css");
 const Settings = props => {
   return (
     <div className="settingsContainer">
-      <SidebarButton clicked={props.zoomIn}>
+      <SidebarButton
+        clicked={props.zoomIn}
+        tooltip={{ title: "Settings", description: "Change the settings" }}
+      >
         <div className="iconContainer">
           <div className="icon fupa-settings" />
         </div>

@@ -19,11 +19,12 @@ const MenuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuIte
 const HelperLines = require("../../plugins/HelperLines/HelperLines");
 const PrintPreview = require("../../plugins/PrintPreview/PrintPreview");
 const Background = require("../../plugins/Background/Background");
-const Content = require("../../plugins/Content/Content");
-const Advertising = require("../../plugins/Advertising/Advertising");
-const Asistent = require("../../plugins/Asistent/Asistent");
+//const Content = require("../../plugins/Content/Content");
+//const Advertising = require("../../plugins/Advertising/Advertising");
+//const Asistent = require("../../plugins/Asistent/Asistent");
 const GraphicElements = require("../../plugins/GraphicElements/GraphicElements");
 const Settings = require("../../plugins/Settings/Settings");
+const MenuItemTable = require("../../plugins/MenuItemTable/MenuItemTable");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -47,11 +48,12 @@ const plugins = {
   HelperLines,
   PrintPreview,
   Background,
-  Content,
-  Advertising,
-  Asistent,
+  //Content,
+  //Advertising,
+  //Asistent,
   GraphicElements,
-  Settings
+  Settings,
+  MenuItemTable
 };
 
 const requires = {};

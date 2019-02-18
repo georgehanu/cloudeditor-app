@@ -12,7 +12,7 @@ const {
 } = require("ramda");
 const now = require("performance-now");
 
-const type = ["image", "text"];
+const type = ["image", "graphics", "pdf"];
 const Objects = require("../Objects/Object/Objects");
 
 const {
@@ -28,7 +28,9 @@ const { addObject } = require("../../../../stores/actions/project");
 const {
   activePageIdSelector,
   headerConfigSelector,
-  footerConfigSelector
+  footerConfigSelector,
+  projectHeaderEnabledSelector,
+  projectFooterEnabledSelector
 } = require("../../../../stores/selectors/project");
 const BlockMessage = require("../BlockMesage/BlockMessage");
 
@@ -61,24 +63,82 @@ const PageTarget = {
       const activePageId = props.activePageId;
       innerPage = props.activePage.innerPages[activePageId];
       let aspectRatio = innerPage.height / innerPage.width;
-      width = innerPage.width / 6;
+      const columns = innerPage.columnsNo > 0 ? innerPage.columnsNo : 6;
+      width = innerPage.width / columns;
       switch (object.type) {
         case "image":
           aspectRatio = object.imageHeight / object.imageWidth;
           break;
+
         default:
           break;
       }
-      object.width = width;
-      object.height = width * aspectRatio;
+      if (props.headerEnabled) {
+        object.height = parseInt(props.headerConfig.height, 10);
+        object.width = object.height / aspectRatio;
+        const headerFooterOverlay = document.getElementById(
+          "headerFooterOverlayId"
+        );
+        const overlayDimensions = headerFooterOverlay.getBoundingClientRect();
+        const positionHeader = monitor.getSourceClientOffset();
+
+        object.left =
+          (-1 * (componentBounding.x - positionHeader.x)) / props.zoomScale;
+        object.top =
+          (-1 * (componentBounding.y - positionHeader.y)) / props.zoomScale;
+
+        props.onAddObjectHandler(object);
+        return;
+      } else if (props.footerEnabled) {
+        object.height = parseInt(props.footerConfig.height, 10);
+        object.width = object.height / aspectRatio;
+        const headerFooterOverlay = document.getElementById(
+          "headerFooterOverlayId"
+        );
+        const overlayDimensions = headerFooterOverlay.getBoundingClientRect();
+        const positionFooter = monitor.getSourceClientOffset();
+
+        object.left =
+          (-1 * (componentBounding.x - positionFooter.x)) / props.zoomScale;
+        object.top =
+          (-1 *
+            (componentBounding.y -
+              positionFooter.y +
+              overlayDimensions.height)) /
+          props.zoomScale;
+
+        props.onAddObjectHandler(object);
+        return;
+      } else {
+        object.width = width;
+        object.height = width * aspectRatio;
+      }
       const position = monitor.getSourceClientOffset();
 
       object.left = (-1 * (componentBounding.x - position.x)) / props.zoomScale;
       object.top = (-1 * (componentBounding.y - position.y)) / props.zoomScale;
+      // TODO add in objects header/footer
       props.onAddObjectHandler(object);
     }
   },
   canDrop(props, monitor) {
+    const position = monitor.getSourceClientOffset();
+    if (props.headerEnabled || props.footerEnabled) {
+      const headerFooterOverlay = document.getElementById(
+        "headerFooterOverlayId"
+      );
+
+      const overlayDimensions = headerFooterOverlay.getBoundingClientRect();
+      if (
+        position.x >= overlayDimensions.x &&
+        position.x <= overlayDimensions.x + overlayDimensions.width &&
+        position.y >= overlayDimensions.y &&
+        position.y <= overlayDimensions.y + overlayDimensions.height
+      ) {
+        return false;
+      }
+    }
+
     if (!props.viewOnly) {
       return true;
     }
@@ -104,11 +164,12 @@ class Page extends React.Component {
     };
   }
 
-  getIfMessage = (pageBounding, blockBounding) => {
+  getIfMessage = (pageBounding, blockBounding, dragging) => {
     let type = 0;
     let snapTolerance = this.props.activePage.snapTolerance;
     const { zoomScale } = this.props;
     snapTolerance *= zoomScale;
+    if (dragging) return type;
     if (
       blockBounding.left < pageBounding.left + snapTolerance ||
       blockBounding.right > pageBounding.right - snapTolerance ||
@@ -126,13 +187,13 @@ class Page extends React.Component {
     return type;
   };
   checkErrorMessages = params => {
-    const { blockContainer, blockId } = params;
+    const { blockContainer, blockId, dragging } = params;
     let { errorMessages } = this.state;
     const pageBounding = ReactDOM.findDOMNode(this).getBoundingClientRect();
     const blockContainerBounding = blockContainer.getBoundingClientRect();
 
     errorMessages[blockId] = {
-      type: this.getIfMessage(pageBounding, blockContainerBounding),
+      type: this.getIfMessage(pageBounding, blockContainerBounding, dragging),
       left:
         blockContainerBounding.left -
         pageBounding.left +
@@ -295,8 +356,7 @@ class Page extends React.Component {
       height,
       marginLeft,
       marginTop,
-      backgroundColor: "rgb(" + background.color.htmlRGB + ")",
-      backgroundImage: `url(${background.image_src})`
+      backgroundColor: "rgb(" + background.color.htmlRGB + ")"
     };
     let boxes = null;
     let snapBoxes = null;
@@ -392,12 +452,16 @@ class Page extends React.Component {
         style={pageStyle}
         className="pageContainer page"
       >
+        {/*<div className="pageOverlay" id="pageOverlay" />*/}
         {this.renderObjects()}
-
         {boxes}
         {snapBoxes}
         {withColumns}
         {this.renderErrorMessages()}
+        <div
+          onClick={() => this.props.onChangePage(this.props.activePage.page_id)}
+          className={"overlaySideBySide"}
+        />
       </div>
     );
   }
@@ -443,6 +507,8 @@ const makeMapStateToProps = (state, props) => {
       globalObjectsIds: globalObjectsIdsSelector(state),
       headerConfig: headerConfigSelector(state),
       footerConfig: footerConfigSelector(state),
+      headerEnabled: projectHeaderEnabledSelector(state.project),
+      footerEnabled: projectFooterEnabledSelector(state.project),
       objectsOffsetList: getObjectsOffsetsList(state, props)
     };
   };

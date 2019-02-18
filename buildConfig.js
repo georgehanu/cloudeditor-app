@@ -78,7 +78,12 @@ const build = config => {
                       if (
                         selector.startsWith(".sweet-overlay") ||
                         selector.startsWith(".sweet-alert") ||
-                        selector.startsWith(".rc-")
+                        selector.startsWith(".rc-") ||
+                        selector.startsWith(".preview_image") ||
+                        selector.startsWith(
+                          ".mce-tinymce.mce-tinymce-inline"
+                        ) ||
+                        selector.startsWith("body")
                       ) {
                         return selector;
                       } else {
@@ -162,7 +167,10 @@ const build = config => {
           ...copyFrom
         ],
         { debug: prod ? "" : "" }
-      )
+      ),
+      new webpack.DefinePlugin({
+        PRODUCTION: JSON.stringify(prod)
+      })
     ],
     devServer: {
       port: config.port,

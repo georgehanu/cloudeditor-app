@@ -9,6 +9,14 @@
   cursor: default;
 }
 
+.pageBlock.backgroundblock {
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pageBlock.backgroundblock u {
+  display: none !important;
+}
 .pageBlock .blockOrientation {
   position: relative;
   z-index: 1;
@@ -50,6 +58,7 @@
   width: 0;
   height: 0;
   display: block;
+  pointer-events: none;
 }
 
 .pageBlock.header,
@@ -149,4 +158,36 @@
 .pageContainer.headerFooter .pageBlock.active:hover .deleteBlockHandler,
 .pageContainer.headerFooter .pageBlock.active:hover .ui-rotatable-handle {
   display: none !important;
+}
+/*
+.showHeaderFooter .pageOverlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+}
+*/
+.headerFooterOverlay {
+  z-index: 11;
+  height: 100%;
+}
+
+.headerFooterOverlayInner {
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.3;
+}
+
+.showHeaderFooter .renderContainer .headerFooterOverlay {
+  display: block;
+}
+
+.headerFooterOverlay {
+  display: none;
+}
+
+.pageBlock.backgroundblockPagination {
+  pointer-events: none;
+  z-index: 0;
 }

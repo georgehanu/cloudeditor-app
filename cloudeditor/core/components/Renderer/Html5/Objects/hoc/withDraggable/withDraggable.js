@@ -69,7 +69,7 @@ const withDraggable = WrappedComponent => {
     onDragHandler = (event, ui) => {
       const draggable = $(event.target).data("ui-draggable");
       ui = addSnapElements(event, ui, draggable.snapElements, draggable);
-      this.changePropsOnDragHandler(ui, 1, 0);
+      // this.changePropsOnDragHandler(ui, 1, 0);
     };
     onDragStopHandler = (event, ui) => {
       this.changePropsOnDragHandler(ui, 0, 1);

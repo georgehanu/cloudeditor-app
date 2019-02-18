@@ -28,8 +28,8 @@
   background: transparent;
 }
 .tinymceTable .north {
-  top: -8px;
-  left: -8px;
+  top: 0;
+  left: 0;
   position: relative;
 }
 .mce-tinymce.mce-container.mce-panel {
@@ -53,4 +53,60 @@
   left: 0;
   z-index: 99999;
   position: absolute;
+}
+
+.dummyTableContainer {
+  display: block;
+  transform-origin: top left;
+  white-space: normal;
+}
+
+.dummyTableContainer table {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
+  left: 100px !important;
+  top: 90px !important;
+  box-shadow: none;
+  border: none;
+  height: 30px !important;
+  z-index: 500 !important;
+}
+
+body.sidebarContainerExpand
+  .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
+  left: 505px !important;
+}
+
+body.submenuHeaderFooter
+  .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
+  top: 120px !important;
+}
+
+.mce-tinymce.mce-tinymce-inline .mce-container-body.mce-abs-layout,
+.mce-tinymce.mce-tinymce-inline .mce-container.mce-toolbar.mce-abs-layout-item,
+.mce-tinymce.mce-tinymce-inline .mce-container-body.mce-flow-layout {
+  height: 30px !important;
+}
+
+.mce-tinymce.mce-tinymce-inline .mce-toolbar .mce-btn-group {
+  padding: 0px !important;
+}
+
+.mce-tinymce.mce-tinymce-inline
+  .mce-container.mce-panel.mce-floatpanel.mce-menu.mce-animate {
+  z-index: 500 !important;
+}
+
+.mce-tinymce.mce-tinymce-inline .mce-tableLabels {
+  pointer-events: none;
+}
+.mce-tinymce.mce-tinymce-inline .mce-tableLabels:hover {
+  border: none !important;
+}
+
+#tinymceFontValue {
+  width: 60px;
 }

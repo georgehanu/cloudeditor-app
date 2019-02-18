@@ -40,8 +40,12 @@ class ProjectMenuContainer extends React.Component {
               ? " projectMenuButtonContainerActive"
               : "")
           }
-          onMouseEnter={() => this.onMouseEnterHandler(i)}
-          onMouseLeave={() => this.onMouseLeaveHandler(i)}
+          onMouseEnter={() =>
+            tool.embedButtonPlugin === true ? null : this.onMouseEnterHandler(i)
+          }
+          onMouseLeave={() =>
+            tool.embedButtonPlugin === true ? null : this.onMouseLeaveHandler(i)
+          }
         >
           {tool.embedButtonPlugin === true ? (
             <Tool
@@ -50,7 +54,10 @@ class ProjectMenuContainer extends React.Component {
               text={tool.text}
               index={i}
               active={i === this.state.menuItemActive}
+              onSetSubWndHandler={this.onSetSubWndHandler}
               addContainerClasses={this.props.addContainerClasses}
+              onMouseEnter={() => this.onMouseEnterHandler(i)}
+              onMouseLeave={() => this.onMouseLeaveHandler(i)}
             />
           ) : (
             <React.Fragment>

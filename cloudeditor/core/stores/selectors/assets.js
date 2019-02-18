@@ -10,16 +10,24 @@ const assetsLayoutLoadingSelector = state =>
 
 const assetsLayoutSelector = state =>
   pathOr([], ["assets", "layout", "items"], state);
+const categoriesSelector = state =>
+  pathOr([], ["assets", "layout", "categories"], state);
+
+const selectCategory = (_, props) => props.category_id;
 
 const assetsLayoutForActivePageSelector = createSelector(
-  [activePageIdSelector, pagesOrderSelector, assetsLayoutSelector],
-  (activePageId, pagesOrder, assetsLayout) => {
-    const pageNo = pagesOrder.findIndex(el => {
-      return el === activePageId;
-    });
-
+  [
+    activePageIdSelector,
+    pagesOrderSelector,
+    assetsLayoutSelector,
+    selectCategory
+  ],
+  (activePageId, pagesOrder, assetsLayout, category_id) => {
     const layouts = assetsLayout.filter((el, index) => {
-      return parseInt(el.page_no, 10) === parseInt(pageNo, 10);
+      return (
+        el.page_id === activePageId &&
+        parseInt(el.category_id, 10) === parseInt(category_id, 10)
+      );
     });
 
     return layouts;
@@ -29,5 +37,6 @@ const assetsLayoutForActivePageSelector = createSelector(
 module.exports = {
   assetsLayoutLoadingSelector,
   assetsLayoutSelector,
-  assetsLayoutForActivePageSelector
+  assetsLayoutForActivePageSelector,
+  categoriesSelector
 };

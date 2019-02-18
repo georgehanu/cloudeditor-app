@@ -1,5 +1,6 @@
 const Types = require("../ToolbarConfig/types");
 const Operation = require("../ToolbarConfig/operation");
+const { mergeAll, clone } = require("ramda");
 
 const MergeClassName = (defaultClass, newClass) => {
   if (newClass === null || newClass === undefined) {
@@ -62,7 +63,13 @@ const imageQuality = (activeItem, options) => {
   return 300;
 };
 
-const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
+const LoadImageSettings = (
+  toolbar,
+  activeItem,
+  activeLayer,
+  options,
+  background = false
+) => {
   for (let groupIndex in toolbar.groups) {
     let group = toolbar.groups[groupIndex];
     for (let itemIndex in group.items) {
@@ -84,20 +91,25 @@ const LoadImageSettings = (toolbar, activeItem, activeLayer, options) => {
             { value: "sendtoback", disabled: true }
           ];
         }
-      }
-      if (item.type === Types.SLIDER_INLINE_IMAGE) {
+      } else if (item.type === Types.SLIDER_INLINE_IMAGE) {
         item.defaultValue = parseInt(activeItem.leftSlider);
-      }
-      if (item.type === Types.SIMPLE_ICON_QUALITY) {
+      } else if (item.type === Types.SIMPLE_ICON_QUALITY) {
         item.threshold = imageQuality(activeItem, options);
+      } else if (background) {
+        if (item.type === Types.COLOR_SELECTOR_BACKGROUND) {
+          //item.color = activeItem.fill;
+          item.color = activeItem.bgColor
+            ? "rgb(" + activeItem.bgColor.htmlRGB + ")"
+            : activeItem.fill;
+        }
       }
     }
   }
   return toolbar;
 };
 
-const LoadImageAdditionalInfo = activeItem => {
-  return {
+const LoadImageAdditionalInfo = (activeItem, background = false) => {
+  let info = {
     [Types.CHANGE_SHAPE_WND]: { image: activeItem.image_src, startValue: 180 },
     [Types.SPECIAL_EFFECTS_WND]: {
       image: activeItem.image_src,
@@ -106,8 +118,17 @@ const LoadImageAdditionalInfo = activeItem => {
       filter: activeItem.filter,
       flip: activeItem.flip
     },
-    [Types.SLIDER_OPACITY_WND]: { defaultValue: activeItem.imge_src }
+    [Types.SLIDER_OPACITY_WND]: { defaultValue: 100 * activeItem.opacity }
   };
+
+  if (background) {
+    info[Types.COLOR_SELECTOR_WND] = {
+      selected: {
+        [Types.COLOR_TAB_BG]: 0
+      }
+    };
+  }
+  return info;
 };
 
 const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
@@ -152,6 +173,82 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
             fontFamily: el
           };
         });
+      } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
+        item.value = activeItem.lineHeight || 1;
+      } else if (item.type === Types.POPTEXT_LAYER) {
+        item.operation = Operation.MERGE_DATA;
+        item.newData = [];
+        if (activeLayer.front !== undefined && activeLayer.front === false) {
+          item.newData = [
+            { value: "bringtofront", disabled: true },
+            { value: "bringforward", disabled: true }
+          ];
+        }
+        if (activeLayer.back !== undefined && activeLayer.back === false) {
+          item.newData = [
+            ...item.newData,
+            { value: "sendbackward", disabled: true },
+            { value: "sendtoback", disabled: true }
+          ];
+        }
+      } else if (item.type === Types.REFRESH_TABLE) {
+        item.refreshLoading = activeItem.refreshLoading;
+        if (activeItem.fupaData) {
+          item.visible = true;
+          item.lastRefreshTime = activeItem.fupaData.queryData.queryTime;
+        } else {
+          item.visible = false;
+        }
+      }
+    }
+  }
+  return toolbar;
+};
+
+const LoadTinymceTableSettings = (toolbar, activeItem, activeLayer, fonts) => {
+  for (let groupIndex in toolbar.groups) {
+    let group = toolbar.groups[groupIndex];
+    for (let itemIndex in group.items) {
+      let item = group.items[itemIndex];
+
+      if (item.type === Types.POPTEXT_VALIGN) {
+        item.selected = activeItem.vAlign + "_valign";
+      } else if (item.type === Types.BUTTON_LEFT_ALIGNED) {
+        item.selected = activeItem.textAlign === "left";
+      } else if (item.type === Types.BUTTON_RIGHT_ALIGNED) {
+        item.selected = activeItem.textAlign === "right";
+      } else if (item.type === Types.BUTTON_CENTER_ALIGNED) {
+        item.selected = activeItem.textAlign === "center";
+      } else if (item.type === Types.BUTTON_JUSTIFY_ALIGNED) {
+        item.selected = activeItem.textAlign === "justify";
+      } else if (item.type === Types.BUTTON_LETTER_BOLD) {
+        item.selected = activeItem.bold;
+      } else if (item.type === Types.BUTTON_LETTER_ITALIC) {
+        item.selected = activeItem.italic;
+      } else if (item.type === Types.BUTTON_LETTER_UNDERLINE) {
+        item.selected = activeItem.underline;
+      } else if (item.type === Types.COLOR_SELECTOR) {
+        //item.color = activeItem.fill;
+        item.color = activeItem.fillColor
+          ? "rgb(" + activeItem.fillColor.htmlRGB + ")"
+          : activeItem.fill;
+      } else if (item.type === Types.SLIDER_TEXT_SPACEING) {
+        item.defaultValue = parseInt(activeItem.charSpacing);
+      } else if (item.type === Types.INCREMENTAL_FONT_SIZE) {
+        item.fontSize = activeItem.fontSize;
+      } else if (item.type === Types.POPTEXT_FONT) {
+        item.value = activeItem.fontFamily;
+        item.operation = Operation.NEW_DATA;
+        item.newData = fonts.map((el, index) => {
+          return {
+            value: el,
+            label: el,
+            className: "",
+            fontFamily: el
+          };
+        });
+      } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
+        item.value = activeItem.lineHeight || 1;
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -242,6 +339,20 @@ const CreatePayload = (activeitem, itemPayload) => {
           ...itemPayload.value
         }
       };
+
+      if (activeitem.backgroundblock) {
+        const removeImage = {
+          image_path: null,
+          image_src: null,
+          image: null,
+          imageWidth: 0,
+          imageHeight: 0,
+          cropW: 0,
+          cropH: 0,
+          subType: "image"
+        };
+        attrs = mergeAll([clone(attrs), removeImage]);
+      }
       break;
 
     case Types.COLOR_TAB_BORDER_COLOR:
@@ -275,8 +386,9 @@ const CreatePayload = (activeitem, itemPayload) => {
     case Types.POPTEXT_FONT:
       attrs = { fontFamily: itemPayload.value };
       break;
-    case Types.brightness:
-      attrs = { fontFamily: itemPayload.value };
+
+    case Types.POPTEXT_LINE_HEIGHT:
+      attrs = { lineHeight: itemPayload.value };
       break;
 
     case Types.POPTEXT_LAYER:
@@ -301,6 +413,27 @@ const CreatePayload = (activeitem, itemPayload) => {
     case Types.SLIDER_INLINE_IMAGE:
       attrs = { leftSlider: itemPayload.value };
       break;
+
+    case Types.GALLERY_PREVIEW_WND:
+      attrs = { image: itemPayload.value };
+      break;
+
+    case Types.REFRESH_TABLE:
+      if (activeitem.fupaData === undefined || activeitem.fupaData === null)
+        return null;
+      return {
+        id: activeitem.id,
+        fupaData: activeitem.fupaData,
+        action: "refreshTable"
+      };
+
+    case Types.BUTTON_DUPLICATE:
+      return { id: activeitem.id, props: attrs, action: "duplicate" };
+
+    case Types.SLIDER_OPACITY_WND:
+      attrs = { opacity: itemPayload.value / 100 };
+      break;
+
     default:
       break;
   }
@@ -336,6 +469,7 @@ module.exports = {
   LoadImageSettings,
   LoadImageAdditionalInfo,
   LoadTextSettings,
+  LoadTinymceTableSettings,
   LoadTextAdditionalInfo,
   CreatePayload,
   calculateToolBarPosition

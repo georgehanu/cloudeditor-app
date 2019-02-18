@@ -10,6 +10,9 @@ const ToolbarArea = require("../../core/components/Toolbar/ToolbarItems/ToolbarA
 const SettingsWnd = require("../../core/components/Toolbar/ToolbarItems/SettingsWnd/SettingsWnd");
 const ImageToolbar = require("../components/Toolbar/ToolbarTypes/image");
 const TextToolbar = require("../components/Toolbar/ToolbarTypes/text");
+const BackgroundToolbar = require("../components/Toolbar/ToolbarTypes/background");
+const TinymceToolbar = require("../components/Toolbar/ToolbarTypes/tinymce");
+const FupaToolbar = require("../components/Toolbar/ToolbarTypes/fupa");
 
 const { setObjectFromToolbar } = require("../stores/actions/toolbar");
 const {
@@ -25,6 +28,9 @@ const { uiFontsSelector } = require("../../core/stores/selectors/ui");
 
 const textToolbar = { width: 396, height: 92 };
 const imageToolbar = { width: 445, height: 47 };
+const backgroundToolbar = { width: 485, height: 47 };
+const tinymceToolbar = { width: 396, height: 92 };
+const fupaToolbar = { width: 402, height: 92 };
 
 class Toolbar extends React.Component {
   state = {
@@ -164,7 +170,20 @@ class Toolbar extends React.Component {
 
     let attributes = {};
     let toolbarType = null;
-    if (activeItem.type === "image") {
+    if (activeItem.type === "image" && activeItem.backgroundblock) {
+      toolbarType = backgroundToolbar;
+      toolbarData = Utils.LoadImageSettings(
+        BackgroundToolbar,
+        activeItem,
+        this.props.activeLayer,
+        {
+          pageDimmensions: this.props.pageDimmensions,
+          uiPageOffset: this.props.uiPageOffset
+        },
+        true
+      );
+      attributes = Utils.LoadImageAdditionalInfo(activeItem, true);
+    } else if (activeItem.type === "image") {
       toolbarType = imageToolbar;
       toolbarData = Utils.LoadImageSettings(
         ImageToolbar,
@@ -181,8 +200,7 @@ class Toolbar extends React.Component {
       activeItem.type === "textbox" ||
       activeItem.type === "textflow" ||
       activeItem.type === "textline" ||
-      activeItem.type === "text" ||
-      activeItem.type === "tinymce"
+      activeItem.type === "text"
     ) {
       toolbarType = textToolbar;
       toolbarData = Utils.LoadTextSettings(
@@ -191,6 +209,27 @@ class Toolbar extends React.Component {
         this.props.activeLayer,
         this.props.uiFonts
       );
+      attributes = Utils.LoadTextAdditionalInfo(activeItem);
+    } else if (activeItem.type === "tinymceTable") {
+      if (activeItem.fupaData === undefined || activeItem.fupaData === null) {
+        return null;
+        /*toolbarType = tinymceToolbar;
+        toolbarData = Utils.LoadTextSettings(
+          TinymceToolbar,
+          activeItem,
+          this.props.activeLayer,
+          this.props.uiFonts
+        );*/
+      } else {
+        toolbarType = fupaToolbar;
+        toolbarData = Utils.LoadTextSettings(
+          FupaToolbar,
+          activeItem,
+          this.props.activeLayer,
+          this.props.uiFonts
+        );
+      }
+
       attributes = Utils.LoadTextAdditionalInfo(activeItem);
     }
     if (toolbarData === null) return null;
@@ -295,7 +334,12 @@ const ToolbarPlugin = connect(
 module.exports = {
   Toolbar: assign(ToolbarPlugin, {
     Html5Renderer: {
-      blurSelectors: ["ToolbarContainer", "pageBlock"]
+      blurSelectors: [
+        "ToolbarContainer",
+        "pageBlock",
+        "sweet-overlay",
+        "sweet-alert"
+      ]
     }
   }),
   reducers: { toolbar: require("../stores/reducers/toolbar") },

@@ -3,11 +3,13 @@ const {
   CHANGE_WORKAREA_PROPS,
   CHANGE_RERENDER_ID,
   UI_ADD_COLOR,
-  UI_ADD_LAST_USED_COLOR
+  UI_ADD_LAST_USED_COLOR,
+  UI_REMOVE_COLOR
 } = require("../actionTypes/ui");
 const uuidv4 = require("uuid/v4");
 
 const LAST_USED_COLORS_COUNTER = 5;
+const { omit } = require("ramda");
 
 const { handleActions } = require("redux-actions");
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -46,7 +48,8 @@ const addColor = (state, color, activeTab) => {
     htmlRGB: color.htmlRGB,
     RGB: color.RGB,
     CMYK: color.CMYK,
-    type: [activeTab]
+    type: [activeTab],
+    new: true
   };
   return {
     ...state,
@@ -76,6 +79,19 @@ const addLastUsedColor = (state, payload) => {
   };
 };
 
+const removeColor = (state, color, activeTab) => {
+  const newColors = omit([color.id], state.colors);
+  const newLastUsedColors = state.lastUsedColors.filter(el => {
+    return el !== color.id;
+  });
+
+  return {
+    ...state,
+    colors: newColors,
+    lastUsedColors: newLastUsedColors
+  };
+};
+
 module.exports = handleActions(
   {
     [CHANGE_ZOOM]: (state, action) => {
@@ -92,6 +108,9 @@ module.exports = handleActions(
     },
     [UI_ADD_LAST_USED_COLOR]: (state, action) => {
       return addLastUsedColor(state, action.payload);
+    },
+    [UI_REMOVE_COLOR]: (state, action) => {
+      return removeColor(state, action.payload.color, action.payload.activeTab);
     }
   },
   initialState
