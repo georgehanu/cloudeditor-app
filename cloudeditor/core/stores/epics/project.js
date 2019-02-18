@@ -255,14 +255,17 @@ module.exports = {
           let print_options = {
             ...productInformation.productOptions.print_options
           };
+          let ok = true;
           Object.keys(print_options).map(obKey => {
             if (
               typeof productInformation.productOptions.print_options[obKey][
                 "pages"
-              ] != "undefined"
+              ] != "undefined" &&
+              ok
             )
               productInformation.productOptions.print_options[obKey]["pages"] =
-                "p" + state$.value.project.pagesOrder.length;
+                "pages" + state$.value.project.pagesOrder.length;
+            ok = false;
           });
 
           const serverData = {
@@ -285,14 +288,18 @@ module.exports = {
           let print_options = {
             ...productInformation.productOptions.print_options
           };
+          let ok = true;
           Object.keys(print_options).map(obKey => {
             if (
               typeof productInformation.productOptions.print_options[obKey][
                 "pages"
-              ] != "undefined"
-            )
+              ] != "undefined" &&
+              ok
+            ) {
               productInformation.productOptions.print_options[obKey]["pages"] =
-                "p" + state$.value.project.pagesOrder.length;
+                "pages" + state$.value.project.pagesOrder.length;
+              ok = false;
+            }
           });
 
           const serverData = {
