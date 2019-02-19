@@ -4,6 +4,7 @@ const assign = require("object-assign");
 const { connect } = require("react-redux");
 const ImagePreview = require("./components/ImagePreview");
 const { debounce } = require("underscore");
+const { zoomSelector } = require("../../core/stores/selectors/ui");
 
 require("./PrintPreview.css");
 
@@ -83,11 +84,14 @@ class PrintPreview extends React.Component {
   };
 
   render() {
+    const previewImagecontainer =
+      "previewImagecontainer " +
+      (this.props.zoomValue < 1.05 ? "" : "previewImagecontainerOverflow");
     return (
       <div className="projectPreviewContainer">
         <div className="previewContainer">
           <div
-            className="previewImagecontainer"
+            className={previewImagecontainer}
             id="previewImagecontainerId"
             ref={this.previewContainer}
             onMouseEnter={this.onMouseEnterHandler}
@@ -99,7 +103,7 @@ class PrintPreview extends React.Component {
               onMouseEnterHandler={this.onMouseEnterHandler}
               onMouseLeaveHandler={this.onMouseLeaveHandler}
               width={this.state.imageContainerWidth}
-              height={this.state.imageContainerHeight}
+              height={this.state.imageContainerHeight * this.props.zoomValue}
               previewPageUrl={this.props.previewPageUrl}
             />
           </div>
@@ -112,7 +116,8 @@ class PrintPreview extends React.Component {
 const mapStateToProps = state => {
   return {
     previewPageUrl: previewPageUrlSelector(state),
-    loading: previewLoadingSelector(state)
+    loading: previewLoadingSelector(state),
+    zoomValue: zoomSelector(state)
   };
 };
 
