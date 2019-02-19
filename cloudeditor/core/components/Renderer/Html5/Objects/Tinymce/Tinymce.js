@@ -277,6 +277,9 @@ class Tinymce extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.viewOnly) {
+      this.tinyEditor = null;
+    }
     if (this.tinyEditor && this.tinyEditor.selection === null) return;
     if (
       this.tinyEditor &&

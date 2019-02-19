@@ -273,6 +273,9 @@ class ObjectBlock extends React.Component {
       backgroundblock
     } = props;
 
+    const newWidth = width + borderWidth * 2;
+    const newHeight = height + borderWidth * 2;
+
     const classes = [
       "pageBlock",
       type,
@@ -285,11 +288,12 @@ class ObjectBlock extends React.Component {
     ].join(" ");
 
     const style = {
-      width,
-      height,
+      width: newWidth,
+      height: newHeight,
       left: left + offsetLeft,
       top: top + offsetTop,
       transform: "rotate(" + rotateAngle + "deg)",
+      padding: borderWidth,
       backgroundColor:
         subType !== "tinymceTable" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
@@ -298,13 +302,11 @@ class ObjectBlock extends React.Component {
       style["left"] = parent.width - style["left"] - width;
     }
     const styleBorderColor = {
-      width: width + parseFloat(borderWidth),
-      height: height + parseFloat(borderWidth),
+      width: newWidth,
+      height: newHeight,
       borderColor:
         subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
-      top: (-1 * parseFloat(borderWidth)) / 2,
-      left: (-1 * parseFloat(borderWidth)) / 2
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : ""
     };
     let styleNorth = {};
 
@@ -350,7 +352,7 @@ class ObjectBlock extends React.Component {
           {block}
         </div>
         {<div className={"blockBorder"} style={styleBorderColor} />}
-        <u style={{ width, height }} />
+        <u style={{ width: newWidth, height: newHeight }} />
 
         {rotatableHandle}
         {deleteHandle}

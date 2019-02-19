@@ -8,10 +8,11 @@ const textarea = props => {
         <div className="inputLabel">{props.label}</div>
         <div className="textareaLabelContent inputLabelContent">
           <textarea
-            value={props.text}
+            defaultValue={props.text}
             onChange={props.onInputChange}
             name={props.name}
             rows="3"
+            placeholder={props.placeholder}
           />
         </div>
       </label>
