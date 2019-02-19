@@ -110,3 +110,10 @@ body.submenuHeaderFooter
 #tinymceFontValue {
   width: 60px;
 }
+
+.mce-tinymce.mce-tinymce-inline .mce-i-fupaBackcolor:before {
+  content: "\e01a";
+}
+.mce-tinymce.mce-tinymce-inline .mce-i-fupaBackcolor {
+  background: #bbb;
+}

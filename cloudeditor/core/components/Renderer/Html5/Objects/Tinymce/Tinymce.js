@@ -532,7 +532,8 @@ class Tinymce extends React.PureComponent {
         <Editor
           value={tableContent === "" ? pasteContent : tableContent}
           init={{
-            plugins: "table autoresize paste textcolor colorpicker",
+            plugins:
+              "table autoresize paste textcolor colorpicker fupaColorPicker",
             paste_retain_style_properties: "all",
             paste_webkit_styles: "all",
             paste_retain_style_properties: "all",
@@ -575,9 +576,22 @@ class Tinymce extends React.PureComponent {
             toolbar: false,
             fontsize_formats: "px",
             font_formats: this.props.uiFonts,
+            style_formats: [
+              {
+                deep: false,
+                defaultBlock: "div",
+                inherit: false,
+                preview: "font-family font-size",
+                remove: "none",
+                selector: "figure,p,h1,h2,h3,h4,h5,h6,td,th,tr,div,ul,ol,li",
+                styles: {
+                  backgroundColor: "%value"
+                }
+              }
+            ],
 
             table_toolbar:
-              "tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor backcolor fontselect decrementFontSize fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
+              "tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor fupaBackcolor fontselect decrementFontSize fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
             content_css: [
               PRODUCTION
                 ? globalConfig.baseUrl +
