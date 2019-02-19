@@ -162,6 +162,12 @@ class Html5 extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateContainerDimensions);
+    window.removeEventListener("resizePage", this.updateContainerDimensions);
+    document.removeEventListener("mousedown", this.blurAction);
+  }
+
   render() {
     const { pageReady } = this.state;
     let globalSpinner = null;
