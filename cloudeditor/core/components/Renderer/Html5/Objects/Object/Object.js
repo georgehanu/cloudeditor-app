@@ -11,6 +11,7 @@ const withResizable = require("../hoc/withResizable/withResizable");
 const withRotatable = require("../hoc/withRotatable/withRotatable");
 const withSnap = require("../hoc/withSnap/withSnap");
 const Tinymce = require("../Tinymce/Tinymce");
+const TinymcePagination = require("../Tinymce/TinymcePagination");
 
 const {
   createDeepEqualSelector: createSelector
@@ -215,7 +216,19 @@ class ObjectBlock extends React.Component {
       borderColor: props.borderColor.htmlRGB,
       toolbarUpdate: props.toolbarUpdate
     };
-    const block = (
+    const block = this.props.viewOnly ? (
+      <TinymcePagination
+        key={this.props.id}
+        id={this.props.id}
+        uuid={this.props.uuid}
+        tableContent={this.props.tableContent}
+        height={this.props.height}
+        width={this.props.width}
+        zoomScale={this.props.zoomScale}
+        viewOnly={this.props.viewOnly}
+        {...tableProps}
+      />
+    ) : (
       <Tinymce
         key={this.props.id}
         id={this.props.id}

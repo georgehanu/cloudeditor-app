@@ -505,17 +505,7 @@ class Tinymce extends React.PureComponent {
     }
 
     if (this.props.viewOnly) {
-      return (
-        <div
-          className="dummyTableContainer"
-          style={{
-            width: width / zoomScale,
-            height: height / zoomScale,
-            transform: "scale(" + zoomScale + ")"
-          }}
-          dangerouslySetInnerHTML={{ __html: tableContent }}
-        />
-      );
+      return null;
     } else {
       this.resetTableDim();
     }
