@@ -5,7 +5,7 @@ const {
   DAG_SIGNIN_START,
   DAG_SIGNIN_SUCCESS,
   DAG_SIGNIN_FAILED
-} = require("./actionTypes");
+} = require("./actionTypes/designAndGo");
 
 const { dagChangeRenderId } = require("./actions");
 const axios = require("axios");

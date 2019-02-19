@@ -29,6 +29,10 @@ const {
   scaleSelector
 } = require("../../../stores/selectors/ui");
 
+const {
+  getRightAlternateLayoutSelector
+} = require("../../../../plugins/DesignAndGo/store/selectors/alternateLayouts");
+
 require("./Fabric.css");
 
 class Fabric extends React.Component {
@@ -103,6 +107,7 @@ class Fabric extends React.Component {
         width: this.containerRef.offsetWidth,
         height: this.containerRef.offsetHeight
       };
+
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
@@ -127,6 +132,9 @@ class Fabric extends React.Component {
   componentDidMount() {
     this.updateContainerDimensions();
     window.addEventListener("resize", this.updateContainerDimensions);
+  }
+  componentDidUpdate() {
+    debugger;
   }
   onBeforeOverlayHandler = params => {
     if (params.canvas.interactive) {
@@ -283,7 +291,8 @@ const makeMapStateToProps = (state, props) => {
     return {
       activePage: getDisplayedPageSelector(state, props),
       canvasDimm: canvasSelector(state, props),
-      scale: scaleSelector(state, props)
+      scale: scaleSelector(state, props),
+      alternateLayout: getRightAlternateLayoutSelector(state)
     };
   };
   return mapStateToProps;

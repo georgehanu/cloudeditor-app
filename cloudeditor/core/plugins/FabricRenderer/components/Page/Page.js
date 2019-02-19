@@ -54,7 +54,6 @@ class Page extends React.Component {
           height={containerHeight}
           canvasOffsetX={pageOffsetX}
           canvasOffsetY={pageOffsetY}
-          // canvasScale={scale}
           scale={scale}
           canvasWorkingWidth={width}
           canvasWorkingHeight={height}

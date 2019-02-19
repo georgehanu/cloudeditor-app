@@ -47,7 +47,8 @@ const getObjectsDefaults = cfg => {
       borderColor: getObjectColorTemplate(
         (general && general.borderColor) || {}
       ),
-      borderWidth: 0
+      borderWidth: 0,
+      rule_properties: {}
     },
     general || {}
   );
@@ -177,7 +178,8 @@ const getPagesDefaults = cfg => {
     {
       defaults: {
         width: 1080,
-        height: 1080
+        height: 1080,
+        rule: null
       },
       boxes: {
         trimbox: {
@@ -232,7 +234,8 @@ const getProjectPageTemplate = cfg => {
     width: pathOr(1080, ["width"], cfg),
     height: pathOr(1080, ["height"], cfg),
     objectsIds: pathOr([], ["objectsIds"], cfg),
-    background: pathOr(background, ["background"], cfg)
+    background: pathOr(background, ["background"], cfg),
+    rule: "scale"
   };
 };
 
@@ -940,6 +943,14 @@ const getDGProject = cfg => {
   };
 };
 
+const getDGAlternateLayoutPages = cfg => {
+  let page1 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
+
+  return {
+    [page1.id]: page1
+  };
+};
+
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
@@ -950,7 +961,8 @@ const ProjectUtils = {
   getRandomUI,
   getEmptyColor,
   getEmptyFont,
-  getDGProject
+  getDGProject,
+  getDGAlternateLayoutPages
 };
 
 module.exports = ProjectUtils;

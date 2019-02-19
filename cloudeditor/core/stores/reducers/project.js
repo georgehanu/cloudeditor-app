@@ -328,10 +328,6 @@ module.exports = handleActions(
         selectedObjectsIds: []
       };
     }
-    // [OBJECTS_READY]: (state, action) => {
-    //   console.log("objects Ready");
-    //   return state;
-    // }
   },
   initialState
 );

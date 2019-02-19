@@ -73,6 +73,9 @@ const DesignAndGoPlugin = withNamespaces("designAndGo")(DesignAndGo);
 
 module.exports = {
   DesignAndGo: assign(DesignAndGoPlugin),
-  reducers: { designAndGo: require("./store/reducers") },
+  reducers: {
+    designAndGo: require("./store/reducers/general"),
+    alternateLayouts: require("./store/reducers/alternateLayouts")
+  },
   epics: require("./store/epics")
 };

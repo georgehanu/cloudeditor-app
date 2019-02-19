@@ -1,4 +1,4 @@
-const Types = require("../components/DesignAndGoConfig/types");
+const Types = require("../../components/DesignAndGoConfig/types");
 const uuidv4 = require("uuid/v4");
 const {
   DAG_UPLOAD_IMAGE,
@@ -12,16 +12,14 @@ const {
   DAG_SIGNIN_FAILED,
   DAG_SIGNIN_SUCCESS,
   DAG_SIGNIN_CLEAR_MESSAGE,
-  DAG_CHANGE_RENDER_ID
-} = require("./actionTypes");
+  DAG_CHANGE_RENDER_ID,
+  DAG_CHANGE_DIMMENSIONS
+} = require("./../actionTypes/designAndGo");
 
+const { merge } = require("ramda");
 const { handleActions } = require("redux-actions");
 
 const initialState = {
-  realDimension1: {
-    width: 30,
-    height: 42.95
-  },
   realDimension: projectConfigGlobal["realDimension"],
   loading: false,
   imagePath: null,
@@ -292,6 +290,14 @@ module.exports = handleActions(
       return {
         ...state,
         renderId: uuidv4()
+      };
+    },
+    [DAG_CHANGE_DIMMENSIONS]: (state, action) => {
+      //return state;
+      //debugger;
+      return {
+        ...state,
+        realDimension: merge(state.realDimension, action.payload)
       };
     }
   },

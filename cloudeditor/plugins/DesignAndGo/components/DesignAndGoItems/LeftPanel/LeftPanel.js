@@ -9,9 +9,20 @@ const {
   dagDataDescriptionSelector
 } = require("../../../store/selectors");
 
+const {
+  dagChangeDimmensions
+} = require("../../../../DesignAndGo/store/actions");
+
 const { connect } = require("react-redux");
 
 class LeftPanel extends React.Component {
+  _handleKeyPress = e => {
+    if (e.key === "Enter") {
+      this.props.onChangeDimmensionsHandler({
+        [e.target.name]: e.target.value
+      });
+    }
+  };
   render() {
     return (
       <div className="LeftPanel">
@@ -47,6 +58,21 @@ class LeftPanel extends React.Component {
             <Fields />
           </div>
         </div>
+
+        <div className="Dimmensions">
+          <label>
+            Width:
+            <input type="text" name="width" onKeyPress={this._handleKeyPress} />
+          </label>
+          <label>
+            Height:
+            <input
+              type="text"
+              name="height"
+              onKeyPress={this._handleKeyPress}
+            />
+          </label>
+        </div>
       </div>
     );
   }
@@ -60,7 +86,11 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    onChangeDimmensionsHandler: payload => {
+      dispatch(dagChangeDimmensions(payload));
+    }
+  };
 };
 
 module.exports = connect(

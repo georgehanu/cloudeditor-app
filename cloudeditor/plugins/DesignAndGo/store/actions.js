@@ -6,8 +6,9 @@ const {
   DAG_CHANGE_INPUT,
   DAG_SIGNIN_START,
   DAG_SIGNIN_CLEAR_MESSAGE,
-  DAG_CHANGE_RENDER_ID
-} = require("./actionTypes");
+  DAG_CHANGE_RENDER_ID,
+  DAG_CHANGE_DIMMENSIONS
+} = require("./actionTypes/designAndGo");
 const { createActions } = require("redux-actions");
 
 const { dagUploadImage } = createActions(DAG_UPLOAD_IMAGE);
@@ -20,6 +21,7 @@ const { dagChangeInput } = createActions(DAG_CHANGE_INPUT);
 const { dagSigninStart } = createActions(DAG_SIGNIN_START);
 const { dagSigninClearMessage } = createActions(DAG_SIGNIN_CLEAR_MESSAGE);
 const { dagChangeRenderId } = createActions(DAG_CHANGE_RENDER_ID);
+const { dagChangeDimmensions } = createActions(DAG_CHANGE_DIMMENSIONS);
 
 module.exports = {
   dagUploadImage,
@@ -29,5 +31,6 @@ module.exports = {
   dagChangeInput,
   dagSigninStart,
   dagSigninClearMessage,
-  dagChangeRenderId
+  dagChangeRenderId,
+  dagChangeDimmensions
 };

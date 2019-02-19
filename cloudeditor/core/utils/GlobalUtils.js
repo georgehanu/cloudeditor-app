@@ -21,14 +21,19 @@ const GlobalUtils = {
   },
   getCanvasImage: function() {
     if (canvas) {
-      return canvas.toDataURL({
+      var image = canvas.toDataURL({
         left: canvas.getCanvasOffsetX(),
         top: canvas.getCanvasOffsetY(),
         width: canvas.getCanvasWorkingWidth(),
         height: canvas.getCanvasWorkingHeight(),
         format: "png"
       });
+      canvas.renderAll();
+      return image;
     }
+  },
+  mmToPx: function(value) {
+    return parseFloat(value) * 3.779527559;
   }
 };
 

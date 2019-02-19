@@ -22,8 +22,9 @@ const pagesSelector = state => {
   return pathOr({}, ["project", "pages"], state);
 };
 
-const useTrimboxSelector = state =>
+const useTrimboxSelector = state => {
   pathOr(false, ["project", "configs", "document", "showTrimbox"], state);
+};
 
 const pagesOrderSelector = state => {
   return pathOr([], ["project", "pagesOrder"], state);

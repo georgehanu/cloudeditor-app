@@ -13,14 +13,20 @@ body,
   margin: 0 auto;
 }
 
-.renderContainer {
-  /*z-index: 99999;*/
+/*.renderContainer {
+  z-index: 99999;
   position: absolute;
   left: -600px;
   top: -600px;
   visibility: hidden;
+}*/
+.renderContainer {
+  z-index: 9999999;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  visibility: visible;
 }
-
 .canvasContainer {
   display: block;
   width: 600px;
