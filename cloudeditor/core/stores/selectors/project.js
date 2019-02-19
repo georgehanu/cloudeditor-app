@@ -30,6 +30,8 @@ const activePageIdSelector = state =>
 
 const titleSelector = state =>
   pathOr("Empty project", ["project", "title"], state);
+const projectIdSelector = state =>
+  pathOr(null, ["project", "projectId"], state);
 
 /* Start Document Config Selectors */
 
@@ -474,6 +476,7 @@ module.exports = {
   columnsNoPagesConfigSelector,
   objectsDefaultConfigSelector,
   titleSelector,
+  projectIdSelector,
   blockActionsPagesConfigSelector,
   deletePagePagesConfigSelector,
   projDescriptionSelector,

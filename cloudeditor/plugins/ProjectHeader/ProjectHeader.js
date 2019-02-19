@@ -11,7 +11,8 @@ const ConfigUtils = require("../../core/utils/ConfigUtils");
 const {
   titleSelector,
   getNumberOfPagesSelector,
-  pagesOrderSelector
+  pagesOrderSelector,
+  projectIdSelector
 } = require("../../core/stores/selectors/project");
 const {
   getProductNameSelector,
@@ -97,6 +98,10 @@ class ProjectHeader extends React.Component {
         this.props.stopGlobalLoading();
       });
   };
+  emptyProjectHandler = () => {
+    if (this.props.projectId) {
+    }
+  };
   render() {
     const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
     const addToCartTooltip = showPagesWarning
@@ -109,7 +114,12 @@ class ProjectHeader extends React.Component {
           <span className="projectHeaderTitle">
             {this.props.t("My project")}:
           </span>
-          <span className="projectHeaderName">{this.props.projectTitle}</span>
+          <span
+            onClick={this.emptyProjectHandler}
+            className="projectHeaderName"
+          >
+            {this.props.projectTitle}
+          </span>
           <span className="projectHeaderSeparator">|</span>
           <div className="printPreviewButtonContainer">
             <button
@@ -146,6 +156,7 @@ class ProjectHeader extends React.Component {
 const mapStateToProps = state => {
   return {
     projectTitle: titleSelector(state),
+    projectId: projectIdSelector(state),
     productName: getProductNameSelector(state),
     numberOfPages: getNumberOfPagesSelector(state),
     totalPrice: getTotalPriceSelector(state),
