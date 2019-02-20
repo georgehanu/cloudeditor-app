@@ -216,7 +216,8 @@ class Page extends React.Component {
       viewOnly,
       headerConfig,
       footerConfig,
-      containerUuid
+      containerUuid,
+      t
     } = this.props;
     let objectsOffset = [];
     forEachObjIndexed((innerPage, pKey) => {
@@ -287,7 +288,8 @@ class Page extends React.Component {
           offsetLeft: offset.left,
           offsetTop: offset.top,
           mirroredHeader,
-          parent
+          parent,
+          t: t
         };
 
         if (hasHeader && includes(cV, headerConfig.objectsIds)) {
@@ -315,6 +317,7 @@ class Page extends React.Component {
         setMissingImages={this.props.setMissingImages}
         deleteMissingImages={this.props.deleteMissingImages}
         viewOnly={viewOnly}
+        t={t}
       />
     );
   }
@@ -329,6 +332,7 @@ class Page extends React.Component {
           id={obKey}
           delay={10000}
           viewOnly={this.props.viewOnly}
+          t={this.props.t}
         />
       );
     });

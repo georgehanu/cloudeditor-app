@@ -3,7 +3,6 @@ const PropTypes = require("prop-types");
 const { connect } = require("react-redux");
 const { compose } = require("redux");
 const { includes, equals, omit } = require("ramda");
-const { withNamespaces } = require("react-i18next");
 const $ = require("jquery");
 
 const withDraggable = require("../hoc/withDraggable/withDraggable");
@@ -244,6 +243,7 @@ class ObjectBlock extends React.Component {
         viewOnly={this.props.viewOnly}
         active={this.props.active}
         uiFonts={this.props.uiFonts}
+        t={this.props.t}
         {...tableProps}
       />
     );
@@ -463,7 +463,9 @@ class ObjectBlock extends React.Component {
       <React.Fragment>
         <div className={classes} style={style}>
           {innerBlocks}
-          <div className="helperName">{this.props.t(typeText)}</div>
+          <div className="helperName">
+            {this.props.t !== undefined ? this.props.t(typeText) : typeText}
+          </div>
         </div>
         {this.props.viewOnly === 0 && (activeHeader || activeFooter) && (
           <div className="headerFooterOverlay" style={overlayStyle}>
@@ -577,7 +579,6 @@ module.exports = connect(
   mapDispatchToProps
 )(
   compose(
-    withNamespaces("translate"),
     withDraggable,
     withResizable,
     withRotatable,

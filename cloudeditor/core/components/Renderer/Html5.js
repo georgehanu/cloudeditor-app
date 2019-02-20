@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
 
 const withPageGroups = require("../../hoc/renderer/withPageGroups");
+const { withNamespaces } = require("react-i18next");
 
 const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
@@ -199,6 +200,7 @@ class Html5 extends React.Component {
           onChangePage={this.props.onChangePageHandler}
           deleteMissingImages={this.deleteMissingImages}
           setMissingImages={this.setMissingImages}
+          t={this.props.t}
         />
       </React.Fragment>
     );
@@ -256,5 +258,5 @@ module.exports = hot(module)(
   connect(
     makeMapStateToProps,
     mapDispatchToProps
-  )(withPageGroups(Html5))
+  )(withPageGroups(withNamespaces("translate")(Html5)))
 );

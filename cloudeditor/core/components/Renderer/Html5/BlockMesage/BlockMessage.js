@@ -1,5 +1,4 @@
 const React = require("react");
-const { withNamespaces } = require("react-i18next");
 
 require("./BlockMessage.css");
 const { equals, omit } = require("ramda");
@@ -96,4 +95,4 @@ class BlockMessage extends React.Component {
   }
 }
 
-module.exports = withNamespaces("blockMessage")(BlockMessage);
+module.exports = BlockMessage;

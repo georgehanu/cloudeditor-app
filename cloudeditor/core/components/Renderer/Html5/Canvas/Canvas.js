@@ -177,7 +177,11 @@ class Canvas extends React.Component {
 
     return (
       <div className="canvasContainer" ref={getCanvasRef}>
-        <Zoom {...otherProps} onChangePage={this.onClickChangePageHandler} />
+        <Zoom
+          {...otherProps}
+          onChangePage={this.onClickChangePageHandler}
+          t={this.props.t}
+        />
         {pageNumbers}
         {bottomPagination}
         {sidePagination}

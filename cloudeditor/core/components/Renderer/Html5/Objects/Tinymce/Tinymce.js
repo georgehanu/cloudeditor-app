@@ -6,7 +6,6 @@ require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 const { debounce } = require("underscore");
-const { withNamespaces } = require("react-i18next");
 const striptags = require("striptags");
 const ConfigUtils = require("../../../../../utils/ConfigUtils");
 
@@ -677,4 +676,4 @@ class Tinymce extends React.PureComponent {
   }
 }
 
-module.exports = withNamespaces("translate")(Tinymce);
+module.exports = Tinymce;

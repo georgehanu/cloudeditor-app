@@ -11,5 +11,7 @@
   "Preview RGB": "Preview RGB",
   "You must paste a table": "You must paste a table",
   "Paste Your Table Here": "Paste Your Table Here",
-  "Contents of Fupa.net": "Contents of Fupa.net"
+  "Contents of Fupa.net": "Contents of Fupa.net",
+  "Dieses Element befindet sich außerhalb des Druckbereiches.": "Dieses Element befindet sich außerhalb des Druckbereiches.",
+  "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden.": "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden."
 }
