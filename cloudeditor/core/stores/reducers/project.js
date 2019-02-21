@@ -1,13 +1,4 @@
-const {
-  append,
-  mergeDeepLeft,
-  forEachObjIndexed,
-  reduce,
-  without,
-  isEmpty,
-  forEach,
-  merge
-} = require("ramda");
+const { append, mergeDeepLeft, forEachObjIndexed, reduce, without, isEmpty, forEach, merge } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT,
@@ -163,12 +154,7 @@ const initialState = {
 };
 
 const swap = (index1, index2, list) => {
-  if (
-    index1 < 0 ||
-    index2 < 0 ||
-    index1 > list.length - 1 ||
-    index2 > list.length - 1
-  ) {
+  if (index1 < 0 || index2 < 0 || index1 > list.length - 1 || index2 > list.length - 1) {
     return list; // index out of bound
   }
   const value1 = list[index1];
@@ -188,21 +174,14 @@ const applyLiquidRules = payloadData => {
     alternateLayout = payloadData.layout;
   if (!isEmpty(alternateLayout.pages)) {
     forEachObjIndexed((pageData, pKey) => {
+      let scale = Math.min(realProductDim.height / pageData.height, realProductDim.width / pageData.width);
       switch (pageData.rule) {
         case "scale":
-          let scale = Math.min(
-            realProductDim.height / pageData.height,
-            realProductDim.width / pageData.width
-          );
           if (!isEmpty(pageData.objectsIds)) {
             forEach(blockID => {
               if (alternateLayout.objects[blockID]) {
-                let newLeft =
-                    alternateLayout.objects[blockID].left * scale +
-                    (realProductDim.width - pageData.width * scale) / 2,
-                  newTop =
-                    alternateLayout.objects[blockID].top * scale +
-                    (realProductDim.height - pageData.height * scale) / 2;
+                let newLeft = alternateLayout.objects[blockID].left * scale + (realProductDim.width - pageData.width * scale) / 2,
+                  newTop = alternateLayout.objects[blockID].top * scale + (realProductDim.height - pageData.height * scale) / 2;
 
                 alternateLayout = {
                   ...alternateLayout,
@@ -221,7 +200,85 @@ const applyLiquidRules = payloadData => {
             }, pageData.objectsIds);
           }
           break;
+        case "reCenter":
+          if (!isEmpty(pageData.objectsIds)) {
+            forEach(blockID => {
+              if (alternateLayout.objects[blockID]) {
+                let newLeft = alternateLayout.objects[blockID].left + (realProductDim.width - pageData.width) / 2,
+                  newTop = alternateLayout.objects[blockID].top + (realProductDim.height - pageData.height) / 2;
+
+                alternateLayout = {
+                  ...alternateLayout,
+                  objects: {
+                    ...alternateLayout.objects,
+                    [blockID]: {
+                      ...alternateLayout.objects[blockID],
+                      left: newLeft,
+                      top: newTop
+                    }
+                  }
+                };
+              }
+            }, pageData.objectsIds);
+          }
+          break;
         case "objectBased":
+        case "guideBased":
+          if (!isEmpty(pageData.objectsIds)) {
+            forEach(blockID => {
+              if (alternateLayout.objects[blockID]) {
+                let newWidth = alternateLayout.objects[blockID].width,
+                  newHeight = alternateLayout.objects[blockID].height,
+                  newLeft = alternateLayout.objects[blockID].left,
+                  newTop = alternateLayout.objects[blockID].top;
+
+                if (alternateLayout.objects[blockID].hasOwnProperty("rule_proprieties")) {
+                  if (alternateLayout.objects[blockID].rule_proprieties["widthResizable"]) {
+                    const scaleWidth = realProductDim.width / pageData.width;
+                    newWidth = alternateLayout.objects[blockID].width * scaleWidth;
+
+                    if (alternateLayout.objects[blockID].rule_proprieties["leftMarginFixed"] && alternateLayout.objects[blockID].rule_proprieties["rightMarginFixed"]) {
+                      newWidth = alternateLayout.objects[blockID].width + (realProductDim.width - pageData.width);
+                    }
+                  }
+                  if (alternateLayout.objects[blockID].rule_proprieties["heightResizable"]) {
+                    const scaleHeight = realProductDim.height / pageData.height;
+                    newHeight = alternateLayout.objects[blockID].height * scaleHeight;
+
+                    if (alternateLayout.objects[blockID].rule_proprieties["topMarginFixed"] && alternateLayout.objects[blockID].rule_proprieties["topMarginFixed"]) {
+                      newHeight = alternateLayout.objects[blockID].height + (realProductDim.height - pageData.height);
+                    }
+                  }
+
+                  if (!alternateLayout.objects[blockID].rule_proprieties["topMarginFixed"]) {
+                    newTop = alternateLayout.objects[blockID].top + (realProductDim.height - pageData.height) / 2 - (newHeight - alternateLayout.objects[blockID].height);
+                  }
+                  if (!alternateLayout.objects[blockID].rule_proprieties["leftMarginFixed"]) {
+                    newLeft = alternateLayout.objects[blockID].left + (realProductDim.width - pageData.width) / 2 - (newWidth - alternateLayout.objects[blockID].width);
+                  }
+                  if (alternateLayout.objects[blockID].rule_proprieties["rightMarginFixed"]) {
+                    newLeft = alternateLayout.objects[blockID].left + (realProductDim.width - pageData.width) - (newWidth - alternateLayout.objects[blockID].width);
+                  }
+                  if (alternateLayout.objects[blockID].rule_proprieties["bottomMarginFixed"]) {
+                    newTop = alternateLayout.objects[blockID].top + (realProductDim.height - pageData.height) - (newHeight - alternateLayout.objects[blockID].height);
+                  }
+                }
+                alternateLayout = {
+                  ...alternateLayout,
+                  objects: {
+                    ...alternateLayout.objects,
+                    [blockID]: {
+                      ...alternateLayout.objects[blockID],
+                      width: newWidth,
+                      height: newHeight,
+                      left: newLeft,
+                      top: newTop
+                    }
+                  }
+                };
+              }
+            }, pageData.objectsIds);
+          }
           break;
       }
       alternateLayout = {
@@ -304,10 +361,7 @@ module.exports = handleActions(
         ...state,
         objects: {
           ...state.objects,
-          [action.payload.id]: merge(
-            state.objects[action.payload.id],
-            action.payload.props
-          )
+          [action.payload.id]: merge(state.objects[action.payload.id], action.payload.props)
         }
       };
     },
@@ -328,20 +382,14 @@ module.exports = handleActions(
 
       if (layerAction === "bringtofront") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          ...newObjectsId,
-          state.pages[state.activePage].objectsIds[objIndex]
-        ];
+        newObjectsId = [...newObjectsId, state.pages[state.activePage].objectsIds[objIndex]];
       } else if (layerAction === "bringforward") {
         newObjectsId = swap(objIndex, objIndex + 1, newObjectsId);
       } else if (layerAction === "sendbackward") {
         newObjectsId = swap(objIndex, objIndex - 1, newObjectsId);
       } else if (layerAction === "sendtoback") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          state.pages[state.activePage].objectsIds[objIndex],
-          ...newObjectsId
-        ];
+        newObjectsId = [state.pages[state.activePage].objectsIds[objIndex], ...newObjectsId];
       }
 
       return {
@@ -372,11 +420,9 @@ module.exports = handleActions(
       let newObjects = { ...state.objects };
       delete newObjects[action.payload.id];
 
-      const newObjectsId = state.pages[state.activePage].objectsIds.filter(
-        el => {
-          return el !== action.payload.id;
-        }
-      );
+      const newObjectsId = state.pages[state.activePage].objectsIds.filter(el => {
+        return el !== action.payload.id;
+      });
 
       return {
         ...state,

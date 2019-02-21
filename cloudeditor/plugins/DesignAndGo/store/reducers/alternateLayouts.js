@@ -15,11 +15,8 @@ const initialState = [
         id: "page_1",
         width: 500,
         height: 733,
-        objectsIds: [
-          "287b6ff5-7ee6-4251-b38a-6ac8159c068e",
-          "3b00a5a4-76aa-43d1-8e2e-66655f55daa9"
-        ],
-        rule: "scale"
+        objectsIds: ["287b6ff5-7ee6-4251-b38a-6ac8159c068e", "3b00a5a4-76aa-43d1-8e2e-66655f55daa9"],
+        rule: "reCenter" //scale,objectBased,reCenter,guideBased
       }
     },
     objects: {
@@ -30,8 +27,15 @@ const initialState = [
         height: 733,
         left: 0,
         top: 0,
-        src:
-          "http://localhost:8081/images/page1-3dc89a95f953cf455f9a47e7b67c1dd3.svg"
+        rule_proprieties: {
+          topMarginFixed: 0,
+          leftMarginFixed: 0,
+          rightMarginFixed: 0,
+          bottomMarginFixed: 0,
+          widthResizable: 0,
+          heightResizable: 0
+        },
+        src: "http://localhost:8081/images/page1-3dc89a95f953cf455f9a47e7b67c1dd3.svg"
       },
       "3b00a5a4-76aa-43d1-8e2e-66655f55daa9": {
         id: "3b00a5a4-76aa-43d1-8e2e-66655f55daa9",
@@ -62,7 +66,15 @@ const initialState = [
         fontFamily: "Roboto",
         text: "[%]jarName[/%]",
         defaultFontZise: 30,
-        useDefaultFontSize: true
+        useDefaultFontSize: true,
+        rule_proprieties: {
+          topMarginFixed: 0,
+          leftMarginFixed: 1,
+          rightMarginFixed: 1,
+          bottomMarginFixed: 0,
+          widthResizable: 1,
+          heightResizable: 0
+        }
       }
     }
   }
