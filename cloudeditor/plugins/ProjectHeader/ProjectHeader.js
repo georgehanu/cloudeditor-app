@@ -12,7 +12,7 @@ const {
   titleSelector,
   getNumberOfPagesSelector,
   pagesOrderSelector,
-  projectIdSelector
+  projProjectIdSelector
 } = require("../../core/stores/selectors/project");
 const {
   getProductNameSelector,
@@ -33,10 +33,20 @@ const {
   calculatePriceInitial
 } = require("../../core/stores/actions/productInformation");
 
+const { changePage } = require("../../core/stores/actions/project");
+
+const LoginWnd = require("../MenuItemMyProject/components/LoginWnd");
+const SaveWnd = require("../MenuItemMyProject/components/SaveWnd");
+
+const { authLoggedInSelector } = require("../ProjectMenu/store/selectors");
+
 require("./ProjectHeader.css");
 class ProjectHeader extends React.Component {
   state = {
-    preview: false
+    preview: false,
+    showLoginWnd: false,
+    showSaveWnd: false,
+    loggedIn: false
   };
   componentDidMount() {
     this.calculatePrice();
@@ -49,9 +59,21 @@ class ProjectHeader extends React.Component {
     return true;
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.authLoggedIn === true && prevState.loggedIn === false) {
+      return {
+        ...prevState,
+        showLoginWnd: false,
+        loggedIn: true
+      };
+    }
+    return null;
+  }
+
   showPrintPreview = () => {
     const oldPreview = this.state.preview;
     if (oldPreview === false) {
+      this.props.changePage({ page_id: this.props.pagesOrder[0] });
       this.props.previewLoadPage(0);
     } else {
       this.props.previewDisableMode();
@@ -98,71 +120,106 @@ class ProjectHeader extends React.Component {
         this.props.stopGlobalLoading();
       });
   };
-  emptyProjectHandler = () => {
-    if (this.props.projectId) {
+
+  showModal = () => {
+    if (this.props.projProjectId) {
+      return;
+    }
+    this.props.addContainerClasses(
+      "ProjectHeader",
+      ["projectHeaderShowModal"],
+      false
+    );
+    if (this.props.authLoggedIn === false) {
+      this.setState({ showLoginWnd: true });
+    } else {
+      this.setState({ showSaveWnd: true });
     }
   };
+
+  closeWnd = () => {
+    this.props.addContainerClasses("ProjectHeader", [], false);
+    this.setState({ showLoginWnd: false, showSaveWnd: false });
+  };
+
   render() {
     const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
     const addToCartTooltip = showPagesWarning
       ? { title: "Invalid number of pages", position: "left" }
       : null;
+
+    const titleStyle =
+      this.props.projProjectId === null || this.props.projProjectId === 0
+        ? { cursor: "pointer" }
+        : {};
     return (
-      <div className="projectHeaderContainer">
-        <div className="projectHeaderLogo" />
-        <div className="projectHeaderCenter">
-          <span className="projectHeaderTitle">
-            {this.props.t("My project")}:
-          </span>
-          <span
-            onClick={this.emptyProjectHandler}
-            className="projectHeaderName"
-          >
-            {this.props.projectTitle}
-          </span>
-          <span className="projectHeaderSeparator">|</span>
-          <div className="printPreviewButtonContainer">
-            <button
-              className="printPreviewButton"
-              onClick={this.showPrintPreview}
+      <React.Fragment>
+        {this.state.showLoginWnd && (
+          <LoginWnd show={true} modalClosed={this.closeWnd} />
+        )}
+        {this.state.showSaveWnd && (
+          <SaveWnd show={true} modalClosed={this.closeWnd} />
+        )}
+
+        <div className="projectHeaderContainer">
+          <div className="projectHeaderLogo" />
+          <div className="projectHeaderCenter">
+            <span className="projectHeaderTitle">
+              {this.props.t("My project")}:
+            </span>
+            <span
+              className="projectHeaderName"
+              onClick={this.showModal}
+              style={titleStyle}
             >
-              {this.state.preview === false
-                ? this.props.t("Print preview")
-                : this.props.t("Back to editor")}
-            </button>
-          </div>
-        </div>
-        <div className="projectHeaderRight">
-          <div className="projectRighInfo">
-            <div className="projectRightPrice">
-              {this.props.qty} {this.props.t("pieces")} {this.props.totalPrice}
-            </div>
-            <div className="projectRrightDescription">
-              {this.props.productName}, {this.props.numberOfPages}{" "}
-              {this.props.t("pages")}
+              {this.props.projectTitle}
+            </span>
+            <span className="projectHeaderSeparator">|</span>
+            <div className="printPreviewButtonContainer">
+              <button
+                className="printPreviewButton"
+                onClick={this.showPrintPreview}
+              >
+                {this.state.preview === false
+                  ? this.props.t("Print preview")
+                  : this.props.t("Back to editor")}
+              </button>
             </div>
           </div>
-          <AddToCartButton
-            t={this.props.t}
-            tooltip={addToCartTooltip}
-            active={!showPagesWarning}
-            clicked={this.attachPreview}
-          />
+          <div className="projectHeaderRight">
+            <div className="projectRighInfo">
+              <div className="projectRightPrice">
+                {this.props.qty} {this.props.t("pieces")}{" "}
+                {this.props.totalPrice}
+              </div>
+              <div className="projectRrightDescription">
+                {this.props.productName}, {this.props.numberOfPages}{" "}
+                {this.props.t("pages")}
+              </div>
+            </div>
+            <AddToCartButton
+              t={this.props.t}
+              tooltip={addToCartTooltip}
+              active={!showPagesWarning}
+              clicked={this.attachPreview}
+            />
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 const mapStateToProps = state => {
   return {
     projectTitle: titleSelector(state),
-    projectId: projectIdSelector(state),
     productName: getProductNameSelector(state),
     numberOfPages: getNumberOfPagesSelector(state),
     totalPrice: getTotalPriceSelector(state),
     qty: getQtySelector(state),
     productInformation: getProductInformationSelector(state),
-    pagesOrder: pagesOrderSelector(state)
+    pagesOrder: pagesOrderSelector(state),
+    authLoggedIn: authLoggedInSelector(state),
+    projProjectId: projProjectIdSelector(state)
   };
 };
 
@@ -173,7 +230,8 @@ const mapDispatchToProps = dispatch => {
     previewDisableMode: () => dispatch(previewDisableMode()),
     startGlobalLoading: () => dispatch(startGlobalLoading()),
     stopGlobalLoading: () => dispatch(stopGlobalLoading()),
-    calculatePriceInitial: payload => dispatch(calculatePriceInitial(payload))
+    calculatePriceInitial: payload => dispatch(calculatePriceInitial(payload)),
+    changePage: pageId => dispatch(changePage(pageId))
   };
 };
 

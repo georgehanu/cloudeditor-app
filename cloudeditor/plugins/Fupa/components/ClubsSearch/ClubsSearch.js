@@ -4,7 +4,7 @@ const { changeSearchValue } = require("../../store/actions");
 
 class ClubsSearch extends React.Component {
   state = {
-    value: "" //"Bayern"
+    value: "Bayern"
   };
 
   inputChangedHandler = value => {
