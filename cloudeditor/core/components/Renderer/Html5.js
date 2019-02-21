@@ -109,6 +109,8 @@ class Html5 extends React.Component {
         width: containerRef.offsetWidth,
         height: containerRef.offsetHeight
       };
+      if (!parent.width) return false;
+      if (!parent.height) return false;
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height

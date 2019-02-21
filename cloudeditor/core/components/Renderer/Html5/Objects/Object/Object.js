@@ -34,6 +34,7 @@ require("./Object.css");
 
 const TextBlock = require("../Text/Text");
 const ImageBlock = require("../Image/Image");
+const DummyImage = require("../Image/DummyImage");
 const GraphicBlock = require("../Graphic/Graphic");
 
 const {
@@ -142,6 +143,7 @@ class ObjectBlock extends React.Component {
   renderImage = () => {
     const props = { ...this.props };
     const { viewOnly, editable } = props;
+
     const imageProps = {
       viewOnly,
       editable,
@@ -174,11 +176,18 @@ class ObjectBlock extends React.Component {
       bgColor: props.bgColor,
       subType: props.subType,
       backgroundblock: props.backgroundblock,
-      contrast: this.props.contrast,
-      opacity: this.props.opacity
+      contrast: props.contrast,
+      opacity: props.opacity,
+      activeAction: props.activeAction,
+      naturalWidth: props.naturalWidth,
+      naturalHeight: props.naturalHeight
     };
-
-    const block = <ImageBlock {...imageProps} />;
+    let block = null;
+    if (viewOnly) {
+      block = <DummyImage {...imageProps} />;
+    } else {
+      block = <ImageBlock {...imageProps} />;
+    }
     return this.renderBaseBlock(props, block);
   };
   renderGraphic = () => {

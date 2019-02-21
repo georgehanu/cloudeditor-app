@@ -27,7 +27,8 @@ const withResizable = WrappedComponent => {
             left:
               (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
               zoomScale,
-            resizing
+            resizing,
+            cropW: 0
           }
         });
       } else {
@@ -42,7 +43,8 @@ const withResizable = WrappedComponent => {
             left:
               (ui.position.left - offsetLeft - parent.innerPage.offset.left) /
               zoomScale,
-            resizing
+            resizing,
+            cropW: 0
           }
         });
       }
