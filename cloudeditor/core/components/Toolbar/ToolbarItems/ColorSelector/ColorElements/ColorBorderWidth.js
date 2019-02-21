@@ -1,5 +1,6 @@
 const React = require("react");
 const Slider = require("rc-slider").default;
+const UncontrolledInput = require("../../UncontrolledInput/UncontrolledInput");
 
 const ColorBorderWidth = props => {
   return (
@@ -10,10 +11,10 @@ const ColorBorderWidth = props => {
       <div className="ColorBorderWidthRight">
         <Slider
           className="ColorBorderWidthSlider"
-          defaultValue={props.defaultValue}
+          value={props.defaultValue}
           min={0}
-          max={10}
-          step={1}
+          max={28.3465}
+          step={2.83465}
           onChange={value =>
             props.selectWidth({
               mainHandler: true,
@@ -26,6 +27,12 @@ const ColorBorderWidth = props => {
           }
         />
       </div>
+      <UncontrolledInput
+        displayedValue={props.defaultValue * 0.352778}
+        defaultValue={props.defaultValue * 0.352778}
+        selectWidth={props.selectWidth}
+        type={props.type}
+      />
     </div>
   );
 };

@@ -34,6 +34,7 @@ require("./Object.css");
 
 const TextBlock = require("../Text/Text");
 const ImageBlock = require("../Image/Image");
+const DummyImage = require("../Image/DummyImage");
 const GraphicBlock = require("../Graphic/Graphic");
 
 const {
@@ -142,6 +143,7 @@ class ObjectBlock extends React.Component {
   renderImage = () => {
     const props = { ...this.props };
     const { viewOnly, editable } = props;
+
     const imageProps = {
       viewOnly,
       editable,
@@ -174,11 +176,18 @@ class ObjectBlock extends React.Component {
       bgColor: props.bgColor,
       subType: props.subType,
       backgroundblock: props.backgroundblock,
-      contrast: this.props.contrast,
-      opacity: this.props.opacity
+      contrast: props.contrast,
+      opacity: props.opacity,
+      activeAction: props.activeAction,
+      naturalWidth: props.naturalWidth,
+      naturalHeight: props.naturalHeight
     };
-
-    const block = <ImageBlock {...imageProps} />;
+    let block = null;
+    if (viewOnly) {
+      block = <DummyImage {...imageProps} />;
+    } else {
+      block = <ImageBlock {...imageProps} />;
+    }
     return this.renderBaseBlock(props, block);
   };
   renderGraphic = () => {
@@ -260,6 +269,9 @@ class ObjectBlock extends React.Component {
       backgroundblock
     } = props;
 
+    const newWidth = width + borderWidth * 2;
+    const newHeight = height + borderWidth * 2;
+
     const classes = [
       "pageBlock",
       type,
@@ -272,11 +284,12 @@ class ObjectBlock extends React.Component {
     ].join(" ");
 
     const style = {
-      width,
-      height,
+      width: newWidth,
+      height: newHeight,
       left: left + offsetLeft,
       top: top + offsetTop,
       transform: "rotate(" + rotateAngle + "deg)",
+      padding: borderWidth,
       backgroundColor:
         subType !== "tinymceTable" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
@@ -285,13 +298,11 @@ class ObjectBlock extends React.Component {
       style["left"] = parent.width - style["left"] - width;
     }
     const styleBorderColor = {
-      width: width + parseFloat(borderWidth),
-      height: height + parseFloat(borderWidth),
+      width: newWidth,
+      height: newHeight,
       borderColor:
         subType != "tinymce" ? "rgb(" + borderColor.htmlRGB + ")" : "",
-      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : "",
-      top: (-1 * parseFloat(borderWidth)) / 2,
-      left: (-1 * parseFloat(borderWidth)) / 2
+      borderWidth: subType != "tinymce" ? parseFloat(borderWidth) : ""
     };
     let styleNorth = {};
 
@@ -337,7 +348,7 @@ class ObjectBlock extends React.Component {
           {block}
         </div>
         {<div className={"blockBorder"} style={styleBorderColor} />}
-        <u style={{ width, height }} />
+        <u style={{ width: newWidth, height: newHeight }} />
 
         {rotatableHandle}
         {deleteHandle}

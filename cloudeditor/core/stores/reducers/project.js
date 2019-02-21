@@ -885,10 +885,19 @@ module.exports = handleActions(
       });
       return {
         ...state,
-        title: data.title,
+        title: project_data.title,
+        description: project_data.description,
         projectId: data.projectId,
         pages: project_data.pages,
         objects: project_data.objects,
+        configs: {
+          ...state.configs,
+          document: {
+            ...state.configs.document,
+            header: project_data.header,
+            footer: project_data.footer
+          }
+        },
         pagesOrder: project_data.pagesOrder,
         activePage: head(project_data.pagesOrder),
         load: {

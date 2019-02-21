@@ -411,7 +411,10 @@ const CreatePayload = (activeitem, itemPayload) => {
         return null;
       }
     case Types.SLIDER_INLINE_IMAGE:
-      attrs = { leftSlider: itemPayload.value };
+      attrs = {
+        leftSlider: itemPayload.value.value,
+        activeAction: itemPayload.value.activeAction
+      };
       break;
 
     case Types.GALLERY_PREVIEW_WND:

@@ -99,7 +99,9 @@ module.exports = {
             JSON.stringify({
               pages: state$.value.project.pages,
               pagesOrder: state$.value.project.pagesOrder,
-              objects: state$.value.project.objects
+              objects: state$.value.project.objects,
+              header: state$.value.project.configs.document.header,
+              footer: state$.value.project.configs.document.footer
             })
           );
           axios

@@ -579,7 +579,8 @@ const scaledDisplayedObjectCachedSelector = createCachedSelector(
       ["height"],
       ["top"],
       ["left"],
-      ["fontSize"]
+      ["fontSize"],
+      ["borderWidth"]
     ];
 
     scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);

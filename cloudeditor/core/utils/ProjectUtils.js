@@ -158,6 +158,8 @@ const getObjectsDefaults = cfg => {
       cropY: 0,
       cropW: 0,
       ratio: 1,
+      workingWidth: 0,
+      workingHeight: 0,
       brightness: 0,
       imageWidth: 0,
       imageHeight: 0,
