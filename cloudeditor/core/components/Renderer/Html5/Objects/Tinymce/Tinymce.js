@@ -19,6 +19,10 @@ class Tinymce extends React.PureComponent {
       `<div class="pasteTableContainer">` +
       props.t("Paste Your Table Here") +
       `</div>`;
+
+    this.contentTinyTable = props.tableContent;
+    this.tableSize = {};
+    this.currentSelectNode = null;
   }
 
   hasClass(el, className) {
@@ -147,6 +151,7 @@ class Tinymce extends React.PureComponent {
         id: this.props.id,
         props: tableSize
       });
+      this.tableSize = tableSize;
     }
 
     return tableSize;
@@ -243,8 +248,18 @@ class Tinymce extends React.PureComponent {
       if (!this.checkTableContent()) {
         this.tinyEditor.setContent(this.pasteContent);
       } else {
-        this.tinyEditor.setContent(this.props.tableContent);
+        this.tinyEditor.setContent(this.contentTinyTable);
         this.tinyEditor.selection.collapse();
+        const tableSize = this.getTableSize(this.tinyEditor);
+        this.tableSize = tableSize;
+        this.props.onUpdateProps({
+          id: this.props.id,
+          props: {
+            tableContent: this.contentTinyTable,
+            width: tableSize.width,
+            height: tableSize.height
+          }
+        });
       }
     }
   };
@@ -256,7 +271,7 @@ class Tinymce extends React.PureComponent {
       if (!content.startsWith("<table")) content = "";
 
       const tableSize = this.getTableSize(this.tinyEditor);
-
+      /*
       this.props.onUpdateProps({
         id: this.props.id,
         props: {
@@ -265,7 +280,21 @@ class Tinymce extends React.PureComponent {
           height: tableSize.height
         }
       });
-
+*/
+      if (
+        tableSize.width !== this.tableSize.width ||
+        tableSize.height !== this.tableSize.height
+      ) {
+        this.props.onUpdateProps({
+          id: this.props.id,
+          props: {
+            width: tableSize.width,
+            height: tableSize.height
+          }
+        });
+        this.tableSize = tableSize;
+      }
+      this.contentTinyTable = content;
       this.resetTableDim();
     }
   };
@@ -284,6 +313,7 @@ class Tinymce extends React.PureComponent {
       this.tinyEditor &&
       this.tinyEditor.selection.getNode() !== this.tinyEditor.getBody()
     ) {
+      /*
       if (this.props.toolbarUpdate) {
         if (prevProps.bold !== this.props.bold)
           this.tinyEditor.execCommand("Bold");
@@ -322,7 +352,7 @@ class Tinymce extends React.PureComponent {
           if (this.props.textAlign == "justify")
             this.tinyEditor.execCommand("JustifyFull");
         }
-      }
+      }*/
 
       if (this.props.active) window.editor = this.tinyEditor;
       if (
@@ -350,12 +380,12 @@ class Tinymce extends React.PureComponent {
           }
         }
 
-        if (update) {
+        /*   if (update) {
           this.props.onUpdateProps({
             id: this.props.id,
             props: update
           });
-        }
+        }*/
       }
 
       this.resetTableDim();
@@ -368,7 +398,8 @@ class Tinymce extends React.PureComponent {
   }
 
   resetTableDim() {
-    const { zoomScale, width, height, tableContent } = this.props;
+    const { zoomScale, width, height } = this.props;
+    const tableContent = this.contentTinyTable;
 
     if (this.tinyEditor) {
       if (tableContent !== "") {
@@ -480,26 +511,44 @@ class Tinymce extends React.PureComponent {
       if (this.tinyEditor.queryCommandValue("JustifyFull") === "true")
         textAlign = "justify";
 
-      this.props.onUpdatePropsNoUndoRedo({
-        id: this.props.id,
-        props: {
-          bold,
-          italic,
-          underline,
-          textAlign,
-          fontSize,
-          fillColor: fillColor,
-          bgColor: bgColor,
-          fontFamily,
-          toolbarUpdate: false
+      if (this.tinyEditor.selection.getNode() !== this.currentSelectNode) {
+        this.currentSelectNode = this.tinyEditor.selection.getNode();
+        if (this.contentTinyTable !== this.props.tableContent) {
+          const tableSize = this.getTableSize(this.tinyEditor);
+
+          this.props.onUpdateProps({
+            id: this.props.id,
+            props: {
+              tableContent: this.contentTinyTable,
+              width: tableSize.width,
+              height: tableSize.height
+            }
+          });
+
+          this.props.onUpdatePropsNoUndoRedo({
+            id: this.props.id,
+            props: {
+              bold,
+              italic,
+              underline,
+              textAlign,
+              fontSize,
+              fillColor: fillColor,
+              bgColor: bgColor,
+              fontFamily,
+              toolbarUpdate: false
+            }
+          });
         }
-      });
+      }
     }
   };
 
   render() {
     const globalConfig = ConfigUtils.getDefaults();
-    const { width, height, tableContent, zoomScale } = this.props;
+
+    if (this.contentTinyTable === null) return null;
+    const tableContent = this.contentTinyTable;
     let disableCover = null;
 
     if (this.props.viewOnly || !this.props.active) {
@@ -522,7 +571,7 @@ class Tinymce extends React.PureComponent {
     return (
       <React.Fragment>
         <Editor
-          value={tableContent === "" ? pasteContent : tableContent}
+          initialValue={tableContent === "" ? pasteContent : tableContent}
           init={{
             plugins:
               "table autoresize paste textcolor colorpicker fupaColorPicker",

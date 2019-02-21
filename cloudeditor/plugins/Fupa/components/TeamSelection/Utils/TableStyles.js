@@ -31,7 +31,8 @@ const Standings = {
       2: {
         width: "30px",
         padding: "1px 2px",
-        height: "25px"
+        height: "25px",
+        minWidth: "10px"
       },
       3: {
         width: "162px",
