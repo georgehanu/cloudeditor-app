@@ -386,6 +386,8 @@ const scaledDisplayedObjectCachedSelector = createCachedSelector(
   }
 )((state, blockId, scale) => `scaledDisplayedMerged${blockId}${scale}`);
 
+const activePageId = state => pathOr([], ["project", "activePage"], state);
+
 registerSelectors({
   totalPages,
   groupsSelector,

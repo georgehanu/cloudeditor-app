@@ -15,7 +15,8 @@ const {
   DAG_CHANGE_RENDER_ID,
   DAG_CHANGE_DIMMENSIONS
 } = require("./../actionTypes/designAndGo");
-
+//projectConfigGlobal["products"][0]["realDimension"]["width"] = 500;
+//projectConfigGlobal["products"][0]["realDimension"]["height"] = 733;
 const { merge } = require("ramda");
 const { handleActions } = require("redux-actions");
 
@@ -46,8 +47,8 @@ const initialState = {
         height: 752
       },
       realDimension: {
-        width: 40,
-        height: 45.99
+        width: 500,
+        height: 733
       },
       effects: [
         "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2_effect.png"
@@ -286,7 +287,6 @@ module.exports = handleActions(
     },
     [DAG_CHANGE_RENDER_ID]: (state, action) => {
       //return state;
-      //debugger;
       return {
         ...state,
         renderId: uuidv4()
@@ -294,7 +294,6 @@ module.exports = handleActions(
     },
     [DAG_CHANGE_DIMMENSIONS]: (state, action) => {
       //return state;
-      //debugger;
       return {
         ...state,
         realDimension: merge(state.realDimension, action.payload)

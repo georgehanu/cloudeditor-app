@@ -1,5 +1,1 @@
-const GET_ALTERNATE_LAYOUT = "DAG_UPLOAD_IMAGE";
-
-module.exports = {
-  GET_ALTERNATE_LAYOUT
-};
+module.exports = {};

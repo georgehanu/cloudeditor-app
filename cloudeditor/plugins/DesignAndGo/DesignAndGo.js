@@ -8,6 +8,7 @@ const { withNamespaces } = require("react-i18next");
 const MenuModal = require("./components/DesignAndGoItems/UI/MenuModal");
 const MenuDataModal = require("./components/DesignAndGoItems/UI/MenuDataModal");
 const SignInModal = require("./components/DesignAndGoItems/UI/SignInModal");
+const AlternateLayouts = require("./components/AlternateLayouts");
 
 const assign = require("object-assign");
 
@@ -64,6 +65,7 @@ class DesignAndGo extends React.Component {
           onMenuOpenHandler={this.onMenuOpenHandler}
           onDataOpenHandler={this.onDataOpenHandler}
         />
+        <AlternateLayouts />
       </div>
     );
   }

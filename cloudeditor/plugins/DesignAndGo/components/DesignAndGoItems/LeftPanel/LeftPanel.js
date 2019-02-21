@@ -62,13 +62,19 @@ class LeftPanel extends React.Component {
         <div className="Dimmensions">
           <label>
             Width:
-            <input type="text" name="width" onKeyPress={this._handleKeyPress} />
+            <input
+              type="text"
+              name="width"
+              defaultValue="500"
+              onKeyPress={this._handleKeyPress}
+            />
           </label>
           <label>
             Height:
             <input
               type="text"
               name="height"
+              defaultValue="733"
               onKeyPress={this._handleKeyPress}
             />
           </label>

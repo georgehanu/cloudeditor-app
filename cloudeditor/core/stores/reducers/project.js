@@ -4,6 +4,8 @@ const {
   forEachObjIndexed,
   reduce,
   without,
+  isEmpty,
+  forEach,
   merge
 } = require("ramda");
 const {
@@ -24,7 +26,8 @@ const {
   CHANGE_PAGE,
   CHANGE_GROUPS,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY
+  OBJECTS_READY,
+  SET_ALTERNATE_LAYOUT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -177,6 +180,66 @@ const swap = (index1, index2, list) => {
 
   return result;
 };
+const applyLiquidRules = payloadData => {
+  let realProductDim = {
+      width: parseFloat(payloadData.realDimension.width),
+      height: parseFloat(payloadData.realDimension.height)
+    },
+    alternateLayout = payloadData.layout;
+  if (!isEmpty(alternateLayout.pages)) {
+    forEachObjIndexed((pageData, pKey) => {
+      switch (pageData.rule) {
+        case "scale":
+          let scale = Math.min(
+            realProductDim.height / pageData.height,
+            realProductDim.width / pageData.width
+          );
+          if (!isEmpty(pageData.objectsIds)) {
+            forEach(blockID => {
+              if (alternateLayout.objects[blockID]) {
+                let newLeft =
+                    alternateLayout.objects[blockID].left * scale +
+                    (realProductDim.width - pageData.width * scale) / 2,
+                  newTop =
+                    alternateLayout.objects[blockID].top * scale +
+                    (realProductDim.height - pageData.height * scale) / 2;
+
+                alternateLayout = {
+                  ...alternateLayout,
+                  objects: {
+                    ...alternateLayout.objects,
+                    [blockID]: {
+                      ...alternateLayout.objects[blockID],
+                      width: alternateLayout.objects[blockID].width * scale,
+                      height: alternateLayout.objects[blockID].height * scale,
+                      left: newLeft,
+                      top: newTop
+                    }
+                  }
+                };
+              }
+            }, pageData.objectsIds);
+          }
+          break;
+        case "objectBased":
+          break;
+      }
+      alternateLayout = {
+        ...alternateLayout,
+        pages: {
+          ...alternateLayout.pages,
+          [pKey]: {
+            ...alternateLayout.pages[pKey],
+            width: realProductDim.width,
+            height: realProductDim.height
+          }
+        }
+      };
+    }, alternateLayout.pages);
+  }
+
+  return { ...alternateLayout };
+};
 
 module.exports = handleActions(
   {
@@ -326,6 +389,14 @@ module.exports = handleActions(
         },
         objects: newObjects,
         selectedObjectsIds: []
+      };
+    },
+    [SET_ALTERNATE_LAYOUT]: (state, action) => {
+      let liquidProject = applyLiquidRules(action.payload);
+      return {
+        ...state,
+        pages: liquidProject.pages,
+        objects: liquidProject.objects
       };
     }
   },
