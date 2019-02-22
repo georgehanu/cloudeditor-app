@@ -88,7 +88,6 @@ fabric.util.object.extend(fabric.Image.prototype, {
   canvasY: 0,
   canvasW: 0,
   canvasH: 0,
-
   _dimensionAffectingProps: {
     width: 1,
     height: 1,
@@ -203,23 +202,14 @@ fabric.util.object.extend(fabric.Image.prototype, {
         });
       }
     };
-    canvas.on(
-      "before:selection:cleared",
-      canvas._canvasImageSelectionClearedHandlder
-    );
+    canvas.on("before:selection:cleared", canvas._canvasImageSelectionClearedHandlder);
     canvas.on("selection:updated", canvas._canvasImageSelectionClearedHandlder);
     canvas.on("object:selected", canvas._canvasImageSelectionClearedHandlder);
     canvas.on("mouse:up", canvas._mouseUpImageHandler);
   },
   _removeCanvasHandlers: function(canvas) {
-    canvas.off(
-      "before:selection:cleared",
-      canvas._canvasImageSelectionClearedHandlder
-    );
-    canvas.off(
-      "selection:updated",
-      canvas._canvasImageSelectionClearedHandlder
-    );
+    canvas.off("before:selection:cleared", canvas._canvasImageSelectionClearedHandlder);
+    canvas.off("selection:updated", canvas._canvasImageSelectionClearedHandlder);
     canvas.off("object:selected", canvas._canvasImageSelectionClearedHandlder);
     canvas.off("mouse:up", canvas._mouseUpImageHandler);
   },
@@ -335,18 +325,8 @@ fabric.util.object.extend(fabric.Image.prototype, {
             scaleX = this.getScaledWidth() / this.width;
             scaleY = this.getScaledHeight() / this.height;
 
-            xPos = this.limit(
-              this._savedProps.startCanvasX +
-                (flipX * (xPos - this._savedProps.startX)) / scaleX,
-              -this.width / 2,
-              this.width / 2 - this.canvasW
-            );
-            yPos = this.limit(
-              this._savedProps.startCanvasY +
-                (flipY * (yPos - this._savedProps.startY)) / scaleY,
-              -this.height / 2,
-              this.height / 2 - this.canvasH
-            );
+            xPos = this.limit(this._savedProps.startCanvasX + (flipX * (xPos - this._savedProps.startX)) / scaleX, -this.width / 2, this.width / 2 - this.canvasW);
+            yPos = this.limit(this._savedProps.startCanvasY + (flipY * (yPos - this._savedProps.startY)) / scaleY, -this.height / 2, this.height / 2 - this.canvasH);
 
             this.canvasX = xPos;
             this.canvasY = yPos;
@@ -354,18 +334,8 @@ fabric.util.object.extend(fabric.Image.prototype, {
           case "cover":
             widthRatio = this.cropW / this.getScaledWidth();
             heightRatio = this.cropH / this.getScaledHeight();
-            xPos = this.limit(
-              this._savedProps.startCx -
-                flipX * (xPos - this._savedProps.startX) * widthRatio,
-              0,
-              imgW - this.cropW
-            );
-            yPos = this.limit(
-              this._savedProps.startCy -
-                flipY * (yPos - this._savedProps.startY) * heightRatio,
-              0,
-              imgH - this.cropH
-            );
+            xPos = this.limit(this._savedProps.startCx - flipX * (xPos - this._savedProps.startX) * widthRatio, 0, imgW - this.cropW);
+            yPos = this.limit(this._savedProps.startCy - flipY * (yPos - this._savedProps.startY) * heightRatio, 0, imgH - this.cropH);
             this.cropX = xPos;
             this.cropY = yPos;
             break;
@@ -392,13 +362,7 @@ fabric.util.object.extend(fabric.Image.prototype, {
     this.callSuper("_set", key, value);
 
     if (key in this._dimensionAffectingProps) {
-      if (
-        oldScaleX != this.scaleX ||
-        oldScaleY != this.scaleY ||
-        oldWidth != this.width ||
-        oldHeight != this.height ||
-        oldLeftSlider != this.leftSlider
-      ) {
+      if (oldScaleX != this.scaleX || oldScaleY != this.scaleY || oldWidth != this.width || oldHeight != this.height || oldLeftSlider != this.leftSlider) {
         this._setViewBox({});
         this.setCoords();
       }
@@ -411,16 +375,9 @@ fabric.util.object.extend(fabric.Image.prototype, {
 
     var originalWidth = this.imageWidth || this._originalElement.width,
       originalHeight = this.imageHeigth || this._originalElement.height,
-      scaleX = options.scaleX
-        ? Math.abs(parseFloat(options.scaleX))
-        : this.scaleX,
-      scaleY = options.scaleY
-        ? Math.abs(parseFloat(options.scaleY))
-        : this.scaleY,
-      imgRatio = Math.min(
-        (this.width * scaleX) / originalWidth,
-        (this.height * scaleY) / originalHeight
-      ),
+      scaleX = options.scaleX ? Math.abs(parseFloat(options.scaleX)) : this.scaleX,
+      scaleY = options.scaleY ? Math.abs(parseFloat(options.scaleY)) : this.scaleY,
+      imgRatio = Math.min((this.width * scaleX) / originalWidth, (this.height * scaleY) / originalHeight),
       nw = originalWidth * imgRatio,
       nh = originalHeight * imgRatio,
       cx = options.cx ? parseFloat(options.cx) : 0,
@@ -447,8 +404,7 @@ fabric.util.object.extend(fabric.Image.prototype, {
               canvasX = -this.width / 2 + (this.width - canvasW) * 0.5;
               canvasY = -this.height / 2 + (this.height - canvasH) * 0.5;
             } else {
-              canvasW =
-                ((this.height * imageRatio) / this.scaleX) * this.scaleY;
+              canvasW = ((this.height * imageRatio) / this.scaleX) * this.scaleY;
               canvasH = this.height;
               canvasX = -this.width / 2 + (this.width - canvasW) * 0.5;
               canvasY = -this.height / 2 + (this.height - canvasH) * 0.5;
@@ -558,18 +514,7 @@ fabric.Image.prototype._renderFill = (function(_renderFill) {
       ctx.filter = cotrast_brightness;
     }
 
-    elementToDraw &&
-      ctx.drawImage(
-        elementToDraw,
-        this.cropX,
-        this.cropY,
-        this.cropW,
-        this.cropH,
-        this.canvasX,
-        this.canvasY,
-        this.canvasW,
-        this.canvasH
-      );
+    elementToDraw && ctx.drawImage(elementToDraw, this.cropX, this.cropY, this.cropW, this.cropH, this.canvasX, this.canvasY, this.canvasW, this.canvasH);
   };
 })(fabric.Image.prototype._renderFill);
 fabric.Image.prototype._initConfig = (function(_initConfig) {
@@ -669,21 +614,13 @@ fabric.Canvas.prototype.updateCropParams = function() {
   if (this._activeObject) {
     switch (this._activeObject.type) {
       case "image":
-        if (
-          this._activeObject.designerCallbacks &&
-          this._activeObject.designerCallbacks.updateCropParams &&
-          typeof this._activeObject.designerCallbacks.updateCropParams ===
-            "function"
-        ) {
-          this._activeObject.designerCallbacks.updateCropParams(
-            this._activeObject.id,
-            {
-              cropX: this._activeObject.cropX,
-              cropY: this._activeObject.cropY,
-              cropW: this._activeObject.cropW,
-              cropH: this._activeObject.cropH
-            }
-          );
+        if (this._activeObject.designerCallbacks && this._activeObject.designerCallbacks.updateCropParams && typeof this._activeObject.designerCallbacks.updateCropParams === "function") {
+          this._activeObject.designerCallbacks.updateCropParams(this._activeObject.id, {
+            cropX: this._activeObject.cropX,
+            cropY: this._activeObject.cropY,
+            cropW: this._activeObject.cropW,
+            cropH: this._activeObject.cropH
+          });
         }
         break;
       default:
@@ -739,8 +676,7 @@ fabric.Textbox.prototype.set = function(key, value) {
   var needsDims = false;
   if (typeof key === "object") {
     for (var _key in key) {
-      needsDims =
-        needsDims || this._dimensionAffectingProps.indexOf(_key) !== -1;
+      needsDims = needsDims || this._dimensionAffectingProps.indexOf(_key) !== -1;
     }
   } else {
     needsDims = this._dimensionAffectingProps.indexOf(key) !== -1;
@@ -748,17 +684,11 @@ fabric.Textbox.prototype.set = function(key, value) {
   if (needsDims) {
     if (this.useDefaultFontSize || false) {
       const defaultFontZise = this.defaultFontZise || 0;
-      this.fontSize =
-        defaultFontZise > this.fontSize ? defaultFontZise : this.fontSize;
+      this.fontSize = defaultFontZise > this.fontSize ? defaultFontZise : this.fontSize;
     }
     this.initDimensions();
     this.setCoords();
-    if (
-      !this.__skipDimension &&
-      (key == "fontSize" || (typeof key === "object" && key.fontSize)) &&
-      this.designerCallbacks &&
-      typeof this.designerCallbacks.updateObjectProps === "function"
-    ) {
+    if (!this.__skipDimension && (key == "fontSize" || (typeof key === "object" && key.fontSize)) && this.designerCallbacks && typeof this.designerCallbacks.updateObjectProps === "function") {
       this.designerCallbacks.updateObjectProps({
         id: this.id,
         props: { fontSize: this.getFontSizePdf() }
@@ -770,10 +700,7 @@ fabric.Textbox.prototype.set = function(key, value) {
 fabric.Textbox.prototype.initialize = (function(_initialize) {
   return function(text, options) {
     _initialize.call(this, text, options);
-    if (
-      this.designerCallbacks &&
-      typeof this.designerCallbacks.updateObjectProps === "function"
-    ) {
+    if (this.designerCallbacks && typeof this.designerCallbacks.updateObjectProps === "function") {
       this.designerCallbacks.updateObjectProps({
         id: this.id,
         //props: { fontSize: this.getFontSizePdf(), text: this.text }
@@ -815,10 +742,7 @@ fabric.util.object.extend(fabric.util, {
           for (var j in lineStyles) {
             // per char
             if (lineStyles.hasOwnProperty(j)) {
-              if (
-                lineStyles[j].fontFamily &&
-                typeof lineStyles[j].fontFamily === "string"
-              ) {
+              if (lineStyles[j].fontFamily && typeof lineStyles[j].fontFamily === "string") {
                 fonts.push(lineStyles[j].fontFamily);
               }
             }
@@ -919,13 +843,7 @@ fabric.IText.prototype.getSelectionStartFromPointer = function(e) {
       break;
     }
   }
-  return this._getNewSelectionStartFromOffset(
-    mouseOffset,
-    prevWidth,
-    width,
-    charIndex,
-    jlen
-  );
+  return this._getNewSelectionStartFromOffset(mouseOffset, prevWidth, width, charIndex, jlen);
 };
 
 module.exports = { fabric };

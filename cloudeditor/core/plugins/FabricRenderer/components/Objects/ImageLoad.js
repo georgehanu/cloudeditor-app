@@ -76,13 +76,17 @@ class ImageLoad extends React.Component {
   }
 
   componentDidMount = () => {
-    this.loadImg(this.props.src);
+    let imageUrl = this.props.src;
+
+    if (this.props.indesign) {
+      imageUrl = window.localFilesUrl + "indesign/" + this.props.layout + this.props.image_src;
+    }
+    this.loadImg(imageUrl);
   };
 
   render() {
     let render = null;
-    if (this.state.loaded)
-      render = <Image loadedInstance={this.state.image} {...this.props} />;
+    if (this.state.loaded) render = <Image loadedInstance={this.state.image} {...this.props} />;
 
     return render;
   }

@@ -145,8 +145,11 @@ const removeActionSelection = (state, payload) => {
 };
 
 const config = ConfigUtils.getDefaults();
-const emptyProject = ProjectUtils.getDGProject(config.project);
-
+let emptyProject = ProjectUtils.getDGProject(config.project);
+emptyProject["pages"] = projectConfigGlobal["project"]["pages"];
+emptyProject["objects"] = projectConfigGlobal["project"]["objects"];
+emptyProject["pagesOrder"] = projectConfigGlobal["project"]["pagesOrder"];
+emptyProject["activePage"] = "page_0";
 //const emptyProject = ProjectUtils.getEmptyProject(config.project);
 
 const initialState = {
@@ -223,6 +226,7 @@ const applyLiquidRules = payloadData => {
           }
           break;
         case "objectBased":
+        case "OBJECT_BASED":
         case "guideBased":
           if (!isEmpty(pageData.objectsIds)) {
             forEach(blockID => {

@@ -18,10 +18,8 @@ class Image extends FabricObject {
   }
   _updatePlaceholder() {
     this.instance._setViewBox({});
-    if (
-      this.instance.designerCallbacks &&
-      this.instance.designerCallbacks.updateCropParams
-    ) {
+
+    if (this.instance.designerCallbacks && this.instance.designerCallbacks.updateCropParams) {
       this.instance.designerCallbacks.updateCropParams(this.instance.id, {
         cropX: this.instance.cropX,
         cropY: this.instance.cropY,

@@ -33,10 +33,7 @@ class WithSliderDim extends React.Component {
 
   componentDidMount() {
     this.updateDimensions();
-    window.addEventListener(
-      "resize",
-      debounce(this.updateDimensions.bind(this), 50)
-    );
+    window.addEventListener("resize", debounce(this.updateDimensions.bind(this), 50));
   }
 
   componentDidUpdate() {

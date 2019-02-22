@@ -16,7 +16,7 @@ const initialState = [
         width: 500,
         height: 733,
         objectsIds: ["287b6ff5-7ee6-4251-b38a-6ac8159c068e", "3b00a5a4-76aa-43d1-8e2e-66655f55daa9"],
-        rule: "reCenter" //scale,objectBased,reCenter,guideBased
+        rule: "scale" //scale,objectBased,reCenter,guideBased
       }
     },
     objects: {
@@ -28,8 +28,8 @@ const initialState = [
         left: 0,
         top: 0,
         rule_proprieties: {
-          topMarginFixed: 0,
-          leftMarginFixed: 0,
+          topMarginFixed: 1,
+          leftMarginFixed: 1,
           rightMarginFixed: 0,
           bottomMarginFixed: 0,
           widthResizable: 0,
