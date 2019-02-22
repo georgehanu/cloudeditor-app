@@ -293,6 +293,7 @@ const updateImageProps = (state, payload) => {
     cropY: 0,
     cropW: 0,
     cropH: 0,
+    leftSlider: 0,
     imageWidth: payload.props.image.imageWidth,
     imageHeight: payload.props.image.imageHeight,
     ratioWidth: payload.props.image.ratioWidth,

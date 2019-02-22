@@ -78,6 +78,9 @@ class ObjectBlock extends React.Component {
     if (equals(nProps, cProps)) {
       return false;
     }
+    if (nextProps.resizing && this.props.viewOnly) {
+      return false;
+    }
     return true;
   }
   getEditableReference = ref => {
@@ -134,6 +137,7 @@ class ObjectBlock extends React.Component {
       editableRef: this.getEditableReference,
       zoomScale: this.props.zoomScale,
       renderId: this.props.renderId,
+      placeHolder: this.props.placeHolder,
       contentEditable,
       lineHeight: props.lineHeight
     };
@@ -186,7 +190,7 @@ class ObjectBlock extends React.Component {
     if (viewOnly) {
       block = <DummyImage {...imageProps} />;
     } else {
-      block = <ImageBlock {...imageProps} />;
+      block = <ImageBlock key={props.id} {...imageProps} />;
     }
     return this.renderBaseBlock(props, block);
   };

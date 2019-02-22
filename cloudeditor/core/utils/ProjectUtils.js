@@ -211,7 +211,8 @@ const getObjectsDefaults = cfg => {
       wordSpacing: "normal",
       fontFamily: "",
       prefix: "",
-      value: "Edit Text Here",
+      value: "",
+      placeHolder: "Edit Text Here",
       firstlinedist: "ascender",
       lastlinedist: 0
     },

@@ -9,6 +9,7 @@ class TextBlock extends React.Component {
     super(props);
     this.editableContainerRef = null;
   }
+
   handleChange = (ev, value) => {
     const containerEditable = this.editableContainerRef;
     let height = this.props.height;
@@ -30,7 +31,9 @@ class TextBlock extends React.Component {
       });
     }
   };
-
+  onBlurHandler = () => {
+    console.log("alert blur handler");
+  };
   getInputRef = ref => {
     this.editableContainerRef = ref;
   };
@@ -64,7 +67,11 @@ class TextBlock extends React.Component {
         <ContentEditable
           innerRef={this.getInputRef}
           className={this.props.type}
-          content={this.props.value}
+          content={
+            !this.props.value.length && !this.props.active
+              ? this.props.placeHolder
+              : this.props.value
+          }
           active={this.props.active}
           id={this.props.renderId}
           tagName="div"

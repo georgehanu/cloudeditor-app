@@ -47,7 +47,10 @@ class ImageBlock extends React.Component {
       return false;
     }
     if (nextProps.activeAction) {
-      this.refs.cropper.zoomTo(nextProps.leftSlider / 100);
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
+      }
+      this.setZoom(nextProps);
       return false;
     }
     if (
@@ -57,11 +60,17 @@ class ImageBlock extends React.Component {
         this.props.height / this.props.zoomScale
     ) {
       if (this.refs.cropper) {
+        if (!this.refs.cropper.cropper.ready) {
+          return false;
+        }
         this.refs.cropper.enable();
         this.refs.cropper.reset();
       }
     }
     if (nextProps.currentPageId !== this.props.currentPageId) {
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
+      }
       this.refs.cropper.enable();
       this.refs.cropper.reset();
     }
@@ -75,21 +84,56 @@ class ImageBlock extends React.Component {
       this.refs.cropper.reset();
     }
     if (!nextProps.activeAction && this.props.activeAction) {
-      this.refs.cropper.zoomTo(nextProps.leftSlider / 100);
+      this.setZoom(nextProps);
       this.setDataOnState();
     }
     if (!nextProps.resizing && this.props.resizing) {
-      this.refs.cropper.zoomTo(nextProps.leftSlider / 100);
+      this.setZoom(nextProps);
       this.setDataOnState();
     }
 
     return true;
   }
+  setZoom = props => {
+    if (this.refs.cropper) {
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
+      }
+      const ratio = 1 + props.leftSlider / 100;
+      const canvasData = this.refs.cropper.getCanvasData();
+      const { width, height } = props;
+      const imageWidth = canvasData.naturalWidth;
+      const imageHeight = canvasData.naturalHeight;
+      let widthRatio = 1;
+      let heightRatio = 1;
+      let minPercent = 1;
+      if (imageWidth > 0) {
+        widthRatio = width / imageWidth;
+        heightRatio = height / imageHeight;
+        if (widthRatio <= heightRatio) {
+          minPercent = heightRatio;
+        } else {
+          minPercent = widthRatio;
+        }
+      }
+      const widthImage = Math.ceil(imageWidth * minPercent);
+      const heightImage = Math.ceil(imageHeight * minPercent);
+      this.refs.cropper.zoomTo((widthImage * ratio) / imageWidth);
+    }
+  };
   setData = () => {
     if (this.refs.cropper) {
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
+      }
       this.refs.cropper.enable();
       this.refs.cropper.reset();
-      this.refs.cropper.cropper.initContainer();
+      const canvasData = this.refs.cropper.getCanvasData();
+      if (canvasData && typeof canvasData !== "undefined") {
+        if (Object.keys(canvasData).length) {
+          this.refs.cropper.cropper.initContainer();
+        }
+      }
     }
     this.initializeDimm();
     this.setCropperData();
@@ -98,50 +142,58 @@ class ImageBlock extends React.Component {
   };
 
   initializeDimm = () => {
-    const canvasData = this.refs.cropper.getCanvasData();
-    const cropBoxData = this.refs.cropper.getCropBoxData();
-    const data = this.refs.cropper.getData();
-    const { width, height } = this.props;
-    const imageWidth = canvasData.naturalWidth;
-    const imageHeight = canvasData.naturalHeight;
-    let widthRatio = 1;
-    let heightRatio = 1;
-    let minPercent = 1;
-    if (imageWidth > 0) {
-      widthRatio = width / imageWidth;
-      heightRatio = height / imageHeight;
-      if (widthRatio <= heightRatio) {
-        minPercent = heightRatio;
-      } else {
-        minPercent = widthRatio;
+    if (this.refs.cropper) {
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
       }
+      const canvasData = this.refs.cropper.getCanvasData();
+      const cropBoxData = this.refs.cropper.getCropBoxData();
+      const data = this.refs.cropper.getData();
+      const { width, height } = this.props;
+      const imageWidth = canvasData.naturalWidth;
+      const imageHeight = canvasData.naturalHeight;
+      let widthRatio = 1;
+      let heightRatio = 1;
+      let minPercent = 1;
+      if (imageWidth > 0) {
+        widthRatio = width / imageWidth;
+        heightRatio = height / imageHeight;
+        if (widthRatio <= heightRatio) {
+          minPercent = heightRatio;
+        } else {
+          minPercent = widthRatio;
+        }
+      }
+      const widthImage = Math.ceil(imageWidth * minPercent);
+      const heightImage = Math.ceil(imageHeight * minPercent);
+      this.refs.cropper.setData({
+        ...data,
+        width: width,
+        height: height,
+        left: (-1 * (widthImage - width)) / 2,
+        top: (-1 * (heightImage - height)) / 2
+      });
+      this.refs.cropper.setCanvasData({
+        ...canvasData,
+        width: widthImage,
+        height: null,
+        left: (-1 * (widthImage - width)) / 2,
+        top: (-1 * (heightImage - height)) / 2
+      });
+      this.refs.cropper.setCropBoxData({
+        ...cropBoxData,
+        width,
+        height,
+        left: 0,
+        top: 0
+      });
     }
-    const widthImage = Math.ceil(imageWidth * minPercent);
-    const heightImage = Math.ceil(imageHeight * minPercent);
-    this.refs.cropper.setData({
-      ...data,
-      width: width,
-      height: height,
-      left: (-1 * (widthImage - width)) / 2,
-      top: (-1 * (heightImage - height)) / 2
-    });
-    this.refs.cropper.setCanvasData({
-      ...canvasData,
-      width: widthImage,
-      height: null,
-      left: (-1 * (widthImage - width)) / 2,
-      top: (-1 * (heightImage - height)) / 2
-    });
-    this.refs.cropper.setCropBoxData({
-      ...cropBoxData,
-      width,
-      height,
-      left: 0,
-      top: 0
-    });
   };
   componentDidUpdate() {
     if (this.refs.cropper) {
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
+      }
       var cropData = this.refs.cropper.getCropBoxData();
       if (
         cropData.width != this.props.width ||
@@ -149,12 +201,24 @@ class ImageBlock extends React.Component {
       ) {
         this.refs.cropper.enable();
         this.refs.cropper.reset();
-        this.refs.cropper.cropper.initContainer();
+        const canvasData = this.refs.cropper.getCanvasData();
+        if (canvasData && typeof canvasData !== "undefined") {
+          if (Object.keys(canvasData).length) {
+            this.refs.cropper.cropper.initContainer();
+          }
+        }
         this.initializeDimm();
       }
       if (this.props.resizing) {
-        this.refs.cropper.cropper.initContainer();
-        this.refs.cropper.zoomTo(this.props.leftSlider / 100);
+        const canvasData = this.refs.cropper.getCanvasData();
+        if (canvasData && typeof canvasData !== "undefined") {
+          if (Object.keys(canvasData).length) {
+            this.refs.cropper.cropper.initContainer();
+            this.refs.cropper.cropper.initCanvas();
+          }
+        }
+
+        this.setZoom(this.props);
         return false;
       }
       // if (!this.props.cropW) this.initializeDimm();
@@ -202,7 +266,7 @@ class ImageBlock extends React.Component {
     } = this.props;
     if (this.refs.cropper) {
       if (cropW) {
-        this.refs.cropper.zoomTo(this.props.leftSlider / 100);
+        this.setZoom(this.props);
         const data = this.refs.cropper.getCanvasData();
         const imageData = this.refs.cropper.getImageData();
         let canvasWidth = imageData.width;
