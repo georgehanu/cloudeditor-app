@@ -1,5 +1,6 @@
 const ProjectMenuButton = require("./ProjectMenuButton");
 const React = require("react");
+const { withNamespaces } = require("react-i18next");
 
 class ProjectMenuContainer extends React.Component {
   state = {
@@ -62,7 +63,7 @@ class ProjectMenuContainer extends React.Component {
           ) : (
             <React.Fragment>
               <ProjectMenuButton active={i === this.state.menuItemActive}>
-                {tool.text}
+                {this.props.t(tool.text)}
               </ProjectMenuButton>
               <Tool
                 cfg={tool.cfg || {}}
@@ -88,4 +89,4 @@ class ProjectMenuContainer extends React.Component {
   }
 }
 
-module.exports = ProjectMenuContainer;
+module.exports = withNamespaces("projectMenu")(ProjectMenuContainer);
