@@ -8,7 +8,9 @@ const {
   selectedObjectsIdsSelector,
   objectsDefaultConfigSelector,
   pagesSelector,
-  activePageIdSelector
+  activePageIdSelector,
+  headerEnabledSelector,
+  footerEnabledSelector
 } = require("./project");
 
 const selectedObjectToolbarSelector = createSelector(
@@ -33,27 +35,42 @@ const selectedObjectToolbarSelector = createSelector(
 );
 
 const selectedObjectLayerSelector = createSelector(
-  [pagesSelector, activePageIdSelector, selectedObjectsIdsSelector],
-  (pages, pageId, selectedObj) => {
+  [
+    pagesSelector,
+    activePageIdSelector,
+    selectedObjectsIdsSelector,
+    headerEnabledSelector,
+    footerEnabledSelector,
+    objectsSelector
+  ],
+  (pages, pageId, selectedObj, headerEnabeld, footerEnabled, objects) => {
+    let objIds = {};
+    if (headerEnabeld || footerEnabled) {
+      const type = headerEnabeld ? "header" : "footer";
+      objIds = objects[type].objectsIds;
+    } else {
+      objIds = pages[pageId].objectsIds;
+    }
+    const objIndex = objIds.findIndex(el => {
+      return el === selectedObj[Object.keys(selectedObj)[0]];
+    });
+
     if (selectedObj.length === 0) {
       return {};
     }
 
-    const page = pages[pageId];
-    const objIndex = page.objectsIds.findIndex(el => {
-      return el === selectedObj[Object.keys(selectedObj)[0]];
-    });
     let availableLayer = {};
     if (objIndex === 0) {
       availableLayer["back"] = false;
     }
-    if (objIndex === page.objectsIds.length - 1) {
+    if (objIndex === objIds.length - 1) {
       availableLayer["front"] = false;
     }
 
     return availableLayer;
   }
 );
+
 const selectedPageDimmensionsSelector = createSelector(
   [pagesSelector, activePageIdSelector],
   (pages, pageId) => {

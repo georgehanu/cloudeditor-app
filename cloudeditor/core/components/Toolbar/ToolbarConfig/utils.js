@@ -173,6 +173,8 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
             fontFamily: el
           };
         });
+      } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
+        item.value = activeItem.lineHeight || 1;
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -245,6 +247,8 @@ const LoadTinymceTableSettings = (toolbar, activeItem, activeLayer, fonts) => {
             fontFamily: el
           };
         });
+      } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
+        item.value = activeItem.lineHeight || 1;
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -383,6 +387,10 @@ const CreatePayload = (activeitem, itemPayload) => {
       attrs = { fontFamily: itemPayload.value };
       break;
 
+    case Types.POPTEXT_LINE_HEIGHT:
+      attrs = { lineHeight: itemPayload.value };
+      break;
+
     case Types.POPTEXT_LAYER:
       attrs = { action: itemPayload.value };
       return { id: activeitem.id, props: attrs, action: "layer" };
@@ -403,7 +411,10 @@ const CreatePayload = (activeitem, itemPayload) => {
         return null;
       }
     case Types.SLIDER_INLINE_IMAGE:
-      attrs = { leftSlider: itemPayload.value };
+      attrs = {
+        leftSlider: itemPayload.value.value,
+        activeAction: itemPayload.value.activeAction
+      };
       break;
 
     case Types.GALLERY_PREVIEW_WND:

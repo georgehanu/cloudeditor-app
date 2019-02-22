@@ -5,5 +5,7 @@
   "Cancel": "Cancel",
   "Preview CMYK": "Preview CMYK",
   "Preview RGB": "Preview RGB",
-  "Contents of Fupa.net": "Contents of Fupa.net"
+  "Contents of Fupa.net": "Contents of Fupa.net",
+  "Dieses Element befindet sich außerhalb des Druckbereiches.": "Dieses Element befindet sich außerhalb des Druckbereiches.",
+  "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden.": "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden."
 }

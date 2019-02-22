@@ -18,7 +18,8 @@ const {
 
 const {
   projSaveStart,
-  projSaveClearMessage
+  projSaveClearMessage,
+  projectIdSelector
 } = require("../../../core/stores/actions/project");
 
 const { authUserIdSelector } = require("../../ProjectMenu/store/selectors");
@@ -87,13 +88,16 @@ class SaveWnd extends React.Component {
             <Input
               label={this.props.t("Project name")}
               onInputChange={this.onInputChange}
-              text={this.state.projectName}
+              text={this.props.projectId ? this.props.title : ""}
+              placeholder={this.props.t("Empty project")}
               name="projectName"
             />
             <Textarea
               label={this.props.t("Project description")}
               onInputChange={this.onInputChange}
-              text={this.state.projectDescription}
+              text={this.props.projectId ? this.props.description : ""}
+              projectId={this.props.projectId}
+              placeholder={this.props.t("Description")}
               name="projectDescription"
             />
           </div>

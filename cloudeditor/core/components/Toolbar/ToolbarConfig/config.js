@@ -407,6 +407,25 @@ const Config = {
     baseType: Types.BUTTON,
     className: "icon printqicon-lefttriangle fupaDownArrow",
     parentClassName: "fupaDownArrowContainer"
+  },
+  [Types.POPTEXT_LINE_HEIGHT]: {
+    baseType: Types.POPTEXT_VALUE,
+    className: "icon printqicon-layers",
+    parentClassName: "LineHeightPoptext",
+    poptextClassName: "FontPoptextList",
+    dropDown: "icon printqicon-selectdown DropDownArrow",
+    data: [
+      { value: "0.9", label: "0.9" },
+      { value: "1", label: "1" },
+      { value: "1.1", label: "1.1" },
+      { value: "1.2", label: "1.2" },
+      { value: "1.3", label: "1.3" },
+      { value: "1.4", label: "1.4" },
+      { value: "1.5", label: "1.5" },
+      { value: "1.6", label: "1.6" },
+      { value: "1.7", label: "1.7" },
+      { value: "1.8", label: "1.8" }
+    ]
   }
 };
 module.exports = Config;

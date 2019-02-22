@@ -1,12 +1,18 @@
 const React = require("react");
-
+const { connect } = require("react-redux");
+const {
+  changeHeaderFooterLayout
+} = require("../../../core/stores/actions/project");
 const submenuLayout = props => {
   const items = props.items.map((el, index) => {
     return (
       <li
         className="importImageItem"
         key={index}
-        onClick={() => props.toggleSelectPoptext(props.poptextName, el)}
+        onClick={() => {
+          props.toggleSelectPoptext(props.poptextName, el);
+          props.onChangeHeaderFooterLayoutHandler({ layout: el });
+        }}
       >
         <div className="itemImage">
           <img src={el.src} />
@@ -39,5 +45,14 @@ const submenuLayout = props => {
     </div>
   );
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    onChangeHeaderFooterLayoutHandler: payload =>
+      dispatch(changeHeaderFooterLayout(payload))
+  };
+};
 
-module.exports = submenuLayout;
+module.exports = connect(
+  null,
+  mapDispatchToProps
+)(submenuLayout);

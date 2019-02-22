@@ -62,7 +62,8 @@ const {
   CHANGE_BACKGROUND,
   CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
-  REFRESH_TABLE_FAILED
+  REFRESH_TABLE_FAILED,
+  CHANGE_HEADER_FOOTER_LAYOUT
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -80,19 +81,31 @@ const addPages = (state, action) => {
   const { activePage, pages, pagesOrder } = state;
   let newPages = { ...pages };
   const { nrPagesToInsert, location } = action;
+  const newObjects = {};
   let newIds = [];
   let newOrder = clone(pagesOrder);
   const firstPage = newPages[head(pagesOrder)];
   const firstPageWidth = firstPage["width"];
   const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
+    const newObject = ProjectUtils.getEmptyObject({
+      type: "image",
+      backgroundblock: 1,
+      width: firstPageWidth,
+      height: firstPageHeight,
+      left: 0,
+      top: 0,
+      subType: "pdf"
+    });
     const emptyPage = ProjectUtils.getEmptyPage({
       width: firstPageWidth,
       height: firstPageHeight
     });
+    emptyPage.objectsIds = [newObject.id];
     const { id } = emptyPage;
     newPages[id] = emptyPage;
     newIds.push(id);
+    newObjects[newObject.id] = newObject;
   }
   let pageIndex = pagesOrder.findIndex(el => {
     return el === activePage;
@@ -118,6 +131,10 @@ const addPages = (state, action) => {
     pages: {
       ...state.pages,
       ...newPages
+    },
+    objects: {
+      ...state.objects,
+      ...newObjects
     },
     pagesOrder: newOrder
   };
@@ -200,22 +217,15 @@ deleteObjectFromHeaderFooter = (state, action, pageHF) => {
 };
 
 const addTable = (state, action) => {
-  const object = ProjectUtils.getEmptyObject(action);
-  const pageId = state.activePage;
-  return {
-    ...state,
-    pages: {
-      ...state.pages,
-      [pageId]: {
-        ...state.pages[pageId],
-        objectsIds: append(object.id, state.pages[pageId].objectsIds)
-      }
-    },
-    objects: {
-      ...state.objects,
-      [object.id]: object
-    }
-  };
+  const headerSelector = projectHeaderEnabledSelector(state);
+  const footerSelector = projectFooterEnabledSelector(state);
+  if (headerSelector) {
+    return addObjectMiddle(state, action);
+  } else if (footerSelector) {
+    return addObjectMiddle(state, action);
+  }
+
+  return addCreatedObject(state, action, ProjectUtils.getEmptyObject(action));
 };
 const changePage = (state, payload) => {
   return {
@@ -385,6 +395,40 @@ const removeActionSelection = (state, payload) => {
     selectedActionObjectsIds: []
   };
 };
+const changeHeaderFooterLayout = (state, payload) => {
+  const layout = { ...payload.layout };
+  const objects = { ...state.objects };
+  const savedData = JSON.parse(layout.saved_data);
+  const type = layout.type;
+  let skipIds = [];
+  skipIds = ProjectUtils.getObjectHeaderFooterIds(
+    state.configs.document[layout.type].objectsIds,
+    state.objects,
+    []
+  );
+  let newObjects = {};
+  Object.keys(objects).map(function(key) {
+    if (skipIds.indexOf(key) === -1) {
+      newObjects[key] = objects[key];
+    }
+  });
+  newObjects = merge(newObjects, savedData.blocks);
+  return {
+    ...state,
+    objects: newObjects,
+    configs: {
+      ...state.configs,
+      document: {
+        ...state.configs.document,
+        [type]: {
+          ...state.configs.document[type],
+          height: parseInt(savedData[type]["height"]),
+          objectsIds: savedData[type]["objectsIds"]
+        }
+      }
+    }
+  };
+};
 
 const config = ConfigUtils.getDefaults();
 //const emptyProject = ProjectUtils.getRandomProject(config.project);
@@ -499,7 +543,8 @@ loadLayout = (state, payload) => {
   const savedData = JSON.parse(payload.saved_data);
   const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
     const id = uuidv4();
-    return { ...savedData.activePage.objects[key], id: id };
+    if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds"))
+      return { ...savedData.activePage.objects[key], id: id };
   });
   // store the new keys into objectsIds
   const addPageObj = {};
@@ -609,6 +654,9 @@ module.exports = handleActions(
     [REMOVE_ACTION_SELECTION]: (state, action) => {
       return removeActionSelection(state, action.payload);
     },
+    [CHANGE_HEADER_FOOTER_LAYOUT]: (state, action) => {
+      return changeHeaderFooterLayout(state, action.payload);
+    },
     [UPDATE_SELECTION_OBJECTS_COORDS]: (state, action) => {
       let objectsChanges = reduce(
         (acc, value) => {
@@ -651,31 +699,50 @@ module.exports = handleActions(
       };
     },
     [UPDATE_LAYER_PROP]: (state, action) => {
+      const headerSelector = projectHeaderEnabledSelector(state);
+      const footerSelector = projectFooterEnabledSelector(state);
       const objId = action.payload.id;
       const layerAction = action.payload.props.action;
+      let typeHF = null;
 
-      let newObjectsId = [...state.pages[state.activePage].objectsIds];
+      let orObjects = [];
+      if (headerSelector || footerSelector) {
+        typeHF = headerSelector ? "header" : "footer";
+        orObjects = state.objects[typeHF].objectsIds;
+      } else {
+        orObjects = state.pages[state.activePage].objectsIds;
+      }
+      let newObjectsId = [...orObjects];
+
       const objIndex = newObjectsId.findIndex(el => {
         return el === objId;
       });
 
       if (layerAction === "bringtofront") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          ...newObjectsId,
-          state.pages[state.activePage].objectsIds[objIndex]
-        ];
+        newObjectsId = [...newObjectsId, orObjects[objIndex]];
       } else if (layerAction === "bringforward") {
         newObjectsId = swap(objIndex, objIndex + 1, newObjectsId);
       } else if (layerAction === "sendbackward") {
         newObjectsId = swap(objIndex, objIndex - 1, newObjectsId);
       } else if (layerAction === "sendtoback") {
         newObjectsId.splice(objIndex, 1);
-        newObjectsId = [
-          state.pages[state.activePage].objectsIds[objIndex],
-          ...newObjectsId
-        ];
+        newObjectsId = [orObjects[objIndex], ...newObjectsId];
       }
+
+      if (headerSelector || footerSelector) {
+        return {
+          ...state,
+          objects: {
+            ...state.objects,
+            [typeHF]: {
+              ...state.objects[typeHF],
+              objectsIds: newObjectsId
+            }
+          }
+        };
+      }
+
       return {
         ...state,
         pages: {
@@ -818,10 +885,19 @@ module.exports = handleActions(
       });
       return {
         ...state,
-        title: data.title,
+        title: project_data.title,
+        description: project_data.description,
         projectId: data.projectId,
         pages: project_data.pages,
         objects: project_data.objects,
+        configs: {
+          ...state.configs,
+          document: {
+            ...state.configs.document,
+            header: project_data.header,
+            footer: project_data.footer
+          }
+        },
         pagesOrder: project_data.pagesOrder,
         activePage: head(project_data.pagesOrder),
         load: {

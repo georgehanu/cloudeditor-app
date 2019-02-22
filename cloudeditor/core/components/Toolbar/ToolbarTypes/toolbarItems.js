@@ -99,6 +99,10 @@ const FupaDownArrow = {
   type: Types.FUPA_DOWN_ARROW
 };
 
+const PoptextLineHeight = {
+  type: Types.POPTEXT_LINE_HEIGHT
+};
+
 module.exports = {
   Bold,
   Italic,
@@ -125,5 +129,6 @@ module.exports = {
   RefreshTable,
   FupaSimpleImage,
   FupaText,
-  FupaDownArrow
+  FupaDownArrow,
+  PoptextLineHeight
 };

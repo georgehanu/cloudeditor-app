@@ -71,15 +71,8 @@ const MatchesTable = ({ tableStyle = "default", ...props }) => {
     if (el.section === "PRE") {
       // match did not happen yet, we have to display the date
       matchInfoBgColor = "#ececec";
-      matchInfo = (
-        <div style={{ lineHeight: thisStyle.tbodyStyle.lineHeight }}>
-          <span
-            style={{ color: "#000", fontSize: thisStyle.tbodyStyle.fontSize }}
-          >
-            {kickoffDateStr}
-          </span>
-        </div>
-      );
+      matchInfoFgColor = "#000";
+      matchInfo = <React.Fragment>{kickoffDateStr}</React.Fragment>;
     } else {
       // display the score
       if (currentTeamGoals === opositeTeamGoals) {
@@ -90,11 +83,9 @@ const MatchesTable = ({ tableStyle = "default", ...props }) => {
         matchInfoBgColor = "#e50a19";
       }
       matchInfo = (
-        <div style={{ lineHeight: thisStyle.tbodyStyle.lineHeight }}>
-          <span>{el.homeGoal}</span>
-          <span>:</span>
-          <span>{el.guestGoal}</span>
-        </div>
+        <React.Fragment>
+          {el.homeGoal}:{el.guestGoal}
+        </React.Fragment>
       );
     }
 
@@ -110,29 +101,28 @@ const MatchesTable = ({ tableStyle = "default", ...props }) => {
         </td>
         <td style={{ ...fupaTd, ...thisStyle.cols[3] }}>{location}</td>
         <td style={{ ...fupaTd, ...thisStyle.cols[4] }}>
-          <img
-            src={imageUrl}
-            title={oponentTeam.name.full}
-            alt={oponentTeam.name.full}
-            style={{ ...fupaImageWrapperPicture }}
+          <div
+            style={{
+              ...fupaImageWrapperPicture,
+              backgroundImage: "url(" + imageUrl + ")"
+            }}
           />
         </td>
         <td style={{ ...fupaTd, ...thisStyle.cols[5] }}>
           {oponentTeam.name.full}
         </td>
         <td style={{ ...fupaTd, ...thisStyle.cols[6] }}>&nbsp;</td>
-        <td style={{ ...fupaTd, ...thisStyle.cols[7] }}>
-          <div
-            style={{
-              ...scoreCard,
-              backgroundColor: matchInfoBgColor,
-              float: "right"
-            }}
-          >
-            <div style={{ display: "inline-block", color: matchInfoFgColor }}>
-              {matchInfo}
-            </div>
-          </div>
+        <td
+          style={{
+            ...fupaTd,
+            ...thisStyle.cols[7],
+            ...scoreCard,
+            backgroundColor: matchInfoBgColor,
+            //float: "right",
+            color: matchInfoFgColor
+          }}
+        >
+          {matchInfo}
         </td>
       </tr>
     );

@@ -10,7 +10,7 @@ const galleryToolbarPreview = props => {
     >
       <div className="galleryItemActions">
         <span
-          className="select icon printqicon-ok"
+          className="select pic drag icon printqicon-move_cursor ui-draggable-handle"
           onClick={() => props.selectAsset(props.image)}
         />
 

@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
 
 const withPageGroups = require("../../hoc/renderer/withPageGroups");
+const { withNamespaces } = require("react-i18next");
 
 const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
@@ -98,16 +99,24 @@ class Html5 extends React.Component {
     }
   };
   updateContainerDimensions = () => {
-    if (this.containerRef) {
+    let containerRef = this.containerRef;
+    if (!containerRef) {
+      containerRef = document.querySelectorAll(
+        ".renderContainer .zoomContainer"
+      )[0];
+    }
+    if (containerRef) {
       const parent = {
-        width: this.containerRef.offsetWidth,
-        height: this.containerRef.offsetHeight
+        width: containerRef.offsetWidth,
+        height: containerRef.offsetHeight
       };
+      if (!parent.width) return false;
+      if (!parent.height) return false;
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
       };
-      const boundingContainer = this.containerRef.getBoundingClientRect();
+      const boundingContainer = containerRef.getBoundingClientRect();
       this.setState({
         zoomScale: computeZoomScale(this.props.zoom, parent, child),
         bottomContainer: boundingContainer.bottom,
@@ -134,6 +143,9 @@ class Html5 extends React.Component {
     if (prevProps.rerenderId !== this.props.rerenderId) {
       this.updateContainerDimensions();
     }
+    if (prevProps.activePageId !== this.props.activePageId) {
+      this.updateContainerDimensions();
+    }
   }
   setMissingImages = () => {};
   deleteMissingImages = () => {};
@@ -151,6 +163,12 @@ class Html5 extends React.Component {
         return (event.returnValue = "Are you sure you want to close");
       }
     });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateContainerDimensions);
+    window.removeEventListener("resizePage", this.updateContainerDimensions);
+    document.removeEventListener("mousedown", this.blurAction);
   }
 
   render() {
@@ -184,6 +202,7 @@ class Html5 extends React.Component {
           onChangePage={this.props.onChangePageHandler}
           deleteMissingImages={this.deleteMissingImages}
           setMissingImages={this.setMissingImages}
+          t={this.props.t}
         />
       </React.Fragment>
     );
@@ -241,5 +260,5 @@ module.exports = hot(module)(
   connect(
     makeMapStateToProps,
     mapDispatchToProps
-  )(withPageGroups(Html5))
+  )(withPageGroups(withNamespaces("translate")(Html5)))
 );

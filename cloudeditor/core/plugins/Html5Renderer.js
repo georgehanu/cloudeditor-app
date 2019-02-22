@@ -75,7 +75,7 @@ const Html5RendererPlugin = connect(
 
 module.exports = {
   Html5Renderer: assign(Html5RendererPlugin, {
-    cfg: { facingPages: false }
+    cfg: { facingPages: true }
   }),
   reducers: {},
   epics: {}

@@ -17,7 +17,7 @@
 
 .showPrintPreview .projectPreviewContainer {
   display: block;
-  padding-bottom: 150px;
+  padding-bottom: 155px;
 }
 
 .pageSelectorExtended .projectPreviewContainer {
@@ -82,13 +82,32 @@
   display: inline-block;
   margin: auto auto;
 }
-
+/* Magnify class */
+/*
 .showPrintPreview #sidebar-wrapper .sidebarButton,
 .showPrintPreview #sidebar-wrapper .zoom {
   pointer-events: none;
   opacity: 0.4;
 }
-
+/* Zoom [[[*/
+.showPrintPreview #sidebar-wrapper .sidebarButton {
+  pointer-events: none;
+  opacity: 0.4;
+}
+.showPrintPreview #sidebar-wrapper .zoom .sidebarButton {
+  pointer-events: all;
+  opacity: 1;
+}
+.magnifying-glass.circle {
+  display: none;
+}
+.magnifier-image {
+  cursor: default;
+}
+.previewImagecontainerOverflow {
+  overflow: auto;
+}
+/* Zoom [[[*/
 .showPrintPreview.containerPrintPreviewMaxZindex .previewImagecontainer {
   z-index: 5000;
 }
@@ -150,4 +169,10 @@
 
 .showPrintPreview .singlePageContainer:hover .deletePage {
   display: none;
+}
+
+.magnifier-image {
+  height: inherit !important;
+  width: inherit !important;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

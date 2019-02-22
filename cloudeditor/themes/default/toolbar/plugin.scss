@@ -1120,3 +1120,54 @@ input[type="range"]::-webkit-slider-runnable-track {
   -ms-transform: rotate(90deg);
   transform: rotate(90deg);
 }
+
+.LineHeightPoptext {
+  width: 30px;
+}
+.LineHeightPoptext button {
+  width: 100%;
+  padding: 1px;
+  text-align: right;
+}
+
+.LineHeightPoptext .PoptextValueText {
+  width: 30px;
+}
+
+.LineHeightPoptext .FontPoptextList li {
+  height: 30px;
+  line-height: 25px;
+}
+.LineHeightPoptext .FontPoptextList {
+  top: -55px;
+}
+
+.LineHeightPoptext .DropDownArrow {
+  position: absolute;
+  margin-left: 2px;
+  margin-right: 0px;
+}
+
+.DropDownArrow {
+  position: absolute;
+}
+
+.EditMode span {
+  line-height: 28px;
+}
+
+.EditModeEnabled {
+  border: 1px solid black;
+}
+
+.EditModeEnabled span {
+  line-height: 26px;
+}
+.borderUnitCotainer input {
+  width: 40px;
+}
+.borderUnitCotainer {
+  width: 100%;
+  float: left;
+  padding: 5px 10px;
+}

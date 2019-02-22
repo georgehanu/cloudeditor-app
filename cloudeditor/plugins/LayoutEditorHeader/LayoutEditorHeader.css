@@ -20,7 +20,10 @@
   padding-top: 120px;
   padding-bottom: 30px;
 }
-
+.submenuItemHeaderFooterFirst {
+  top: 80px !important;
+  z-index: 999999 !important;
+}
 .layoutEditorHeaderContainer .duplicateChecked input {
   width: 30px;
   height: 30px;
@@ -162,4 +165,18 @@
 
 .layouHeaderTop .__react_component_tooltip {
   opacity: 1;
+}
+.storeViewSelect {
+  height: 40px;
+  width: 100%;
+}
+.submenuItemHeaderFooter {
+  background-color: transparent !important;
+}
+.submenuItemHeaderFooterHeight span {
+  color: #fff !important;
+}
+.submenuItemHeaderFooterHeightReset {
+  background-color: #66b764 !important;
+  color: white !important;
 }

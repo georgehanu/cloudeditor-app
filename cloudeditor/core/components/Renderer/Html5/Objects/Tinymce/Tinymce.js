@@ -6,7 +6,6 @@ require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
 const { debounce } = require("underscore");
-const { withNamespaces } = require("react-i18next");
 const striptags = require("striptags");
 const ConfigUtils = require("../../../../../utils/ConfigUtils");
 
@@ -277,6 +276,10 @@ class Tinymce extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.viewOnly) {
+      this.tinyEditor = null;
+    }
+    if (this.tinyEditor && this.tinyEditor.selection === null) return;
     if (
       this.tinyEditor &&
       this.tinyEditor.selection.getNode() !== this.tinyEditor.getBody()
@@ -504,17 +507,7 @@ class Tinymce extends React.PureComponent {
     }
 
     if (this.props.viewOnly) {
-      return (
-        <div
-          className="dummyTableContainer"
-          style={{
-            width: width / zoomScale,
-            height: height / zoomScale,
-            transform: "scale(" + zoomScale + ")"
-          }}
-          dangerouslySetInnerHTML={{ __html: tableContent }}
-        />
-      );
+      return null;
     } else {
       this.resetTableDim();
     }
@@ -531,7 +524,8 @@ class Tinymce extends React.PureComponent {
         <Editor
           value={tableContent === "" ? pasteContent : tableContent}
           init={{
-            plugins: "table autoresize paste textcolor colorpicker",
+            plugins:
+              "table autoresize paste textcolor colorpicker fupaColorPicker",
             paste_retain_style_properties: "all",
             paste_webkit_styles: "all",
             paste_retain_style_properties: "all",
@@ -574,9 +568,22 @@ class Tinymce extends React.PureComponent {
             toolbar: false,
             fontsize_formats: "px",
             font_formats: this.props.uiFonts,
+            style_formats: [
+              {
+                deep: false,
+                defaultBlock: "div",
+                inherit: false,
+                preview: "font-family font-size",
+                remove: "none",
+                selector: "figure,p,h1,h2,h3,h4,h5,h6,td,th,tr,div,ul,ol,li",
+                styles: {
+                  backgroundColor: "%value"
+                }
+              }
+            ],
 
             table_toolbar:
-              "tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor backcolor fontselect decrementFontSize fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
+              "tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor fupaBackcolor fontselect decrementFontSize fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
             content_css: [
               PRODUCTION
                 ? globalConfig.baseUrl +
@@ -669,4 +676,4 @@ class Tinymce extends React.PureComponent {
   }
 }
 
-module.exports = withNamespaces("translate")(Tinymce);
+module.exports = Tinymce;

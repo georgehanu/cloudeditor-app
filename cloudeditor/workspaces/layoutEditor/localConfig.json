@@ -9,6 +9,7 @@
       "AddImage",
       "AddPdf",
       "Layouts",
+      "MenuItemHeaderFooter",
       "Zoom",
       "Background",
       "GraphicElements",

@@ -24,7 +24,7 @@ const StandingsTable = ({ tableStyle = "default", ...props }) => {
       <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
         {props.t("Standings_Index")}
       </td>
-      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow, ...thisStyle.cols[2] }}>
         {props.t("Standings_Logo")}
       </td>
       <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
@@ -92,11 +92,11 @@ const StandingsTable = ({ tableStyle = "default", ...props }) => {
         </td>
 
         <td style={{ ...fupaTd, ...thisStyle.cols[2] }}>
-          <img
-            src={imageUrl}
-            title={el.team.name.full}
-            alt={el.team.name.full}
-            style={{ ...fupaImageWrapperPicture }}
+          <div
+            style={{
+              ...fupaImageWrapperPicture,
+              backgroundImage: "url(" + imageUrl + ")"
+            }}
           />
         </td>
 
