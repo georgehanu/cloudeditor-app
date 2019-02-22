@@ -23,6 +23,7 @@ class Tinymce extends React.PureComponent {
     this.contentTinyTable = props.tableContent;
     this.tableSize = {};
     this.currentSelectNode = null;
+    this.queryTime = props.queryTime;
   }
 
   hasClass(el, className) {
@@ -341,7 +342,6 @@ class Tinymce extends React.PureComponent {
             false,
             this.props.fontSize / this.props.zoomScale + "px"
           );
-
         if (prevProps.textAlign !== this.props.textAlign) {
           if (this.props.textAlign == "left")
             this.tinyEditor.execCommand("JustifyLeft");
@@ -559,6 +559,12 @@ class Tinymce extends React.PureComponent {
       return null;
     } else {
       this.resetTableDim();
+    }
+
+    if (this.props.queryTime !== this.queryTime) {
+      this.queryTime = this.props.queryTime;
+      this.contentTinyTable = this.props.tableContent;
+      this.tinyEditor.setContent(this.props.tableContent);
     }
 
     let pasteContent = this.pasteContent;

@@ -213,7 +213,8 @@ class ObjectBlock extends React.Component {
       fillColor: props.fillColor.htmlRGB,
       bgColor: props.bgColor.htmlRGB,
       borderColor: props.borderColor.htmlRGB,
-      toolbarUpdate: props.toolbarUpdate
+      toolbarUpdate: props.toolbarUpdate,
+      queryTime: props.fupaData ? props.fupaData.queryData.queryTime : null
     };
     const block = this.props.viewOnly ? (
       <TinymcePagination
