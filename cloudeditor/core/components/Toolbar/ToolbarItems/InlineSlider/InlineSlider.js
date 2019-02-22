@@ -24,14 +24,19 @@ const InlineSlider = props => {
           props.ToolbarHandler({
             mainHandler: true,
             payloadMainHandler: {
-              value: value,
+              value: { value, activeAction: 1 },
               type: props.type
             }
           });
         }}
-        onMouseUp={event => {
-          const evt = new Event("update_crop_params");
-          document.dispatchEvent(evt);
+        onAfterChange={value => {
+          props.ToolbarHandler({
+            mainHandler: true,
+            payloadMainHandler: {
+              value: { value, activeAction: 0 },
+              type: props.type
+            }
+          });
         }}
       />
     </div>

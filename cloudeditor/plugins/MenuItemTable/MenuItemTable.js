@@ -16,7 +16,7 @@ class MenuItemTable extends React.Component {
   render() {
     const pageWidth = this.props.pages[this.props.activePageId].width;
     const columnsNo = this.props.columnsNo;
-    const tableWidth = columnsNo > 0 ? pageWidth / columnsNo : pageWidth;
+    const tableWidth = pageWidth / 2; //columnsNo > 0 ? pageWidth / columnsNo : pageWidth;
 
     return (
       <div className="projectMenuButtonLink">

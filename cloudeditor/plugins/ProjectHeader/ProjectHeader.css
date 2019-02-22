@@ -112,3 +112,11 @@
   background-color: #484747;
   cursor: not-allowed;
 }
+
+.projectHeaderShowModal .projectMenuContainer {
+  z-index: 500;
+}
+
+.projectHeaderShowModal #sidebar-wrapper {
+  z-index: 600;
+}

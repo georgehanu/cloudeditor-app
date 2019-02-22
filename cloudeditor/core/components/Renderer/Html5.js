@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { forEach } = require("ramda");
 
 const withPageGroups = require("../../hoc/renderer/withPageGroups");
+const { withNamespaces } = require("react-i18next");
 
 const Canvas = require("./Html5/Canvas/Canvas");
 const { computeZoomScale } = require("../../utils/UtilUtils");
@@ -109,6 +110,8 @@ class Html5 extends React.Component {
         width: containerRef.offsetWidth,
         height: containerRef.offsetHeight
       };
+      if (!parent.width) return false;
+      if (!parent.height) return false;
       const child = {
         width: this.props.activePage.width,
         height: this.props.activePage.height
@@ -162,6 +165,12 @@ class Html5 extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateContainerDimensions);
+    window.removeEventListener("resizePage", this.updateContainerDimensions);
+    document.removeEventListener("mousedown", this.blurAction);
+  }
+
   render() {
     const { pageReady } = this.state;
     let globalSpinner = null;
@@ -193,6 +202,7 @@ class Html5 extends React.Component {
           onChangePage={this.props.onChangePageHandler}
           deleteMissingImages={this.deleteMissingImages}
           setMissingImages={this.setMissingImages}
+          t={this.props.t}
         />
       </React.Fragment>
     );
@@ -250,5 +260,5 @@ module.exports = hot(module)(
   connect(
     makeMapStateToProps,
     mapDispatchToProps
-  )(withPageGroups(Html5))
+  )(withPageGroups(withNamespaces("translate")(Html5)))
 );

@@ -11,5 +11,7 @@
   "Add Image": "Bild hinzufügen",
   "Add a new image block": "Neuen Bildbereich einfügen",
   "Pages": "Seite",
-  "Edit action": "Arbeitsschritt"
+  "Edit action": "Arbeitsschritt",
+  "Dieses Element befindet sich außerhalb des Druckbereiches.": "Dieses Element befindet sich außerhalb des Druckbereiches.",
+  "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden.": "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden."
 }

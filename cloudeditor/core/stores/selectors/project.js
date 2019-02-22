@@ -30,6 +30,8 @@ const activePageIdSelector = state =>
 
 const titleSelector = state =>
   pathOr("Empty project", ["project", "title"], state);
+const projectIdSelector = state =>
+  pathOr(null, ["project", "projectId"], state);
 
 /* Start Document Config Selectors */
 
@@ -132,11 +134,11 @@ const footerConfigSelector = state => {
 
 const projectHeaderEnabledSelector = state => {
   const header = pathOr(false, ["configs", "document", "header"], state);
-  return header.mode === "edit" && header.activeOn === "all";
+  return header.mode === "edit";
 };
 const projectFooterEnabledSelector = state => {
   const footer = pathOr(false, ["configs", "document", "footer"], state);
-  return footer.mode === "edit" && footer.activeOn === "all";
+  return footer.mode === "edit";
 };
 
 const projectHeaderConfigSelector = state => {
@@ -153,7 +155,7 @@ const headerEnabledSelector = state => {
     ["project", "configs", "document", "header"],
     state
   );
-  return header.mode === "edit" && header.activeOn === "all";
+  return header.mode === "edit";
 };
 const footerEnabledSelector = state => {
   const footer = pathOr(
@@ -161,7 +163,7 @@ const footerEnabledSelector = state => {
     ["project", "configs", "document", "footer"],
     state
   );
-  return footer.mode === "edit" && footer.activeOn === "all";
+  return footer.mode === "edit";
 };
 
 /* End Document Config Selectors */
@@ -474,6 +476,7 @@ module.exports = {
   columnsNoPagesConfigSelector,
   objectsDefaultConfigSelector,
   titleSelector,
+  projectIdSelector,
   blockActionsPagesConfigSelector,
   deletePagePagesConfigSelector,
   projDescriptionSelector,

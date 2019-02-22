@@ -60,10 +60,14 @@
   transform-origin: top left;
   white-space: normal;
 }
-
 .dummyTableContainer table {
   width: 100% !important;
   height: 100% !important;
+  box-sizing: content-box !important;
+}
+
+.dummyTableContainer table * {
+  box-sizing: content-box !important;
 }
 
 .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
@@ -72,12 +76,12 @@
   box-shadow: none;
   border: none;
   height: 30px !important;
-  z-index: 500 !important;
+  z-index: 500000 !important;
 }
 
 body.sidebarContainerExpand
   .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
-  left: 505px !important;
+  left: 512px !important;
 }
 
 body.submenuHeaderFooter
@@ -97,7 +101,7 @@ body.submenuHeaderFooter
 
 .mce-tinymce.mce-tinymce-inline
   .mce-container.mce-panel.mce-floatpanel.mce-menu.mce-animate {
-  z-index: 500 !important;
+  z-index: 500000 !important;
 }
 
 .mce-tinymce.mce-tinymce-inline .mce-tableLabels {
@@ -109,4 +113,11 @@ body.submenuHeaderFooter
 
 #tinymceFontValue {
   width: 60px;
+}
+
+.mce-tinymce.mce-tinymce-inline .mce-i-fupaBackcolor:before {
+  content: "\e01a";
+}
+.mce-tinymce.mce-tinymce-inline .mce-i-fupaBackcolor {
+  background: #bbb;
 }

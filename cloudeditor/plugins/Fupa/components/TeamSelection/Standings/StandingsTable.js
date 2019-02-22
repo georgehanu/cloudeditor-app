@@ -24,7 +24,7 @@ const StandingsTable = ({ tableStyle = "default", ...props }) => {
       <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
         {props.t("Standings_Index")}
       </td>
-      <td style={{ ...fupaTdBase, ...Colors.oddRow }}>
+      <td style={{ ...fupaTdBase, ...Colors.oddRow, ...thisStyle.cols[2] }}>
         {props.t("Standings_Logo")}
       </td>
       <td style={{ ...fupaTdBase, ...Colors.oddRow }}>

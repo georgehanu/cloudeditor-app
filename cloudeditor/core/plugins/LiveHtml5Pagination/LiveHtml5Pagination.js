@@ -39,7 +39,7 @@ class LiveHtml5Pagination extends React.Component {
       size: "normal",
       hoverId: null,
       showAddPages: false,
-      nrPagesToInsert: props.groupSize,
+      nrPagesToInsert: 4,
       location: "after",
       uuid: uuidv4(),
       scrollCheckId: uuidv4()

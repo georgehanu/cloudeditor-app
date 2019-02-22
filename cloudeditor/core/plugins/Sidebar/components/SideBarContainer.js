@@ -5,6 +5,7 @@ const React = require("react");
 const PropTypes = require("prop-types");
 const { rerenderPage } = require("../../../../core/utils/UtilUtils");
 const isEqual = require("react-fast-compare");
+const { withNamespaces } = require("react-i18next");
 
 class SideBarContainer extends React.Component {
   state = {
@@ -83,7 +84,7 @@ class SideBarContainer extends React.Component {
                 <div className="iconContainer">
                   <div className={iconStyle} />
                 </div>
-                <div className="iconTitle">{tool.text}</div>
+                <div className="iconTitle">{this.props.t(tool.text)}</div>
                 {tool.showMore && (
                   <span className="icon more printqicon-lefttriangle" />
                 )}
@@ -132,4 +133,4 @@ SideBarContainer.defaultProps = {
   tools: []
 };
 
-module.exports = SideBarContainer;
+module.exports = withNamespaces("sidebar")(SideBarContainer);

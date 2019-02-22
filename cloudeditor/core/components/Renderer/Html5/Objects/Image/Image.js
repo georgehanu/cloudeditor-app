@@ -2,7 +2,9 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
-const CropperImage = require("../../CropperImage/CropperImage");
+const Cropper = require("react-cropper").default;
+const { equals } = require("ramda");
+require("cropperjs/dist/cropper.css");
 const type = ["image"];
 require("./Image.css");
 const ImageTarget = {
@@ -38,80 +40,285 @@ collectDrop = (connect, monitor) => {
     clientOffset: monitor.getClientOffset()
   };
 };
-class ImageBlock extends React.PureComponent {
-  state = {};
-  constructor(props) {
-    super(props);
-    this.state = {
-      ready: false
-    };
+class ImageBlock extends React.Component {
+  _crop() {}
+  shouldComponentUpdate(nextProps, nextState) {
+    if (equals(nextProps, this.props)) {
+      return false;
+    }
+    if (nextProps.activeAction) {
+      this.refs.cropper.zoomTo(nextProps.leftSlider / 100);
+      return false;
+    }
+    if (
+      nextProps.width / this.props.zoomScale !==
+        this.props.width / this.props.zoomScale ||
+      nextProps.height / this.props.zoomScale !==
+        this.props.height / this.props.zoomScale
+    ) {
+      if (this.refs.cropper) {
+        this.refs.cropper.enable();
+        this.refs.cropper.reset();
+      }
+    }
+    if (nextProps.currentPageId !== this.props.currentPageId) {
+      this.refs.cropper.enable();
+      this.refs.cropper.reset();
+    }
+    if (
+      nextProps.width / this.props.zoomScale !==
+        this.props.width / this.props.zoomScale ||
+      nextProps.height / this.props.zoomScale !==
+        this.props.height / this.props.zoomScale
+    ) {
+      this.refs.cropper.enable();
+      this.refs.cropper.reset();
+    }
+    if (!nextProps.activeAction && this.props.activeAction) {
+      this.refs.cropper.zoomTo(nextProps.leftSlider / 100);
+      this.setDataOnState();
+    }
+    if (!nextProps.resizing && this.props.resizing) {
+      this.refs.cropper.zoomTo(nextProps.leftSlider / 100);
+      this.setDataOnState();
+    }
+
+    return true;
   }
-  componentDidMount() {
-    this.setState({ ready: true });
-  }
-  componentDidUpdate = () => {
-    if (this.props.viewOnly) {
-      if (this.props.missingImage) {
-        this.props.setMissingImages(this.props.id);
+  setData = () => {
+    if (this.refs.cropper) {
+      this.refs.cropper.enable();
+      this.refs.cropper.reset();
+      this.refs.cropper.cropper.initContainer();
+    }
+    this.initializeDimm();
+    this.setCropperData();
+    this.setDataOnState();
+    this.refs.cropper.disable();
+  };
+
+  initializeDimm = () => {
+    const canvasData = this.refs.cropper.getCanvasData();
+    const cropBoxData = this.refs.cropper.getCropBoxData();
+    const data = this.refs.cropper.getData();
+    const { width, height } = this.props;
+    const imageWidth = canvasData.naturalWidth;
+    const imageHeight = canvasData.naturalHeight;
+    let widthRatio = 1;
+    let heightRatio = 1;
+    let minPercent = 1;
+    if (imageWidth > 0) {
+      widthRatio = width / imageWidth;
+      heightRatio = height / imageHeight;
+      if (widthRatio <= heightRatio) {
+        minPercent = heightRatio;
       } else {
-        this.props.deleteMissingImages(this.props.id);
+        minPercent = widthRatio;
+      }
+    }
+    const widthImage = Math.ceil(imageWidth * minPercent);
+    const heightImage = Math.ceil(imageHeight * minPercent);
+    this.refs.cropper.setData({
+      ...data,
+      width: width,
+      height: height,
+      left: (-1 * (widthImage - width)) / 2,
+      top: (-1 * (heightImage - height)) / 2
+    });
+    this.refs.cropper.setCanvasData({
+      ...canvasData,
+      width: widthImage,
+      height: null,
+      left: (-1 * (widthImage - width)) / 2,
+      top: (-1 * (heightImage - height)) / 2
+    });
+    this.refs.cropper.setCropBoxData({
+      ...cropBoxData,
+      width,
+      height,
+      left: 0,
+      top: 0
+    });
+  };
+  componentDidUpdate() {
+    if (this.refs.cropper) {
+      var cropData = this.refs.cropper.getCropBoxData();
+      if (
+        cropData.width != this.props.width ||
+        cropData.height != this.props.height
+      ) {
+        this.refs.cropper.enable();
+        this.refs.cropper.reset();
+        this.refs.cropper.cropper.initContainer();
+        this.initializeDimm();
+      }
+      if (this.props.resizing) {
+        this.refs.cropper.cropper.initContainer();
+        this.refs.cropper.zoomTo(this.props.leftSlider / 100);
+        return false;
+      }
+      // if (!this.props.cropW) this.initializeDimm();
+      this.setCropperData();
+      if (this.props.active) {
+        this.refs.cropper.enable();
+      } else {
+        this.refs.cropper.disable();
+      }
+    }
+  }
+  cropEndHandler = () => {
+    if (!this.props.viewOnly) {
+      if (!this.props.activeAction) this.setDataOnState();
+    }
+  };
+  setDataOnState = () => {
+    if (this.refs.cropper) {
+      const data = this.refs.cropper.getData();
+      const imageData = this.refs.cropper.getImageData();
+      const result = {
+        cropX: Math.floor(data.x),
+        cropY: Math.floor(data.y),
+        cropW: Math.round(data.width),
+        cropH: Math.round(data.height),
+        naturalWidth: imageData.naturalWidth,
+        naturalHeight: imageData.naturalHeight
+      };
+      this.props.onUpdatePropsNoUndoRedo({
+        id: this.props.id,
+        props: result
+      });
+    }
+  };
+  setCropperData = () => {
+    const {
+      cropX,
+      cropY,
+      cropW,
+      cropH,
+      zoomScale,
+      width,
+      height,
+      leftSlider
+    } = this.props;
+    if (this.refs.cropper) {
+      if (cropW) {
+        this.refs.cropper.zoomTo(this.props.leftSlider / 100);
+        const data = this.refs.cropper.getCanvasData();
+        const imageData = this.refs.cropper.getImageData();
+        let canvasWidth = imageData.width;
+        let canvasHeight = imageData.height;
+        if (this.props.leftSlider) {
+          canvasWidth = (imageData.naturalWidth * leftSlider) / 100;
+          canvasHeight = (imageData.naturalHeight * leftSlider) / 100;
+        }
+        let widthRatio2 = 1;
+        let heightRatio2 = 1;
+        let minPercent = 1;
+        const imageWidth = imageData.naturalWidth;
+        const imageHeight = imageData.naturalHeight;
+        if (imageWidth > 0) {
+          widthRatio2 = width / imageWidth;
+          heightRatio2 = height / imageHeight;
+          if (widthRatio2 <= heightRatio2) {
+            minPercent = heightRatio2;
+          } else {
+            minPercent = widthRatio2;
+          }
+        }
+        const widthImage = Math.ceil(imageWidth * minPercent);
+        const heightImage = Math.ceil(imageHeight * minPercent);
+        const rW =
+          ((imageData.naturalWidth / cropW) * imageData.naturalWidth) /
+          imageData.naturalWidth;
+        const rH =
+          ((imageData.naturalHeight / cropH) * imageData.naturalHeight) /
+          imageData.naturalHeight;
+
+        canvasWidth = widthImage * Math.min(rH, rW);
+
+        canvasHeight = heightImage * Math.min(rH, rW);
+        const widthRatio = imageData.naturalWidth / canvasWidth;
+        const heightRatio = imageData.naturalHeight / canvasHeight;
+
+        this.refs.cropper.setCanvasData({
+          ...data,
+          left: -1 * (cropX / Math.max(widthRatio, heightRatio)),
+          top: -1 * (cropY / Math.max(widthRatio, heightRatio)),
+          width: canvasWidth,
+          height: canvasHeight
+        });
+
+        // this.refs.cropper.zoomTo(this.props.leftSlider / 100);
       }
     }
   };
   render() {
-    const { key, width, height, top, left, ...otherProps } = this.props;
+    const {
+      imageWidth,
+      imageHeight,
+      key,
+      width,
+      height,
+      top,
+      left,
+      ...otherProps
+    } = this.props;
     const style = {
       width: width,
       height: height,
       left: left,
       top: top
     };
-    let cropper = null;
-    if (this.state.ready && !this.props.missingImage && this.props.image_src) {
-      cropper = (
-        <CropperImage
-          targetWidth={this.props.width}
-          targetHeight={this.props.height}
-          cropH={this.props.cropH}
-          cropW={this.props.cropW}
-          cropX={this.props.cropX}
-          cropY={this.props.cropY}
-          imageWidth={this.props.imageWidth}
-          imageHeight={this.props.imageHeight}
-          image_src={this.props.image_src}
-          leftSlider={this.props.leftSlider}
-          alternateZoom={this.props.alternateZoom}
-          width={this.props.width}
-          height={this.props.height}
-          viewOnly={this.props.viewOnly}
-          id={this.props.id}
-          resizing={this.props.resizing}
-          active={this.props.active}
-          filter={this.props.filter}
-          flip={this.props.flip}
-          contrast={this.props.contrast}
-          brightness={this.props.brightness}
-          renderId={this.props.renderId}
-          workingPercent={this.props.workingPercent}
-          onUpdatePropsHandler={this.props.onUpdateProps}
-          bgColor={this.props.bgColor}
-          subType={this.props.subType}
-          backgroundblock={this.props.backgroundblock}
-          onUpdateNoUndoRedoPropsHandler={this.props.onUpdatePropsNoUndoRedo}
-          opacity={this.props.opacity}
-        />
-      );
+    let widthRatio = 1;
+    let heightRatio = 1;
+    let minPercent = 1;
+    if (imageWidth > 0) {
+      widthRatio = width / imageWidth;
+      heightRatio = height / imageHeight;
+      if (widthRatio <= heightRatio) {
+        minPercent = heightRatio;
+      } else {
+        minPercent = widthRatio;
+      }
     }
-    return this.props.connectDropTarget(
-      <div ref={this.el} className={this.props.type} style={style}>
-        {cropper}
-      </div>
+    const widthImage = Math.ceil(imageWidth * minPercent);
+    const heightImage = Math.ceil(imageHeight * minPercent);
+    return (
+      <Cropper
+        ref="cropper"
+        src={this.props.image_src}
+        style={{ width: widthImage, height: heightImage }}
+        // Cropper.js options
+        guides={false}
+        responsive={true}
+        dragMode={"move"}
+        viewMode={1}
+        resizable={false}
+        cropBoxResizable={false}
+        cropBoxMovable={false}
+        restore={false}
+        minContainerWidth={1}
+        minContainerHeight={1}
+        ready={this.setData.bind(this)}
+        cropend={this.cropEndHandler}
+      />
     );
   }
 }
+
+const mapStateToProps = (state, props) => {
+  const getCurrentPage = (state, props) => {
+    return state.project.activePage;
+  };
+
+  return {
+    currentPageId: getCurrentPage(state)
+  };
+};
+
 module.exports = hot(module)(
   connect(
-    null,
+    mapStateToProps,
     null
-  )(DropTarget(type, ImageTarget, collectDrop)(ImageBlock))
+  )(ImageBlock)
 );

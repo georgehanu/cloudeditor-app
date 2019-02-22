@@ -10,9 +10,10 @@ const input = props => {
         <div className="inputLabelContent">
           <input
             type={inputType}
-            value={props.text}
+            defaultValue={props.text}
             onChange={props.onInputChange}
             name={props.name}
+            placeholder={props.placeholder}
           />
         </div>
       </label>
