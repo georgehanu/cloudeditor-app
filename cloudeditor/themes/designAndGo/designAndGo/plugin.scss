@@ -20,13 +20,7 @@ body,
   top: -600px;
   visibility: hidden;
 }*/
-.renderContainer {
-  z-index: 9999999;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  visibility: visible;
-}
+
 .canvasContainer {
   display: block;
   width: 600px;
@@ -1128,3 +1122,42 @@ section.dropzone {
   }
 }
 /* Main Theme */
+
+.renderOuterContainer {
+  /*position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  margin-top: 50px;*/
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  padding-top: 50px;
+  bottom: 50px;
+}
+
+.renderOuterContainer .canvasContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.renderContainer {
+  /*position: absolute;
+  left: 0px;
+  top: 0px;
+  visibility: visible;
+  z-index: 1;
+  text-align: center;
+  position: relative;
+  height: 80%;*/
+
+  position: relative;
+  left: 0px;
+  top: 0px;
+  visibility: visible;
+  z-index: 1;
+  text-align: center;
+  position: relative;
+  height: 100%;
+}

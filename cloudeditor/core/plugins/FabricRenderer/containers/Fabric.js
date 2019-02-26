@@ -256,6 +256,7 @@ class Fabric extends React.Component {
         pageReady={pageReady}
         designerCallbacks={this.designerCallbacks}
         events={this.events}
+        propStyle={this.props.propStyle}
       />
     );
   }

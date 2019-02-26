@@ -10,6 +10,7 @@ const { getCanvasImage } = require("../../../../../core/utils/GlobalUtils");
 const { connect } = require("react-redux");
 
 const SliderItem = require("./SliderItem/SliderItem");
+const SliderFabrics = require("./SliderFabrics/SliderFabrics");
 
 class SliderCarousel extends React.Component {
   state = {
@@ -36,7 +37,7 @@ class SliderCarousel extends React.Component {
     }
     //this.setState({ showFullSlider: !this.state.showFullSlider });
     if (increment !== undefined) {
-      //this.props.dagChangeSlider(increment);
+      this.props.dagChangeSlider(increment);
     }
     return !this.state.showFullSlider;
   };
@@ -92,9 +93,12 @@ class SliderCarousel extends React.Component {
       }
     };
     return (
-      <div className={className}>
-        <CustomSlider {...settings}>{productsSlider}</CustomSlider>
-      </div>
+      <React.Fragment>
+        <div className={className}>
+          <CustomSlider {...settings}>{productsSlider}</CustomSlider>
+        </div>
+        <SliderFabrics />
+      </React.Fragment>
     );
   }
 }

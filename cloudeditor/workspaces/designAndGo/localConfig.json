@@ -1,6 +1,6 @@
 {
   "plugins": {
-    "desktop": ["FabricRenderer", "DesignAndGo"]
+    "desktop": ["DesignAndGo"]
   },
   "mainComponent": {
     "component": "div",

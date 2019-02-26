@@ -213,7 +213,9 @@ const applyLiquidRules = payloadData => {
                       width: alternateLayout.objects[blockID].width * scale,
                       height: alternateLayout.objects[blockID].height * scale,
                       left: newLeft,
-                      top: newTop
+                      top: newTop,
+                      scaleX: 1,
+                      scaleY: 1
                     }
                   }
                 };

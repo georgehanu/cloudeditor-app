@@ -2,6 +2,19 @@
   "extends": ["react-app", "plugin:prettier/recommended"],
   "parser": "babel-eslint",
   "rules": {
-    "no-undef": "off"
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    "array-callback-return": "off",
+    "eqeqeq": "off",
+    "no-self-assign": "off",
+    "no-unreachable": "off",
+    "no-useless-constructor": "off",
+    "no-redeclare": "off",
+    "default-case": "off",
+    "no-dupe-keys": "off",
+    "no-script-url": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/alt-text": "off"
   }
 }

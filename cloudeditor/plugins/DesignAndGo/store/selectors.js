@@ -1,5 +1,8 @@
 const { pathOr, pathEq, filter } = require("ramda");
 const createCachedSelector = require("re-reselect").default;
+const {
+  createDeepEqualSelector: createSelector
+} = require("../../../core/rewrites/reselect/createSelector");
 
 const {
   variablesVariableSelector
@@ -87,6 +90,13 @@ const getVariablesByFilter = createCachedSelector(
   }
 )((state, filterStr) => `variableFilter${filterStr}`);
 
+const dagActiveProductSelector = createSelector(
+  [dagActiveSliderSelector, dagProductsSelector],
+  (active, products) => {
+    return products[active];
+  }
+);
+
 module.exports = {
   dagRealDimensionSelector,
   dagLoadingSelector,
@@ -104,5 +114,6 @@ module.exports = {
   dagDataDescriptionSelector,
   dagLoadingSignInSelector,
   dagErrorMessageSignInSelector,
-  getVariablesByFilter
+  getVariablesByFilter,
+  dagActiveProductSelector
 };
