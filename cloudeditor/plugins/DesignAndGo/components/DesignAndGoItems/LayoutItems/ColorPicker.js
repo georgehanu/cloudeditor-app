@@ -39,7 +39,19 @@ class ColorButton extends React.Component {
         {this.state.showPicker && (
           <div className="ColorPicker">
             <HuePicker
-              onChangeComplete={color => this.props.handleColorChange(color)}
+              onChangeComplete={color => {
+                this.props.handleColorChange(color);
+                this.props.changeColorVariableValue({
+                  color1:
+                    "rgb(" +
+                    color.rgb.r +
+                    "," +
+                    color.rgb.g +
+                    "," +
+                    color.rgb.b +
+                    ")"
+                });
+              }}
               color={this.props.containerBgColor}
             />
           </div>

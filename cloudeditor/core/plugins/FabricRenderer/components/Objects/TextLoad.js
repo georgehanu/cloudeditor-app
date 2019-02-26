@@ -20,14 +20,20 @@ class TextLoad extends React.Component {
 
   loadFonts() {
     let props = this.props;
-    fabric.util.fontsLoaded(props, fontsLoaded => {
-      if (fontsLoaded) {
-        for (let i = 0; i < fontsLoaded.length; i++) {
-          pushLoadedFont(fontsLoaded[i]);
+    if (!isLoadedFont(this.props.fontFamily)) {
+      console.log("loadfont");
+      fabric.util.fontsLoaded(props, fontsLoaded => {
+        if (fontsLoaded) {
+          for (let i = 0; i < fontsLoaded.length; i++) {
+            pushLoadedFont(fontsLoaded[i]);
+          }
         }
-      }
+        this.setState({ loaded: true });
+      });
+    } else {
+      console.log("dont loadfont");
       this.setState({ loaded: true });
-    });
+    }
   }
 
   componentDidMount = () => {

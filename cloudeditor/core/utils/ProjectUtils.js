@@ -620,7 +620,8 @@ const getEmptyObject = cfg => {
           fontFamily: cfg.fontFamily || false,
           text: cfg.text || "",
           defaultFontZise: cfg.fontSize || 12,
-          useDefaultFontSize: cfg.useDefaultFontSize || true
+          useDefaultFontSize: cfg.useDefaultFontSize || true,
+          fill: cfg.fill || null
         };
         break;
       default:
@@ -730,7 +731,8 @@ const getDGProject = cfg => {
     textAlign: "center",
     vAlign: "middle",
     value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]"
+    text: "[%]jarName[/%]",
+    fill: "[%]color1[/%]"
   });
 
   let page1JamType = getEmptyObject({
@@ -747,7 +749,8 @@ const getDGProject = cfg => {
     textAlign: "center",
     vAlign: "middle",
     value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]"
+    text: "[%]jarType[/%]",
+    fill: "[%]color2[/%]"
   });
 
   let page1TagLine1 = getEmptyObject({
@@ -815,7 +818,8 @@ const getDGProject = cfg => {
     textAlign: "center",
     vAlign: "middle",
     value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]"
+    text: "[%]jarName[/%]",
+    fill: "[%]color1[/%]"
   });
 
   let page2JamType = getEmptyObject({

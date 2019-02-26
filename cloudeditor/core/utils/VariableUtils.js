@@ -67,6 +67,18 @@ const getVariablesDefaults = cfg => {
   };
 };
 
+const getEmptyColorVariable = cfg => {
+  const varUid = uuidv4();
+  return merge(
+    {
+      name: varUid,
+      type: "color",
+      value: null
+    },
+    cfg || {}
+  );
+};
+
 const getEmptyVariables = cfg => {
   const defaultVar = getVariableTemplate(cfg);
 
@@ -181,6 +193,22 @@ const getDGVariables = cfg => {
     }
   });
 
+  const color1 = getEmptyColorVariable({
+    name: "color1",
+    type: "color",
+    value: "rgb(150, 150, 150)"
+  });
+  const color2 = getEmptyColorVariable({
+    name: "color2",
+    type: "color",
+    value: "rgb(0, 150, 150)"
+  });
+  const color3 = getEmptyColorVariable({
+    name: "color3",
+    type: "color",
+    value: "rgb(150, 150, 0)"
+  });
+
   return {
     ...state,
     variables: {
@@ -189,7 +217,10 @@ const getDGVariables = cfg => {
       [jarTypeVar.name]: jarTypeVar,
       [tagLine1Var.name]: tagLine1Var,
       [tagLine2Var.name]: tagLine2Var,
-      [batchDateVar.name]: batchDateVar
+      [batchDateVar.name]: batchDateVar,
+      [color1.name]: color1,
+      [color2.name]: color2,
+      [color3.name]: color3
     }
   };
 };

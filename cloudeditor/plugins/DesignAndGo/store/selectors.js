@@ -1,5 +1,8 @@
 const { pathOr, pathEq, filter } = require("ramda");
 const createCachedSelector = require("re-reselect").default;
+const {
+  createDeepEqualSelector: createSelector
+} = require("../../../core/rewrites/reselect/createSelector");
 
 const {
   variablesVariableSelector
@@ -27,29 +30,27 @@ const dagSliderDataSelector = state =>
   (state && state.designAndGo && state.designAndGo.sliderData) || [];
 
 const dagProductsSelector = state =>
-  pathOr([], ["designAndGo", "products"], state);
+  (state && state.designAndGo && state.designAndGo.products) ||
+  (state && state.products) ||
+  [];
 
 const dagActiveSliderSelector = state =>
-  (state && state.designAndGo && state.designAndGo.activeSlider) || 0;
-
+  (state && state.designAndGo && state.designAndGo.activeSlider) ||
+  (state && state.activeSlider) ||
+  0;
+/*
 const dagShowUploadImageSelector = state =>
   (state &&
     state.designAndGo &&
     state.designAndGo.sliderData[state.designAndGo.activeSlider].upload) ||
   false;
+  */
 
 const dagColorsSelector = state =>
   (state &&
     state.designAndGo &&
     state.designAndGo.sliderData[state.designAndGo.activeSlider].colors) ||
   false;
-
-const dagActiveColorButtonSelector = state =>
-  (state &&
-    state.designAndGo &&
-    state.designAndGo.sliderData[state.designAndGo.activeSlider]
-      .activeColorButton) ||
-  0;
 
 const dagDataSelector = state =>
   (state && state.designAndGo && state.designAndGo.data) || [];
@@ -87,6 +88,32 @@ const getVariablesByFilter = createCachedSelector(
   }
 )((state, filterStr) => `variableFilter${filterStr}`);
 
+const dagActiveProductSelector = createSelector(
+  [dagActiveSliderSelector, dagProductsSelector],
+  (active, products) => {
+    return products[active];
+  }
+);
+
+const dagProductColorsSelector = createSelector(
+  [dagActiveProductSelector],
+  activeProduct => {
+    return {
+      colors: activeProduct.collorPallets || [],
+      colorPicker: activeProduct.hasCustomPallete || false,
+      palleteBgColor: activeProduct.palleteBgColor || "rgb(255, 0, 0)",
+      activeColorButton: activeProduct.activeColorButton || 0
+    };
+  }
+);
+
+const dagShowUploadImageSelector = createSelector(
+  [dagActiveProductSelector],
+  activeProduct => {
+    return activeProduct.hasUpload || false;
+  }
+);
+
 module.exports = {
   dagRealDimensionSelector,
   dagLoadingSelector,
@@ -97,12 +124,13 @@ module.exports = {
   dagActiveSliderSelector,
   dagShowUploadImageSelector,
   dagColorsSelector,
-  dagActiveColorButtonSelector,
   dagDataSelector,
   dagDataItemsSelector,
   dagDataTitleSelector,
   dagDataDescriptionSelector,
   dagLoadingSignInSelector,
   dagErrorMessageSignInSelector,
-  getVariablesByFilter
+  getVariablesByFilter,
+  dagActiveProductSelector,
+  dagProductColorsSelector
 };

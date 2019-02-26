@@ -39,6 +39,7 @@ const objects = props => {
         scale={scale}
         viewOnly={viewOnly}
         designerCallbacks={designerCallbacks}
+        mainVariables={variables}
       />
     );
   });

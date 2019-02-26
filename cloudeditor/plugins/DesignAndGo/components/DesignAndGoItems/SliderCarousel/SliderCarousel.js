@@ -2,11 +2,17 @@ const React = require("react");
 const CustomSlider = require("../ReWrite/CustomSlider");
 const UploadImage = require("../LayoutItems/UploadImage");
 
-const { dagRealDimensionSelector } = require("../../../store/selectors");
+const {
+  dagRealDimensionSelector,
+  dagProductColorsSelector,
+  dagActiveSliderSelector
+} = require("../../../store/selectors");
 const { dagChangeSlider } = require("../../../store/actions");
 const { changePage } = require("../../../../../core/stores/actions/project");
 const { getCanvasImage } = require("../../../../../core/utils/GlobalUtils");
-
+const {
+  changeColorVariableValue
+} = require("../../../../../core/stores/actions/variables");
 const { connect } = require("react-redux");
 
 const SliderItem = require("./SliderItem/SliderItem");
@@ -17,6 +23,36 @@ class SliderCarousel extends React.Component {
     currentSlider: 0,
     labels: {}
   };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.productColors !== prevState.productColors &&
+      nextProps.dagActiveSlider !== prevState.dagActiveSlider
+    ) {
+      if (
+        nextProps.productColors.activeColorButton ===
+        nextProps.productColors.colors.length
+      ) {
+        nextProps.changeColorVariableValue({
+          color1: nextProps.productColors.palleteBgColor
+        });
+      } else {
+        nextProps.changeColorVariableValue(
+          nextProps.productColors.colors[
+            nextProps.productColors.activeColorButton
+          ]
+        );
+      }
+
+      return {
+        ...prevState,
+        productColors: nextProps.productColors,
+        dagActiveSlider: nextProps.dagActiveSlider
+      };
+    }
+
+    return null;
+  }
 
   componentDidUpdate(previousProps, previousState) {
     if (previousProps.renderId !== this.props.renderId) {
@@ -36,7 +72,7 @@ class SliderCarousel extends React.Component {
     }
     //this.setState({ showFullSlider: !this.state.showFullSlider });
     if (increment !== undefined) {
-      //this.props.dagChangeSlider(increment);
+      this.props.dagChangeSlider(increment);
     }
     return !this.state.showFullSlider;
   };
@@ -103,14 +139,17 @@ const mapStateToProps = state => {
   return {
     pagesOrder: state.project.pagesOrder,
     renderId: state.designAndGo.renderId,
-    labelRealDimension: dagRealDimensionSelector(state)
+    labelRealDimension: dagRealDimensionSelector(state),
+    productColors: dagProductColorsSelector(state.designAndGo),
+    dagActiveSlider: dagActiveSliderSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     dagChangeSlider: increment => dispatch(dagChangeSlider(increment)),
-    changePage: pageId => dispatch(changePage(pageId))
+    changePage: pageId => dispatch(changePage(pageId)),
+    changeColorVariableValue: color => dispatch(changeColorVariableValue(color))
   };
 };
 

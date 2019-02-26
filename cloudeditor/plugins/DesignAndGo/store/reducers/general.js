@@ -19,6 +19,7 @@ const {
 //projectConfigGlobal["products"][0]["realDimension"]["height"] = 733;
 const { merge } = require("ramda");
 const { handleActions } = require("redux-actions");
+const { dagActiveProductSelector } = require("../selectors");
 
 const initialState = {
   realDimension: projectConfigGlobal["realDimension"],
@@ -206,35 +207,46 @@ module.exports = handleActions(
       };
     },
     [DAG_CHANGE_ACTIVE_COLOR_SCHEMA]: (state, action) => {
-      let newSliderData = [...state.sliderData];
-      newSliderData[state.activeSlider] = {
-        ...state.sliderData[state.activeSlider],
+      const activeProduct = dagActiveProductSelector(state);
+      let index = state.products.findIndex(el => {
+        return el.id === activeProduct.id && el.pageNo === activeProduct.pageNo;
+      });
+      if (index === -1) {
+        return state;
+      }
+      const newProducts = [...state.products];
+      newProducts[index] = {
+        ...state.products[index],
         activeColorButton: action.payload
       };
-
       return {
         ...state,
-        sliderData: newSliderData
+        products: newProducts
       };
     },
     [DAG_CHANGE_COLOR_PICKER]: (state, action) => {
-      let newColors = [...state.sliderData[state.activeSlider].colors];
-      const pickerIndex = newColors.findIndex(el => {
-        return el.colorPicker === true;
+      const activeProduct = dagActiveProductSelector(state);
+      let index = state.products.findIndex(el => {
+        return el.id === activeProduct.id && el.pageNo === activeProduct.pageNo;
       });
-      newColors[pickerIndex] = {
-        ...newColors[pickerIndex],
-        containerBgColor: action.payload.hex
+      if (index === -1) {
+        return state;
+      }
+      const newProducts = [...state.products];
+      newProducts[index] = {
+        ...state.products[index],
+        palleteBgColor:
+          "rgb(" +
+          action.payload.rgb.r +
+          "," +
+          action.payload.rgb.g +
+          "," +
+          action.payload.rgb.b +
+          ")"
       };
-      let newSliderData = [...state.sliderData];
-      newSliderData[state.activeSlider] = {
-        ...state.sliderData[state.activeSlider],
-        colors: newColors
-      };
-
       return {
         ...state,
-        sliderData: newSliderData
+        products: newProducts
       };
     },
     [DAG_CHANGE_INPUT]: (state, action) => {

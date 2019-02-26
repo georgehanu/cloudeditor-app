@@ -4,6 +4,10 @@ const { connect } = require("react-redux");
 const { pick, values, mergeAll, clone, forEachObjIndexed } = require("ramda");
 
 const {
+  extractVariablesFromString
+} = require("../../../../utils/VariableUtils");
+
+const {
   createDeepEqualSelector: createSelector
 } = require("../../../../rewrites/reselect/createSelector");
 
@@ -29,6 +33,15 @@ const { applyZoomScaleToTarget } = require("../../../../utils/UtilUtils");
 const ImageLoad = require("./ImageLoad");
 const TextLoad = require("./TextLoad");
 const GraphicsLoad = require("./GraphicsLoad");
+
+const replaceColor = (type, object, variables) => {
+  let color = object[type];
+  const colorVariables = extractVariablesFromString(object[type]);
+  forEachObjIndexed((variable, key) => {
+    color = object[type].replace("[%]" + key + "[/%]", variable.value);
+  }, pick(colorVariables, variables));
+  return { [type]: color };
+};
 
 class ObjectBlock extends React.PureComponent {
   render() {
@@ -78,6 +91,20 @@ class ObjectBlock extends React.PureComponent {
       offsetLeft: offsetLeft,
       offsetTop: offsetTop
     };
+
+    if (this.props.object.fill) {
+      const fillColor = replaceColor(
+        "fill",
+        this.props.object,
+        this.props.mainVariables
+      );
+      blockProps = {
+        ...blockProps,
+        ...fillColor
+      };
+    } else {
+      delete blockProps.fill;
+    }
 
     switch (type) {
       case "image":

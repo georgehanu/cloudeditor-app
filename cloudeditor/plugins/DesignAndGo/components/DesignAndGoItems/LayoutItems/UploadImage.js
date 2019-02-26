@@ -29,7 +29,7 @@ class UploadImage extends React.Component {
   };
 
   render() {
-    const show = this.props.alwaysShow ? true : this.props.showUploadImage;
+    const show = true; //this.props.alwaysShow ? true : this.props.showUploadImage;
     return (
       <section className="dropzone">
         {show && (
@@ -64,12 +64,12 @@ class UploadImage extends React.Component {
                   </span>
                 </label>
 
-                {this.props.imagePath && (
+                {/*this.props.imagePath && (
                   <img
                     src={this.props.imagePath}
                     style={{ width: "300px", height: "auto" }}
                   />
-                )}
+                )*/}
                 {this.props.errorMessage && (
                   <div>{this.props.errorMessage}</div>
                 )}
