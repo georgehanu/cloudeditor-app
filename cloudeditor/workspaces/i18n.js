@@ -7,7 +7,7 @@ const i18nFunc = config => {
   const baseUrl = config.baseUrl || "http://localhost:8081";
   const publicPath = config.publicPath || "/";
   const basePath = config.basePath || "locales";
-  const lang = config.lang || "en-US";
+  const lang = config.lang || "de-DE";
 
   return (
     i18n
@@ -16,7 +16,7 @@ const i18nFunc = config => {
       .use(reactI18nextModule)
       .init({
         lng: lang,
-        fallbackLng: "en-US",
+        fallbackLng: "de-DE",
         fallbackNS: "translate",
         ns: "translate",
         defaultNS: "translate",
@@ -32,7 +32,8 @@ const i18nFunc = config => {
           bindI18n: "languageChanged"
         },
         backend: {
-          loadPath: baseUrl + publicPath + basePath + "/{{lng}}/{{ns}}.json"
+          loadPath1: baseUrl + publicPath + basePath + "/{{lng}}/{{ns}}.json",
+          loadPath: "http://localhost:8081/locales/{{lng}}/{{ns}}.json"
         }
       })
   );
