@@ -10,7 +10,8 @@ const { plugins, requires } = require("./plugins");
 const translationsCfg = {
   baseUrl: localConfig.baseUrl,
   publicPath: localConfig.publicPath,
-  basePath: localConfig.translations.basePath
+  basePath: localConfig.translations.basePath,
+  lang: "DE-de"
 };
 
 const i18n = require("../i18n")(translationsCfg);

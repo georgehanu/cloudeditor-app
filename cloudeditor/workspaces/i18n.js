@@ -20,7 +20,7 @@ const i18nFunc = config => {
         fallbackNS: "translate",
         ns: "translate",
         defaultNS: "translate",
-        debug: "true",
+        debug: "false",
         load: "currentOnly",
         interpolation: {
           escapeValue: false
@@ -32,8 +32,8 @@ const i18nFunc = config => {
           bindI18n: "languageChanged"
         },
         backend: {
-          loadPath1: baseUrl + publicPath + basePath + "/{{lng}}/{{ns}}.json",
-          loadPath: "http://localhost:8081/locales/{{lng}}/{{ns}}.json"
+          loadPath: baseUrl + publicPath + basePath + "/{{lng}}/{{ns}}.json"
+          //loadPath: "http://localhost:8081/locales/{{lng}}/{{ns}}.json"
         }
       })
   );
