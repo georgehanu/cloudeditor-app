@@ -14,3 +14,8 @@
 .pageBlock.text .blockData > div {
   outline: none;
 }
+.pageBlock.text .blockData > div.text {
+  white-space: normal !important;
+  overflow-wrap: normal;
+  position: relative;
+}

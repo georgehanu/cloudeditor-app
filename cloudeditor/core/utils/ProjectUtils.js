@@ -188,7 +188,7 @@ const getObjectsDefaults = cfg => {
 
   const textCfg = merge(
     {
-      textAlign: "center",
+      textAlign: "left",
       bold: 0,
       charSpacing: 0,
       circleText: 0,
@@ -207,11 +207,13 @@ const getObjectsDefaults = cfg => {
       sufix: "",
       type: "text",
       underline: 0,
-      vAlign: "middle",
+      vAlign: "top",
       wordSpacing: "normal",
       fontFamily: "",
       prefix: "",
       value: "",
+      lineheightn: 100,
+      lineheightp: 100,
       placeHolder: "Edit Text Here",
       firstlinedist: "ascender",
       lastlinedist: 0

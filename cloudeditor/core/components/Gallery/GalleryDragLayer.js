@@ -39,7 +39,7 @@ const galleryDragLayer = props => {
 
   return (
     <div style={layerStyles}>
-      <div style={getItemStyles(props)}>
+      <div>
         {/*
         <div className="previewImagegalleryPreviewContainer">
           <div

@@ -77,6 +77,9 @@ const lastUsedColorsSelector = createSelector(
 const uiFontsSelector = state => {
   return pathOr([], ["ui", "fonts"], state);
 };
+const fontMetricsSelector = state => {
+  return pathOr([], ["ui", "fontMetrics"], state);
+};
 
 const uiFontsTinymceSelector = createSelector(
   uiFontsSelector,
@@ -100,5 +103,6 @@ module.exports = {
   lastUsedColorsSelector,
   permissionsSelector,
   uiFontsSelector,
-  uiFontsTinymceSelector
+  uiFontsTinymceSelector,
+  fontMetricsSelector
 };

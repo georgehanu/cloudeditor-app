@@ -192,6 +192,7 @@ class Canvas extends React.Component {
 Canvas.propTypes = {
   visible: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   viewOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  bottomPagination: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   getCanvasRef: PropTypes.func,
   getContainerRef: PropTypes.func,
   activePage: PropTypes.object,
@@ -202,6 +203,7 @@ Canvas.propTypes = {
 Canvas.defaultProps = {
   visible: 1,
   viewOnly: 0,
+  bottomPagination: 0,
   getCanvasRef: () => {},
   getContainerRef: () => {},
   activePage: {},

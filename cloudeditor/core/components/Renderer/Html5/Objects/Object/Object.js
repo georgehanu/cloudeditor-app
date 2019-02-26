@@ -139,7 +139,9 @@ class ObjectBlock extends React.Component {
       renderId: this.props.renderId,
       placeHolder: this.props.placeHolder,
       contentEditable,
-      lineHeight: props.lineHeight
+      lineHeight: props.lineHeight,
+      lineheightn: props.lineheightn,
+      lineheightp: props.lineheightp
     };
     const block = <TextBlock {...textProps} />;
     return this.renderBaseBlock(props, block);
@@ -273,6 +275,7 @@ class ObjectBlock extends React.Component {
       left,
       active,
       viewOnly,
+      bottomPagination,
       editable,
       offsetLeft,
       offsetTop,
@@ -307,6 +310,7 @@ class ObjectBlock extends React.Component {
       top: top + offsetTop,
       transform: "rotate(" + rotateAngle + "deg)",
       padding: borderWidth,
+      zIndex: this.props.active ? 999999 : "",
       backgroundColor:
         subType !== "tinymceTable" ? "rgb(" + bgColor.htmlRGB + ")" : ""
     };
@@ -326,7 +330,10 @@ class ObjectBlock extends React.Component {
     if (subType === "tinymceTable") {
       styleNorth = { width, height };
     }
-
+    let dashedBorder = null;
+    if (!bottomPagination) {
+      dashedBorder = <u style={{ width: newWidth, height: newHeight }} />;
+    }
     let rotatableHandle = null;
     if (this.props.rotatable && !viewOnly) {
       rotatableHandle = (
@@ -365,8 +372,7 @@ class ObjectBlock extends React.Component {
           {block}
         </div>
         {<div className={"blockBorder"} style={styleBorderColor} />}
-        <u style={{ width: newWidth, height: newHeight }} />
-
+        {dashedBorder}
         {rotatableHandle}
         {deleteHandle}
       </div>

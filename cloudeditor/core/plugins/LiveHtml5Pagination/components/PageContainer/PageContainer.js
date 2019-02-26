@@ -275,6 +275,7 @@ class PageContainer extends React.Component {
             getContainerRef={this.getContainerReference}
             activePage={this.props.activePage}
             viewOnly={1}
+            bottomPagination={1}
             zoomScale={zoomScale}
             containerWidth={containerWidth}
             containerHeight={containerHeight}

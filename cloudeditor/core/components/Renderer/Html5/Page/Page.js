@@ -122,6 +122,9 @@ const PageTarget = {
     }
   },
   canDrop(props, monitor) {
+    if (!props.viewOnly) {
+      return true;
+    }
     const position = monitor.getSourceClientOffset();
     if (props.headerEnabled || props.footerEnabled) {
       const headerFooterOverlay = document.getElementById(
@@ -139,9 +142,6 @@ const PageTarget = {
       }
     }
 
-    if (!props.viewOnly) {
-      return true;
-    }
     return false;
   },
   hover(props, monitor) {}
@@ -214,6 +214,7 @@ class Page extends React.Component {
       width,
       height,
       viewOnly,
+      bottomPagination,
       headerConfig,
       footerConfig,
       containerUuid,
@@ -317,6 +318,8 @@ class Page extends React.Component {
         setMissingImages={this.props.setMissingImages}
         deleteMissingImages={this.props.deleteMissingImages}
         viewOnly={viewOnly}
+        bottomPagination={bottomPagination}
+        bottomPagination={bottomPagination}
         t={t}
       />
     );

@@ -174,7 +174,7 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
           };
         });
       } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
-        item.value = activeItem.lineHeight || 1;
+        item.value = activeItem.lineheightn / 100 || 1;
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -388,7 +388,10 @@ const CreatePayload = (activeitem, itemPayload) => {
       break;
 
     case Types.POPTEXT_LINE_HEIGHT:
-      attrs = { lineHeight: itemPayload.value };
+      attrs = {
+        lineheightn: itemPayload.value * 100,
+        lineheightp: itemPayload.value * 100
+      };
       break;
 
     case Types.POPTEXT_LAYER:

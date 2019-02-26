@@ -10,7 +10,6 @@
 }
 
 .pageBlock.backgroundblock {
-  pointer-events: none;
   z-index: 0;
 }
 

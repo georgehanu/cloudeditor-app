@@ -52,7 +52,13 @@ class Blocks extends React.Component {
   }
 
   recursiveRenderBlocks(objects, objectsData) {
-    const { zoomScale, snapTolerance, middle, viewOnly } = this.props;
+    const {
+      zoomScale,
+      snapTolerance,
+      middle,
+      viewOnly,
+      bottomPagination
+    } = this.props;
     let that = this;
     const bUuids = objects.map(function(obj) {
       return obj.uuid;
@@ -94,6 +100,7 @@ class Blocks extends React.Component {
             middle={middle}
             labelPage={that.props.labelPage}
             viewOnly={viewOnly}
+            bottomPagination={bottomPagination}
             deleteMissingImages={that.props.deleteMissingImages}
             setMissingImages={that.props.setMissingImages}
             data={objectData}
@@ -115,6 +122,7 @@ class Blocks extends React.Component {
           middle={middle}
           checkErrorMessages={that.props.checkErrorMessages}
           viewOnly={viewOnly}
+          bottomPagination={bottomPagination}
           deleteMissingImages={that.props.deleteMissingImages}
           setMissingImages={that.props.setMissingImages}
           data={objectData}

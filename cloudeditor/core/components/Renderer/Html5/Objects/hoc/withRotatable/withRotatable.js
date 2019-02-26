@@ -28,7 +28,7 @@ const withRotatable = WrappedComponent => {
     };
     onRotateStartHandler = (event, ui) => {};
     onRotateHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 0);
+      //   this.changePropsOnDragHandler(ui, 0);
     };
     onRotateStopHandler = (event, ui) => {
       this.changePropsOnDragHandler(ui, 0, 1);

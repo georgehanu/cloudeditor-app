@@ -191,6 +191,22 @@ class ContentEditable extends React.Component {
     }
 
     // Ensure we don't exceed `maxLength` (keycode 8 === backspace)
+    if (multiLine && ev.keyCode === 13) {
+      ev.preventDefault();
+      if (window.getSelection) {
+        var selection = window.getSelection(),
+          range = selection.getRangeAt(0),
+          br = document.createElement("br");
+        range.deleteContents();
+        range.insertNode(br);
+        range.setStartAfter(br);
+        range.setEndAfter(br);
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      return false;
+    }
     if (
       maxLength &&
       !ev.metaKey &&
