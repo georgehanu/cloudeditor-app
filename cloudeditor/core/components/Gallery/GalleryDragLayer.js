@@ -33,13 +33,9 @@ const galleryDragLayer = props => {
     return null;
   }
 
-  if (props.item.type === "PAGES") {
-    return null;
-  }
-
   return (
     <div style={layerStyles}>
-      <div>
+      <div style={getItemStyles(props)}>
         {/*
         <div className="previewImagegalleryPreviewContainer">
           <div

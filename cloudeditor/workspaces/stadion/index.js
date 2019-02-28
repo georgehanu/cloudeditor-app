@@ -11,7 +11,7 @@ const translationsCfg = {
   baseUrl: localConfig.baseUrl,
   publicPath: localConfig.publicPath,
   basePath: localConfig.translations.basePath,
-  lang: "DE-de"
+  lang: "de-DE"
 };
 
 const i18n = require("../i18n")(translationsCfg);

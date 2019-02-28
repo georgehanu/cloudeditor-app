@@ -138,7 +138,7 @@ class ImageBlock extends React.Component {
     this.initializeDimm();
     this.setCropperData();
     this.setDataOnState();
-    this.refs.cropper.disable();
+    if (this.refs.cropper) this.refs.cropper.disable();
   };
 
   initializeDimm = () => {
