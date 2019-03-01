@@ -2,11 +2,16 @@ const React = require("react");
 
 const galleryToolbarPreview = props => {
   const className = "uploadGalleryItem ";
+  const ConfigUtils = require("../../../core/utils/ConfigUtils");
+  const baseUrl =
+    ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 
   return (
     <div
       className={className}
-      style={{ backgroundImage: 'url("' + props.image.thumbnail_src + '")' }}
+      style={{
+        backgroundImage: 'url("' + baseUrl + props.image.thumbnail_src + '")'
+      }}
     >
       <div className="galleryItemActions">
         <span

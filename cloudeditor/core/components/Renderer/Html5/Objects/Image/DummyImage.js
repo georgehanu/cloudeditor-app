@@ -1,6 +1,8 @@
 const React = require("react");
 require("./DummyImage.css");
-
+const ConfigUtils = require("../../../../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 const DummyImage = props => {
   const {
     naturalWidth,
@@ -52,7 +54,7 @@ const DummyImage = props => {
     backgroundPosition = result.left + "px" + " " + result.top + "px";
   }
   const backgroundStyle = {
-    backgroundImage: 'url("' + props.image_src + '")',
+    backgroundImage: 'url("' + baseUrl + props.image_path + '")',
     backgroundSize,
     backgroundPosition
   };

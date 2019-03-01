@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const PropTypes = require("prop-types");
 const { DragDropContextProvider } = require("react-dnd");
 const HTML5Backend = require("react-dnd-html5-backend");
+const PaginationBottomContainer = require("../../Html5/PaginationBottomContainer/PaginationBottomContainer");
 
 const Zoom = require("../Zoom/Zoom");
 
@@ -172,7 +173,6 @@ class Canvas extends React.Component {
     // );
     const { getCanvasRef, ...otherProps } = this.props;
     const pageNumbers = this.getPageNumbersRender();
-    let bottomPagination = this.getBottomPagination();
     let sidePagination = this.getSidePagination();
 
     return (
@@ -183,7 +183,12 @@ class Canvas extends React.Component {
           t={this.props.t}
         />
         {pageNumbers}
-        {bottomPagination}
+        <PaginationBottomContainer
+          nextPage={this.props.activePage.nextPage}
+          viewOnly={this.props.viewOnly}
+          prevPage={this.props.activePage.prevPage}
+          onClickChangePageHandler={this.onClickChangePageHandler}
+        />
         {sidePagination}
       </div>
     );

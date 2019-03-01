@@ -180,3 +180,7 @@
   background-color: #66b764 !important;
   color: white !important;
 }
+.submenuItemHeaderFooter {
+  z-index: -1;
+  width: 40% !important;
+}

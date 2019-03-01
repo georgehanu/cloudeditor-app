@@ -45,6 +45,7 @@ const {
   PROJ_SAVE_START,
   PROJ_SAVE_SUCCESS,
   PROJ_SAVE_FAILED,
+  PROJ_SHOW_POPUP,
   PROJ_SAVE_CLEAR_MESSAGE,
   PROJ_LOAD_START,
   PROJ_LOAD_SUCCESS,
@@ -807,7 +808,8 @@ module.exports = handleActions(
     },
     [PROJ_SAVE_START]: (state, action) => {
       return handleSave(state, {
-        loading: true
+        loading: true,
+        showAlert: false
       });
     },
     [PROJ_SAVE_SUCCESS]: (state, action) => {
@@ -816,7 +818,8 @@ module.exports = handleActions(
         save: {
           ...state.save,
           loading: false,
-          errorMessage: action.message
+          errorMessage: action.message,
+          showAlert: false
         },
         title: action.name,
         description: action.description,
@@ -826,11 +829,19 @@ module.exports = handleActions(
     [PROJ_SAVE_FAILED]: (state, action) => {
       return handleSave(state, {
         loading: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
+        showAlert: false
+      });
+    },
+    [PROJ_SHOW_POPUP]: (state, action) => {
+      return handleSave(state, {
+        loading: false,
+        errorMessage: action.payload,
+        showAlert: true
       });
     },
     [PROJ_SAVE_CLEAR_MESSAGE]: (state, action) => {
-      return handleSave(state, { errorMessage: null });
+      return handleSave(state, { errorMessage: null, showAlert: false });
     },
     [PROJ_LOAD_START]: (state, action) => {
       return handleLoad(state, { loading: true });

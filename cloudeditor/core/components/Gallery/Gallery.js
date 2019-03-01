@@ -15,6 +15,9 @@ const SweetAlert = require("sweetalert-react").default;
 require("sweetalert/dist/sweetalert.css");
 const { withNamespaces } = require("react-i18next");
 const BackdropSpinner = require("../../hoc/withSpinner/backdropSpinner");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 
 class Gallery extends React.PureComponent {
   state = {
@@ -105,7 +108,10 @@ class Gallery extends React.PureComponent {
               <GalleryPreviewItem
                 {...el}
                 deleteAsset={this.props.onDeleteAssetHandler}
-                tooltip={{ imageSrc: el.thumbnail_src, icon: el.icon }}
+                tooltip={{
+                  imageSrc: baseUrl + el.thumbnail_src,
+                  icon: el.icon
+                }}
                 addContainerClasses={this.props.addContainerClasses}
                 selectImage={this.props.selectImage}
               />

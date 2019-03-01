@@ -408,7 +408,7 @@ const getProjectTemplate = cfg => {
       title: "Empty Project",
       description: "Project description",
       projectId: null,
-      save: { loading: false, errorMessage: null },
+      save: { loading: false, errorMessage: null, showAlert: false },
       load: {
         loading: false,
         errorMessage: null,

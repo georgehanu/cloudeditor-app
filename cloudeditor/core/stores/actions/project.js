@@ -46,7 +46,8 @@ const {
   CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED,
-  CHANGE_HEADER_FOOTER_LAYOUT
+  CHANGE_HEADER_FOOTER_LAYOUT,
+  PROJ_SHOW_POPUP
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -99,7 +100,8 @@ const {
   changeMagnetic,
   refreshTableStart,
   refreshTableFailed,
-  changeHeaderFooterLayout
+  changeHeaderFooterLayout,
+  projShowPopup
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -149,7 +151,8 @@ const {
   CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED,
-  CHANGE_HEADER_FOOTER_LAYOUT
+  CHANGE_HEADER_FOOTER_LAYOUT,
+  PROJ_SHOW_POPUP
 );
 
 module.exports = {
@@ -200,5 +203,6 @@ module.exports = {
   changeMagnetic,
   refreshTableStart,
   refreshTableFailed,
-  changeHeaderFooterLayout
+  changeHeaderFooterLayout,
+  projShowPopup
 };

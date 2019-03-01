@@ -1,6 +1,8 @@
 const React = require("react");
 const withTooltip = require("../../hoc/withTooltip/withTooltip");
-
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 const galleryPreviewItem = props => {
   const className = "uploadGalleryItem ";
   // + (props.selectedId === props.id ? "uploadGalleryItemSelected" : "");
@@ -22,7 +24,7 @@ const galleryPreviewItem = props => {
             <div
               className="uploadGalleryItemImage "
               style={{
-                backgroundImage: 'url("' + props.thumbnail_src + '")'
+                backgroundImage: 'url("' + baseUrl + props.thumbnail_src + '")'
               }}
             />
           </div>

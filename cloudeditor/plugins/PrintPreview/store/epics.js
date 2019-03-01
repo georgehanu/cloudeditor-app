@@ -5,6 +5,7 @@ const {
   PREVIEW_LOAD_PAGE_FAILED,
   ATTACH_PREVIEW
 } = require("./actionTypes");
+const { CHANGE_PAGE } = require("../../../core/stores/actionTypes/project");
 const axios = require("../../../core/axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
@@ -34,6 +35,12 @@ const getPage = (state$, obs, payload) => {
         pageUrl
       }
     });
+    obs.next({
+      type: CHANGE_PAGE,
+      payload: {
+        page_id: payload.page_id
+      }
+    });
     return false;
   }
   const serverData = {
@@ -59,6 +66,12 @@ const getPage = (state$, obs, payload) => {
           payload: {
             imageUrls,
             pageUrl
+          }
+        });
+        obs.next({
+          type: CHANGE_PAGE,
+          payload: {
+            page_id: payload.page_id
           }
         });
       } else {

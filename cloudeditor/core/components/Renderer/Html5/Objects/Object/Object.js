@@ -168,6 +168,7 @@ class ObjectBlock extends React.Component {
       onUpdateProps: props.onUpdatePropsHandler,
       onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       image_src: props.image_src,
+      image_path: props.image_path,
       leftSlider: props.leftSlider,
       initialRestore: props.initialRestore,
       alternateZoom: props.alternateZoom,

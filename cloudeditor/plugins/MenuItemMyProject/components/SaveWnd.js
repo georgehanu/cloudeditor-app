@@ -13,7 +13,8 @@ const {
   projDescriptionSelector,
   projProjectIdSelector,
   projSaveLoadingSelector,
-  projSaveErrorMessageSelector
+  projSaveErrorMessageSelector,
+  showAlertSelector
 } = require("../../../core/stores/selectors/project");
 
 const {
@@ -23,6 +24,9 @@ const {
 } = require("../../../core/stores/actions/project");
 
 const { authUserIdSelector } = require("../../ProjectMenu/store/selectors");
+
+const SweetAlert = require("sweetalert-react").default;
+require("sweetalert/dist/sweetalert.css");
 
 class SaveWnd extends React.Component {
   state = {
@@ -61,9 +65,19 @@ class SaveWnd extends React.Component {
         this.props.userId,
         this.state.projectName,
         this.state.projectDescription,
-        this.props.projectId
+        this.props.projectId,
+        0
       );
     }
+  };
+  onActualizeProject = () => {
+    this.props.projSaveStart(
+      this.props.userId,
+      this.state.projectName,
+      this.state.projectDescription,
+      this.props.projectId,
+      1
+    );
   };
 
   componentWillUnmount() {
@@ -75,7 +89,9 @@ class SaveWnd extends React.Component {
       this.state.invalidMessage !== null
         ? this.state.invalidMessage
         : this.props.errorMessage;
-
+    const actualizeButtonStyle = {
+      display: this.props.projectId ? "inline-block" : "none"
+    };
     return (
       <React.Fragment>
         <ModalWnd
@@ -109,11 +125,30 @@ class SaveWnd extends React.Component {
           </div>
           <div className="loginWndButtons">
             <button onClick={this.onSaveButton}>{this.props.t("Save")}</button>
+            <button
+              style={actualizeButtonStyle}
+              onClick={this.onActualizeProject}
+            >
+              {this.props.t("Actualize")}
+            </button>
             <button onClick={this.props.modalClosed}>
               {this.props.t("Close")}
             </button>
           </div>
         </ModalWnd>
+        <SweetAlert
+          show={this.props.showAlert}
+          type="warning"
+          title={this.props.t("Warning")}
+          text={this.props.t(this.props.errorMessage)}
+          showCancelButton={true}
+          onConfirm={() => {
+            this.onActualizeProject();
+          }}
+          onCancel={() => {
+            this.props.projSaveClearMessage();
+          }}
+        />
       </React.Fragment>
     );
   }
@@ -126,14 +161,15 @@ const mapStateToProps = state => {
     title: titleSelector(state),
     description: projDescriptionSelector(state),
     projectId: projProjectIdSelector(state),
-    userId: authUserIdSelector(state)
+    userId: authUserIdSelector(state),
+    showAlert: showAlertSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    projSaveStart: (userId, name, description, id) =>
-      dispatch(projSaveStart({ userId, name, description, id })),
+    projSaveStart: (userId, name, description, id, overwrite) =>
+      dispatch(projSaveStart({ userId, name, description, id, overwrite })),
     projSaveClearMessage: () => dispatch(projSaveClearMessage())
   };
 };

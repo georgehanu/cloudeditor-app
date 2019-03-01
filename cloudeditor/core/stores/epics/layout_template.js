@@ -11,6 +11,7 @@ const {
   SAVE_ICON_TEMPLATE_FAILED,
   SAVE_ICON_TEMPLATE_SUCCESS
 } = require("../actionTypes/layout_template");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
 const recursiveParseBlocks = (objectsIds, objects, returnData) => {
   forEach(function(id) {
     if (objects[id].hasOwnProperty("objectsIds"))
@@ -91,6 +92,12 @@ module.exports = {
                   payload: "Error saving template"
                 });
               }
+              ConfigUtils.updateParent(
+                state$.value.productInformation.templateId,
+                state$.value.project.configs.document.footerEditor,
+                state$.value.project.configs.document.headerEditor,
+                0
+              );
               obs.complete();
             })
             .catch(error => {
