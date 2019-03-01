@@ -4,6 +4,7 @@ const { connect } = require("react-redux");
 const { compose } = require("redux");
 const { includes, equals, omit } = require("ramda");
 const $ = require("jquery");
+const BlockOrientation = require("./BlockOrientation");
 
 const withDraggable = require("../hoc/withDraggable/withDraggable");
 const withResizable = require("../hoc/withResizable/withResizable");
@@ -139,7 +140,6 @@ class ObjectBlock extends React.Component {
       renderId: this.props.renderId,
       placeHolder: this.props.placeHolder,
       contentEditable,
-      lineHeight: props.lineHeight,
       lineheightn: props.lineheightn,
       lineheightp: props.lineheightp
     };
@@ -286,7 +286,8 @@ class ObjectBlock extends React.Component {
       subType,
       mirrored,
       parent,
-      backgroundblock
+      backgroundblock,
+      zoomScale
     } = props;
 
     const newWidth = width + borderWidth * 2;
@@ -368,9 +369,14 @@ class ObjectBlock extends React.Component {
         style={style}
         ref={this.getReference}
       >
-        <div style={styleNorth} className={"blockOrientation north "}>
+        <BlockOrientation
+          width={width}
+          height={height}
+          zoomScale={zoomScale}
+          subType={subType}
+        >
           {block}
-        </div>
+        </BlockOrientation>
         {<div className={"blockBorder"} style={styleBorderColor} />}
         {dashedBorder}
         {rotatableHandle}

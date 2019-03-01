@@ -146,7 +146,28 @@ const build = config => {
       }),
       new webpack.HotModuleReplacementPlugin(),
       new CleanWebpackPlugin(paths.cleanPaths, { root: "", dry: cleanDistDir }),
-      new CopyWebpackPlugin([...copyFrom], { debug: prod ? "" : "" }),
+      new CopyWebpackPlugin(
+        [
+          {
+            from: "./" + namespace + "/core/locales/*/*.json",
+            to: "./locales/[5]/[name].[ext]",
+            toType: "template",
+            test: /^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/
+          },
+          {
+            from: "./" + namespace + "/plugins/*/locales/*/*.json",
+            to: "./locales/[5]/[name].[ext]",
+            toType: "template",
+            test: /^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/
+            /**
+           * var regex1 = new RegExp(/^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/)
+            var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
+           */
+          },
+          ...copyFrom
+        ],
+        { debug: prod ? "" : "" }
+      ),
       new webpack.DefinePlugin({
         PRODUCTION: JSON.stringify(prod)
       })

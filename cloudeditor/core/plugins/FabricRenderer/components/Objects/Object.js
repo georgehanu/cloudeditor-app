@@ -32,8 +32,8 @@ class ObjectBlock extends React.PureComponent {
         ["width"],
         ["height"],
         ["top"],
-        ["left"],
-        ["fontSize"]
+        ["left"]
+        /* ["fontSize"] */
       ];
 
       block = applyZoomScaleToTarget(block, scale, defaultPaths);

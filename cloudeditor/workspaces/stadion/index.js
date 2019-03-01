@@ -1,5 +1,11 @@
 const { merge } = require("ramda");
 let localConfig = require("./localConfig.json");
+let localConfigDev = require("./localConfigDev.json");
+
+if (!PRODUCTION) {
+  localConfig = merge(localConfig, localConfigDev);
+}
+
 const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 localConfig = merge(localConfig, projectConfigGlobal || {});
@@ -11,7 +17,7 @@ const translationsCfg = {
   baseUrl: localConfig.baseUrl,
   publicPath: localConfig.publicPath,
   basePath: localConfig.translations.basePath,
-  lang: "de-DE"
+  lang: localConfig.translations.lang || "de-DE"
 };
 
 const i18n = require("../i18n")(translationsCfg);

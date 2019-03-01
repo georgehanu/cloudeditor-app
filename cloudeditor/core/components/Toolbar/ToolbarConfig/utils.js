@@ -174,7 +174,10 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
           };
         });
       } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
-        item.value = activeItem.lineheightn / 100 || 1;
+        if (isNaN(parseFloat(activeItem.lineheightp))) item.value = 1.2;
+        else {
+          item.value = activeItem.lineheightp / 100;
+        }
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -248,7 +251,7 @@ const LoadTinymceTableSettings = (toolbar, activeItem, activeLayer, fonts) => {
           };
         });
       } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
-        item.value = activeItem.lineHeight || 1;
+        item.value = activeItem.lineHeight || 1.2;
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
         item.newData = [];
@@ -389,7 +392,6 @@ const CreatePayload = (activeitem, itemPayload) => {
 
     case Types.POPTEXT_LINE_HEIGHT:
       attrs = {
-        lineheightn: itemPayload.value * 100,
         lineheightp: itemPayload.value * 100
       };
       break;
