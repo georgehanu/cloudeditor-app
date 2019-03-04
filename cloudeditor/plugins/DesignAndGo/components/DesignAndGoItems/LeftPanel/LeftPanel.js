@@ -55,7 +55,11 @@ class LeftPanel extends React.Component {
                 </div>
               </React.Fragment>
             )}
-            <Fields />
+            <Fields
+              onCropImageModalOpenHandler={
+                this.props.onCropImageModalOpenHandler
+              }
+            />
           </div>
         </div>
 

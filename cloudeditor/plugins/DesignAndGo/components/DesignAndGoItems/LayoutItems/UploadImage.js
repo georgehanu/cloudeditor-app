@@ -33,7 +33,7 @@ class UploadImage extends React.Component {
     return (
       <section className="dropzone">
         {show && (
-          <div className="dropzone">
+          <div className="dropzoneContainer">
             <Dropzone
               onDrop={this.onDrop}
               onFileDialogCancel={this.onCancel}

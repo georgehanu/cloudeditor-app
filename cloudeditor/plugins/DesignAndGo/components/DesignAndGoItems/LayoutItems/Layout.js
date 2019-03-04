@@ -37,6 +37,9 @@ class Layout extends React.Component {
                 data={this.props.data}
                 onMenuOpenHandler={this.props.onMenuOpenHandler}
                 onDataOpenHandler={this.props.onDataOpenHandler}
+                onCropImageModalOpenHandler={
+                  this.props.onCropImageModalOpenHandler
+                }
                 showSlider={this.state.width > MobileBreakpoint ? false : true}
                 products={this.props.products}
               />

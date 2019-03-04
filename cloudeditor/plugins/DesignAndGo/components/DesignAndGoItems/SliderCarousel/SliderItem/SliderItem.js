@@ -1,4 +1,5 @@
 const React = require("react");
+const UploadImage = require("../../LayoutItems/UploadImage");
 
 const WithSliderDim = require("../renderProps/withSliderDim");
 const ItemLabel = require("./ItemLabel");

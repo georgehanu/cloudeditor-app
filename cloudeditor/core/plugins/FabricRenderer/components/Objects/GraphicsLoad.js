@@ -16,29 +16,36 @@ class GraphicsLoad extends React.Component {
     if (!src) {
       throw new Error("Expected svg src instead saw " + typeof src);
     }
-    fabric.loadSVGFromURL(src, (objects, options) => {
-      let scale = Math.min(
-        this.props.width / options.width,
-        this.props.height / options.height
-      );
+    fabric.loadSVGFromURL(
+      src,
+      (objects, options) => {
+        let scale = Math.min(
+          this.props.width / options.width,
+          this.props.height / options.height
+        );
 
-      forEach(obj => {
-        obj.isLoaded = 1;
-      }, objects);
-      let loadedObject = fabric.util.groupGraphicsSVGElements(objects, options);
-      loadedObject.isLoaded = 1;
-      if (
-        this.props.width / loadedObject.width >
-        this.props.height / loadedObject.height
-      ) {
-        loadedObject.scaleToHeight(this.props.height);
-      } else {
-        loadedObject.scaleToWidth(this.props.width);
+        forEach(obj => {
+          obj.isLoaded = 1;
+        }, objects);
+        let loadedObject = fabric.util.groupGraphicsSVGElements(
+          objects,
+          options
+        );
+        loadedObject.isLoaded = 1;
+        if (
+          this.props.width / loadedObject.width >
+          this.props.height / loadedObject.height
+        ) {
+          loadedObject.scaleToHeight(this.props.height);
+        } else {
+          loadedObject.scaleToWidth(this.props.width);
+        }
+
+        //  loadedObject.scaleToHeight(this.props.height);
+        this.setState({ loaded: true, instance: loadedObject });
       }
-
-      //  loadedObject.scaleToHeight(this.props.height);
-      this.setState({ loaded: true, instance: loadedObject });
-    });
+      // { crossOrigin: "Anonymous" }
+    );
   }
   componentDidMount = () => {
     this.loadShape(this.props.src);

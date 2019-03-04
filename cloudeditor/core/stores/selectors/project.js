@@ -284,6 +284,20 @@ const uiScaleSelector = createSelector(
 );
 const variablesSelector = state => (state && state.variables) || [];
 
+const dagImageSelection = createSelector(
+  [activePageIdSelector, objectsSelector, pagesSelector],
+  (activePageId, objects, pages) => {
+    selectedObjectsIds = pages[activePageId].objectsIds;
+
+    const pageObjects = pick(selectedObjectsIds, objects);
+    const imageIndex = Object.keys(pageObjects).find(el => {
+      return pageObjects[el].type === "image";
+    });
+
+    return imageIndex === undefined ? null : pageObjects[imageIndex];
+  }
+);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -311,5 +325,6 @@ module.exports = {
   uiScaleSelector,
   variablesSelector,
 
-  getObjectByIdSelector
+  getObjectByIdSelector,
+  dagImageSelection
 };

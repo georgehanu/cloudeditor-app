@@ -582,8 +582,8 @@ const getEmptyObject = cfg => {
           leftSlider: 0,
           contrast: 0,
           filter: "",
-          imageWidth: 0,
-          imageHeight: 0
+          imageWidth: cfg.imageWidth || 0,
+          imageHeight: cfg.imageHeight || 0
         };
       case "graphics":
         return {
@@ -804,6 +804,24 @@ const getDGProject = cfg => {
     text: "[%]batchDate[/%]"
   });
 
+  let page1Image = getEmptyObject({
+    type: "image",
+    width: 200,
+    height: 400,
+    left: 0,
+    orientation: "north",
+    top: 0,
+    // bottle
+    imageWidth: 400,
+    imageHeight: 1300,
+    //bear
+    //imageWidth: 1200,
+    //imageHeight: 675,
+    src:
+      "http://work.cloudlab.at:9012/hp/avery-external/public/images/wineBottle.png"
+    //"http://work.cloudlab.at:9012/ig/uploads/big_bear.jpg"
+  });
+
   let page2JamName = getEmptyObject({
     type: "textbox",
     width: 200,
@@ -890,6 +908,92 @@ const getDGProject = cfg => {
     text: "[%]batchDate[/%]"
   });
 
+  let page3JamName = getEmptyObject({
+    type: "textbox",
+    width: 200,
+    height: 50,
+    left: 150,
+    top: 170,
+    fontSize: 30,
+    defaultFontSize: 30,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]jarName[/%]",
+    text: "[%]jarName[/%]",
+    fill: "[%]color1[/%]"
+  });
+
+  let page3JamType = getEmptyObject({
+    type: "textbox",
+    width: 270,
+    height: 50,
+    left: 115,
+    top: 230,
+    fontSize: 30,
+    defaultFontSize: 30,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]jarType[/%]",
+    text: "[%]jarType[/%]"
+  });
+
+  let page3TagLine1 = getEmptyObject({
+    type: "textbox",
+    width: 300,
+    height: 50,
+    left: 100,
+    top: 320,
+    fontSize: 30,
+    defaultFontSize: 30,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]tagLine1[/%]",
+    text: "[%]tagLine1[/%]"
+  });
+
+  let page3TagLine2 = getEmptyObject({
+    type: "textbox",
+    width: 300,
+    height: 50,
+    left: 100,
+    top: 380,
+    fontSize: 30,
+    defaultFontSize: 30,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]tagLine2[/%]",
+    text: "[%]tagLine2[/%]"
+  });
+
+  let page3BatchDate = getEmptyObject({
+    type: "textbox",
+    width: 100,
+    height: 30,
+    left: 200,
+    top: 440,
+    fontSize: 30,
+    defaultFontSize: 30,
+    bold: false,
+    italic: false,
+    fontFamily: "Roboto",
+    textAlign: "center",
+    vAlign: "middle",
+    value: "[%]batchDate[/%]",
+    text: "[%]batchDate[/%]"
+  });
+
   page1 = {
     ...page1,
     id: "page_1",
@@ -901,7 +1005,8 @@ const getDGProject = cfg => {
       page1JamType.id,
       page1TagLine1.id,
       page1TagLine2.id,
-      page1BatchDate.id
+      page1BatchDate.id,
+      page1Image.id
     ]
   };
 
@@ -917,6 +1022,21 @@ const getDGProject = cfg => {
       page2TagLine1.id,
       page2TagLine2.id,
       page2BatchDate.id
+    ]
+  };
+
+  page3 = {
+    ...page3,
+    id: "page_3",
+    height: 663,
+    objectsIds: [
+      ...page3.objectsIds,
+      bg2.id,
+      page3JamName.id,
+      page3JamType.id,
+      page3TagLine1.id,
+      page3TagLine2.id,
+      page3BatchDate.id
     ]
   };
 
@@ -940,9 +1060,15 @@ const getDGProject = cfg => {
       [page2JamType.id]: page2JamType,
       [page2TagLine1.id]: page2TagLine1,
       [page2TagLine2.id]: page2TagLine2,
-      [page2BatchDate.id]: page2BatchDate
+      [page2BatchDate.id]: page2BatchDate,
+      [page1Image.id]: page1Image,
+      [page3JamName.id]: page3JamName,
+      [page3JamType.id]: page3JamType,
+      [page3TagLine1.id]: page3TagLine1,
+      [page3TagLine2.id]: page3TagLine2,
+      [page3BatchDate.id]: page3BatchDate
     },
-    pagesOrder: [...project.pagesOrder, page1.id, page2.id],
+    pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id],
     activePage: page1.id
   };
 };

@@ -24,9 +24,10 @@ const objects = props => {
 
   return Object.keys(objects).map(obKey => {
     const { offsetLeft, offsetTop } = objects[obKey];
-    const blockVariables = extractVariablesFromString(
-      completeObjects[obKey].text
-    );
+    const blockVariables =
+      completeObjects[obKey].type === "textbox"
+        ? extractVariablesFromString(completeObjects[obKey].text)
+        : [];
     return (
       <ObjectBlock
         key={obKey}

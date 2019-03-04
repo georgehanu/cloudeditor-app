@@ -34,7 +34,9 @@ const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
 const uuidv4 = require("uuid/v4");
-
+const {
+  DAG_UPLOAD_IMAGE_SUCCESS
+} = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
 const changeProjectTitle = (state, action) => {
   return {
     ...state,
@@ -88,7 +90,7 @@ const changeGroups = (state, payload) => {
 
 const addObjectToPage = (state, action) => {
   const { object } = action;
-  const pageId = state.selectedPage;
+  const pageId = state.activePage; //state.selectedPage;
   const page = {
     ...state.pages[state],
     objectsIds: state.pages[pageId].objectsIds.concat(object.id)
@@ -400,6 +402,23 @@ module.exports = handleActions(
         pages: liquidProject.pages,
         objects: liquidProject.objects
       };
+    },
+    [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
+      const newImageObj = {
+        object: {
+          id: uuidv4(),
+          type: "image",
+          src: action.payload,
+          width: 200,
+          height: 400,
+          left: 0,
+          orientation: "north",
+          top: 0,
+          imageWidth: 400,
+          imageHeight: 1300
+        }
+      };
+      return addObjectToPage(state, newImageObj);
     }
   },
   initialState

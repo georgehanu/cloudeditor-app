@@ -1,9 +1,9 @@
 const React = require("react");
 const { withNamespaces } = require("react-i18next");
 
-const MenuHeader = props => {
+const MenuHeader = ({ className = "MenuHeader", ...props }) => {
   return (
-    <div className="MenuHeader">
+    <div className={className}>
       <div className="TitleMenu">{props.t(props.title)}</div>
       <a
         href="#"

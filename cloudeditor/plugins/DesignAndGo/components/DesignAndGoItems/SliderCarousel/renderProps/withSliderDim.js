@@ -18,21 +18,23 @@ class WithSliderDim extends React.Component {
   updateDimensions() {
     if (this.itemRef.current && this.props.active) {
       let resizedFinished = null;
-      clearTimeout(resizedFinished);
-      resizedFinished = setTimeout(() => {
-        if (this.itemRef.current) {
-          const $el = $(this.itemRef.current);
-          if (
-            $el.width() !== this.state.width ||
-            $el.height() !== this.state.height
-          ) {
-            this.setState({
-              width: $el.width(),
-              height: $el.height()
-            });
-          }
+      //clearTimeout(resizedFinished);
+
+      //resizedFinished = setTimeout(() => {
+      if (this.itemRef.current) {
+        const $el = $(this.itemRef.current);
+
+        if (
+          $el.width() !== this.state.width ||
+          $el.height() !== this.state.height
+        ) {
+          this.setState({
+            width: $el.width(),
+            height: $el.height()
+          });
         }
-      }, 50);
+      }
+      //}, 50);
     }
   }
 
@@ -40,7 +42,8 @@ class WithSliderDim extends React.Component {
     this.updateDimensions();
     window.addEventListener(
       "resize",
-      debounce(this.updateDimensions.bind(this), 50)
+      //debounce(this.updateDimensions.bind(this), 50)
+      this.updateDimensions.bind(this)
     );
   }
 
@@ -54,7 +57,14 @@ class WithSliderDim extends React.Component {
 
   render() {
     return (
-      <div className="productSliderContainer" ref={this.itemRef}>
+      <div
+        className={
+          this.props.containerClass
+            ? this.props.containerClass
+            : "productSliderContainer"
+        }
+        ref={this.itemRef}
+      >
         {this.props.children(this.state)}
       </div>
     );

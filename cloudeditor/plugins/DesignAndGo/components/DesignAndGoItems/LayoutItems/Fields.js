@@ -5,7 +5,7 @@ const Input = require("./Input");
 const Text = require("./Text");
 const ColorButtonGroup = require("./ColorButtonGroup");
 const UploadImage = require("./UploadImage");
-
+const CropImageButton = require("../CropImage/CropImageButton");
 const InputVariable = withVariable(Input);
 
 const Types = require("../../DesignAndGoConfig/types");
@@ -15,6 +15,9 @@ const {
   dagProductColorsSelector,
   dagShowUploadImageSelector
 } = require("../../../store/selectors");
+const {
+  dagImageSelection
+} = require("../../../../../core/stores/selectors/project");
 
 const { dagChangeInput } = require("../../../store/actions");
 const {
@@ -58,7 +61,16 @@ const Fields = props => {
   }
 
   if (props.showUploadImage) {
-    items = items.concat(<UploadImage key={index++} />);
+    items = items.concat(
+      <div key={index++} className="imageOpContainer">
+        <UploadImage />
+        {props.image && (
+          <CropImageButton
+            onCropImageModalOpenHandler={props.onCropImageModalOpenHandler}
+          />
+        )}
+      </div>
+    );
   }
 
   return <div className="FieldsContainer">{items}</div>;
@@ -70,7 +82,8 @@ const mapStateToProps = state => {
     variables: getVariablesByFilter(state, "dg"),
     variablesConfigs: state.variables.configs,
     productColors: dagProductColorsSelector(state),
-    showUploadImage: dagShowUploadImageSelector(state)
+    showUploadImage: dagShowUploadImageSelector(state),
+    image: dagImageSelection(state)
   };
 };
 

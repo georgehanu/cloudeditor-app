@@ -1,5 +1,6 @@
 const React = require("react");
 const Layout = require("./components/DesignAndGoItems/LayoutItems/Layout");
+const { connect } = require("react-redux");
 
 require("slick-carousel/slick/slick.css");
 require("slick-carousel/slick/slick-theme.css");
@@ -9,21 +10,26 @@ const MenuModal = require("./components/DesignAndGoItems/UI/MenuModal");
 const MenuDataModal = require("./components/DesignAndGoItems/UI/MenuDataModal");
 const SignInModal = require("./components/DesignAndGoItems/UI/SignInModal");
 const AlternateLayouts = require("./components/AlternateLayouts");
+const CropImageModal = require("./components/DesignAndGoItems/CropImage/CropImageModal");
 
 const assign = require("object-assign");
+const { dagImageSelection } = require("../../core/stores/selectors/project");
+const { updateObjectProps } = require("../../core/stores/actions/project");
 
 class DesignAndGo extends React.Component {
   state = {
     menuOpened: false,
     dataOpened: false,
-    signInOpened: false
+    signInOpened: false,
+    cropImageModalOpened: false
   };
 
   onMenuCloseHandler = () => {
     this.setState({
       menuOpened: false,
       dataOpened: false,
-      signInOpened: false
+      signInOpened: false,
+      cropImageModalOpened: false
     });
   };
   onMenuOpenHandler = () => {
@@ -34,6 +40,19 @@ class DesignAndGo extends React.Component {
   };
   onSignInOpenHandler = () => {
     this.setState({ menuOpened: false, signInOpened: true });
+  };
+  onCropImageModalOpenHandler = () => {
+    this.setState({ cropImageModalOpened: true });
+  };
+
+  onCropImageHandler = cropInfo => {
+    // this.refs.cropper.getCroppedCanvas().toDataURL();
+    this.props.onUpdatePropsHandler({
+      id: this.props.image.id,
+      props: { ...cropInfo }
+    });
+
+    this.onMenuCloseHandler();
   };
 
   render() {
@@ -60,10 +79,18 @@ class DesignAndGo extends React.Component {
             modalClosed={this.onMenuCloseHandler}
           />
         )}
+        {this.state.cropImageModalOpened && (
+          <CropImageModal
+            modalClosed={this.onMenuCloseHandler}
+            image={this.props.image}
+            onCropImageHandler={this.onCropImageHandler}
+          />
+        )}
 
         <Layout
           onMenuOpenHandler={this.onMenuOpenHandler}
           onDataOpenHandler={this.onDataOpenHandler}
+          onCropImageModalOpenHandler={this.onCropImageModalOpenHandler}
         />
         <AlternateLayouts />
       </div>
@@ -71,7 +98,22 @@ class DesignAndGo extends React.Component {
   }
 }
 
-const DesignAndGoPlugin = withNamespaces("designAndGo")(DesignAndGo);
+const mapStateToProps = state => {
+  return {
+    image: dagImageSelection(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onUpdatePropsHandler: payload => dispatch(updateObjectProps(payload))
+  };
+};
+
+const DesignAndGoPlugin = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNamespaces("designAndGo")(DesignAndGo));
 
 module.exports = {
   DesignAndGo: assign(DesignAndGoPlugin),
