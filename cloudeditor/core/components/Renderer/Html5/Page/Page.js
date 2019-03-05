@@ -171,34 +171,38 @@ class Page extends React.Component {
     snapTolerance *= zoomScale;
     if (dragging) return type;
     if (
-      blockBounding.left < pageBounding.left + snapTolerance ||
-      blockBounding.right > pageBounding.right - snapTolerance ||
-      blockBounding.top < pageBounding.top + snapTolerance ||
-      blockBounding.bottom > pageBounding.bottom - snapTolerance
+      blockBounding.left < snapTolerance ||
+      blockBounding.right > pageBounding.width - snapTolerance ||
+      blockBounding.top < snapTolerance ||
+      blockBounding.bottom > pageBounding.height - snapTolerance
     )
       type = 1;
     if (
-      blockBounding.right < pageBounding.left ||
-      blockBounding.left > pageBounding.right ||
-      blockBounding.bottom < pageBounding.top ||
-      blockBounding.top > pageBounding.bottom
+      blockBounding.right <= 0 ||
+      blockBounding.left > pageBounding.width ||
+      blockBounding.bottom <= 0 ||
+      blockBounding.top > pageBounding.height
     )
       type = 2;
     return type;
   };
   checkErrorMessages = params => {
-    const { blockContainer, blockId, dragging } = params;
+    const { blockId, dragging, width, height, left, top } = params;
     let { errorMessages } = this.state;
-    const pageBounding = ReactDOM.findDOMNode(this).getBoundingClientRect();
-    const blockContainerBounding = blockContainer.getBoundingClientRect();
+    const pageBounding = { width: this.props.width, height: this.props.height };
+    const blockContainerBounding = {
+      left,
+      top,
+      width,
+      height,
+      right: left + width,
+      bottom: top + height
+    };
 
     errorMessages[blockId] = {
       type: this.getIfMessage(pageBounding, blockContainerBounding, dragging),
-      left:
-        blockContainerBounding.left -
-        pageBounding.left +
-        blockContainerBounding.width / 2,
-      top: blockContainerBounding.top - pageBounding.top,
+      left: blockContainerBounding.left + blockContainerBounding.width / 2,
+      top: blockContainerBounding.top,
       width: blockContainerBounding.width
     };
     this.setState({ errorMessages });
