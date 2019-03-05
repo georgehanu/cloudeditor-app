@@ -284,24 +284,24 @@ module.exports = {
           let print_options = {
             ...productInformation.productOptions.print_options
           };
-          let ok = true;
-          Object.keys(print_options).map(obKey => {
-            if (
-              typeof productInformation.productOptions.print_options[obKey][
-                "pages"
-              ] != "undefined" &&
-              ok
-            )
-              productInformation.productOptions.print_options[obKey]["pages"] =
-                "pages" + state$.value.project.pagesOrder.length;
-            ok = false;
-          });
-
+          const contentCode = productInformation.contentCode;
+          const coverCode = productInformation.coverCode;
+          const numberOfPages = state$.value.project.pagesOrder.length;
+          const no_page_cover = state$.value.productInformation.no_page_cover;
+          const pages_codes = state$.value.productInformation.pages_codes;
+          const contentPages = numberOfPages - parseInt(no_page_cover);
+          if (contentCode) {
+            let page_code = "pages" + contentPages;
+            if (pages_codes.hasOwnProperty(contentPages)) {
+              page_code = pages_codes[contentPages];
+            }
+            print_options[contentCode]["pages"][0] = page_code;
+          }
           const serverData = {
             product: productInformation.productId,
             related_product: false,
             qty: productInformation.qty,
-            print_options: productInformation.productOptions.print_options,
+            print_options: print_options,
             options: productInformation.productOptions.options
           };
           calculatePrice(serverData, obs);
@@ -314,28 +314,29 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           const productInformation = { ...state$.value.productInformation };
+
           let print_options = {
             ...productInformation.productOptions.print_options
           };
-          let ok = true;
-          Object.keys(print_options).map(obKey => {
-            if (
-              typeof productInformation.productOptions.print_options[obKey][
-                "pages"
-              ] != "undefined" &&
-              ok
-            ) {
-              productInformation.productOptions.print_options[obKey]["pages"] =
-                "pages" + state$.value.project.pagesOrder.length;
-              ok = false;
+          const contentCode = productInformation.contentCode;
+          const coverCode = productInformation.coverCode;
+          const numberOfPages = state$.value.project.pagesOrder.length;
+          const no_page_cover = state$.value.productInformation.no_page_cover;
+          const pages_codes = state$.value.productInformation.pages_codes;
+          const contentPages = numberOfPages - parseInt(no_page_cover);
+          if (contentCode) {
+            let page_code = "pages" + contentPages;
+            if (pages_codes.hasOwnProperty(contentPages)) {
+              page_code = pages_codes[contentPages];
             }
-          });
+            print_options[contentCode]["pages"][0] = page_code;
+          }
 
           const serverData = {
             product: productInformation.productId,
             related_product: false,
             qty: productInformation.qty,
-            print_options: productInformation.productOptions.print_options,
+            print_options: print_options,
             options: productInformation.productOptions.options
           };
           calculatePrice(serverData, obs);

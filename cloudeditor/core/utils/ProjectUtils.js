@@ -887,7 +887,11 @@ const getEmptyProductInformation = cfg => {
       templateId: null,
       qty: 1,
       productOptions: {},
-      total_price: false
+      total_price: false,
+      contentCode: null,
+      coverCode: null,
+      no_page_cover: 0,
+      pages_codes: []
     },
     cfg || {}
   );

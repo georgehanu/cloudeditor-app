@@ -9,6 +9,12 @@ class UncontrolledInput extends React.Component {
   shouldComponentUpdate(prevProps) {
     return prevProps.displayedValue !== this.props.displayedValue;
   }
+  numberWithCommas = (x, precission) => {
+    x = parseFloat(x.toFixed(precission));
+    let parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return parts.join(",");
+  };
 
   checkUpdatedValue() {
     let value = this.props.displayedValue;
@@ -19,7 +25,7 @@ class UncontrolledInput extends React.Component {
       value += ".00";
     }
 
-    return parseFloat(value).toPrecision(3);
+    return this.numberWithCommas(parseFloat(value), 3);
   }
   componentDidMount() {
     if (this.input) {
@@ -52,6 +58,7 @@ class UncontrolledInput extends React.Component {
     });
   }
   validateInput = value => {
+    value = value.replace(",", ".");
     if (value.includes(".")) {
       let parts = value.split(".");
       if (parts.length !== 2) {
@@ -64,8 +71,7 @@ class UncontrolledInput extends React.Component {
       ) {
         return null;
       }
-      if (parts[0].length < 1 || parts[0].length > 2 || parts[1].length > 2)
-        return null;
+      if (parts[0].length < 1 || parts[0].length > 2) return null;
 
       if (parts[1].length === 0) {
         parts[1] = "00";

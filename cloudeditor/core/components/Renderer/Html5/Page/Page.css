@@ -151,7 +151,7 @@
 .pageNameContainer .pageName:last-child {
   text-align: right;
 }
-.zoomContainer .page_wrapper:last-child .pageContainer.page {
+/* .zoomContainer .page_wrapper:last-child .pageContainer.page {
   box-shadow: rgba(0, 0, 0, 0.19) 6px 0px 20px 0px;
 }
 .zoomContainer .page_wrapper:first-child .pageContainer.page {
@@ -159,4 +159,4 @@
 }
 .zoomContainer .pageContainer.page {
   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+} */

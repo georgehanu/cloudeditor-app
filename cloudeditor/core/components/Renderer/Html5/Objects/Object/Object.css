@@ -11,6 +11,7 @@
 
 .pageBlock.backgroundblock {
   z-index: 0;
+  pointer-events: none;
 }
 
 .pageBlock.backgroundblock u {
@@ -189,4 +190,7 @@
 .pageBlock.backgroundblockPagination {
   pointer-events: none;
   z-index: 0;
+}
+.pageBlock.backgroundblock.active {
+  pointer-events: all;
 }

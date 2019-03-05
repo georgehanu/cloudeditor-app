@@ -87,7 +87,7 @@ class ObjectBlock extends React.Component {
     this.editable = ref;
   };
   onClickBlockHandler = event => {
-    const { id, viewOnly, editable } = this.props;
+    const { id, viewOnly, editable, backgroundblock } = this.props;
     if (viewOnly || !editable) return;
     event.preventDefault();
     if ($(event.target).hasClass("deleteBlockHandler")) {

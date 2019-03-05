@@ -49,6 +49,16 @@ class ImageBlock extends React.Component {
     if (equals(nextProps, this.props)) {
       return false;
     }
+    /*   if (nextProps.image_path != this.props.image_path) {
+      if (this.refs.cropper) {
+        this.refs.cropper.enable();
+        this.refs.cropper.reset();
+        this.refs.cropper.replace(baseUrl + nextProps.image_path, true);
+        this.refs.cropper.cropper.initContainer();
+        this.initializeDimm();
+      }
+      return false;
+    } */
     if (nextProps.activeAction) {
       if (!this.refs.cropper.cropper.ready) {
         return false;
@@ -144,6 +154,7 @@ class ImageBlock extends React.Component {
     this.setCropperData();
     this.setDataOnState();
     if (this.refs.cropper) this.refs.cropper.disable();
+    if (this.props.active) this.refs.cropper.enable();
   };
 
   initializeDimm = () => {
@@ -240,6 +251,9 @@ class ImageBlock extends React.Component {
         this.refs.cropper.disable();
       }
     }
+    if (this.props.active) {
+      if (this.refs.cropper) this.refs.cropper.enable();
+    }
   }
   cropEndHandler = () => {
     if (!this.props.viewOnly) {
@@ -328,7 +342,7 @@ class ImageBlock extends React.Component {
     }
   };
   render() {
-    if (!this.props.image_src.length) {
+    if (!this.props.image_src) {
       return null;
     }
     const {
