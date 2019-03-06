@@ -1,5 +1,8 @@
 const React = require("react");
 const { DragLayer } = require("react-dnd");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 
 function getItemStyles(props) {
   const { currentOffset } = props;
@@ -46,7 +49,7 @@ const galleryDragLayer = props => {
       */}
         <img
           className="previewImagegalleryPreviewContainer"
-          src={props.item.image_src}
+          src={baseUrl + props.item.image_src}
         />
       </div>
     </div>

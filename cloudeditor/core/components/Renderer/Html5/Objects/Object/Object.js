@@ -212,6 +212,7 @@ class ObjectBlock extends React.Component {
       width: props.width,
       height: props.height,
       image_src: props.image_src,
+      image_path: props.image_path,
       onUpdateProps: props.onUpdatePropsHandler,
       onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler
     };

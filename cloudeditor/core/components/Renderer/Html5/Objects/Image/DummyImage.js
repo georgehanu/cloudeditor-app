@@ -54,7 +54,7 @@ const DummyImage = props => {
     backgroundPosition = result.left + "px" + " " + result.top + "px";
   }
   const backgroundStyle = {
-    backgroundImage: 'url("' + baseUrl + props.image_path + '")',
+    backgroundImage: 'url("' + baseUrl + props.image_src + '")',
     backgroundSize,
     backgroundPosition
   };

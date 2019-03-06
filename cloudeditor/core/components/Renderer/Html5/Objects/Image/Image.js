@@ -378,7 +378,7 @@ class ImageBlock extends React.Component {
     return (
       <Cropper
         ref="cropper"
-        src={baseUrl + this.props.image_path}
+        src={baseUrl + this.props.image_src}
         style={{ width: widthImage, height: heightImage }}
         // Cropper.js options
         guides={false}

@@ -71,6 +71,7 @@ const Text = props => {
     lineheightn,
     lineheightp,
     value,
+    placeHolder,
     active,
     onUpdateProps,
     realWidth,
@@ -153,7 +154,16 @@ const Text = props => {
     () => {
       if (contentEditable) _checkDim();
     },
-    [content, value, fontFamily, fontSize, bold, realWidth, realHeight]
+    [
+      content,
+      value,
+      fontFamily,
+      fontSize,
+      bold,
+      realWidth,
+      realHeight,
+      lineHeight
+    ]
   );
 
   const onChangeHandler = result => {
@@ -190,6 +200,7 @@ const Text = props => {
       id={id}
       innerRef={getInnerRef}
       content={content}
+      placeHolder={placeHolder}
       active={active}
       editable={contentEditable && active}
       onBlur={onBlurHandler}

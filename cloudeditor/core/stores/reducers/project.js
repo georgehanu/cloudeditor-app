@@ -466,11 +466,11 @@ addObjectMiddle = (state, action) => {
   const headerSelector = projectHeaderEnabledSelector(state);
   const footerSelector = projectFooterEnabledSelector(state);
   let defaultBlock = {};
-  let blockWidth = width / 6;
-  let blockHeight = blockWidth * (height / width);
+  let blockWidth = width / 2;
+  let blockHeight = blockWidth * 0.5;
   if (width > height) {
-    blockHeight = height / 6;
-    blockWidth = blockHeight * (width / height);
+    blockHeight = height / 2;
+    blockWidth = blockHeight * 0.5;
   }
   const left = (width - blockWidth) / 2;
   const top = (height - blockHeight) / 2;

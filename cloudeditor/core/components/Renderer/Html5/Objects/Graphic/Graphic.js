@@ -2,6 +2,9 @@ const React = require("react");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
+const ConfigUtils = require("../../../../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 require("./Graphic.css");
 const type = ["graphics"];
 const GraphicTarget = {
@@ -35,7 +38,9 @@ collectDrop = (connect, monitor) => {
 class GraphicBlock extends React.PureComponent {
   render() {
     const { width, image_src, height } = this.props;
-    const style = { width, height, backgroundImage: `url(${image_src})` };
+
+    const imageUrl = baseUrl + image_src;
+    const style = { width, height, backgroundImage: `url(${imageUrl})` };
     return this.props.connectDropTarget(
       <div className="blockData" style={style} />
     );

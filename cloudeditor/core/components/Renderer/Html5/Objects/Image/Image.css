@@ -2,7 +2,8 @@
   width: 2200px !important;
   display: none;
 }
-.pageBlock.image .blockOrientation {
+.pageBlock.image .blockOrientation,
+.pageBlock.pdf .blockOrientation {
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -12,4 +13,15 @@
 }
 .cropper-disabled .cropper-face {
   cursor: move;
+}
+.cropper-modal {
+  opacity: 0 !important;
+}
+.cropper-bg {
+  background-image: none !important;
+}
+.cropper-face,
+.cropper-line,
+.cropper-point {
+  opacity: 0;
 }

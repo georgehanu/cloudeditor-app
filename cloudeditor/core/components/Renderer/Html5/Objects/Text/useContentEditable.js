@@ -48,20 +48,16 @@ const useContentEditable = React.memo(function useContentEditable(props) {
   };
 
   const _computeResult = (type, others) => {
-    /* const rawValue = escape(_element.current.innerText).replace(
-      new RegExp("\\n$", "g"),
-      ""
-    ); */
-    const rawValue = _element.current.innerText.replace(
+    let rawValue = _element.current.innerText.replace(
       new RegExp("\\n$", "g"),
       ""
     );
+
+    if (rawValue === props.placeHolder) rawValue = "";
     return {
       type,
       element: _element.current,
       text: rawValue,
-      /*  width: _element.current.offsetWidth,
-      height: _element.current.offsetHeight, */
       ...others
     };
   };
@@ -89,9 +85,18 @@ const useContentEditable = React.memo(function useContentEditable(props) {
     props.onBlur(_computeResult("blur"));
   };
 
-  const { tagName: Element, editable, content, placeHolder, style } = props;
+  const {
+    tagName: Element,
+    editable,
+    content,
+    placeHolder,
+    style,
+    active
+  } = props;
 
-  const text = content && content.length > 0 ? content : placeHolder;
+  const text = !content.length && !active ? placeHolder : content;
+
+  //const text = content && content.length > 0 ? content : placeHolder;
 
   _onPaste = ev => {
     ev.preventDefault();
@@ -176,7 +181,7 @@ useContentEditable.propTypes = {
   sanitise: PropTypes.bool,
   caretPosition: PropTypes.oneOf(["start", "end"]),
   tagName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]), // The element to make contenteditable. Takes an element string ('div', 'span', 'h1') or a styled component
-  active: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]), // The element to make contenteditable. Takes an element string ('div', 'span', 'h1') or a styled component
+  active: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   innerRef: PropTypes.func,
   onBlur: PropTypes.func,
   onKeyDown: PropTypes.func,
@@ -218,9 +223,7 @@ const pick = (target = {}, keys = []) =>
 const isEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 function areEqual(prevProps, nextProps) {
-  const propKeys = Object.keys(nextProps).filter(
-    key => key !== "content" && key !== "style"
-  );
+  const propKeys = Object.keys(nextProps).filter(key => key !== "content");
   return isEqual(pick(nextProps, propKeys), pick(prevProps, propKeys));
 }
 
