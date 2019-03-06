@@ -202,24 +202,27 @@ const getPagesDefaults = cfg => {
 };
 
 const getProjectTemplate = cfg => {
-  const project = {
-    title: pathOr("Empty Project", ["title", "document"], cfg),
-    pages: {},
-    activePage: null,
-    pagesOrder: [],
-    selectedPage: null, // designer
-    activeGroup: null, // designer
-    objects: {},
-    selectedObjectsIds: [],
-    activeSelection: null,
-    configs: {
-      document: getDocumentDefaults(pathOr({}, ["configs", "document"], cfg)),
-      pages: getPagesDefaults(pathOr({}, ["configs", "pages"], cfg)),
-      objects: getObjectsDefaults(pathOr({}, ["configs", "objects"], cfg))
+  const project = mergeDeepRight(
+    {
+      title: pathOr("Empty Project", ["title", "document"], cfg),
+      pages: {},
+      activePage: "page_0",
+      pagesOrder: [],
+      selectedPage: null, // designer
+      activeGroup: null, // designer
+      objects: {},
+      selectedObjectsIds: [],
+      activeSelection: null,
+      configs: {
+        document: getDocumentDefaults(pathOr({}, ["configs", "document"], cfg)),
+        pages: getPagesDefaults(pathOr({}, ["configs", "pages"], cfg)),
+        objects: getObjectsDefaults(pathOr({}, ["configs", "objects"], cfg))
+      },
+      colors: {},
+      fonts: {}
     },
-    colors: {},
-    fonts: {}
-  };
+    cfg || {}
+  );
   return project;
 };
 
@@ -692,10 +695,12 @@ const getEmptyVariables = cfg => {
 
 const getDGProject = cfg => {
   let project = getProjectTemplate(cfg);
+
+  return project;
+
   let page1 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
   let page2 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
   let page3 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-  let page4 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
 
   const page_1_bg = require("../../workspaces/designAndGo/svg/page1.svg");
   const page_2_blue_bg = require("../../workspaces/designAndGo/svg/page_2_blue.svg");
@@ -1045,8 +1050,7 @@ const getDGProject = cfg => {
     pages: {
       [page1.id]: page1,
       [page2.id]: page2,
-      [page3.id]: page3,
-      [page4.id]: page4
+      [page3.id]: page3
     },
     objects: {
       [bg1.id]: bg1,

@@ -147,14 +147,11 @@ const initialState = {
       {
         type: Types.TEXT,
         text: projectConfigGlobal["title"],
-        text1: "Create your own jar label",
         class: "DescriptionHeader"
       },
       {
         type: Types.TEXT,
         text: projectConfigGlobal["description"],
-        text1:
-          "Add the details about your beer and a custom label will be created for you. Use the arrows beside the bottle to try out different designs.",
         class: "Description"
       }
     ]

@@ -76,7 +76,7 @@ class ImageLoad extends React.Component {
   }
 
   componentDidMount = () => {
-    this.loadImg(this.props.src);
+    this.loadImg(this.props.image_src);
   };
 
   render() {
