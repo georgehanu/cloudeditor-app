@@ -1,14 +1,15 @@
-.pageBlock.textflow .blockData {
-  white-space: pre-wrap;
+.pageBlock.text .blockOrientation {
+  display: table;
 }
 
 .pageBlock.textflow .blockData,
 .pageBlock.text .blockData {
   outline: none;
-  vertical-align: middle;
+  vertical-align: top;
+  /* vertical-align: middle;
   justify-content: center;
-  flex-direction: column;
-  display: flex;
+  flex-direction: column; */
+  display: table-cell;
 }
 
 .pageBlock.text .blockData > div {
@@ -18,4 +19,8 @@
   white-space: normal !important;
   overflow-wrap: normal;
   position: relative;
+}
+
+.pageBlock.text .blockData div.editArea {
+  white-space: pre-wrap;
 }

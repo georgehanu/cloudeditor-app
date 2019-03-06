@@ -39,6 +39,11 @@ const config = {
   copyFrom: []
 };
 
+config["copyFrom"].push({
+  from: "./external/",
+  to: "./"
+});
+
 if (workspace === "designAndGo")
   config["copyFrom"].push({
     from: "./" + namespace + "/themes/" + workspace + "/images/*",

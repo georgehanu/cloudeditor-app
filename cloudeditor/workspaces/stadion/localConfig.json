@@ -50,8 +50,9 @@
     "className": "container"
   },
   "translations": {
-    "basePath": "locales"
+    "basePath": "locales",
+    "lang": "de-DE"
   },
   "baseUrl": "http://localhost:8081/",
-  "publicPath": "cloudeditor/"
+  "publicPath": ""
 }

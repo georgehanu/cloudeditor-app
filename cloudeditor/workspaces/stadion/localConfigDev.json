@@ -1,0 +1,8 @@
+{
+  "translations": {
+    "basePath": "locales",
+    "lang": "en-US"
+  },
+  "baseUrl": "http://localhost:8081",
+  "publicPath": "/"
+}

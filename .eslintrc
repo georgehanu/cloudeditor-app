@@ -1,6 +1,7 @@
 {
   "extends": ["react-app", "plugin:prettier/recommended"],
   "parser": "babel-eslint",
+  "plugins": ["react-hooks"],
   "rules": {
     "no-undef": "off",
     "no-script-url": "off",
@@ -12,6 +13,8 @@
     "jsx-a11y/alt-text": "off",
     "array-callback-return": "off",
     "default-case": "off",
-    "no-unreachable": "off"
+    "no-unreachable": "off",
+    "react-hooks/rules-of-hooks": "error"
+    //"react-hooks/exhaustive-deps": "warn"
   }
 }

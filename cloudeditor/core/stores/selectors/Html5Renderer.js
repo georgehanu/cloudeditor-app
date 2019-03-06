@@ -520,7 +520,7 @@ const scaledDisplayedObjectSelector = (
         ["height"],
         ["top"],
         ["left"],
-        ["fontSize"],
+        /* ["fontSize"], */
         ["borderWidth"]
       ];
 
@@ -579,9 +579,15 @@ const scaledDisplayedObjectCachedSelector = createCachedSelector(
       ["height"],
       ["top"],
       ["left"],
-      ["fontSize"],
+      /* ["fontSize"], */
       ["borderWidth"]
     ];
+
+    forEach(path => {
+      const str = last(path);
+      const key = "real" + str.slice(0, 1).toUpperCase() + str.slice(1);
+      scaledBlock[key] = scaledBlock[path];
+    }, defaultPaths);
 
     scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
 
@@ -600,8 +606,8 @@ const activeScaledDisplayedObjectCachedSelector = createCachedSelector(
       ["width"],
       ["height"],
       ["top"],
-      ["left"],
-      ["fontSize"]
+      ["left"]
+      /* ["fontSize"] */
     ];
 
     scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
