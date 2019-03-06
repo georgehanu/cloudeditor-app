@@ -14,7 +14,7 @@
     "array-callback-return": "off",
     "default-case": "off",
     "no-unreachable": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/rules-of-hooks": "error"
+    //"react-hooks/exhaustive-deps": "warn"
   }
 }

@@ -1,6 +1,6 @@
 const React = require("react");
 const PropTypes = require("prop-types");
-const ContentEditable = require("../ContentEditable/ContentEditable");
+const ContentEditable = require("../ContentEditable/ContentEditable1");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
 const {

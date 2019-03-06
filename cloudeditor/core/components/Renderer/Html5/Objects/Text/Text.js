@@ -1,54 +1,223 @@
 const React = require("react");
+const { useMemo, useCallback, useState, useRef, useEffect } = require("react");
+const { escape, unescape } = require("underscore");
 
+const usePrevious = require("../../../../../hooks/usePrevious");
 const DummyText = require("./DummyText");
 const EditableText = require("./EditableText");
 
+const ContentEditable = require("./useContentEditable");
+
 require("./Text.css");
 
-const vAlign = {
-  top: "flex-start",
-  middle: "center",
-  bottom: "flex-end"
-};
-
-const Text = props => {
-  const { zoomScale } = props;
-
-  let contentEditable = false;
-  if (props.contentEditable | 0) contentEditable = true;
-
+function computeLineHeight(lineheightp, lineheightn) {
   let lineHeight = 1.2;
-  const lineHeightP = parseFloat(props.lineheightp);
-  const lineHeightN = parseFloat(props.lineheightn);
+  const lineHeightP = parseFloat(lineheightp);
+  const lineHeightN = parseFloat(lineheightn);
   if (!isNaN(lineHeightP)) {
-    lineHeight = lineHeightP / 100;
+    if (lineHeightP >= 50) lineHeight = lineHeightP / 100;
+    else lineHeight = lineHeightP;
   } else if (!isNaN(lineHeightN)) {
-    lineHeight = lineHeightN + "px";
+    lineHeight = lineHeightN;
   }
+  return lineHeight;
+}
 
-  const style = {
-    fontFamily: props.fontFamily,
-    color: "rgb(" + props.fillColor + ")",
-    fontSize: props.fontSize + "px",
-    textAlign: props.textAlign,
-    fontWeight: props.bold ? "bold" : "normal",
-    fontStyle: props.italic ? "italic" : "normal",
-    textDecoration: props.underline ? "underline" : "none",
-    justifyContent: vAlign[props.vAlign],
+function computeStyle(
+  fontFamily,
+  fillColor,
+  fontSize,
+  textAlign,
+  bold,
+  italic,
+  underline,
+  vAlign,
+  lineHeight
+) {
+  return {
+    fontFamily: fontFamily,
+    color: "rgb(" + fillColor + ")",
+    fontSize: fontSize + "px",
+    textAlign: textAlign,
+    fontWeight: bold ? "bold" : "normal",
+    fontStyle: italic ? "italic" : "normal",
+    textDecoration: underline ? "underline" : "none",
+    verticalAlign: vAlign,
     lineHeight: lineHeight
   };
+}
 
-  const content = contentEditable ? (
-    <EditableText value={props.value} />
+const Text = props => {
+  let contentEditable = false;
+  if (props.contentEditable | 0) contentEditable = true;
+  const [content, setContent] = useState(props.value);
+
+  const _editableRef = useRef(null);
+
+  if (contentEditable) {
+  }
+
+  const {
+    id,
+    zoomScale,
+    fontFamily,
+    fillColor,
+    fontSize,
+    textAlign,
+    bold,
+    italic,
+    underline,
+    vAlign,
+    lineheightn,
+    lineheightp,
+    value,
+    active,
+    onUpdateProps,
+    realWidth,
+    realHeight
+  } = props;
+
+  const _areDimChanged = () => {
+    result = false;
+    if (_editableRef.current) {
+      const width = _editableRef.current.offsetWidth;
+      const height = _editableRef.current.offsetHeight;
+
+      let isUpdate = false;
+      let newWidth = realWidth;
+      let newHeight = realHeight;
+
+      if (width > realWidth) {
+        newWidth = width;
+        isUpdate = true;
+      }
+
+      if (height > realHeight) {
+        newHeight = height;
+        isUpdate = true;
+      }
+
+      if (isUpdate)
+        result = {
+          width: newWidth,
+          height: newHeight
+        };
+    }
+    return result;
+  };
+
+  const _checkDim = () => {
+    if (_editableRef.current) {
+      const newDims = _areDimChanged();
+      if (newDims) {
+        onUpdateProps({
+          id: id,
+          props: { ...newDims }
+        });
+      }
+    }
+  };
+
+  const lineHeight = useMemo(
+    () => computeLineHeight(lineheightp, lineheightn),
+    [lineheightn, lineheightp]
+  );
+
+  const style = useMemo(
+    () =>
+      computeStyle(
+        fontFamily,
+        fillColor,
+        fontSize,
+        textAlign,
+        bold,
+        italic,
+        underline,
+        vAlign,
+        lineHeight
+      ),
+    [
+      bold,
+      fillColor,
+      fontFamily,
+      fontSize,
+      italic,
+      lineHeight,
+      textAlign,
+      underline,
+      vAlign
+    ]
+  );
+
+  useEffect(
+    () => {
+      if (contentEditable) _checkDim();
+    },
+    [content, value, fontFamily, fontSize, bold, realWidth, realHeight]
+  );
+
+  const onChangeHandler = result => {
+    setContent(result.text);
+  };
+  const onDimChangeHandler = result => {
+    return;
+    onUpdateProps({
+      id: id,
+      props: {
+        value: result.text
+      }
+    });
+  };
+
+  const onBlurHandler = result => {
+    onUpdateProps({
+      id: id,
+      props: {
+        value: content
+      }
+    });
+  };
+
+  const getInnerRef = ref => {
+    _editableRef.current = ref;
+  };
+
+  let minWidth = { minWidth: realWidth + "px" };
+  if (props.resizing | 0) minWidth = {};
+
+  const textContent = contentEditable ? (
+    <ContentEditable
+      id={id}
+      innerRef={getInnerRef}
+      content={content}
+      active={active}
+      editable={contentEditable && active}
+      onBlur={onBlurHandler}
+      onChange={onChangeHandler}
+      onDimChange={onDimChangeHandler}
+      onPaste={onChangeHandler}
+      focus={true}
+      caretPosition="start"
+      className={"editArea"}
+    />
   ) : (
-    <DummyText value={props.value} />
+    <DummyText id={id} content={value} className={"editArea"} />
   );
 
   return (
     <div style={style} className="blockData">
-      {content}
+      {textContent}
     </div>
   );
 };
 
-module.exports = Text;
+function areEqual(prevProps, nextProps) {
+  let contentEditable = false;
+  if (nextProps.contentEditable | 0) contentEditable = true;
+
+  if (!contentEditable && (nextProps.resizing | 0 || nextProps.active | 0))
+    return true;
+  return false;
+}
+
+module.exports = React.memo(Text, areEqual);

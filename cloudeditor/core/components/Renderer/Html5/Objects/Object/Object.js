@@ -48,16 +48,11 @@ const {
 class ObjectBlock extends React.Component {
   constructor(props) {
     super(props);
-    this.editable = null;
     this.el = null;
     this.$el = null;
   }
 
   componentDidUpdate() {
-    if (this.editable) {
-      this.editable.setFocus();
-      this.editable.setCaret();
-    }
     if (this.$el) {
       if (this.props.type === "image") {
         return;
@@ -73,6 +68,14 @@ class ObjectBlock extends React.Component {
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
+    let isText = false;
+    if (nextProps.type === "text") isText = true;
+
+    if (isText) {
+      const contentEditable = !nextProps.viewOnly && nextProps.editable;
+      if (!contentEditable) if (nextProps.active | 0) return false;
+    }
+
     const list = [];
     const nProps = omit(list, nextProps);
     const cProps = omit(list, this.props);
@@ -84,9 +87,6 @@ class ObjectBlock extends React.Component {
     }
     return true;
   }
-  getEditableReference = ref => {
-    this.editable = ref;
-  };
   onClickBlockHandler = event => {
     const { id, viewOnly, editable } = this.props;
     if (viewOnly || !editable) return;
@@ -116,7 +116,8 @@ class ObjectBlock extends React.Component {
       active: props.active,
       width: props.width,
       height: props.height,
-      maxWidth: props.width,
+      realWidth: props.realWidth,
+      realHeight: props.realHeight,
       fontFamily: props.fontFamily,
       fontSize: props.fontSize,
       textAlign: props.textAlign,
@@ -135,7 +136,6 @@ class ObjectBlock extends React.Component {
       onUpdateProps: props.onUpdatePropsHandler,
       onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       onTextChange: props.onTextChange,
-      editableRef: this.getEditableReference,
       zoomScale: this.props.zoomScale,
       renderId: this.props.renderId,
       placeHolder: this.props.placeHolder,

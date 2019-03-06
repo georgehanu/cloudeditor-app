@@ -583,6 +583,12 @@ const scaledDisplayedObjectCachedSelector = createCachedSelector(
       ["borderWidth"]
     ];
 
+    forEach(path => {
+      const str = last(path);
+      const key = "real" + str.slice(0, 1).toUpperCase() + str.slice(1);
+      scaledBlock[key] = scaledBlock[path];
+    }, defaultPaths);
+
     scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
 
     return scaledBlock;

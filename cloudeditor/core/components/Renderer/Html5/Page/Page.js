@@ -319,7 +319,6 @@ class Page extends React.Component {
         deleteMissingImages={this.props.deleteMissingImages}
         viewOnly={viewOnly}
         bottomPagination={bottomPagination}
-        bottomPagination={bottomPagination}
         t={t}
       />
     );

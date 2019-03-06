@@ -176,7 +176,9 @@ const LoadTextSettings = (toolbar, activeItem, activeLayer, fonts) => {
       } else if (item.type === Types.POPTEXT_LINE_HEIGHT) {
         if (isNaN(parseFloat(activeItem.lineheightp))) item.value = 1.2;
         else {
-          item.value = activeItem.lineheightp / 100;
+          if (activeItem.lineheightp >= 50)
+            item.value = activeItem.lineheightp / 100;
+          else item.value = activeItem.lineheightp;
         }
       } else if (item.type === Types.POPTEXT_LAYER) {
         item.operation = Operation.MERGE_DATA;
@@ -392,7 +394,7 @@ const CreatePayload = (activeitem, itemPayload) => {
 
     case Types.POPTEXT_LINE_HEIGHT:
       attrs = {
-        lineheightp: itemPayload.value * 100
+        lineheightp: itemPayload.value
       };
       break;
 
