@@ -12,6 +12,7 @@ const {
   UPDATE_LAYER_PROP,
   DUPLICATE_OBJ,
   DELETE_OBJ,
+  DELETE_IMAGE,
   UPDATE_OBJECT_PROPS,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED
@@ -43,8 +44,18 @@ function dispachEvent(action) {
     };
   } else if (action.payload.action === "delete") {
     return {
-      type: DELETE_OBJ,
-      payload: action.payload
+      type: UPDATE_OBJECT_PROPS,
+      payload: {
+        id: action.payload.id,
+        props: {
+          cropX: 0,
+          cropY: 0,
+          cropW: 0,
+          cropH: 0,
+          image_path: null,
+          image_src: null
+        }
+      }
     };
   } else if (action.payload.action === "refreshTable") {
     return {

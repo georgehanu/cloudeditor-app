@@ -13,6 +13,7 @@ const SweetAlert = require("sweetalert-react").default;
 require("sweetalert/dist/sweetalert.css");
 
 require("./LayoutEditorHeader.css");
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 const {
   getCheckedDuplicateSelector,
@@ -35,7 +36,9 @@ const {
 const {
   pagesOrderSelector,
   pagesSelector,
-  activePageWithObjectsSelector
+  activePageWithObjectsSelector,
+  footerEnabledSelector,
+  headerEnabledSelector
 } = require("../../core/stores/selectors/project");
 const {
   createDeepEqualSelector: createSelector
@@ -79,6 +82,14 @@ const poptext = (props, name, onPoptextChange, t) => {
 };
 
 class LayoutEditorHeader extends React.Component {
+  updateParent = () => {
+    ConfigUtils.updateParent(
+      this.props.templateId,
+      this.props.isFooter,
+      this.props.isHeader,
+      1
+    );
+  };
   onChange = event => {
     if (event.target.name === "duplicateChecked")
       this.props.updateLayoutTemplateHandler({
@@ -274,7 +285,13 @@ class LayoutEditorHeader extends React.Component {
               </button>
             </div>
             <div className="headerSubContainer buttonContainer">
-              <button>{this.props.t("Close")}</button>
+              <button
+                onClick={() => {
+                  this.updateParent();
+                }}
+              >
+                {this.props.t("Close")}
+              </button>
             </div>
           </div>
         </div>
@@ -304,7 +321,9 @@ const mapStateToProps = state => {
     showAlert: projectShowAlertSelector(state),
     message: projectMessageSelector(state),
     projectId: projectIdSelector(state),
-    templateId: templateIdSelector(state)
+    templateId: templateIdSelector(state),
+    isFooter: footerEnabledSelector(state),
+    isHeader: headerEnabledSelector(state)
   };
 };
 

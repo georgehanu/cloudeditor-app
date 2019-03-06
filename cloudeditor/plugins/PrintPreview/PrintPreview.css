@@ -5,6 +5,8 @@
   padding-top: 100px;
   height: 100%;
   background-color: white;
+  float: left;
+  padding-bottom: 10px;
 }
 
 .projectPreviewContainer {
@@ -17,15 +19,15 @@
 
 .showPrintPreview .projectPreviewContainer {
   display: block;
-  padding-bottom: 155px;
+  padding-bottom: 185px;
 }
 
 .pageSelectorExtended .projectPreviewContainer {
-  padding-bottom: 310px;
+  padding-bottom: 340px;
 }
 
 .pageSelectorMinimized .projectPreviewContainer {
-  padding-bottom: 35px;
+  padding-bottom: 65px;
 }
 
 .pageSelectorNormal .projectPreviewContainer {
@@ -178,4 +180,12 @@
 }
 .showPrintPreview ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.5);
+}
+.projectPreviewContainer .paginationBottomContainer {
+  width: 100%;
+  height: 25px;
+  display: inline-block;
+  position: relative;
+  float: left;
+  padding-left: 100px;
 }

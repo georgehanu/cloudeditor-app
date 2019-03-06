@@ -18,6 +18,20 @@ const ConfigUtils = {
   },
   removeConfigProp: function(prop) {
     delete defaultConfig[prop];
+  },
+  updateParent: function(templateId, isFooter, isHeader, shouldClose) {
+    if (window.opener) {
+      if (typeof window.opener.reloadProjects == "function") {
+        if (isFooter) {
+          window.opener.reloadProjectsCloueditorFooter(templateId);
+        } else if (isHeader) {
+          window.opener.reloadProjectsCloueditorHeader(templateId);
+        } else {
+          window.opener.reloadProjectsCloueditor(templateId);
+        }
+        if (shouldClose) window.close();
+      }
+    }
   }
 };
 

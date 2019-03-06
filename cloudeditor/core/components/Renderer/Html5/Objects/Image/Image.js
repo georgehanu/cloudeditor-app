@@ -7,6 +7,9 @@ const { equals } = require("ramda");
 require("cropperjs/dist/cropper.css");
 const type = ["image"];
 require("./Image.css");
+const ConfigUtils = require("../../../../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 const ImageTarget = {
   drop(props, monitor, component) {
     if (monitor.isOver()) {
@@ -46,6 +49,16 @@ class ImageBlock extends React.Component {
     if (equals(nextProps, this.props)) {
       return false;
     }
+    /*   if (nextProps.image_path != this.props.image_path) {
+      if (this.refs.cropper) {
+        this.refs.cropper.enable();
+        this.refs.cropper.reset();
+        this.refs.cropper.replace(baseUrl + nextProps.image_path, true);
+        this.refs.cropper.cropper.initContainer();
+        this.initializeDimm();
+      }
+      return false;
+    } */
     if (nextProps.activeAction) {
       if (!this.refs.cropper.cropper.ready) {
         return false;
@@ -80,8 +93,10 @@ class ImageBlock extends React.Component {
       nextProps.height / this.props.zoomScale !==
         this.props.height / this.props.zoomScale
     ) {
-      this.refs.cropper.enable();
-      this.refs.cropper.reset();
+      if (this.refs.cropper) {
+        this.refs.cropper.enable();
+        this.refs.cropper.reset();
+      }
     }
     if (!nextProps.activeAction && this.props.activeAction) {
       this.setZoom(nextProps);
@@ -139,6 +154,7 @@ class ImageBlock extends React.Component {
     this.setCropperData();
     this.setDataOnState();
     if (this.refs.cropper) this.refs.cropper.disable();
+    if (this.props.active) this.refs.cropper.enable();
   };
 
   initializeDimm = () => {
@@ -146,40 +162,46 @@ class ImageBlock extends React.Component {
       if (!this.refs.cropper.cropper.ready) {
         return false;
       }
-      const canvasData = this.refs.cropper.getCanvasData();
       const cropBoxData = this.refs.cropper.getCropBoxData();
-      const data = this.refs.cropper.getData();
       const { width, height } = this.props;
-      const imageWidth = canvasData.naturalWidth;
-      const imageHeight = canvasData.naturalHeight;
-      let widthRatio = 1;
-      let heightRatio = 1;
+
+      const data = this.refs.cropper.getCanvasData();
+      const imageData = this.refs.cropper.getImageData();
+      let canvasWidth = imageData.width;
+      let canvasHeight = imageData.height;
+      let widthRatio2 = 1;
+      let heightRatio2 = 1;
       let minPercent = 1;
+      const imageWidth = imageData.naturalWidth;
+      const imageHeight = imageData.naturalHeight;
       if (imageWidth > 0) {
-        widthRatio = width / imageWidth;
-        heightRatio = height / imageHeight;
-        if (widthRatio <= heightRatio) {
-          minPercent = heightRatio;
+        widthRatio2 = width / imageWidth;
+        heightRatio2 = height / imageHeight;
+        if (widthRatio2 <= heightRatio2) {
+          minPercent = heightRatio2;
         } else {
-          minPercent = widthRatio;
+          minPercent = widthRatio2;
         }
       }
       const widthImage = Math.ceil(imageWidth * minPercent);
       const heightImage = Math.ceil(imageHeight * minPercent);
-      this.refs.cropper.setData({
-        ...data,
-        width: width,
-        height: height,
-        left: (-1 * (widthImage - width)) / 2,
-        top: (-1 * (heightImage - height)) / 2
-      });
+      const rW = imageData.naturalWidth / imageData.naturalWidth;
+      const rH = imageData.naturalHeight / imageData.naturalHeight;
+
+      canvasWidth = widthImage * Math.min(rH, rW);
+
+      canvasHeight = heightImage * Math.min(rH, rW);
+
       this.refs.cropper.setCanvasData({
-        ...canvasData,
-        width: widthImage,
-        height: null,
-        left: (-1 * (widthImage - width)) / 2,
-        top: (-1 * (heightImage - height)) / 2
+        ...data,
+        left: (-1 * (canvasWidth - width)) / 2,
+        top: (-1 * (canvasHeight - height)) / 2,
+        width: canvasWidth,
+        height: canvasHeight
       });
+
+      ////
+
       this.refs.cropper.setCropBoxData({
         ...cropBoxData,
         width,
@@ -228,6 +250,9 @@ class ImageBlock extends React.Component {
       } else {
         this.refs.cropper.disable();
       }
+    }
+    if (this.props.active) {
+      if (this.refs.cropper) this.refs.cropper.enable();
     }
   }
   cropEndHandler = () => {
@@ -317,6 +342,9 @@ class ImageBlock extends React.Component {
     }
   };
   render() {
+    if (!this.props.image_src) {
+      return null;
+    }
     const {
       imageWidth,
       imageHeight,
@@ -350,7 +378,7 @@ class ImageBlock extends React.Component {
     return (
       <Cropper
         ref="cropper"
-        src={this.props.image_src}
+        src={baseUrl + this.props.image_path}
         style={{ width: widthImage, height: heightImage }}
         // Cropper.js options
         guides={false}

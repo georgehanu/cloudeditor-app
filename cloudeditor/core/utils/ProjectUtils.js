@@ -406,7 +406,7 @@ const getProjectTemplate = cfg => {
       title: "Empty Project",
       description: "Project description",
       projectId: null,
-      save: { loading: false, errorMessage: null },
+      save: { loading: false, errorMessage: null, showAlert: false },
       load: {
         loading: false,
         errorMessage: null,
@@ -885,7 +885,11 @@ const getEmptyProductInformation = cfg => {
       templateId: null,
       qty: 1,
       productOptions: {},
-      total_price: false
+      total_price: false,
+      contentCode: null,
+      coverCode: null,
+      no_page_cover: 0,
+      pages_codes: []
     },
     cfg || {}
   );

@@ -4,6 +4,7 @@ const { mergeMap } = require("rxjs/operators");
 const axios = require("../../axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
+const { actions } = require("redux-undo-redo");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
@@ -23,7 +24,8 @@ const {
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
   ADD_PAGES,
-  DELETE_PAGE
+  DELETE_PAGE,
+  PROJ_SHOW_POPUP
 } = require("../actionTypes/project");
 const {
   START_GLOBAL_LOADING,
@@ -92,8 +94,16 @@ module.exports = {
           let serverData = new FormData();
           serverData.append("name", action$.payload.name);
           serverData.append("description", action$.payload.description);
-          //  serverData.append("projectId", action$.payload.projectId);
-          serverData.append("projectId", 0);
+          serverData.append("overwrite", action$.payload.overwrite);
+          serverData.append("projectId", state$.value.project.projectId);
+          serverData.append(
+            "template_id",
+            state$.value.productInformation.templateId
+          );
+          serverData.append(
+            "product_id",
+            state$.value.productInformation.productId
+          );
           serverData.append(
             "projectData",
             JSON.stringify({
@@ -119,10 +129,17 @@ module.exports = {
                 var event = new Event("resizePage");
                 window.dispatchEvent(event);
               } else {
-                obs.next({
-                  type: PROJ_SAVE_FAILED,
-                  payload: data.message
-                });
+                if (data.overwrite) {
+                  obs.next({
+                    type: PROJ_SHOW_POPUP,
+                    payload: "Error message: " + data.message
+                  });
+                } else {
+                  obs.next({
+                    type: PROJ_SAVE_FAILED,
+                    payload: data.message
+                  });
+                }
               }
               obs.complete();
             })
@@ -143,8 +160,14 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           let serverData = new FormData();
-          serverData.append("projectId", action$.payload.projectId);
-          serverData.append("productId", action$.payload.productId);
+          serverData.append(
+            "product_id",
+            state$.value.productInformation.productId
+          );
+          serverData.append(
+            "template_id",
+            state$.value.productInformation.templateId
+          );
           axios
             .post(LOAD_PROJ, serverData)
             .then(resp => resp.data)
@@ -229,6 +252,10 @@ module.exports = {
                   data: data.project,
                   projectId: action$.payload.projectId
                 });
+                const clear = actions.clear();
+                obs.next({
+                  ...clear
+                });
               } else {
                 obs.next({
                   type: PROJ_LOAD_PROJECT_FAILED,
@@ -257,24 +284,24 @@ module.exports = {
           let print_options = {
             ...productInformation.productOptions.print_options
           };
-          let ok = true;
-          Object.keys(print_options).map(obKey => {
-            if (
-              typeof productInformation.productOptions.print_options[obKey][
-                "pages"
-              ] != "undefined" &&
-              ok
-            )
-              productInformation.productOptions.print_options[obKey]["pages"] =
-                "pages" + state$.value.project.pagesOrder.length;
-            ok = false;
-          });
-
+          const contentCode = productInformation.contentCode;
+          const coverCode = productInformation.coverCode;
+          const numberOfPages = state$.value.project.pagesOrder.length;
+          const no_page_cover = state$.value.productInformation.no_page_cover;
+          const pages_codes = state$.value.productInformation.pages_codes;
+          const contentPages = numberOfPages - parseInt(no_page_cover);
+          if (contentCode) {
+            let page_code = "pages" + contentPages;
+            if (pages_codes.hasOwnProperty(contentPages)) {
+              page_code = pages_codes[contentPages];
+            }
+            print_options[contentCode]["pages"][0] = page_code;
+          }
           const serverData = {
             product: productInformation.productId,
             related_product: false,
             qty: productInformation.qty,
-            print_options: productInformation.productOptions.print_options,
+            print_options: print_options,
             options: productInformation.productOptions.options
           };
           calculatePrice(serverData, obs);
@@ -287,28 +314,29 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           const productInformation = { ...state$.value.productInformation };
+
           let print_options = {
             ...productInformation.productOptions.print_options
           };
-          let ok = true;
-          Object.keys(print_options).map(obKey => {
-            if (
-              typeof productInformation.productOptions.print_options[obKey][
-                "pages"
-              ] != "undefined" &&
-              ok
-            ) {
-              productInformation.productOptions.print_options[obKey]["pages"] =
-                "pages" + state$.value.project.pagesOrder.length;
-              ok = false;
+          const contentCode = productInformation.contentCode;
+          const coverCode = productInformation.coverCode;
+          const numberOfPages = state$.value.project.pagesOrder.length;
+          const no_page_cover = state$.value.productInformation.no_page_cover;
+          const pages_codes = state$.value.productInformation.pages_codes;
+          const contentPages = numberOfPages - parseInt(no_page_cover);
+          if (contentCode) {
+            let page_code = "pages" + contentPages;
+            if (pages_codes.hasOwnProperty(contentPages)) {
+              page_code = pages_codes[contentPages];
             }
-          });
+            print_options[contentCode]["pages"][0] = page_code;
+          }
 
           const serverData = {
             product: productInformation.productId,
             related_product: false,
             qty: productInformation.qty,
-            print_options: productInformation.productOptions.print_options,
+            print_options: print_options,
             options: productInformation.productOptions.options
           };
           calculatePrice(serverData, obs);

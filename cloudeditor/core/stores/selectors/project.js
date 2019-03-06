@@ -390,6 +390,8 @@ const projSaveLoadingSelector = state =>
 
 const projSaveErrorMessageSelector = state =>
   pathOr(null, ["project", "save", "errorMessage"], state);
+const showAlertSelector = state =>
+  pathOr(false, ["project", "save", "showAlert"], state);
 
 const projLoadLoadingSelector = state =>
   pathOr(false, ["project", "load", "loading"], state);
@@ -503,5 +505,6 @@ module.exports = {
   projectHeaderConfigSelector,
   projectFooterConfigSelector,
   headerEnabledSelector,
-  footerEnabledSelector
+  footerEnabledSelector,
+  showAlertSelector
 };

@@ -5,7 +5,12 @@ const { connect } = require("react-redux");
 const ImagePreview = require("./components/ImagePreview");
 const { debounce } = require("underscore");
 const { zoomSelector } = require("../../core/stores/selectors/ui");
-
+const PaginationBottomContainer = require("../../core/components/Renderer/Html5/PaginationBottomContainer/PaginationBottomContainer");
+const {
+  pagesOrderSelector,
+  activePageIdSelector
+} = require("../../core/stores/selectors/project");
+const { previewLoadPage } = require("../../plugins/PrintPreview/store/actions");
 require("./PrintPreview.css");
 
 const {
@@ -19,7 +24,11 @@ class PrintPreview extends React.Component {
     imageContainerWidth: null,
     imageContainerHeight: null
   };
-
+  onClickChangePageHandler = page_id => {
+    this.props.onChangePage({
+      page_id
+    });
+  };
   constructor(props) {
     super(props);
     this.previewContainer = React.createRef();
@@ -84,6 +93,16 @@ class PrintPreview extends React.Component {
   };
 
   render() {
+    const { pagesOrder, activePageId } = this.props;
+    let nextPage = false;
+    let prevPage = false;
+    const currentPosition = pagesOrder.indexOf(activePageId);
+    if (currentPosition + 2 <= pagesOrder.length) {
+      nextPage = pagesOrder[currentPosition + 1];
+    }
+    if (currentPosition !== 0) {
+      prevPage = pagesOrder[currentPosition - 1];
+    }
     const previewImagecontainer =
       "previewImagecontainer " +
       (this.props.zoomValue < 1.05 ? "" : "previewImagecontainerOverflow");
@@ -108,6 +127,12 @@ class PrintPreview extends React.Component {
             />
           </div>
         </div>
+        <PaginationBottomContainer
+          viewOnly={0}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          onClickChangePageHandler={this.onClickChangePageHandler}
+        />
       </div>
     );
   }
@@ -117,14 +142,17 @@ const mapStateToProps = state => {
   return {
     previewPageUrl: previewPageUrlSelector(state),
     loading: previewLoadingSelector(state),
-    zoomValue: zoomSelector(state)
+    zoomValue: zoomSelector(state),
+    pagesOrder: pagesOrderSelector(state),
+    activePageId: activePageIdSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    onChangePage: payload => dispatch(previewLoadPage(payload))
+  };
 };
-
 const PrintPreviewPlugin = connect(
   mapStateToProps,
   mapDispatchToProps

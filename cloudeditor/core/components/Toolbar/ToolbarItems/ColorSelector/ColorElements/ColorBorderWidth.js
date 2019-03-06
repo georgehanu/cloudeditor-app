@@ -14,7 +14,7 @@ const ColorBorderWidth = props => {
           value={props.defaultValue}
           min={0}
           max={28.3465}
-          step={2.83465}
+          step={0.7086625}
           onChange={value =>
             props.selectWidth({
               mainHandler: true,

@@ -60,7 +60,11 @@ class ObjectBlock extends React.Component {
       const params = {
         blockContainer: this.$el.get(0),
         blockId: this.props.id,
-        dragging: this.props.dragging
+        dragging: this.props.dragging,
+        width: this.props.width,
+        height: this.props.height,
+        left: this.props.left + this.props.offsetLeft,
+        top: this.props.top + this.props.offsetTop
       };
       if (!this.props.backgroundblock) {
         this.props.checkErrorMessages(params);
@@ -88,7 +92,7 @@ class ObjectBlock extends React.Component {
     return true;
   }
   onClickBlockHandler = event => {
-    const { id, viewOnly, editable } = this.props;
+    const { id, viewOnly, editable, backgroundblock } = this.props;
     if (viewOnly || !editable) return;
     event.preventDefault();
     if ($(event.target).hasClass("deleteBlockHandler")) {
@@ -168,6 +172,7 @@ class ObjectBlock extends React.Component {
       onUpdateProps: props.onUpdatePropsHandler,
       onUpdatePropsNoUndoRedo: props.onUpdateNoUndoRedoPropsHandler,
       image_src: props.image_src,
+      image_path: props.image_path,
       leftSlider: props.leftSlider,
       initialRestore: props.initialRestore,
       alternateZoom: props.alternateZoom,

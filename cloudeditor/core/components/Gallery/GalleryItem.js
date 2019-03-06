@@ -7,6 +7,9 @@ const type = "image";
 
 const GalleryDragLayer = require("./GalleryDragLayer");
 const { getEmptyImage } = require("react-dnd-html5-backend");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 
 const PageSource = {
   beginDrag(props) {
@@ -61,7 +64,9 @@ class galleryItem extends React.Component {
     return (
       <div
         className={className}
-        style={{ backgroundImage: 'url("' + this.props.thumbnail_src + '")' }}
+        style={{
+          backgroundImage: 'url("' + baseUrl + this.props.thumbnail_src + '")'
+        }}
       >
         {this.props.connectDragPreview(
           <div>

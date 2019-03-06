@@ -19,6 +19,7 @@ const {
   ADD_OBJECT,
   ADD_TABLE,
   DELETE_OBJ,
+  DELETE_IMAGE,
   ADD_OBJECT_MIDDLE,
   DELETE_PAGE,
   UPDATE_HEADERCONFIG_PROPS,
@@ -46,7 +47,8 @@ const {
   CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED,
-  CHANGE_HEADER_FOOTER_LAYOUT
+  CHANGE_HEADER_FOOTER_LAYOUT,
+  PROJ_SHOW_POPUP
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -71,6 +73,7 @@ const {
   addObject,
   addTable,
   deleteObj,
+  deleteImage,
   addObjectMiddle,
   deletePage,
   updateHeaderconfigProps,
@@ -99,7 +102,8 @@ const {
   changeMagnetic,
   refreshTableStart,
   refreshTableFailed,
-  changeHeaderFooterLayout
+  changeHeaderFooterLayout,
+  projShowPopup
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT_TO_PAGE,
@@ -122,6 +126,7 @@ const {
   ADD_OBJECT,
   ADD_TABLE,
   DELETE_OBJ,
+  DELETE_IMAGE,
   ADD_OBJECT_MIDDLE,
   DELETE_PAGE,
   UPDATE_HEADERCONFIG_PROPS,
@@ -149,7 +154,8 @@ const {
   CHANGE_MAGNETIC,
   REFRESH_TABLE_START,
   REFRESH_TABLE_FAILED,
-  CHANGE_HEADER_FOOTER_LAYOUT
+  CHANGE_HEADER_FOOTER_LAYOUT,
+  PROJ_SHOW_POPUP
 );
 
 module.exports = {
@@ -172,6 +178,7 @@ module.exports = {
   addObject,
   addTable,
   deleteObj,
+  deleteImage,
   addObjectMiddle,
   deletePage,
   updateHeaderconfigProps,
@@ -200,5 +207,6 @@ module.exports = {
   changeMagnetic,
   refreshTableStart,
   refreshTableFailed,
-  changeHeaderFooterLayout
+  changeHeaderFooterLayout,
+  projShowPopup
 };
