@@ -404,7 +404,7 @@ module.exports = handleActions(
       };
     },
     [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
-      const newImageObj = {
+      /*  const newImageObj = {
         object: {
           id: uuidv4(),
           type: "image",
@@ -418,7 +418,8 @@ module.exports = handleActions(
           imageHeight: 1300
         }
       };
-      return addObjectToPage(state, newImageObj);
+      return addObjectToPage(state, newImageObj);*/
+      return state;
     }
   },
   initialState

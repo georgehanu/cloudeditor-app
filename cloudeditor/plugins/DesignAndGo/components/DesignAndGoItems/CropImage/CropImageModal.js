@@ -5,6 +5,7 @@ const Cropper = require("react-cropper").default;
 require("cropperjs/dist/cropper.css");
 const WithSliderDim = require("../SliderCarousel/renderProps/withSliderDim");
 const CropImageBlock = require("./CropImageBlock");
+const ConfigUtils = require("../../../../../core/utils/ConfigUtils");
 
 class CropImageModal extends React.Component {
   state = {
@@ -35,6 +36,8 @@ class CropImageModal extends React.Component {
     this.cropRef.current.zoom(-0.1);
   };*/
   render() {
+    const config = ConfigUtils.getDefaults();
+
     const imageProps = {
       viewOnly: false,
       active: true,
@@ -54,7 +57,8 @@ class CropImageModal extends React.Component {
       cropH: this.props.image.cropH,
       onUpdateProps: this.props.image.onUpdatePropsHandler,
       onUpdatePropsNoUndoRedo: this.props.image.onUpdateNoUndoRedoPropsHandler,
-      image_src: this.props.image.src,
+      image_src:
+        config.baseUrl + config.assetsRelativePath + this.props.image.image_src,
       leftSlider: this.props.image.leftSlider,
       initialRestore: this.props.image.initialRestore,
       alternateZoom: this.props.image.alternateZoom,

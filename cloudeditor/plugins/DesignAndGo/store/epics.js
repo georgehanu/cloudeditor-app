@@ -14,7 +14,9 @@ const { Observable, of } = require("rxjs");
 const { mergeMap, switchMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-const URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/upload.php";
+//const URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/upload.php";
+const URL =
+  "http://work.cloudlab.at:9012/ig/avery-external/public/cloudeditor/uploadImage";
 const LOGIN_URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/login.php";
 
 module.exports = {
@@ -25,7 +27,7 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           let serverData = new FormData();
-          serverData.append("fileToUpload", action$.payload.image);
+          serverData.append("qqfile", action$.payload.image);
           axios
             .post(URL, serverData)
             .then(resp => resp.data)
@@ -33,7 +35,11 @@ module.exports = {
               if (data.status !== "failure") {
                 obs.next({
                   type: DAG_UPLOAD_IMAGE_SUCCESS,
-                  payload: data.file_path
+                  payload: {
+                    image_src: data.image_src,
+                    imageHeight: data.imageHeight,
+                    imageWidth: data.imageWidth
+                  }
                 });
               } else {
                 obs.next({

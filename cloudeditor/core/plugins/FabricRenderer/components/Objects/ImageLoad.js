@@ -2,6 +2,7 @@ const React = require("react");
 
 const { Image } = require("../../fabric/index");
 var imgCache = {};
+const ConfigUtils = require("../../../../utils/ConfigUtils");
 
 class ImageLoad extends React.Component {
   constructor(...args) {
@@ -13,7 +14,17 @@ class ImageLoad extends React.Component {
     };
   }
 
-  loadImg(src) {
+  componentDidUpdate(prevProps, prevState) {
+    // only update chart if the data has changed
+    if (prevProps.image_src !== this.props.image_src) {
+      this.setState({ loaded: false });
+      this.loadImg(this.props.image_src);
+    }
+  }
+
+  loadImg(imageSrc) {
+    const config = ConfigUtils.getDefaults();
+    const src = config.baseUrl + config.assetsRelativePath + imageSrc;
     if (!src) {
       throw new Error("Expected image src instead saw " + typeof src);
     }

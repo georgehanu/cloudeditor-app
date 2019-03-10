@@ -79,6 +79,18 @@ const getEmptyColorVariable = cfg => {
   );
 };
 
+const getEmptyImageUploadVariable = cfg => {
+  const varUid = uuidv4();
+  return merge(
+    {
+      name: varUid,
+      type: "image",
+      value: null
+    },
+    cfg || {}
+  );
+};
+
 const getEmptyVariables = cfg => {
   const defaultVar = getVariableTemplate(cfg);
 
@@ -209,6 +221,14 @@ const getDGVariables = cfg => {
     value: "rgb(150, 150, 0)"
   });
 
+  const uploadImage = getEmptyImageUploadVariable({
+    name: "uploadImage",
+    type: "image",
+    value: null, //"img1.jpg",
+    imageHeight: 0,
+    imageWidth: 0
+  });
+
   return {
     ...state,
     variables: {
@@ -220,7 +240,8 @@ const getDGVariables = cfg => {
       [batchDateVar.name]: batchDateVar,
       [color1.name]: color1,
       [color2.name]: color2,
-      [color3.name]: color3
+      [color3.name]: color3,
+      [uploadImage.name]: uploadImage
     }
   };
 };

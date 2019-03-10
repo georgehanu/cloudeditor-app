@@ -29,5 +29,6 @@
     "basePath": "locales"
   },
   "baseUrl": "https://weprint-poc.avery.co.uk/external/public/default/designandgo/",
-  "publicPath": ""
+  "publicPath": "",
+  "assetsRelativePath": "/personalization/"
 }

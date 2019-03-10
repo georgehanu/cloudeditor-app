@@ -24,10 +24,17 @@ const objects = props => {
 
   return Object.keys(objects).map(obKey => {
     const { offsetLeft, offsetTop } = objects[obKey];
-    const blockVariables =
-      completeObjects[obKey].type === "textbox"
-        ? extractVariablesFromString(completeObjects[obKey].text)
-        : [];
+    let blockVariables = [];
+    if (completeObjects[obKey].type === "textbox") {
+      blockVariables = extractVariablesFromString(completeObjects[obKey].text);
+    } else if (
+      completeObjects[obKey].type === "image" &&
+      completeObjects[obKey].image_upload_src
+    ) {
+      blockVariables = extractVariablesFromString(
+        completeObjects[obKey].image_upload_src
+      );
+    }
     return (
       <ObjectBlock
         key={obKey}

@@ -172,7 +172,7 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        imagePath: action.payload,
+        //imagePath: action.payload,
         errorMessage: null
       };
     },

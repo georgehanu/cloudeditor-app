@@ -4,6 +4,10 @@ const {
   CHANGE_COLOR_VARIABLE_VALUE
 } = require("../actionTypes/variables");
 
+const {
+  DAG_UPLOAD_IMAGE_SUCCESS
+} = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
+
 const { mergeAll } = require("ramda");
 
 const { handleActions } = require("redux-actions");
@@ -23,14 +27,14 @@ const testChangeVariable = state => {
   };
 };
 
-const changeVariableValue = (state, payload) => {
+const changeVariableValue = (state, { name, ...otherProps }) => {
   return {
     ...state,
     variables: {
       ...state.variables,
-      [payload.name]: {
-        ...state.variables[payload.name],
-        value: payload.value
+      [name]: {
+        ...state.variables[name],
+        ...otherProps
       }
     }
   };
@@ -56,10 +60,21 @@ module.exports = handleActions(
       return testChangeVariable(state);
     },
     [CHANGE_VARIABLE_VALUE]: (state, action) => {
-      return changeVariableValue(state, action.payload);
+      return changeVariableValue(state, {
+        name: action.payload.name,
+        value: action.payload.value
+      });
     },
     [CHANGE_COLOR_VARIABLE_VALUE]: (state, action) => {
       return changeColorVariableValue(state, action.payload);
+    },
+    [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
+      return changeVariableValue(state, {
+        name: "uploadImage",
+        value: action.payload.image_src,
+        imageHeight: action.payload.imageHeight,
+        imageWidth: action.payload.imageWidth
+      });
     }
   },
   initialState

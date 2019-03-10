@@ -76,12 +76,30 @@ class ObjectBlock extends React.PureComponent {
 
     const { type, left, top, id } = block;
 
-    let text = block.text || {};
+    let text = "";
+    let image_src = block.image_src || {};
+    let imageHeight = block.imageHeight || 0;
+    let imageWidth = block.imageWidth || 0;
 
-    forEachObjIndexed((variable, key) => {
-      text = text.replace("[%]" + key + "[/%]", variable.value);
-      fontSize = 50;
-    }, variables);
+    if (type === "textbox") {
+      text = block.text || {};
+
+      forEachObjIndexed((variable, key) => {
+        text = text.replace("[%]" + key + "[/%]", variable.value);
+        fontSize = 50;
+      }, variables);
+    } else if (type === "image" && block.image_upload_src) {
+      forEachObjIndexed((variable, key) => {
+        if (variable.value) {
+          image_src = block.image_upload_src.replace(
+            "[%]" + key + "[/%]",
+            variable.value
+          );
+          imageHeight = variable.imageHeight;
+          imageWidth = variable.imageWidth;
+        }
+      }, variables);
+    }
 
     let blockProps = {
       ...block,
@@ -112,6 +130,9 @@ class ObjectBlock extends React.PureComponent {
           <ImageLoad
             key={id}
             {...blockProps}
+            image_src={image_src}
+            imageWidth={imageWidth}
+            imageHeight={imageHeight}
             designerCallbacks={designerCallbacks}
           />
         );
