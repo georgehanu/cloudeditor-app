@@ -3,6 +3,8 @@ const uuidv4 = require("uuid/v4");
 
 const { handleActions } = require("redux-actions");
 
+const initialState = projectConfigGlobal["alternateLayouts"];
+/*
 const initialState = [
   {
     id: uuidv4(),
@@ -11,8 +13,8 @@ const initialState = [
     minDim: 1,
     maxDim: 10000,
     pages: {
-      page_1: {
-        id: "page_1",
+      page_0: {
+        id: "page_0",
         width: 500,
         height: 733,
         objectsIds: [
@@ -66,7 +68,7 @@ const initialState = [
       }
     }
   }
-];
+];*/
 module.exports = handleActions(
   //export default handleActions(
   {},
