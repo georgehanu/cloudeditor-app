@@ -28,6 +28,8 @@ const pagesOrderSelector = state => {
 const activePageIdSelector = state =>
   pathOr(null, ["project", "activePage"], state);
 
+const languageSelector = state => pathOr("de_DE", ["language"], state);
+
 const titleSelector = state =>
   pathOr("Empty project", ["project", "title"], state);
 const projectIdSelector = state =>
@@ -506,5 +508,6 @@ module.exports = {
   projectFooterConfigSelector,
   headerEnabledSelector,
   footerEnabledSelector,
-  showAlertSelector
+  showAlertSelector,
+  languageSelector
 };

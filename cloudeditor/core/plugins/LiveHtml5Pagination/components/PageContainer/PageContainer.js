@@ -6,6 +6,7 @@ const { connect } = require("react-redux");
 const { DragSource, DropTarget } = require("react-dnd");
 const isEqual = require("react-fast-compare");
 const uuidv4 = require("uuid/v4");
+const { withNamespaces } = require("react-i18next");
 const withTooltip = require("../../../../../core/hoc/withTooltip/withTooltip");
 const PAGES = "PAGES";
 const {
@@ -285,7 +286,7 @@ class PageContainer extends React.Component {
             pageReady={pageReady}
           />
           <div className="singlePageText">
-            {this.props.pageLabels.longLabel}
+            {this.props.t(this.props.pageLabels.longLabel)}
           </div>
         </div>
       )
@@ -359,5 +360,5 @@ module.exports = hot(module)(
     ),
     DropTarget(PAGES, PageTarget, collectDrop),
     DragSource(PAGES, PageSource, collectDrag)
-  )(withTooltip(PageContainer))
+  )(withNamespaces("LiveHtml5Pagination")(withTooltip(PageContainer)))
 );

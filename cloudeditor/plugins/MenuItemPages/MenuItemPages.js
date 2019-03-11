@@ -38,7 +38,7 @@ class MenuItemPages extends React.Component {
           className="submenuItem"
           onClick={() => this.pageSelect(obKey, index++)}
         >
-          {this.props.pagesLabel[obKey]["longLabel"]}
+          {this.props.t(this.props.pagesLabel[obKey]["longLabel"])}
         </li>
       );
     });
