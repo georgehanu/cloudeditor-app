@@ -34,7 +34,8 @@ const initialState = {
       label: "Wine 1",
       pageNo: 0,
       mainImage: {
-        src: "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2.png",
+        src:
+          "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2.png",
         width: 1200,
         height: 1400
       },
@@ -48,7 +49,9 @@ const initialState = {
         width: 500,
         height: 733
       },
-      effects: ["http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2_effect.png"],
+      effects: [
+        "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2_effect.png"
+      ],
       hasUpload: true,
       hasCustomPallete: true,
       collorPallets: [{ color: "rgb(255,94,94)" }, { color: "rgb(61,39,255)" }]
@@ -58,7 +61,8 @@ const initialState = {
       label: "Wine 2",
       pageNo: 1,
       mainImage: {
-        src: "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1.png",
+        src:
+          "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1.png",
         width: 1200,
         height: 1400
       },
@@ -72,7 +76,9 @@ const initialState = {
         width: 40,
         height: 48.53
       },
-      effects: ["http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1_effect.png"],
+      effects: [
+        "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1_effect.png"
+      ],
       hasUpload: true,
       hasCustomPallete: true,
       collorPallets: [{ color: "rgb(255,94,94)" }, { color: "rgb(61,39,255)" }]
@@ -145,7 +151,8 @@ const initialState = {
       {
         type: Types.TEXT,
         text: projectConfigGlobal["description"],
-        text1: "Add the details about your beer and a custom label will be created for you. Use the arrows beside the bottle to try out different designs.",
+        text1:
+          "Add the details about your beer and a custom label will be created for you. Use the arrows beside the bottle to try out different designs.",
         class: "Description"
       }
     ]
@@ -186,7 +193,10 @@ module.exports = handleActions(
       } else if (action.payload) {
         newActiveSlider = ++newActiveSlider % sliderElements;
       } else {
-        newActiveSlider = newActiveSlider === 0 ? sliderElements - 1 : --newActiveSlider % sliderElements;
+        newActiveSlider =
+          newActiveSlider === 0
+            ? sliderElements - 1
+            : --newActiveSlider % sliderElements;
       }
 
       return {

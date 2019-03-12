@@ -44,7 +44,9 @@ const getObjectsDefaults = cfg => {
       left: 0,
       top: 0,
       bgColor: getObjectColorTemplate((general && general.bgColor) || {}),
-      borderColor: getObjectColorTemplate((general && general.borderColor) || {}),
+      borderColor: getObjectColorTemplate(
+        (general && general.borderColor) || {}
+      ),
       borderWidth: 0,
       rule_properties: {},
       indesign: 0
@@ -348,7 +350,8 @@ const getRandomProject = cfg => {
     left: 0,
     orientation: "north",
     top: 0,
-    src: "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
+    src:
+      "https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&h=350"
   });
 
   let img3 = getEmptyObject({
@@ -588,7 +591,9 @@ const getEmptyObject = cfg => {
       case "graphics":
         return {
           ...object,
-          src: cfg.src || "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg"
+          src:
+            cfg.src ||
+            "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg"
         };
 
       case "activeSelection":
@@ -888,14 +893,30 @@ const getDGProject = cfg => {
     ...page1,
     id: "page_1",
     height: 733,
-    objectsIds: [...page1.objectsIds, bg1.id, page1JamName.id, page1JamType.id, page1TagLine1.id, page1TagLine2.id, page1BatchDate.id]
+    objectsIds: [
+      ...page1.objectsIds,
+      bg1.id,
+      page1JamName.id,
+      page1JamType.id,
+      page1TagLine1.id,
+      page1TagLine2.id,
+      page1BatchDate.id
+    ]
   };
 
   page2 = {
     ...page2,
     id: "page_2",
     height: 663,
-    objectsIds: [...page2.objectsIds, bg2.id, page2JamName.id, page2JamType.id, page2TagLine1.id, page2TagLine2.id, page2BatchDate.id]
+    objectsIds: [
+      ...page2.objectsIds,
+      bg2.id,
+      page2JamName.id,
+      page2JamType.id,
+      page2TagLine1.id,
+      page2TagLine2.id,
+      page2BatchDate.id
+    ]
   };
 
   return {

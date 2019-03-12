@@ -12,10 +12,23 @@ const { computeScale } = require("../../../utils/UtilUtils");
 
 const { changeWorkareaProps } = require("../../../stores/actions/ui");
 
-const { addObjectIdToSelected, removeSelection, updateObjectProps, updateCropParams, updateSelectionObjectsCoords, objectsReady } = require("../../../stores/actions/project");
-const { displayedPageSelector, activeGroupSelector } = require("../../../stores/selectors/Html5Renderer");
+const {
+  addObjectIdToSelected,
+  removeSelection,
+  updateObjectProps,
+  updateCropParams,
+  updateSelectionObjectsCoords,
+  objectsReady
+} = require("../../../stores/actions/project");
+const {
+  displayedPageSelector,
+  activeGroupSelector
+} = require("../../../stores/selectors/Html5Renderer");
 
-const { canvasSelector, scaleSelector } = require("../../../stores/selectors/ui");
+const {
+  canvasSelector,
+  scaleSelector
+} = require("../../../stores/selectors/ui");
 
 require("./Fabric.css");
 
@@ -118,14 +131,30 @@ class Fabric extends React.Component {
     window.addEventListener("resize", this.updateContainerDimensions);
   }
   componentDidUpdate(prevProps) {
-    if (this.props.activePage.width != prevProps.activePage.width || this.props.activePage.height != prevProps.activePage.height) {
+    if (
+      this.props.activePage.width != prevProps.activePage.width ||
+      this.props.activePage.height != prevProps.activePage.height
+    ) {
       this.updateContainerDimensions();
     }
   }
   onBeforeOverlayHandler = params => {
     if (params.canvas.interactive) {
-      var lowPoint = fabric.util.transformPoint(new fabric.Point(params.canvas.getCanvasOffsetX(), params.canvas.getCanvasOffsetY()), params.canvas.viewportTransform),
-        upPoint = fabric.util.transformPoint(new fabric.Point(params.canvas.getCanvasWorkingWidth(), params.canvas.getCanvasWorkingHeight()), params.canvas.viewportTransform, 1),
+      var lowPoint = fabric.util.transformPoint(
+          new fabric.Point(
+            params.canvas.getCanvasOffsetX(),
+            params.canvas.getCanvasOffsetY()
+          ),
+          params.canvas.viewportTransform
+        ),
+        upPoint = fabric.util.transformPoint(
+          new fabric.Point(
+            params.canvas.getCanvasWorkingWidth(),
+            params.canvas.getCanvasWorkingHeight()
+          ),
+          params.canvas.viewportTransform,
+          1
+        ),
         n = params.canvas.getWidth(),
         r = params.canvas.getHeight();
 
@@ -196,7 +225,8 @@ class Fabric extends React.Component {
         newProps.left = (objProps.left - objProps.offsetLeft) / objProps.scale;
         newProps.top = (objProps.top - objProps.offsetTop) / objProps.scale;
         newProps.width = (objProps.width / objProps.scale) * args.target.scaleX;
-        newProps.height = (objProps.height / objProps.scale) * args.target.scaleY;
+        newProps.height =
+          (objProps.height / objProps.scale) * args.target.scaleY;
         newProps.scaleX = 1;
         newProps.scaleY = 1;
         if (objProps.hasOwnProperty("cropX")) {
@@ -248,11 +278,13 @@ Fabric.defaultProps = {};
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeWorkAreaPropsHandler: payload => dispatch(changeWorkareaProps(payload)),
+    changeWorkAreaPropsHandler: payload =>
+      dispatch(changeWorkareaProps(payload)),
     addObjectToSelectedHandler: id => dispatch(addObjectIdToSelected(id)),
     removeSelection: args => dispatch(removeSelection(args)),
     updateObjectProps: args => dispatch(updateObjectProps(args)),
-    updateSelectionObjectsCoordsHandler: props => dispatch(updateSelectionObjectsCoords(props)),
+    updateSelectionObjectsCoordsHandler: props =>
+      dispatch(updateSelectionObjectsCoords(props)),
     updateCropParams: (id, props) =>
       dispatch(
         updateCropParams({

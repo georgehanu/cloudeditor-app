@@ -15,7 +15,10 @@ const initialState = [
         id: "page_1",
         width: 500,
         height: 733,
-        objectsIds: ["287b6ff5-7ee6-4251-b38a-6ac8159c068e", "3b00a5a4-76aa-43d1-8e2e-66655f55daa9"],
+        objectsIds: [
+          "287b6ff5-7ee6-4251-b38a-6ac8159c068e",
+          "3b00a5a4-76aa-43d1-8e2e-66655f55daa9"
+        ],
         rule: "scale" //scale,objectBased,reCenter,guideBased
       }
     },
@@ -35,7 +38,8 @@ const initialState = [
           widthResizable: 0,
           heightResizable: 0
         },
-        src: "http://localhost:8081/images/page1-3dc89a95f953cf455f9a47e7b67c1dd3.svg"
+        src:
+          "http://localhost:8081/images/page1-3dc89a95f953cf455f9a47e7b67c1dd3.svg"
       },
       "3b00a5a4-76aa-43d1-8e2e-66655f55daa9": {
         id: "3b00a5a4-76aa-43d1-8e2e-66655f55daa9",
