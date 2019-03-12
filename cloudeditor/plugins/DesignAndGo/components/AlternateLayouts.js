@@ -8,13 +8,23 @@ const { hot } = require("react-hot-loader");
 const { connect } = require("react-redux");
 const { forEachObjIndexed, toUpper } = require("ramda");
 const { setAlternateLayout } = require("../../../core/stores/actions/project");
+const {
+  getAlternateLayoutIndex
+} = require("../../../core/utils/AlternateLayoutsUtils");
 
 class AlternateLayouts extends React.Component {
   constructor(props) {
     super(props);
   }
   getCorrectAlternateLayoutIndex = () => {
+    return getAlternateLayoutIndex(
+      this.props.allAlternateLayouts,
+      this.props.realWidthDimmension,
+      this.props.realHeightDimmension
+    );
+    /*
     let indexResult = -1;
+
     if (this.props.allAlternateLayouts.length) {
       forEachObjIndexed((alternateLayout, pKey) => {
         switch (toUpper(alternateLayout.rangeBy)) {
@@ -49,7 +59,7 @@ class AlternateLayouts extends React.Component {
         }
       }, this.props.allAlternateLayouts);
     }
-    return indexResult;
+    return indexResult;*/
   };
   componentDidMount() {
     /*if (this.props.realWidthDimmension && this.props.realHeightDimmension) {

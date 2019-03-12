@@ -37,6 +37,11 @@ const uuidv4 = require("uuid/v4");
 const {
   DAG_UPLOAD_IMAGE_SUCCESS
 } = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
+
+const {
+  getAlternateLayoutIndex
+} = require("../../../core/utils/AlternateLayoutsUtils");
+
 const changeProjectTitle = (state, action) => {
   return {
     ...state,
@@ -156,9 +161,16 @@ const removeActionSelection = (state, payload) => {
 };
 
 const config = ConfigUtils.getDefaults();
-const emptyProject = ProjectUtils.getDGProject(config.project);
-
-//const emptyProject = ProjectUtils.getEmptyProject(config.project);
+//const emptyProject = ProjectUtils.getDGProject(config.project);
+const layoutsIndex = getAlternateLayoutIndex(
+  config.alternateLayouts,
+  config.realDimension.width,
+  config.realDimension.height
+);
+const emptyProject =
+  layoutsIndex !== -1
+    ? ProjectUtils.getDGProject(config.alternateLayouts[layoutsIndex])
+    : ProjectUtils.getDGProject(config.project);
 
 const initialState = {
   ...emptyProject
