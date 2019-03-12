@@ -172,7 +172,7 @@ class ProjectHeader extends React.Component {
               onClick={this.showModal}
               style={titleStyle}
             >
-              {this.props.projectTitle}
+              {this.props.t(this.props.projectTitle)}
             </span>
             <span className="projectHeaderSeparator">|</span>
             <div className="printPreviewButtonContainer">
