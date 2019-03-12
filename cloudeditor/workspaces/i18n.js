@@ -21,6 +21,9 @@ const i18nFunc = config => {
         ns: "translate",
         defaultNS: "translate",
         debug: "false",
+        nsSeparator: false,
+        keySeparator: false,
+
         load: "currentOnly",
         interpolation: {
           escapeValue: false
