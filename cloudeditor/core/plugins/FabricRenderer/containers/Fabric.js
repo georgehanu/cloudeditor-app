@@ -229,6 +229,18 @@ class Fabric extends React.Component {
           (objProps.height / objProps.scale) * args.target.scaleY;
         newProps.scaleX = 1;
         newProps.scaleY = 1;
+        if (objProps.hasOwnProperty("cropX")) {
+          newProps.cropX = objProps.cropX;
+        }
+        if (objProps.hasOwnProperty("cropY")) {
+          newProps.cropY = objProps.cropY;
+        }
+        if (objProps.hasOwnProperty("cropW")) {
+          newProps.cropW = objProps.cropW;
+        }
+        if (objProps.hasOwnProperty("cropH")) {
+          newProps.cropH = objProps.cropH;
+        }
         this.props.updateObjectProps({
           id: args.target.id,
           props: newProps

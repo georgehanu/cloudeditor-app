@@ -15,8 +15,7 @@ const {
   DAG_CHANGE_RENDER_ID,
   DAG_CHANGE_DIMMENSIONS
 } = require("./../actionTypes/designAndGo");
-//projectConfigGlobal["products"][0]["realDimension"]["width"] = 500;
-//projectConfigGlobal["products"][0]["realDimension"]["height"] = 733;
+
 const { merge } = require("ramda");
 const { handleActions } = require("redux-actions");
 const { dagActiveProductSelector } = require("../selectors");

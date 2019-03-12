@@ -18,6 +18,7 @@ class Image extends FabricObject {
   }
   _updatePlaceholder() {
     this.instance._setViewBox({});
+
     if (
       this.instance.designerCallbacks &&
       this.instance.designerCallbacks.updateCropParams

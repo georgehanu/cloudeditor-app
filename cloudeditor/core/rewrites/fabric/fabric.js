@@ -88,7 +88,6 @@ fabric.util.object.extend(fabric.Image.prototype, {
   canvasY: 0,
   canvasW: 0,
   canvasH: 0,
-
   _dimensionAffectingProps: {
     width: 1,
     height: 1,
