@@ -5,9 +5,13 @@ const { pathOr } = require("ramda");
 require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
+const { hot } = require("react-hot-loader");
 const { debounce } = require("underscore");
 const striptags = require("striptags");
 const ConfigUtils = require("../../../../../utils/ConfigUtils");
+const {
+  languageSelector
+} = require("../../../../../../core/stores/selectors/project");
 
 class Tinymce extends React.PureComponent {
   constructor(props) {
@@ -529,6 +533,7 @@ class Tinymce extends React.PureComponent {
             paste_retain_style_properties: "all",
             paste_webkit_styles: "all",
             paste_retain_style_properties: "all",
+            language: this.props.language,
             paste_merge_formats: true,
             paste_preprocess: (plugin, args) => {
               if (!args.content.includes("<table")) {
@@ -676,4 +681,15 @@ class Tinymce extends React.PureComponent {
   }
 }
 
-module.exports = Tinymce;
+const mapStateToProps = (state, _) => {
+  return {
+    language: languageSelector(state)
+  };
+};
+
+module.exports = hot(module)(
+  connect(
+    mapStateToProps,
+    null
+  )(Tinymce)
+);

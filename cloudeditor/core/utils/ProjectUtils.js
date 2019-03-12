@@ -428,7 +428,8 @@ const getProjectTemplate = cfg => {
         pages: getPagesDefaults({}),
         objects: getObjectsDefaults({})
       },
-      ui: getEmptyUI(cfg.ui)
+      ui: getEmptyUI(cfg.ui),
+      language: "en_US"
     },
     cfg || {}
   );

@@ -40,7 +40,7 @@ const PageHeader = props => {
       </div>
       <div className="pageHeaderMessage">
         {showPagesWarning &&
-          props.t("Invalid number of pages. It should be a multiply of 4.")}
+          props.t("Invalid number of pages.It should be a multiply of 4.")}
       </div>
     </div>
   );
