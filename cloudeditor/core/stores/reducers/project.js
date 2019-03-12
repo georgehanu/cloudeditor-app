@@ -359,9 +359,9 @@ module.exports = handleActions(
         pages: liquidProject.pages,
         objects: liquidProject.objects
       };
-    },
+    } /*
     [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
-      /*  const newImageObj = {
+        const newImageObj = {
         object: {
           id: uuidv4(),
           type: "image",
@@ -375,9 +375,8 @@ module.exports = handleActions(
           imageHeight: 1300
         }
       };
-      return addObjectToPage(state, newImageObj);*/
-      return state;
-    }
+      return addObjectToPage(state, newImageObj);
+    }*/
   },
   initialState
 );

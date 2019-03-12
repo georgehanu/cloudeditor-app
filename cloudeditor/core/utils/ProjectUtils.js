@@ -48,8 +48,7 @@ const getObjectsDefaults = cfg => {
         (general && general.borderColor) || {}
       ),
       borderWidth: 0,
-      rule_properties: {},
-      indesign: 0
+      rule_properties: {}
     },
     general || {}
   );
@@ -72,9 +71,7 @@ const getObjectsDefaults = cfg => {
       leftSlider: 0,
       localImages: 0,
       selectBox: 0,
-      src: 0,
-      iamge_path: "",
-      iamge_src: ""
+      src: 0
     },
     image || {}
   );

@@ -800,161 +800,6 @@ section.dropzone {
   top: 50px;
 }
 
-/* for Mobile */
-@media (max-width: 842px) {
-  .ColorPicker .hue-picker {
-    width: 230px !important;
-  }
-
-  .MenuButtonContainer {
-    display: none;
-  }
-  /* Menu */
-  .MenuButtonContainerMobile,
-  .EditLabelButtonContainer {
-    width: 100%;
-    text-align: -webkit-center;
-    top: 0px;
-    display: inline-block;
-  }
-
-  .MenuButton {
-    position: relative;
-    left: 0px;
-    top: 0px;
-  }
-
-  .EditLabelButton {
-    position: relative;
-    left: 0px;
-    top: -370px;
-  }
-
-  .LeftPanel {
-    background: none;
-  }
-  .StyledSplitPane {
-    background: rgba(255, 255, 255, 0.5);
-  }
-
-  .DesignAndGoMenu {
-    width: 100%;
-    background: transparent;
-  }
-
-  .MenuModal,
-  .MenuDataModal {
-    width: 100%;
-  }
-
-  .EditLabelButton,
-  .UploadButtonMobile {
-    display: inline-block;
-  }
-
-  .UploadFileInputs {
-    top: -10px;
-  }
-
-  .imageOpContainer {
-    position: relative;
-    top: 15px;
-  }
-
-  .slick-track {
-    height: calc(100% + 50px);
-  }
-
-  .SliderCarousel.SmallSlider,
-  .SliderCarousel {
-    //position: relative;
-    height: 420px;
-  }
-
-  .SliderCarousel .UploadFileInputs {
-    display: block;
-    width: 230px;
-  }
-
-  .LeftPaneHorizontalStyled .FieldsContainer .Input,
-  .MenuDataModal .FieldsContainer .Input.ColorButtonGroup,
-  .RightPanel {
-    display: none;
-  }
-  .FieldsContainer .Input.ColorButtonGroup {
-    display: block;
-  }
-  /*
-  .FieldsContainer .UploadFileInputs {
-    display: none;
-  }*/
-  .LeftPaneHorizontalStyled {
-    position: absolute;
-    top: 10px;
-    text-align: -webkit-center;
-    margin-left: 30px;
-    margin-right: 30px;
-  }
-
-  .SignInContainer {
-    width: 100%;
-  }
-
-  .SmallSlider.SliderCarousel .slick-slider {
-    left: 0%;
-
-    touch-action: auto;
-    -ms-touch-action: auto;
-  }
-  .SliderPage {
-    left: 0%;
-    top: 0%;
-    width: 80%;
-    height: 320px;
-  }
-  .slick-prev.slick-arrow {
-    left: 20px !important;
-  }
-  .slick-next.slick-arrow {
-    right: 20px !important;
-  }
-  .SmallSlider.SliderCarousel .slick-prev.slick-arrow {
-    left: calc(0% + 20px) !important;
-  }
-  .SmallSlider.SliderCarousel .slick-next.slick-arrow {
-    right: 20px !important;
-  }
-
-  .slick-slide div {
-    text-align: -webkit-center;
-    /*height: 50%;*/
-  }
-
-  .DescriptionHeader {
-    margin-top: 15px;
-  }
-
-  .slick-list,
-  .slick-track {
-    height: 100%;
-  }
-
-  .slick-slider.slick-initialized {
-    height: inherit;
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-
-  .MenuDataModalContainer {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-
-  .productSliderContainer {
-    width: 100%;
-  }
-}
-
 .sk-circle {
   margin-bottom: 5px;
   margin-top: 5px;
@@ -1108,7 +953,7 @@ section.dropzone {
   }
 }
 
-@media (max-width: 330px) {
+@media screen and (max-width: 330px) {
   .SliderPage {
     min-width: 200px;
   }
@@ -1146,7 +991,7 @@ section.dropzone {
 /* Main Theme */
 
 .cropImageModal {
-  //padding-top: 50px;
+  /*padding-top: 50px;*/
   width: 90%;
   height: 90%;
   position: absolute;
@@ -1173,12 +1018,12 @@ section.dropzone {
 
 .cropModalContainer {
   height: 100%;
-  //text-align: -webkit-center;
+  /*text-align: -webkit-center;
   //padding-top: 50px;
   //top: -50px;
-  //top: -50px;
+  //top: -50px;*/
   position: relative;
-  //display: inline-block;
+  /*//display: inline-block;*/
   overflow: hidden;
 }
 
@@ -1190,15 +1035,15 @@ section.dropzone {
 }
 
 .ImageCropMenuHeader.MenuHeader {
-  //position: absolute;
+  /* //position: absolute;
   //width: 100%;
   //padding: 12px 0px;
-  //top: -50px;
+  //top: -50px;*/
 }
 
 .cropModalOuterContainer {
   width: 100%;
-  //top: -50px;
+  /*//top: -50px;*/
   position: relative;
   height: 100%;
 }
@@ -1294,5 +1139,172 @@ section.dropzone {
 }
 
 .renderContainer {
-  //  display: none;
+  /*//  display: none;*/
+}
+
+/* for Mobile */
+@media screen and (max-width: 842px) {
+  .ColorPicker .hue-picker {
+    width: 230px !important;
+  }
+
+  .MenuButtonContainer {
+    display: none;
+  }
+  /* Menu */
+  .MenuButtonContainerMobile,
+  .EditLabelButtonContainer {
+    width: 100%;
+    text-align: -webkit-center;
+    top: 0px;
+    display: inline-block;
+  }
+
+  .MenuButton {
+    position: relative;
+    left: 0px;
+    top: 0px;
+  }
+
+  .EditLabelButton {
+    position: relative;
+    left: 0px;
+    top: -370px;
+  }
+
+  .LeftPanel {
+    background: none;
+  }
+  .StyledSplitPane {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  .DesignAndGoMenu {
+    width: 100%;
+    background: transparent;
+  }
+
+  .MenuModal,
+  .MenuDataModal {
+    width: 100%;
+  }
+
+  .EditLabelButton,
+  .UploadButtonMobile {
+    display: inline-block;
+  }
+
+  .UploadFileInputs {
+    top: -10px;
+  }
+
+  .imageOpContainer {
+    position: relative;
+    top: 15px;
+  }
+
+  .slick-track {
+    height: calc(100% + 50px);
+  }
+
+  .SliderCarousel.SmallSlider,
+  .SliderCarousel {
+    /*position: relative;*/
+    height: 420px;
+  }
+
+  .SliderCarousel .UploadFileInputs {
+    display: block;
+    width: 230px;
+  }
+
+  .LeftPaneHorizontalStyled .FieldsContainer .Input,
+  .MenuDataModal .FieldsContainer .Input.ColorButtonGroup,
+  .RightPanel {
+    display: none;
+  }
+  .FieldsContainer .Input.ColorButtonGroup {
+    display: block;
+  }
+  /*
+    .FieldsContainer .UploadFileInputs {
+      display: none;
+    }*/
+  .LeftPaneHorizontalStyled {
+    position: absolute;
+    top: 10px;
+    text-align: -webkit-center;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  .SignInContainer {
+    width: 100%;
+  }
+
+  .SmallSlider.SliderCarousel .slick-slider {
+    left: 0%;
+
+    touch-action: auto;
+    -ms-touch-action: auto;
+  }
+  .SliderPage {
+    left: 0%;
+    top: 0%;
+    width: 80%;
+    height: 320px;
+  }
+  .slick-prev.slick-arrow {
+    left: 20px !important;
+  }
+  .slick-next.slick-arrow {
+    right: 20px !important;
+  }
+  .SmallSlider.SliderCarousel .slick-prev.slick-arrow {
+    left: calc(0% + 20px) !important;
+  }
+  .SmallSlider.SliderCarousel .slick-next.slick-arrow {
+    right: 20px !important;
+  }
+
+  .slick-slide div {
+    text-align: -webkit-center;
+    /*height: 50%;*/
+  }
+
+  .DescriptionHeader {
+    margin-top: 15px;
+  }
+
+  .slick-list,
+  .slick-track {
+    height: 100%;
+  }
+
+  .slick-slider.slick-initialized {
+    height: inherit;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .MenuDataModalContainer {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .productSliderContainer {
+    width: 100%;
+  }
+
+  .MenuDataModal .FieldsContainer .imageOpContainer {
+    display: none;
+  }
+
+  .cropImageApplyContainer button {
+    width: 100px;
+  }
+
+  .renderContainer {
+    display: none;
+  }
 }

@@ -88,16 +88,6 @@ class ImageLoad extends React.Component {
 
   componentDidMount = () => {
     this.loadImg(this.props.image_src);
-    /*let imageUrl = this.props.src;
-
-    if (this.props.indesign) {
-      imageUrl =
-        window.localFilesUrl +
-        "indesign/" +
-        this.props.layout +
-        this.props.image_src;
-    }
-    this.loadImg(imageUrl);*/
   };
 
   render() {
