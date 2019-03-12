@@ -174,7 +174,13 @@ if (layoutsIndex !== -1) {
     layout: config.alternateLayouts[layoutsIndex],
     realDimension: config.realDimension
   });
-  emptyProject = ProjectUtils.getDGProject(project);
+  emptyProject = ProjectUtils.getDGProject({
+    pages: project.pages,
+    pagesOrder: project.pagesOrder,
+    objects: project.objects,
+    title: config.title,
+    description: config.description
+  });
 } else {
   emptyProject = ProjectUtils.getDGProject(config.project);
 }
