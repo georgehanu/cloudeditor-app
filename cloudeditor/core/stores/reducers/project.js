@@ -543,7 +543,10 @@ loadLayout = (state, payload) => {
   );
 
   // add the new objects ... create new ids
-  const savedData = JSON.parse(payload.saved_data);
+  let savedData = JSON.parse(payload.saved_data);
+  if (payload.page_id === "*") {
+    savedData = savedData.with_trimbox;
+  }
   const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
     const id = uuidv4();
     if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds"))

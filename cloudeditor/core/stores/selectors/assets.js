@@ -25,7 +25,7 @@ const assetsLayoutForActivePageSelector = createSelector(
   (activePageId, pagesOrder, assetsLayout, category_id) => {
     const layouts = assetsLayout.filter((el, index) => {
       return (
-        el.page_id === activePageId &&
+        (el.page_id === activePageId || el.page_id === "*") &&
         parseInt(el.category_id, 10) === parseInt(category_id, 10)
       );
     });
