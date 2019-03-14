@@ -13,8 +13,7 @@ const {
   UPDATE_CROP_PARAMS,
   ON_TEXT_CHANGE,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY,
-  SET_ALTERNATE_LAYOUT
+  OBJECTS_READY
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -33,8 +32,7 @@ const {
   changeGroups,
   onTextChange,
   changeRandomPage,
-  objectsReady,
-  setAlternateLayout
+  objectsReady
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT,
@@ -50,8 +48,7 @@ const {
   CHANGE_GROUPS,
   ON_TEXT_CHANGE,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY,
-  SET_ALTERNATE_LAYOUT
+  OBJECTS_READY
 );
 
 module.exports = {
@@ -69,6 +66,5 @@ module.exports = {
   changeGroups,
   onTextChange,
   changeRandomPage,
-  objectsReady,
-  setAlternateLayout
+  objectsReady
 };

@@ -21,7 +21,6 @@ const { dagChangeInput } = createActions(DAG_CHANGE_INPUT);
 const { dagSigninStart } = createActions(DAG_SIGNIN_START);
 const { dagSigninClearMessage } = createActions(DAG_SIGNIN_CLEAR_MESSAGE);
 const { dagChangeRenderId } = createActions(DAG_CHANGE_RENDER_ID);
-const { dagChangeDimmensions } = createActions(DAG_CHANGE_DIMMENSIONS);
 
 module.exports = {
   dagUploadImage,
@@ -31,6 +30,5 @@ module.exports = {
   dagChangeInput,
   dagSigninStart,
   dagSigninClearMessage,
-  dagChangeRenderId,
-  dagChangeDimmensions
+  dagChangeRenderId
 };

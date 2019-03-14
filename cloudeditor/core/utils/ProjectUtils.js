@@ -1077,14 +1077,6 @@ const getDGProject = cfg => {
   };
 };
 
-const getDGAlternateLayoutPages = cfg => {
-  let page1 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-
-  return {
-    [page1.id]: page1
-  };
-};
-
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
@@ -1095,8 +1087,7 @@ const ProjectUtils = {
   getRandomUI,
   getEmptyColor,
   getEmptyFont,
-  getDGProject,
-  getDGAlternateLayoutPages
+  getDGProject
 };
 
 module.exports = ProjectUtils;

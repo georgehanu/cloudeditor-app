@@ -1,48 +1,5 @@
 const { forEachObjIndexed, toUpper, isEmpty, forEach } = require("ramda");
 
-const getAlternateLayoutIndex = (
-  allAlternateLayouts,
-  realWidthDimmension,
-  realHeightDimmension
-) => {
-  let indexResult = -1;
-  if (allAlternateLayouts.length) {
-    forEachObjIndexed((alternateLayout, pKey) => {
-      switch (toUpper(alternateLayout.rangeBy)) {
-        case "WIDTH":
-          if (
-            realWidthDimmension >= alternateLayout.minDim &&
-            realWidthDimmension <= alternateLayout.maxDim
-          ) {
-            indexResult = pKey;
-          }
-          break;
-        case "HEIGHT":
-          if (
-            realHeightDimmension >= alternateLayout.minDim &&
-            realHeightDimmension <= alternateLayout.maxDim
-          ) {
-            indexResult = pKey;
-          }
-          break;
-        case "BOTH":
-          if (
-            realHeightDimmension >= alternateLayout.minDim &&
-            realHeightDimmension <= alternateLayout.maxDim &&
-            realWidthDimmension >= alternateLayout.minDim &&
-            realWidthDimmension <= alternateLayout.maxDim
-          ) {
-            indexResult = pKey;
-          }
-          break;
-        default:
-          break;
-      }
-    }, allAlternateLayouts);
-  }
-  return indexResult;
-};
-
 const applyLiquidRules = payloadData => {
   let realProductDim = {
       width: parseFloat(payloadData.realDimension.width),
@@ -249,4 +206,4 @@ const applyLiquidRules = payloadData => {
   return { ...alternateLayout };
 };
 
-module.exports = { getAlternateLayoutIndex, applyLiquidRules };
+module.exports = { applyLiquidRules };

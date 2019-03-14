@@ -9,7 +9,6 @@ const { withNamespaces } = require("react-i18next");
 const MenuModal = require("./components/DesignAndGoItems/UI/MenuModal");
 const MenuDataModal = require("./components/DesignAndGoItems/UI/MenuDataModal");
 const SignInModal = require("./components/DesignAndGoItems/UI/SignInModal");
-const AlternateLayouts = require("./components/AlternateLayouts");
 const CropImageModal = require("./components/DesignAndGoItems/CropImage/CropImageModal");
 
 const assign = require("object-assign");
@@ -92,7 +91,6 @@ class DesignAndGo extends React.Component {
           onDataOpenHandler={this.onDataOpenHandler}
           onCropImageModalOpenHandler={this.onCropImageModalOpenHandler}
         />
-        <AlternateLayouts />
       </div>
     );
   }
@@ -118,8 +116,7 @@ const DesignAndGoPlugin = connect(
 module.exports = {
   DesignAndGo: assign(DesignAndGoPlugin),
   reducers: {
-    designAndGo: require("./store/reducers/general"),
-    alternateLayouts: require("./store/reducers/alternateLayouts")
+    designAndGo: require("./store/reducers/general")
   },
   epics: require("./store/epics")
 };

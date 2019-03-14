@@ -26,8 +26,7 @@ const {
   CHANGE_PAGE,
   CHANGE_GROUPS,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY,
-  SET_ALTERNATE_LAYOUT
+  OBJECTS_READY
 } = require("../actionTypes/project");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
@@ -39,7 +38,6 @@ const {
 } = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
 
 const {
-  getAlternateLayoutIndex,
   applyLiquidRules
 } = require("../../../core/utils/AlternateLayoutsUtils");
 
@@ -162,28 +160,18 @@ const removeActionSelection = (state, payload) => {
 };
 
 const config = ConfigUtils.getDefaults();
-//const emptyProject = ProjectUtils.getDGProject(config.project);
-const layoutsIndex = getAlternateLayoutIndex(
-  config.alternateLayouts,
-  config.realDimension.width,
-  config.realDimension.height
-);
-let emptyProject = {};
-if (layoutsIndex !== -1) {
-  const project = applyLiquidRules({
-    layout: config.alternateLayouts[layoutsIndex],
-    realDimension: config.realDimension
-  });
-  emptyProject = ProjectUtils.getDGProject({
-    pages: project.pages,
-    pagesOrder: project.pagesOrder,
-    objects: project.objects,
-    title: config.title,
-    description: config.description
-  });
-} else {
-  emptyProject = ProjectUtils.getDGProject(config.project);
-}
+
+const project = applyLiquidRules({
+  layout: config.project,
+  realDimension: config.realDimension
+});
+const emptyProject = ProjectUtils.getDGProject({
+  pages: project.pages,
+  pagesOrder: project.pagesOrder,
+  objects: project.objects,
+  title: config.title,
+  description: config.description
+});
 
 const initialState = {
   ...emptyProject
@@ -357,32 +345,7 @@ module.exports = handleActions(
         objects: newObjects,
         selectedObjectsIds: []
       };
-    },
-    [SET_ALTERNATE_LAYOUT]: (state, action) => {
-      let liquidProject = applyLiquidRules(action.payload);
-      return {
-        ...state,
-        pages: liquidProject.pages,
-        objects: liquidProject.objects
-      };
-    } /*
-    [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
-        const newImageObj = {
-        object: {
-          id: uuidv4(),
-          type: "image",
-          src: action.payload,
-          width: 200,
-          height: 400,
-          left: 0,
-          orientation: "north",
-          top: 0,
-          imageWidth: 400,
-          imageHeight: 1300
-        }
-      };
-      return addObjectToPage(state, newImageObj);
-    }*/
+    }
   },
   initialState
 );

@@ -1,5 +1,3 @@
-const getAlternateLayoutsSelector = state =>
-  (state && state.alternateLayouts) || null;
 const getRealDimmensionSelector = state =>
   (state && state.designAndGo && state.designAndGo.realDimension) || null;
 const getRealWidthDimmensionSelector = state =>
@@ -16,7 +14,6 @@ const getRealHeightDimmensionSelector = state =>
   null;
 
 module.exports = {
-  getAlternateLayoutsSelector,
   getRealDimmensionSelector,
   getRealWidthDimmensionSelector,
   getRealHeightDimmensionSelector
