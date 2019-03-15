@@ -375,11 +375,39 @@ class ImageBlock extends React.Component {
     }
     const widthImage = Math.ceil(imageWidth * minPercent);
     const heightImage = Math.ceil(imageHeight * minPercent);
+    let filterString = "";
+    let flipStyle = "";
+    const decBrightness = parseFloat(this.props.brightness) / 100 + 1;
+    const decContrast = parseFloat(this.props.contrast) / 100 + 1;
+    if (this.props.filter.length) {
+      filterString = this.props.filter + "(1)";
+    }
+    filterString +=
+      " brightness(" + decBrightness + ") contrast(" + decContrast + ") ";
+
+    switch (this.props.flip) {
+      case "flip_horizontal":
+        flipStyle = "scaleX(-1)";
+        break;
+      case "flip_vertical":
+        flipStyle = "scaleY(-1)";
+        break;
+      case "flip_both":
+        flipStyle = "scale(-1)";
+        break;
+      default:
+        break;
+    }
+    const filterStyle = {
+      filter: filterString,
+      transform: flipStyle
+    };
+
     return (
       <Cropper
         ref="cropper"
         src={baseUrl + this.props.image_src}
-        style={{ width: widthImage, height: heightImage }}
+        style={{ width: widthImage, height: heightImage, ...filterStyle }}
         // Cropper.js options
         guides={false}
         responsive={true}

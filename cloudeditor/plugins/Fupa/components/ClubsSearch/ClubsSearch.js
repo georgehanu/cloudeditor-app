@@ -25,7 +25,7 @@ class ClubsSearch extends React.Component {
           value={value}
           onChange={event => this.inputChangedHandler(event.target.value)}
           onKeyPress={this._handleKeyPress}
-          placeHolder={this.props.t("Enter club name")}
+          placeholder={this.props.t("Enter club name")}
         />
         <button
           className="OkButton"

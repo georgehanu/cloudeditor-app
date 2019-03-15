@@ -53,10 +53,38 @@ const DummyImage = props => {
     backgroundSize = result.width + "px" + " " + result.height + "px";
     backgroundPosition = result.left + "px" + " " + result.top + "px";
   }
+  let filterString = "";
+  let flipStyle = "";
+  const decBrightness = parseFloat(props.brightness) / 100 + 1;
+  const decContrast = parseFloat(props.contrast) / 100 + 1;
+  if (props.filter.length) {
+    filterString = props.filter + "(1)";
+  }
+  filterString +=
+    " brightness(" + decBrightness + ") contrast(" + decContrast + ") ";
+
+  switch (props.flip) {
+    case "flip_horizontal":
+      flipStyle = "scaleX(-1)";
+      break;
+    case "flip_vertical":
+      flipStyle = "scaleY(-1)";
+      break;
+    case "flip_both":
+      flipStyle = "scale(-1)";
+      break;
+    default:
+      break;
+  }
+  const filterStyle = {
+    filter: filterString,
+    transform: flipStyle
+  };
   const backgroundStyle = {
     backgroundImage: 'url("' + baseUrl + props.image_src + '")',
     backgroundSize,
-    backgroundPosition
+    backgroundPosition,
+    ...filterStyle
   };
   return <div className="dummyImage" style={backgroundStyle} />;
 };

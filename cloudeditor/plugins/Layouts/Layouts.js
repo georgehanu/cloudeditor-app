@@ -115,6 +115,7 @@ const LayoutsPlugin = connect(
 
 module.exports = {
   Layouts: assign(LayoutsPlugin, {
+    disablePluginIf: "{!store().getState().assets.layout.items.length}",
     SideBar: {
       position: 4,
       priority: 1,

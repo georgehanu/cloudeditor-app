@@ -92,7 +92,7 @@ const withResizable = WrappedComponent => {
         !this.props.active &&
         !this.props.viewOnly &&
         this.props.permissions.resizeBlocks &&
-        this.props.resizable &&
+        (this.props.resizable || this.props.backendEditor) &&
         this.props.type !== "tinymceTable1";
       this.$el = $(this.el);
       handleUI(

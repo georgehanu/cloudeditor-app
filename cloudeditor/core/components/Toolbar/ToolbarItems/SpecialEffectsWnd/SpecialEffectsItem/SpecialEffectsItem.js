@@ -1,7 +1,9 @@
 const React = require("react");
 
 const Utils = require("../../../ToolbarConfig/utils");
-
+const ConfigUtils = require("../../../../../../core/utils/ConfigUtils");
+const baseUrl =
+  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
 const SpecialEffectsItem = props => {
   const className = Utils.MergeClassName(
     "SpecialEffectsImageBg",
@@ -10,7 +12,7 @@ const SpecialEffectsItem = props => {
   return (
     <React.Fragment>
       <div className="SpecialEffectsImageContainer">
-        <img className={className} src={props.image} alt="" />
+        <img className={className} src={baseUrl + props.image} alt="" />
         <div className="SpecialEffectsActions">
           <span
             className="SpecialEffectsOK pic select icon printqicon-ok"

@@ -311,7 +311,7 @@ const getDocumentDefaults = cfg => {
       allowLayoutColumns: false,
       predefinedGroups: false, //[2,2]or false
       headerEditor: false, //[2,2]or false
-      backendEditor: false, //[2,2]or false
+      backendEditor: 0, //[2,2]or false
       footerEditor: false, //[2,2]or false
       groups: {
         group_1: ["page_1"],
@@ -530,7 +530,10 @@ const getUIPermissionsTemplate = cfg => {
       rotateBlocks: 1,
       resizeBlocks: 1,
       snapBlocks: 1,
-      alertOnExit: 0
+      alertOnExit: 0,
+      uploadPdf: 1,
+      allowFupa: 1,
+      allowGraphics: 1
     },
     cfg || {}
   );

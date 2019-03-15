@@ -18,7 +18,8 @@
       "MenuItemTextImage",
       "MenuItemUndoRedo",
       "MenuItemTable",
-      "HelperLines"
+      "HelperLines",
+      "MakeEditable"
     ]
   },
   "Layout": {

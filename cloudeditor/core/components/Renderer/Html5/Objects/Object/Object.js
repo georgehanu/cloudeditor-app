@@ -26,7 +26,10 @@ const {
   scaledDisplayedObjectCachedSelector
 } = require("../../../../../stores/selectors/Html5Renderer");
 
-const { objectsSelector } = require("../../../../../stores/selectors/project");
+const {
+  objectsSelector,
+  getBackendEditorSelector
+} = require("../../../../../stores/selectors/project");
 const {
   permissionsSelector,
   uiFontsTinymceSelector
@@ -92,7 +95,11 @@ class ObjectBlock extends React.Component {
     return true;
   }
   onClickBlockHandler = event => {
-    const { id, viewOnly, editable, backgroundblock } = this.props;
+    const { id, viewOnly, backgroundblock } = this.props;
+    let { editable } = this.props;
+    if (this.props.backendEditor) {
+      editable = 1;
+    }
     if (viewOnly || !editable) return;
     event.preventDefault();
     if ($(event.target).hasClass("deleteBlockHandler")) {
@@ -113,7 +120,11 @@ class ObjectBlock extends React.Component {
   };
   renderText = () => {
     const props = { ...this.props };
-    const { viewOnly, editable } = props;
+    const { viewOnly } = props;
+    let { editable } = props;
+    if (this.props.backendEditor) {
+      editable = 1;
+    }
     const contentEditable = !viewOnly && editable;
     const textProps = {
       id: props.id,
@@ -152,7 +163,11 @@ class ObjectBlock extends React.Component {
   };
   renderImage = () => {
     const props = { ...this.props };
-    const { viewOnly, editable } = props;
+    const { viewOnly } = props;
+    let { editable } = props;
+    if (this.props.backendEditor) {
+      editable = 1;
+    }
 
     const imageProps = {
       viewOnly,
@@ -203,7 +218,12 @@ class ObjectBlock extends React.Component {
   };
   renderGraphic = () => {
     const props = { ...this.props };
-    const { viewOnly, editable } = props;
+    const { viewOnly } = props;
+    let { editable } = props;
+    if (this.props.backendEditor) {
+      editable = 1;
+    }
+
     const graphicProps = {
       viewOnly,
       editable,
@@ -282,7 +302,6 @@ class ObjectBlock extends React.Component {
       active,
       viewOnly,
       bottomPagination,
-      editable,
       offsetLeft,
       offsetTop,
       bgColor,
@@ -295,6 +314,10 @@ class ObjectBlock extends React.Component {
       backgroundblock,
       zoomScale
     } = props;
+    let { editable } = props;
+    if (this.props.backendEditor) {
+      editable = 1;
+    }
 
     const newWidth = width + borderWidth * 2;
     const newHeight = height + borderWidth * 2;
@@ -342,13 +365,17 @@ class ObjectBlock extends React.Component {
       dashedBorder = <u style={{ width: newWidth, height: newHeight }} />;
     }
     let rotatableHandle = null;
-    if (this.props.rotatable && !viewOnly) {
+    if ((this.props.rotatable || this.props.backendEditor) && !viewOnly) {
       rotatableHandle = (
         <div className={"ui-rotatable-handle icon printqicon-rotate_handler"} />
       );
     }
     let deleteHandle = null;
-    if (this.props.deletable && !viewOnly && !this.props.backgroundblock) {
+    if (
+      (this.props.deletable || this.props.backendEditor) &&
+      !viewOnly &&
+      !this.props.backgroundblock
+    ) {
       deleteHandle = (
         <div
           onClick={event => {
@@ -590,6 +617,7 @@ const mapStateToProps = (state, props) => {
     ...scaledObject,
     active: getActivePropSelector(state, props),
     permissions: permissionsSelector(state, props),
+    backendEditor: getBackendEditorSelector(state, props),
     uiFonts: uiFontsTinymceSelector(state)
   };
 };

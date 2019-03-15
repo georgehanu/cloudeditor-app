@@ -7,6 +7,7 @@ const Layouts = require("../../plugins/Layouts/Layouts");
 const Toolbar = require("../../core/plugins/Toolbar");
 const Zoom = require("../../plugins/Zoom/Zoom");
 const Background = require("../../plugins/Background/Background");
+const MakeEditable = require("../../plugins/MakeEditable/MakeEditable");
 const GraphicElements = require("../../plugins/GraphicElements/GraphicElements");
 const LayoutEditorHeader = require("../../plugins/LayoutEditorHeader/LayoutEditorHeader");
 const MenuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuItemHeaderFooter");
@@ -33,7 +34,8 @@ const plugins = {
   MenuItemTextImage,
   MenuItemUndoRedo,
   MenuItemTable,
-  HelperLines
+  HelperLines,
+  MakeEditable
 };
 
 const requires = {};

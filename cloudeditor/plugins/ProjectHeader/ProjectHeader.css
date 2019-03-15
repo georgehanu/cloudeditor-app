@@ -13,6 +13,8 @@
   background-repeat: no-repeat;
   width: inherit;
   float: left;
+  padding-left: 20px;
+  background-position: 20px center;
 }
 
 .projectHeaderContainer .projectHeaderCenter {

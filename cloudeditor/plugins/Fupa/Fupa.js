@@ -26,6 +26,7 @@ const FupaPlugin = connect(
 
 module.exports = {
   Fupa: assign(FupaPlugin, {
+    disablePluginIf: "{!store().getState().ui.permissions.allowFupa|0}",
     SideBar: {
       position: 1,
       priority: 1,

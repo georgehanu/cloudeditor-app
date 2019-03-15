@@ -338,7 +338,8 @@ module.exports = {
         "ToolbarContainer",
         "pageBlock",
         "sweet-overlay",
-        "sweet-alert"
+        "sweet-alert",
+        "editableUneditableContainer"
       ]
     }
   }),

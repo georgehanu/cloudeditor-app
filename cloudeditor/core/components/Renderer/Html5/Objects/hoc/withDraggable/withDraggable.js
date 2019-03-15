@@ -91,7 +91,7 @@ const withDraggable = WrappedComponent => {
       this.enableUI =
         !this.props.active &&
         !this.props.viewOnly &&
-        this.props.movable &&
+        (this.props.movable || this.props.backendEditor) &&
         this.props.permissions.moveBlocks;
       this.$el = $(this.el);
       handleUI(
