@@ -58,7 +58,7 @@ const calculatePrice = (serverData, obs) => {
       if (data) {
         obs.next({
           type: CALCULATE_PRICE,
-          total_price: data.total_price,
+          total_price: data.gross_price,
           print_options: serverData.print_options
         });
       }

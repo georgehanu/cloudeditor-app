@@ -1,6 +1,7 @@
 const React = require("react");
 const { useMemo, useCallback, useState, useRef, useEffect } = require("react");
 const { escape, unescape } = require("underscore");
+const { withNamespaces } = require("react-i18next");
 
 const usePrevious = require("../../../../../hooks/usePrevious");
 const DummyText = require("./DummyText");
@@ -200,7 +201,7 @@ const Text = props => {
       id={id}
       innerRef={getInnerRef}
       content={content}
-      placeHolder={placeHolder}
+      placeHolder={props.t(placeHolder)}
       active={active}
       editable={contentEditable && active}
       onBlur={onBlurHandler}
@@ -231,4 +232,4 @@ function areEqual(prevProps, nextProps) {
   return false;
 }
 
-module.exports = React.memo(Text, areEqual);
+module.exports = withNamespaces("translate")(React.memo(Text, areEqual));

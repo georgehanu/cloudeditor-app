@@ -1,6 +1,7 @@
 const React = require("react");
 const assign = require("object-assign");
 const { connect } = require("react-redux");
+const qs = require("qs");
 
 const { withNamespaces } = require("react-i18next");
 const SubmenuText = require("./components/SubmenuData/SubmenuText");
@@ -11,6 +12,9 @@ const uuidv4 = require("uuid/v4");
 const {
   getDisplayedPageBlockActions
 } = require("../../core/stores/selectors/Html5Renderer");
+const {
+  getBackendEditorSelector
+} = require("../../core/stores/selectors/project");
 const axios = require("../../core/axios/project/axios");
 const ConfigUtils = require("../../core/utils/ConfigUtils");
 
@@ -26,8 +30,11 @@ class MenuItemTextImage extends React.Component {
   };
 
   componentDidMount = () => {
+    const serverData = {
+      admin: this.props.admin
+    };
     axios
-      .get(GET_CATEGORIES_URL)
+      .post(GET_CATEGORIES_URL, qs.stringify(serverData))
       .then(resp => resp.data)
       .then(data => {
         this.setState({ categories: data });
@@ -92,7 +99,8 @@ class MenuItemTextImage extends React.Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    blockActions: getDisplayedPageBlockActions(state, props)
+    blockActions: getDisplayedPageBlockActions(state, props),
+    admin: getBackendEditorSelector(state, props)
   };
 };
 

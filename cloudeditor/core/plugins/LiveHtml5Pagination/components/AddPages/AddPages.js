@@ -19,11 +19,11 @@ class AddPages extends React.Component {
   componentDidMount() {
     let newCheckboxes = [];
     newCheckboxes.push({
-      label: "after page %page_label%",
+      label: "after page_label",
       value: AFTER
     });
     newCheckboxes.push({
-      label: "before page %page_label%",
+      label: "before page_label",
       value: BEFORE
     });
     newCheckboxes.push({

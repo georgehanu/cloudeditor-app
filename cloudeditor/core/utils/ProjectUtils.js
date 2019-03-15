@@ -320,7 +320,7 @@ const getDocumentDefaults = cfg => {
       header: {
         enabled: true,
         mode: "read", // (read, edit)
-        activeOn: "all", //(all inner)
+        activeOn: "inner", //(all inner)
         display: "before", // (before, after)
         mirrored: true,
         height: 12,
@@ -423,6 +423,7 @@ const getProjectTemplate = cfg => {
       globalObjectsIds: { before: [], after: [] },
       selectedObjectsIds: [],
       activeSelection: null,
+      emptyPage: null,
       configs: {
         document: getDocumentDefaults({}),
         pages: getPagesDefaults({}),

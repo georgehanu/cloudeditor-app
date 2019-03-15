@@ -3,12 +3,15 @@ const ImportHeader = require("../ImportComponents/ImportHeader");
 const ImportBody = require("../ImportComponents/ImportBody");
 const { withNamespaces } = require("react-i18next");
 const axios = require("../../../../core/axios/project/axios");
+const { connect } = require("react-redux");
 const qs = require("qs");
 
 const TEXT_URL = "/personalize/editor/texts";
 const SET_COOKIE_URL = "/personalize/editor/setcontentcookie";
 const IMAGE_URL = "/personalize/editor/images";
-
+const {
+  getBackendEditorSelector
+} = require("../../../../core/stores/selectors/project");
 class ImportModal extends React.Component {
   state = {
     selectedCategory: 0,
@@ -79,7 +82,8 @@ class ImportModal extends React.Component {
       page_no: pageSelected + 1,
       order_by: order_by,
       show_fav: fav,
-      content_group: category
+      content_group: category,
+      admin: this.props.admin
     };
 
     axios
@@ -163,5 +167,13 @@ class ImportModal extends React.Component {
     );
   }
 }
+const mapStateToProps = (state, props) => {
+  return {
+    admin: getBackendEditorSelector(state, props)
+  };
+};
 
-module.exports = withNamespaces("menuItemTextImage")(ImportModal);
+module.exports = connect(
+  mapStateToProps,
+  null
+)(withNamespaces("menuItemTextImage")(ImportModal));

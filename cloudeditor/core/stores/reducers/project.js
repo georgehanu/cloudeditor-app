@@ -83,31 +83,40 @@ const addPages = (state, action) => {
   const { activePage, pages, pagesOrder } = state;
   let newPages = { ...pages };
   const { nrPagesToInsert, location } = action;
-  const newObjects = {};
+  let newObjects = {};
   let newIds = [];
   let newOrder = clone(pagesOrder);
   const firstPage = newPages[head(pagesOrder)];
   const firstPageWidth = firstPage["width"];
   const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
-    const newObject = ProjectUtils.getEmptyObject({
-      type: "image",
-      backgroundblock: 1,
-      width: firstPageWidth,
-      height: firstPageHeight,
-      left: 0,
-      top: 0,
-      subType: "pdf"
-    });
-    const emptyPage = ProjectUtils.getEmptyPage({
-      width: firstPageWidth,
-      height: firstPageHeight
-    });
-    emptyPage.objectsIds = [newObject.id];
-    const { id } = emptyPage;
-    newPages[id] = emptyPage;
-    newIds.push(id);
-    newObjects[newObject.id] = newObject;
+    if (state.emptyPage) {
+      let savedData = JSON.parse(state.emptyPage);
+      if (state.configs.document.includeBoxes)
+        savedData = savedData.with_trimbox;
+      else savedData = savedData.no_trimbox;
+      const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
+        const id = uuidv4();
+        if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds")) {
+          newObjects[id] = { ...savedData.activePage.objects[key], id: id };
+          return { ...savedData.activePage.objects[key], id: id };
+        }
+      });
+      // store the new keys into objectsIds
+      const addPageObj = {};
+      const pageObj = pageObjects.map(el => {
+        addPageObj[el.id] = el;
+        return el.id;
+      });
+      const page_id = uuidv4();
+      const newActivePage = {
+        ...savedData.activePage.page,
+        id: page_id,
+        objectsIds: [...pageObj]
+      };
+      newPages[page_id] = newActivePage;
+      newIds.push(page_id);
+    }
   }
   let pageIndex = pagesOrder.findIndex(el => {
     return el === activePage;
@@ -545,7 +554,8 @@ loadLayout = (state, payload) => {
   // add the new objects ... create new ids
   let savedData = JSON.parse(payload.saved_data);
   if (payload.page_id === "*") {
-    savedData = savedData.with_trimbox;
+    if (state.configs.document.includeBoxes) savedData = savedData.with_trimbox;
+    else savedData = savedData.no_trimbox;
   }
   const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
     const id = uuidv4();

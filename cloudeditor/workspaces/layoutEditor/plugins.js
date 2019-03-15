@@ -10,6 +10,11 @@ const Background = require("../../plugins/Background/Background");
 const GraphicElements = require("../../plugins/GraphicElements/GraphicElements");
 const LayoutEditorHeader = require("../../plugins/LayoutEditorHeader/LayoutEditorHeader");
 const MenuItemHeaderFooter = require("../../plugins/MenuItemHeaderFooter/MenuItemHeaderFooter");
+const ProjectMenu = require("../../plugins/ProjectMenu/ProjectMenu");
+const MenuItemTextImage = require("../../plugins/MenuItemTextImage/MenuItemTextImage");
+const MenuItemUndoRedo = require("../../plugins/MenuItemUndoRedo/MenuItemUndoRedo");
+const MenuItemTable = require("../../plugins/MenuItemTable/MenuItemTable");
+const HelperLines = require("../../plugins/HelperLines/HelperLines");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -23,7 +28,12 @@ const plugins = {
   LayoutEditorHeader,
   Zoom,
   Background,
-  GraphicElements
+  GraphicElements,
+  ProjectMenu,
+  MenuItemTextImage,
+  MenuItemUndoRedo,
+  MenuItemTable,
+  HelperLines
 };
 
 const requires = {};

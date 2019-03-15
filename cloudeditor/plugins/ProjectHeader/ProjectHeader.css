@@ -120,3 +120,12 @@
 .projectHeaderShowModal #sidebar-wrapper {
   z-index: 600;
 }
+.cartError {
+  width: auto;
+  height: 20px;
+  top: 121px;
+  position: absolute;
+  right: 0px;
+  padding: 0 20px;
+  color: red;
+}

@@ -2,6 +2,7 @@ const React = require("react");
 //const { withNamespaces } = require("react-i18next");
 const { connect } = require("react-redux");
 const { hot } = require("react-hot-loader");
+const { withNamespaces } = require("react-i18next");
 const {
   activePageIdSelector
 } = require("../../../../stores/selectors/project");
@@ -25,10 +26,9 @@ const AddPagesBody = props => {
           htmlFor={"pageLabel_" + index}
           className="itemLabel"
           dangerouslySetInnerHTML={{
-            __html: el.label.replace(
-              "%page_label%",
-              props.pageLabels.shortLabel
-            )
+            __html: props
+              .t(el.label)
+              .replace("page_label", props.t(props.pageLabels.shortLabel))
           }}
         />
       </div>
@@ -37,14 +37,14 @@ const AddPagesBody = props => {
   return (
     <div className="addPagesBody">
       <div className="addPagesNumber">
-        <span>Add</span>
+        <span>{props.t("Add")}</span>
         <input
           type="number"
           className="addPagesNumberInput"
           value={props.nrPagesToInsert}
           onChange={props.changePagesToInsert}
         />
-        <span>pages</span>
+        <span>{props.t("pages")}</span>
       </div>
       <div className="addPagesLocation">{checkboxes}</div>
     </div>
@@ -69,4 +69,4 @@ const AddPagesBodyComponent = hot(module)(
     null
   )(AddPagesBody)
 );
-module.exports = AddPagesBodyComponent;
+module.exports = withNamespaces("translate")(AddPagesBodyComponent);
