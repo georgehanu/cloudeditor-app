@@ -41,10 +41,11 @@ const box = props => {
     top: top,
     width: 1,
     height: height - (top + bottom),
-    left: width - right
+    left: type === "magneticSnap" ? Math.floor(width - right) : width - right
   };
   const bottomStyle = {
-    top: height - bottom,
+    top:
+      type === "magneticSnap" ? Math.floor(height - bottom) : height - bottom,
     width: width - (left + right) - borderWidth,
     height: 1,
     left: left + borderWidth
