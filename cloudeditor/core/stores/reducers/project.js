@@ -6,7 +6,8 @@ const {
   without,
   isEmpty,
   forEach,
-  merge
+  merge,
+  mergeAll
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -196,6 +197,34 @@ const swap = (index1, index2, list) => {
   return result;
 };
 
+const dagClearCropForUploadedImages = (state, payload) => {
+  /* for all images with image_upload_src ... reset crop to 0 */
+  const imageObjs = Object.keys(state.objects)
+    .filter(el => {
+      return (
+        state.objects[el].type === "image" && state.objects[el].image_upload_src
+      );
+    })
+    .map(el => {
+      return {
+        [el]: merge(state.objects[el], {
+          cropX: 0,
+          cropY: 0,
+          cropH: 0,
+          cropW: 0
+        })
+      };
+    });
+
+  return {
+    ...state,
+    objects: {
+      ...state.objects,
+      ...mergeAll(imageObjs)
+    }
+  };
+};
+
 module.exports = handleActions(
   {
     [CHANGE_PROJECT_TITLE]: (state, action) => {
@@ -345,6 +374,9 @@ module.exports = handleActions(
         objects: newObjects,
         selectedObjectsIds: []
       };
+    },
+    [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
+      return dagClearCropForUploadedImages(state, action.payload);
     }
   },
   initialState

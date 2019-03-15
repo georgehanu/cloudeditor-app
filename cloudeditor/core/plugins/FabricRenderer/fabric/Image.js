@@ -20,6 +20,18 @@ class Image extends FabricObject {
     this.instance._setViewBox({});
 
     if (
+      this.props.cropH !== 0 ||
+      this.props.cropW !== 0 ||
+      this.props.cropX !== 0 ||
+      this.props.cropY !== 0
+    ) {
+      this.instance.set({
+        cropX: this.props.cropX,
+        cropY: this.props.cropY,
+        cropH: this.props.cropH,
+        cropW: this.props.cropW
+      });
+    } else if (
       this.instance.designerCallbacks &&
       this.instance.designerCallbacks.updateCropParams
     ) {

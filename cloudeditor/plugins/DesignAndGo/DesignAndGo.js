@@ -14,6 +14,9 @@ const CropImageModal = require("./components/DesignAndGoItems/CropImage/CropImag
 const assign = require("object-assign");
 const { dagImageSelection } = require("../../core/stores/selectors/project");
 const { updateObjectProps } = require("../../core/stores/actions/project");
+const {
+  variablesVariablesSelector
+} = require("../../core/stores/selectors/variables");
 
 class DesignAndGo extends React.Component {
   state = {
@@ -83,6 +86,7 @@ class DesignAndGo extends React.Component {
             modalClosed={this.onMenuCloseHandler}
             image={this.props.image}
             onCropImageHandler={this.onCropImageHandler}
+            variables={this.props.variables}
           />
         )}
 
@@ -98,7 +102,8 @@ class DesignAndGo extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    image: dagImageSelection(state)
+    image: dagImageSelection(state),
+    variables: variablesVariablesSelector(state)
   };
 };
 

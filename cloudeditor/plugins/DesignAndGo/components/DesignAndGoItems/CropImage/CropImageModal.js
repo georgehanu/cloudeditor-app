@@ -6,6 +6,10 @@ require("cropperjs/dist/cropper.css");
 const WithSliderDim = require("../SliderCarousel/renderProps/withSliderDim");
 const CropImageBlock = require("./CropImageBlock");
 const ConfigUtils = require("../../../../../core/utils/ConfigUtils");
+const { pick, forEachObjIndexed } = require("ramda");
+const {
+  extractVariablesFromString
+} = require("../../../../../core/utils/VariableUtils");
 
 class CropImageModal extends React.Component {
   state = {
@@ -38,6 +42,28 @@ class CropImageModal extends React.Component {
   render() {
     const config = ConfigUtils.getDefaults();
 
+    let imageHeight = this.props.image.imageHeight;
+    let imageWidth = this.props.image.imageWidth;
+    let image_src = this.props.image.image_src;
+
+    if (this.props.image.image_upload_src) {
+      let blockVariables = extractVariablesFromString(
+        this.props.image.image_upload_src
+      );
+      const usedVariables = pick(blockVariables, this.props.variables);
+
+      forEachObjIndexed((variable, key) => {
+        if (variable.value) {
+          image_src = this.props.image.image_upload_src.replace(
+            "[%]" + key + "[/%]",
+            variable.value
+          );
+          imageHeight = variable.imageHeight;
+          imageWidth = variable.imageWidth;
+        }
+      }, usedVariables);
+    }
+
     const imageProps = {
       viewOnly: false,
       active: true,
@@ -47,8 +73,8 @@ class CropImageModal extends React.Component {
       active: this.props.image.active,
       width: this.props.image.width,
       height: this.props.image.height,
-      imageWidth: this.props.image.imageWidth,
-      imageHeight: this.props.image.imageHeight,
+      imageWidth: imageWidth,
+      imageHeight: imageHeight,
       cropX: this.props.image.cropX,
       cropY: this.props.image.cropY,
       cropW: this.props.image.cropW,
@@ -57,8 +83,7 @@ class CropImageModal extends React.Component {
       cropH: this.props.image.cropH,
       onUpdateProps: this.props.image.onUpdatePropsHandler,
       onUpdatePropsNoUndoRedo: this.props.image.onUpdateNoUndoRedoPropsHandler,
-      image_src:
-        config.baseUrl + config.assetsRelativePath + this.props.image.image_src,
+      image_src: config.baseUrl + config.assetsRelativePath + image_src,
       leftSlider: this.props.image.leftSlider,
       initialRestore: this.props.image.initialRestore,
       alternateZoom: this.props.image.alternateZoom,
