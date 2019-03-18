@@ -4,6 +4,7 @@ const assign = require("object-assign");
 const FupaBuilder = require("./FupaBuilder");
 const isEqual = require("react-fast-compare");
 const { withNamespaces } = require("react-i18next");
+const ErrorBoundary = require("../../core/components/ErrorBoundary/ErrorBoundary");
 
 class Fupa extends React.Component {
   shouldComponentUpdate = (nextProps, nextState) => {
@@ -13,7 +14,11 @@ class Fupa extends React.Component {
     return true;
   };
   render() {
-    return <FupaBuilder cfg={this.props.cfg} t={this.props.t} />;
+    return (
+      <ErrorBoundary errorMsg="Something went wrong with Fupa.">
+        <FupaBuilder cfg={this.props.cfg} t={this.props.t} />
+      </ErrorBoundary>
+    );
   }
 }
 
