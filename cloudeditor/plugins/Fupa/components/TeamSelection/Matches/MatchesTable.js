@@ -31,20 +31,19 @@ const MatchesTable = ({ tableStyle = "default", ...props }) => {
   const matches = props.matches.map((el, index) => {
     let oponentTeam = null;
     let location = null;
-    let matchDay =
-      el.matchDayNumber === 0 ? props.t("NA") : el.matchDayNumber + ".";
+    let matchDay = index + 1 + ".";
     let currentTeamGoals = 0;
     let opositeTeamGoals = 0;
-    if (el.guestTeam.id === props.teamId) {
+    if (el.awayTeam.id === props.teamId) {
       oponentTeam = el.homeTeam;
       location = props.t("AwayLetter");
-      currentTeamGoals = el.guestGoal;
+      currentTeamGoals = el.awayGoal;
       opositeTeamGoals = el.homeGoal;
     } else {
-      oponentTeam = el.guestTeam;
+      oponentTeam = el.awayTeam;
       location = props.t("HomeLetter");
       currentTeamGoals = el.homeGoal;
-      opositeTeamGoals = el.guestGoal;
+      opositeTeamGoals = el.awayGoal;
     }
 
     const imageUrl =
@@ -84,7 +83,7 @@ const MatchesTable = ({ tableStyle = "default", ...props }) => {
       }
       matchInfo = (
         <React.Fragment>
-          {el.homeGoal}:{el.guestGoal}
+          {el.homeGoal}:{el.awayGoal}
         </React.Fragment>
       );
     }
