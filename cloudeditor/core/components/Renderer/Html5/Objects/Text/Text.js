@@ -151,21 +151,18 @@ const Text = props => {
     ]
   );
 
-  useEffect(
-    () => {
-      if (contentEditable) _checkDim();
-    },
-    [
-      content,
-      value,
-      fontFamily,
-      fontSize,
-      bold,
-      realWidth,
-      realHeight,
-      lineHeight
-    ]
-  );
+  useEffect(() => {
+    if (contentEditable) _checkDim();
+  }, [
+    content,
+    value,
+    fontFamily,
+    fontSize,
+    bold,
+    realWidth,
+    realHeight,
+    lineHeight
+  ]);
 
   const onChangeHandler = result => {
     setContent(result.text);
