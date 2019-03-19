@@ -99,6 +99,7 @@ class ProjectHeader extends React.Component {
       this.props.attachPreview();
     } else {
       this.setState({ showAddToCartError: true });
+      this.setTimer();
     }
   };
   setTimer = () => {
