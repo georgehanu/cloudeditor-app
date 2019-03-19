@@ -11,6 +11,7 @@ const { mapTo, map, mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const LOGIN_URL = "/personalize/cloudeditor/logincustomer";
+const REGISTER_URL = "/personalize/cloudeditor/registerCustomer";
 
 module.exports = {
   onEpicLogin: (action$, state$) =>
