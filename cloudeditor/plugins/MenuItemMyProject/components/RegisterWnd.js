@@ -3,7 +3,7 @@ const ModalWnd = require("../../../core/components/Modal/ModalWnd");
 const { connect } = require("react-redux");
 const Input = require("./UI/Input");
 const MessageForm = require("./UI/MessageForm");
-const Selection = require("./UI/Selection");
+const Selection = require("../../../core/components/UI/Selection");
 const Checkbox = require("./UI/Checkbox");
 
 require("./LoginWnd.css");
@@ -139,7 +139,12 @@ class RegisterWnd extends React.Component {
               name="salutation"
               value={this.state.salutation}
               changePoptextValue={this.changePoptextValue}
-              empty={this.state.validate && this.state.salutation === ""}
+              className={
+                "selectionLabelContainer " +
+                (this.state.validate && this.state.salutation === ""
+                  ? "inputEmpty"
+                  : "")
+              }
             />
             <Input
               label={this.props.t("Title")}
