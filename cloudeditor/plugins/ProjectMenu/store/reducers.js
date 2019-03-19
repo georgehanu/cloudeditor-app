@@ -4,7 +4,8 @@ const {
   AUTH_SIGNIN_START,
   AUTH_SIGNIN_FAILED,
   AUTH_SIGNIN_SUCCESS,
-  AUTH_SIGNIN_CLEAR_MESSAGE
+  AUTH_SIGNIN_CLEAR_MESSAGE,
+  AUTH_REGISTER_CLEAR_MESSAGE
 } = require("./actionTypes");
 
 const ProjectUtils = require("../../../core/utils/ProjectUtils");
@@ -38,6 +39,12 @@ module.exports = handleActions(
       };
     },
     [AUTH_SIGNIN_CLEAR_MESSAGE]: (state, action) => {
+      return {
+        ...state,
+        errorMessage: null
+      };
+    },
+    [AUTH_REGISTER_CLEAR_MESSAGE]: (state, action) => {
       return {
         ...state,
         errorMessage: null
