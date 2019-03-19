@@ -4,10 +4,10 @@ const Slider = require("rc-slider").default;
 require("rc-slider/assets/index.css");
 
 const InlineSlider = props => {
-  const parentClassName = Utils.MergeClassName(
-    "InlineSlider",
-    props.parentClassName
-  );
+  const parentClassName =
+    Utils.MergeClassName("InlineSlider", props.parentClassName) +
+    " " +
+    (props.defaultValue === -1 ? "noCrop" : "");
   let startValue = 0;
   if (props.defaultValue) {
     startValue = props.defaultValue;
@@ -15,8 +15,21 @@ const InlineSlider = props => {
 
   return (
     <div className={parentClassName}>
+      <div className={"verticalBar"} />
+      <div
+        className={"rc-slider-handle dummySlider"}
+        onMouseDown={() => {
+          props.ToolbarHandler({
+            mainHandler: true,
+            payloadMainHandler: {
+              value: { value: 0, activeAction: 0 },
+              type: props.type
+            }
+          });
+        }}
+      />
       <Slider
-        min={0}
+        min={-1}
         max={100}
         step={1}
         value={startValue}
@@ -30,10 +43,14 @@ const InlineSlider = props => {
           });
         }}
         onAfterChange={value => {
+          let val = value;
+          if (val == -0) {
+            val = -1;
+          }
           props.ToolbarHandler({
             mainHandler: true,
             payloadMainHandler: {
-              value: { value, activeAction: 0 },
+              value: { value: val, activeAction: 0 },
               type: props.type
             }
           });

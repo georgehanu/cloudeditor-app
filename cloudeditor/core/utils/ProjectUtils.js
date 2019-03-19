@@ -122,6 +122,7 @@ const getObjectsDefaults = cfg => {
       rotate: 0,
       dragging: 0,
       rotating: 0,
+      noCrop: false,
       resizing: 0,
       bgColor: getObjectColorTemplate((general && general.bgColor) || {}),
       borderColor: getObjectColorTemplate(
@@ -240,9 +241,9 @@ const getObjectsDefaults = cfg => {
       type: "section",
       global: false,
       objectsIds: [],
-      movable: 0,
-      resizable: 0,
-      rotatable: 0,
+      movable: 1,
+      resizable: 1,
+      rotatable: 1,
       rotateAngle: 0
     },
     section || {}

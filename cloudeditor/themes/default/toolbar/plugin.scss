@@ -485,12 +485,26 @@ button.ButtonSelected .icon {
   margin-top: 0px;
   height: 44px;
   line-height: 36px;
-  width: 218px;
+  width: 198px;
+  margin-left: 20px;
+  position: relative;
 }
 .InlineSlider input {
   width: 100%;
 }
-
+.InlineSlider .dummySlider {
+  position: absolute;
+  top: 20px;
+  left: -17px;
+  z-index: 9999;
+  display: none;
+}
+.InlineSlider.noCrop .rc-slider-handle {
+  display: none;
+}
+.InlineSlider.noCrop .rc-slider-handle.dummySlider {
+  display: block;
+}
 .rc-slider {
   top: 15px;
 }
@@ -660,7 +674,13 @@ input[type="range"]::-webkit-slider-runnable-track {
   margin-top: -1px;
   margin-bottom: 0;
 }
-
+.verticalBar {
+  height: 100%;
+  width: 1px;
+  position: absolute;
+  background: #e9e9e9;
+  left: -7px;
+}
 .SpecialEffectsGalleryItem {
   height: 116px;
   display: block;
@@ -1170,4 +1190,15 @@ input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   float: left;
   padding: 5px 10px;
+}
+.InlineSlider .rc-slider-rail:before {
+  content: "";
+  cursor: pointer;
+  display: block;
+  height: 4px;
+  margin: 0px 0px 0px 0px;
+  position: absolute;
+  width: 20px;
+  left: -19px;
+  background: #e9e9e9;
 }

@@ -64,6 +64,9 @@ class ImageBlock extends React.Component {
         return false;
       }
       this.setZoom(nextProps);
+      if (!nextProps.active) {
+        this.refs.cropper.disable();
+      }
       return false;
     }
     if (
