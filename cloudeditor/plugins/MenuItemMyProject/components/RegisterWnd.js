@@ -17,7 +17,7 @@ const {
 
 const {
   authRegisterStart,
-  authSignInClearMessage
+  authRegisterClearMessage
 } = require("../../ProjectMenu/store/actions");
 
 class RegisterWnd extends React.Component {
@@ -113,7 +113,7 @@ class RegisterWnd extends React.Component {
   };
 
   componentWillUnmount() {
-    this.props.signInClearMessage();
+    this.props.registerClearMessage();
   }
 
   render() {
@@ -231,7 +231,7 @@ const mapDispatchToProps = dispatch => {
   return {
     register: (email, password) =>
       dispatch(authRegisterStart({ email, password })),
-    signInClearMessage: () => dispatch(authSignInClearMessage())
+    registerClearMessage: () => dispatch(authRegisterClearMessage())
   };
 };
 
