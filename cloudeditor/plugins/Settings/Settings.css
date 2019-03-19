@@ -1,0 +1,24 @@
+.settingsContainerTitle {
+  color: #737373;
+  text-align: -webkit-center;
+  height: 30px;
+}
+
+.settingsSelection {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 60px;
+  color: #737373;
+}
+
+.settingsSelection select {
+  color: #737373;
+  width: 100%;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+
+.settingsSelection .inputLabel {
+  height: 20px;
+}

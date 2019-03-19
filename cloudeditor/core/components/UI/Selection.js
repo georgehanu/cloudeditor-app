@@ -2,8 +2,7 @@ const React = require("react");
 const { keys } = require("ramda");
 
 const selection = props => {
-  const className =
-    "selectionLabelContainer " + (props.empty ? "inputEmpty" : "");
+  const className = props.className;
   const options = keys(props.options).map(el => {
     return (
       <option key={el} value={el}>
