@@ -100,7 +100,8 @@ const withResizable = WrappedComponent => {
         this.enableUI,
         this.onResizeStartHandler,
         this.onResizeHandler,
-        this.onResizeStopHandler
+        this.onResizeStopHandler,
+        this.props.noCrop
       );
     };
     getReference = ref => {

@@ -1,16 +1,9 @@
 const React = require("react");
 const ModalWnd = require("../../../core/components/Modal/ModalWnd");
-
+const { helperBlockSelector } = require("../../../core/stores/selectors/ui");
+const { connect } = require("react-redux");
+const { withNamespaces } = require("react-i18next");
 class ManualWnd extends React.Component {
-  state = {
-    manualHelpMessage: "Manual & Help - missing"
-  };
-
-  componentDidMount() {
-    const manual = document.getElementById("ManualHelp");
-    if (manual !== null) this.setState({ manualHelpMessage: manual.innerHTML });
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -22,12 +15,19 @@ class ManualWnd extends React.Component {
         >
           <div
             className="manualWndContainer"
-            dangerouslySetInnerHTML={{ __html: this.state.manualHelpMessage }}
+            dangerouslySetInnerHTML={{ __html: this.props.helperBlock }}
           />
         </ModalWnd>
       </React.Fragment>
     );
   }
 }
-
-module.exports = ManualWnd;
+const mapStateToProps = state => {
+  return {
+    helperBlock: helperBlockSelector(state)
+  };
+};
+module.exports = connect(
+  mapStateToProps,
+  null
+)(withNamespaces("translate")(ManualWnd));

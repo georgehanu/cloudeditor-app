@@ -5,7 +5,8 @@ const {
   AUTH_SIGNIN_FAILED,
   AUTH_SIGNIN_SUCCESS,
   AUTH_SIGNIN_CLEAR_MESSAGE,
-  AUTH_REGISTER_CLEAR_MESSAGE
+  AUTH_REGISTER_CLEAR_MESSAGE,
+  AUTH_REGISTER_START
 } = require("./actionTypes");
 
 const ProjectUtils = require("../../../core/utils/ProjectUtils");
@@ -18,6 +19,12 @@ const initialState = ProjectUtils.getEmptyAuth(config.auth);
 module.exports = handleActions(
   {
     [AUTH_SIGNIN_START]: (state, action) => {
+      return {
+        ...state,
+        loading: true
+      };
+    },
+    [AUTH_REGISTER_START]: (state, action) => {
       return {
         ...state,
         loading: true

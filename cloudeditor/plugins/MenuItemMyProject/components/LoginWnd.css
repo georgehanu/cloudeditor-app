@@ -344,4 +344,16 @@ body.swal2-height-auto.swal2-shown {
 
 .registerWnd .messageForm {
   color: red;
+  height: auto;
+}
+
+.loginWnd.registerWnd {
+  height: auto;
+}
+.loginWnd.registerWnd .loginWndContainer {
+  box-shadow: none;
+}
+.loginWnd.registerWnd .loginWndButtons {
+  position: relative;
+  padding: 10px 0px;
 }

@@ -16,6 +16,12 @@ const canvasSelector = state =>
 const colorsSelector = state => {
   return values(pathOr({}, ["ui", "colors"], state));
 };
+const helperBlockSelector = state => {
+  return pathOr("", ["ui", "helperBlock"], state);
+};
+const infoBlockSelector = state => {
+  return pathOr("", ["ui", "infoBlock"], state);
+};
 const permissionsSelector = state => {
   return pathOr({}, ["ui", "permissions"], state);
 };
@@ -104,5 +110,7 @@ module.exports = {
   permissionsSelector,
   uiFontsSelector,
   uiFontsTinymceSelector,
-  fontMetricsSelector
+  fontMetricsSelector,
+  helperBlockSelector,
+  infoBlockSelector
 };
