@@ -21,24 +21,27 @@ const {
 } = require("../../ProjectMenu/store/actions");
 
 class RegisterWnd extends React.Component {
-  state = {
-    salutation: "",
-    salutationOption: {
-      "": "",
-      f: "Ms",
-      m: "Mr"
-    },
-    title: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    repassword: "",
-    checkNewsletter: false,
-    checkAccept: false,
-    invalidMessage: null,
-    validate: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      salutation: "",
+      salutationOption: {
+        "": "",
+        f: props.t("Ms"),
+        m: props.t("Mr")
+      },
+      title: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      repassword: "",
+      checkNewsletter: false,
+      checkAccept: false,
+      invalidMessage: null,
+      validate: false
+    };
+  }
 
   onInputChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -90,7 +93,17 @@ class RegisterWnd extends React.Component {
       this.validatePassword() &&
       this.validateAccept()
     ) {
-      this.props.register(this.state.email, this.state.password);
+      const params = {
+        prefix: this.state.salutation,
+        sufix: "",
+        firstname: this.state.firstName,
+        lastname: this.state.lastName,
+        email: this.state.email,
+        password: this.state.password,
+        confirmation: this.state.repassword,
+        is_subscribed: this.state.checkNewsletter | 0
+      };
+      this.props.register(params);
     }
     this.setState({ validate: true });
   };
@@ -223,14 +236,14 @@ class RegisterWnd extends React.Component {
 const mapStateToProps = state => {
   return {
     loading: authLoadingSelector(state),
-    errorMessage: authErrorMessageSelector(state)
+    errorMessage: authErrorMessageSelector(state),
+    loggedIn: authLoggedInSelector(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: (email, password) =>
-      dispatch(authRegisterStart({ email, password })),
+    register: params => dispatch(authRegisterStart(params)),
     registerClearMessage: () => dispatch(authRegisterClearMessage())
   };
 };

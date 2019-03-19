@@ -11,7 +11,7 @@ const { mapTo, map, mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
 const LOGIN_URL = "/personalize/cloudeditor/logincustomer";
-const REGISTER_URL = "/personalize/cloudeditor/registerCustomer";
+const REGISTER_URL = "/personalize/index/registerCustomer";
 
 module.exports = {
   onEpicLogin: (action$, state$) =>
@@ -58,8 +58,14 @@ module.exports = {
           let serverData = new FormData();
           serverData.append("email", action$.payload.email);
           serverData.append("password", action$.payload.password);
+          serverData.append("prefix", action$.payload.prefix);
+          serverData.append("sufix", action$.payload.sufix);
+          serverData.append("lastname", action$.payload.lastname);
+          serverData.append("firstname", action$.payload.firstname);
+          serverData.append("confirmation", action$.payload.confirmation);
+          serverData.append("is_subscribed", action$.payload.is_subscribed);
           axios
-            .post(LOGIN_URL, serverData)
+            .post(REGISTER_URL, serverData)
             .then(resp => resp.data)
             .then(data => {
               if (data.success) {

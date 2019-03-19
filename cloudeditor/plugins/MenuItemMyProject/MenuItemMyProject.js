@@ -38,6 +38,7 @@ class MenuItemMyProject extends React.Component {
       return {
         ...prevState,
         showLoginWnd: false,
+        showRegisterWnd: false,
         loginMode: true
       };
     }
