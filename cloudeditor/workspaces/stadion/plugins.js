@@ -25,6 +25,7 @@ const Background = require("../../plugins/Background/Background");
 const GraphicElements = require("../../plugins/GraphicElements/GraphicElements");
 const Settings = require("../../plugins/Settings/Settings");
 const MenuItemTable = require("../../plugins/MenuItemTable/MenuItemTable");
+const ProjectFooter = require("../../plugins/ProjectFooter/ProjectFooter");
 
 const plugins = {
   Html5Renderer: Html5Renderer,
@@ -53,7 +54,8 @@ const plugins = {
   //Asistent,
   GraphicElements,
   Settings,
-  MenuItemTable
+  MenuItemTable,
+  ProjectFooter
 };
 
 const requires = {};
