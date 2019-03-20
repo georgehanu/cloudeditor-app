@@ -5,12 +5,12 @@ const { withNamespaces } = require("react-i18next");
 const loadProjects = props => {
   const header = (
     <li key="-1">
-      <div className="projIndex">Index</div>
-      <div className="projName">Name</div>
-      <div className="projDescription">Description</div>
-      <div className="projDate">Date</div>
-      <div className="projLoad">Load</div>
-      <div className="projDelete">Delete</div>
+      <div className="projIndex">{props.t("Index")}</div>
+      <div className="projName">{props.t("Name")}</div>
+      <div className="projDescription">{props.t("Description")}</div>
+      <div className="projDate">{props.t("Date")}</div>
+      <div className="projLoad">{props.t("Load")}</div>
+      <div className="projDelete">{props.t("Delete")}</div>
     </li>
   );
 

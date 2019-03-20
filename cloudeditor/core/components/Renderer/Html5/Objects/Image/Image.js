@@ -59,6 +59,18 @@ class ImageBlock extends React.Component {
       }
       return false;
     } */
+    if (
+      nextProps.leftSlider === -1 &&
+      nextProps.leftSlider !== this.props.leftSlider &&
+      nextProps.activeAction === 2
+    ) {
+      if (!this.refs.cropper.cropper.ready) {
+        return false;
+      }
+      this.refs.cropper.enable();
+      this.refs.cropper.reset();
+      return true;
+    }
     if (nextProps.activeAction) {
       if (!this.refs.cropper.cropper.ready) {
         return false;
@@ -197,8 +209,8 @@ class ImageBlock extends React.Component {
 
       this.refs.cropper.setCanvasData({
         ...data,
-        left: (-1 * (canvasWidth - width)) / 2,
-        top: (-1 * (canvasHeight - height)) / 2,
+        left: Math.round((-1 * (canvasWidth - width)) / 2),
+        top: Math.round((-1 * (canvasHeight - height)) / 2),
         width: canvasWidth,
         height: canvasHeight
       });
@@ -260,7 +272,8 @@ class ImageBlock extends React.Component {
   }
   cropEndHandler = () => {
     if (!this.props.viewOnly) {
-      if (!this.props.activeAction) this.setDataOnState();
+      if (!this.props.activeAction || this.props.activeAction === 2)
+        this.setDataOnState();
     }
   };
   setDataOnState = () => {
@@ -268,10 +281,10 @@ class ImageBlock extends React.Component {
       const data = this.refs.cropper.getData();
       const imageData = this.refs.cropper.getImageData();
       const result = {
-        cropX: Math.floor(data.x),
-        cropY: Math.floor(data.y),
-        cropW: Math.round(data.width),
-        cropH: Math.round(data.height),
+        cropX: Math.round(data.x),
+        cropY: Math.round(data.y),
+        cropW: data.width,
+        cropH: data.height,
         naturalWidth: imageData.naturalWidth,
         naturalHeight: imageData.naturalHeight
       };
@@ -339,13 +352,6 @@ class ImageBlock extends React.Component {
           top: -1 * (cropY / Math.max(widthRatio, heightRatio)),
           width: canvasWidth,
           height: canvasHeight
-        });
-        this.refs.cropper.setData({
-          ...dataData,
-          width: cropW,
-          height: cropH,
-          x: cropX,
-          y: cropY
         });
 
         // this.refs.cropper.zoomTo(this.props.leftSlider / 100);

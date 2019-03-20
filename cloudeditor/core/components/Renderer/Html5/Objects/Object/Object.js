@@ -210,7 +210,10 @@ class ObjectBlock extends React.Component {
       naturalHeight: props.naturalHeight
     };
     let block = null;
-    if (viewOnly) {
+    if (
+      viewOnly &&
+      (!this.props.backgroundBlock && this.props.bottomPagination)
+    ) {
       block = <DummyImage {...imageProps} />;
     } else {
       block = <ImageBlock key={props.id} {...imageProps} />;
