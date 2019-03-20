@@ -1,0 +1,10 @@
+.projectFooterContainer {
+  height: 40px;
+  background-color: #fff;
+  width: 100%;
+  z-index: 550;
+  position: absolute;
+  bottom: 0;
+  z-index: 1200;
+  border-top: 1px solid #dcdee1;
+}

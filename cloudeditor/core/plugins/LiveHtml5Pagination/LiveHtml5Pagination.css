@@ -12,7 +12,7 @@
   width: 100%;
   display: inline-flex;
   position: absolute;
-  bottom: 0px;
+  bottom: 40px;
   padding-left: 100px;
   z-index: 501;
 }
@@ -41,7 +41,6 @@
 .pageSelector {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #dcdee1;
   border-top: 1px solid #dcdee1;
   box-sizing: border-box;
   z-index: 1000;

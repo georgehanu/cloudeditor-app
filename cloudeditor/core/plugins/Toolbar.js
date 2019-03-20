@@ -27,7 +27,7 @@ const Utils = require("../../core/components/Toolbar/ToolbarConfig/utils");
 const { uiFontsSelector } = require("../../core/stores/selectors/ui");
 
 const textToolbar = { width: 396, height: 92 };
-const imageToolbar = { width: 445, height: 47 };
+const imageToolbar = { width: 475, height: 47 };
 const backgroundToolbar = { width: 438, height: 47 };
 const tinymceToolbar = { width: 396, height: 92 };
 const fupaToolbar = { width: 402, height: 92 };

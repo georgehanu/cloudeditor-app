@@ -121,3 +121,9 @@ body.submenuHeaderFooter
 .mce-tinymce.mce-tinymce-inline .mce-i-fupaBackcolor {
   background: #bbb;
 }
+
+/* hide menus from table insert */
+.mce-container-body.mce-stack-layout
+  .mce-menu-item-normal.mce-stack-layout-item:not(:first-child) {
+  display: none;
+}

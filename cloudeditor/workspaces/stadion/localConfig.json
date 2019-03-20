@@ -36,7 +36,8 @@
       "Background",
 
       "GraphicElements",
-      "Settings"
+      "Settings",
+      "ProjectFooter"
     ]
   },
   "Layout": {
