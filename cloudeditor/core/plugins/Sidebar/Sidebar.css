@@ -91,12 +91,12 @@
 
 #sidebar-wrapper-container ul li.sidebarButtonContainer {
   width: 100%;
-  height: 60px;
+  height: 54px;
 }
 
 #sidebar-wrapper-container .sidebarButton {
   width: 100%;
-  height: 60px;
+  height: 54px;
   cursor: pointer;
   color: grey;
   background-color: #f9fafc;
@@ -110,7 +110,7 @@
   font-size: 24px;
   text-decoration: none;
   padding: 18px;
-  height: 60px;
+  height: 54px;
   -webkit-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
   -moz-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
   -ms-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
@@ -265,7 +265,7 @@
 }
 
 #sidebar-wrapper-container {
-  width: 100px;
+  width: 80px;
 }
 
 #sidebar-wrapper-container ul li.sidebarButtonContainer {
@@ -292,7 +292,7 @@
 }
 
 #sidebar-wrapper-container .sidebarButton .icon {
-  width: 80px;
+  /*width: 80px;*/
   height: 30px;
   display: inline-block;
   background-repeat: no-repeat;
@@ -301,8 +301,8 @@
 }
 
 #sidebar-wrapper-container .sidebarButton {
-  padding: 6px;
-  height: 60px;
+  padding: 6px 0px;
+  height: 54px;
 }
 
 .rightTriangle:before {
@@ -379,12 +379,12 @@
 }
 
 #sidebar-wrapper-container {
-  padding-bottom: 90px;
+  padding-bottom: 104px;
 }
 
 #sidebar-wrapper {
   top: 0px;
-  padding-top: 90px;
+  padding-top: 104px;
 }
 
 #sidebar-wrapper-container > ul {
@@ -394,4 +394,9 @@
 #sidebar-wrapper-container .paneContainer.paneHidden button {
   right: 0px;
   display: none;
+}
+
+#sidebar-wrapper-container .sidebarButton .FupaLogo {
+  height: 25px;
+  margin-top: 5px;
 }

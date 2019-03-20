@@ -195,7 +195,7 @@ class ProjectHeader extends React.Component {
           <div className="projectHeaderLogo" />
           <div className="projectHeaderCenter">
             <span className="projectHeaderTitle">
-              {this.props.t("My project")}:
+              {this.props.t("My project") + ": "}
             </span>
             <span
               className="projectHeaderName"

@@ -3,7 +3,7 @@
   background-color: white;
   position: absolute;
   left: 0;
-  height: 30px;
+  height: 38px;
 
   /*  display: none;*/
 }
@@ -14,7 +14,7 @@
 }
 
 .showHeaderFooter #sidebar-wrapper {
-  padding-top: 120px;
+  padding-top: 142px;
 }
 
 #sidebar-wrapper {
@@ -34,7 +34,7 @@
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   padding: 10px 5px 10px 4px;
   vertical-align: middle;
-  line-height: 28px;
+  line-height: 36px;
 }
 
 .submenuPoptextContainer ul li {
@@ -80,7 +80,7 @@
 }
 
 .submenuItemHeaderFooterEdit {
-  width: 130px;
+  width: 150px;
   position: relative;
   float: left;
 }

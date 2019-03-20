@@ -1,5 +1,5 @@
 .projectHeaderContainer {
-  height: 60px;
+  height: 66px;
   background-color: #fff;
   width: 100%;
   z-index: 550;
@@ -8,7 +8,7 @@
 
 .projectHeaderContainer .projectHeaderLogo {
   background-image: url("./assets/cewe_logo.png");
-  height: 60px;
+  height: 66px;
   background-size: contain;
   background-repeat: no-repeat;
   width: inherit;
@@ -23,7 +23,7 @@
   float: left;
   position: absolute;
   color: #737373;
-  line-height: 60px;
+  line-height: 66px;
 }
 
 .projectHeaderContainer .projectHeaderTitle {
@@ -74,7 +74,7 @@
 }
 
 .projectHeaderContainer .projectRightAddContainer {
-  line-height: 60px;
+  line-height: 66px;
   margin-right: 10px;
 }
 

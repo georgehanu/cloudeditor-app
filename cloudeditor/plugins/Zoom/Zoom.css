@@ -64,13 +64,13 @@
 }
 
 #sidebar-wrapper-container .zoom button {
-  width: 98px;
+  width: 78px;
 }
-
+/*
 .showHeaderFooter .zoom {
   bottom: 120px;
 }
-
+*/
 .showPrintPreview.showHeaderFooter .zoom {
   bottom: 98px;
 }
