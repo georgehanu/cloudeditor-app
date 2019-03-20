@@ -6,43 +6,35 @@ const Selection = require("../../core/components/UI/Selection");
 const { keys } = require("ramda");
 
 require("./Settings.css");
-
+const {
+  displyedOptionsSelector,
+  getContentCode,
+  getPrintOptionsSelector,
+  getQtySelector
+} = require("../../core/stores/selectors/productinformation");
+const {
+  changeOptions
+} = require("../../core/stores/actions/productInformation");
 class Settings extends React.Component {
-  state = {
-    fields: {
-      Quantity: {
-        label: "Quantity",
-        value: "5",
-        options: {
-          5: "5",
-          10: "10",
-          15: "15",
-          25: "25"
-        }
-      },
-      Paper: {
-        label: "Paper",
-        value: "0",
-        options: {
-          0: "Paper type 1",
-          1: "Paper type 2",
-          2: "Paper type 3"
-        }
-      }
-    }
-  };
-
   changePoptextValue = event => {
-    console.log(event.target.name);
-    console.log(event.target.value);
+    this.props.onChangeOptions({
+      code: event.target.name,
+      value: event.target.value
+    });
   };
   render() {
-    const fields = keys(this.state.fields).map(el => {
+    if (!Object.keys(this.props.print_options).length) return null;
+    const fields = keys(this.props.fields).map(el => {
       return (
         <Selection
-          label={this.state.fields[el].label}
+          label={this.props.t(this.props.fields[el].label)}
           name={el}
-          options={this.state.fields[el].options}
+          value={
+            el === "quantity"
+              ? "qty_" + this.props.qty
+              : this.props.print_options[this.props.contentCode][el][0]
+          }
+          options={this.props.fields[el].options}
           className={"settingsSelection"}
           changePoptextValue={this.changePoptextValue}
         />
@@ -58,8 +50,24 @@ class Settings extends React.Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    fields: displyedOptionsSelector(state),
+    print_options: getPrintOptionsSelector(state),
+    contentCode: getContentCode(state),
+    qty: getQtySelector(state)
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onChangeOptions: params => dispatch(changeOptions(params))
+  };
+};
 
-const SettingsPlugin = withNamespaces("settings")(Settings);
+const SettingsPlugin = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withNamespaces("settings")(Settings));
 
 module.exports = {
   Settings: assign(SettingsPlugin, {

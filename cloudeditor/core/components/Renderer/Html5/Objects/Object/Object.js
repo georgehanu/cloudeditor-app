@@ -156,6 +156,7 @@ class ObjectBlock extends React.Component {
       placeHolder: this.props.placeHolder,
       contentEditable,
       lineheightn: props.lineheightn,
+      renderId: props.renderId,
       lineheightp: props.lineheightp
     };
     const block = <TextBlock {...textProps} />;

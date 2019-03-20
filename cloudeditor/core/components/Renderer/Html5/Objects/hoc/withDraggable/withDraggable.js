@@ -59,7 +59,7 @@ const withDraggable = WrappedComponent => {
       }
     };
     onDragStartHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 1, 0);
+      //this.changePropsOnDragHandler(ui, 1, 0);
       const draggable = $(event.target).data("ui-draggable");
       draggable.options.snapToleranceDynamic =
         this.props.snapTolerance * this.props.zoomScale;

@@ -275,7 +275,7 @@ class ImageBlock extends React.Component {
         naturalWidth: imageData.naturalWidth,
         naturalHeight: imageData.naturalHeight
       };
-      this.props.onUpdatePropsNoUndoRedo({
+      this.props.onUpdateProps({
         id: this.props.id,
         props: result
       });
@@ -331,6 +331,7 @@ class ImageBlock extends React.Component {
         canvasHeight = heightImage * Math.min(rH, rW);
         const widthRatio = imageData.naturalWidth / canvasWidth;
         const heightRatio = imageData.naturalHeight / canvasHeight;
+        const dataData = this.refs.cropper.getData();
 
         this.refs.cropper.setCanvasData({
           ...data,
@@ -338,6 +339,13 @@ class ImageBlock extends React.Component {
           top: -1 * (cropY / Math.max(widthRatio, heightRatio)),
           width: canvasWidth,
           height: canvasHeight
+        });
+        this.refs.cropper.setData({
+          ...dataData,
+          width: cropW,
+          height: cropH,
+          x: cropX,
+          y: cropY
         });
 
         // this.refs.cropper.zoomTo(this.props.leftSlider / 100);
