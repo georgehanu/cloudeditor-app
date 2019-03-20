@@ -83,7 +83,10 @@ const build = config => {
                         selector.startsWith(
                           ".mce-tinymce.mce-tinymce-inline"
                         ) ||
-                        selector.startsWith("body")
+                        selector.startsWith("body") ||
+                        selector.startsWith(
+                          ".mce-container-body.mce-stack-layout"
+                        )
                       ) {
                         return selector;
                       } else {

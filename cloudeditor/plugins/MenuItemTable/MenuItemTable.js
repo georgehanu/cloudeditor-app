@@ -34,7 +34,11 @@ class MenuItemTable extends React.Component {
               top,
               id: uuidv4(),
               width: tableWidth,
-              height: tableWidth
+              height: tableWidth,
+              tableContent:
+                '<table class="dummyTable" style="font-size:15px;text-align:center"><tbody><tr><td>' +
+                this.props.t("Paste Your Table Here") +
+                "</td></tr></tbody></table>"
             });
           }}
         >

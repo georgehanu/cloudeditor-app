@@ -14,7 +14,9 @@ const InlineSlider = props => {
   }
 
   return (
+    //printqicon-user-tie
     <div className={parentClassName}>
+      <div className="inlineSliderNoCropIcon icon awesome-user" />
       <div className={"verticalBar"} />
       <div
         className={"rc-slider-handle dummySlider"}
@@ -56,6 +58,7 @@ const InlineSlider = props => {
           });
         }}
       />
+      <div className="inlineSliderCropIcon icon awesome-user" />
     </div>
   );
 };
