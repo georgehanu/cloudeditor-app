@@ -17,8 +17,7 @@
   /* should depend also on pagination height */
 }
 
-.showPrintPreview .projectPreviewContainer,
-.pageSelectorNormal .projectPreviewContainer {
+.showPrintPreview .projectPreviewContainer {
   display: block;
   padding-bottom: 242px; /*185px;*/
 }
@@ -29,6 +28,10 @@
 
 .pageSelectorMinimized .projectPreviewContainer {
   padding-bottom: 107px;
+}
+
+.pageSelectorNormal .projectPreviewContainer {
+  padding-bottom: 242px;
 }
 
 .projectPreviewContainer {

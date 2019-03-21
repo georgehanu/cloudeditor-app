@@ -21,7 +21,7 @@
   height: 100%;
   display: block;
   margin-bottom: -1px;
-  line-height: 35px;
+
   float: left !important;
 }
 
@@ -167,4 +167,8 @@
 
 .projectMenuContainer .projectMenuButtonLink .projectMenuButton .buttonIcon {
   display: none;
+}
+
+.projectMenuContainer .projectMenuButtonContainer button {
+  line-height: 35px;
 }
