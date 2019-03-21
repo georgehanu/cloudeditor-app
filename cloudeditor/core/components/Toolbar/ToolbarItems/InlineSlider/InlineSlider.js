@@ -16,7 +16,27 @@ const InlineSlider = props => {
   return (
     //printqicon-user-tie
     <div className={parentClassName}>
-      <div className="inlineSliderNoCropIcon icon awesome-user" />
+      <div
+        className="inlineSliderNoCropIcon icon awesome-user"
+        onMouseDown={() => {
+          props.ToolbarHandler({
+            mainHandler: true,
+            payloadMainHandler: {
+              value: { value: -1, activeAction: 2 },
+              type: props.type
+            }
+          });
+        }}
+        onMouseUp={() => {
+          props.ToolbarHandler({
+            mainHandler: true,
+            payloadMainHandler: {
+              value: { value: -1, activeAction: 0 },
+              type: props.type
+            }
+          });
+        }}
+      />
       <div className={"verticalBar"} />
       <div
         className={"rc-slider-handle dummySlider"}
@@ -58,7 +78,37 @@ const InlineSlider = props => {
           });
         }}
       />
-      <div className="inlineSliderCropIcon icon awesome-user" />
+      <div
+        className="inlineSliderCropIcon icon awesome-user"
+        onMouseDown={() => {
+          let value = props.defaultValue;
+          if (props.defaultValue + 1 <= 100) {
+            value = props.defaultValue + 1;
+          }
+
+          props.ToolbarHandler({
+            mainHandler: true,
+            payloadMainHandler: {
+              value: { value, activeAction: 2 },
+              type: props.type
+            }
+          });
+        }}
+        onMouseUp={() => {
+          let value = props.defaultValue;
+          if (props.defaultValue + 1 <= 100) {
+            value = props.defaultValue + 1;
+          }
+
+          props.ToolbarHandler({
+            mainHandler: true,
+            payloadMainHandler: {
+              value: { value, activeAction: 0 },
+              type: props.type
+            }
+          });
+        }}
+      />
     </div>
   );
 };

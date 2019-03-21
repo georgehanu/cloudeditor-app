@@ -895,7 +895,8 @@ const getEmptyProductInformation = cfg => {
       contentCode: null,
       coverCode: null,
       no_page_cover: 0,
-      pages_codes: []
+      pages_codes: [],
+      displayedOptions: []
     },
     cfg || {}
   );

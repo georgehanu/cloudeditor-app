@@ -27,6 +27,7 @@ const {
   DELETE_PAGE,
   PROJ_SHOW_POPUP
 } = require("../actionTypes/project");
+const { CHANGE_OPTIONS } = require("../actionTypes/productInformation");
 const {
   START_GLOBAL_LOADING,
   STOP_GLOBAL_LOADING
@@ -297,6 +298,26 @@ module.exports = {
             }
             print_options[contentCode]["pages"][0] = page_code;
           }
+          const serverData = {
+            product: productInformation.productId,
+            related_product: false,
+            qty: productInformation.qty,
+            print_options: print_options,
+            options: productInformation.productOptions.options
+          };
+          calculatePrice(serverData, obs);
+        })
+      )
+    ),
+  onEpiceChangeOptionsPrice: (action$, state$) =>
+    action$.pipe(
+      ofType(CHANGE_OPTIONS),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          const productInformation = { ...state$.value.productInformation };
+          let print_options = {
+            ...productInformation.productOptions.print_options
+          };
           const serverData = {
             product: productInformation.productId,
             related_product: false,

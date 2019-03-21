@@ -1208,6 +1208,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   position: absolute;
   left: -45px;
   top: 14px;
+  cursor: pointer;
 }
 
 .InlineSlider .inlineSliderCropIcon {
@@ -1215,4 +1216,5 @@ input[type="range"]::-webkit-slider-runnable-track {
   right: -30px;
   font-size: 21px;
   top: 10px;
+  cursor: pointer;
 }

@@ -2,6 +2,7 @@ const React = require("react");
 const { useMemo, useCallback, useState, useRef, useEffect } = require("react");
 const { escape, unescape } = require("underscore");
 const { withNamespaces } = require("react-i18next");
+const uuidv4 = require("uuid/v4");
 
 const usePrevious = require("../../../../../hooks/usePrevious");
 const DummyText = require("./DummyText");
@@ -52,6 +53,7 @@ const Text = props => {
   let contentEditable = false;
   if (props.contentEditable | 0) contentEditable = true;
   const [content, setContent] = useState(props.value);
+  const [renderId, setRenderId] = useState(uuidv4());
 
   const _editableRef = useRef(null);
 
@@ -152,9 +154,7 @@ const Text = props => {
   );
 
   useEffect(() => {
-    if (contentEditable) {
-      _checkDim();
-    }
+    if (contentEditable) _checkDim();
   }, [
     content,
     value,
@@ -165,6 +165,10 @@ const Text = props => {
     realHeight,
     lineHeight
   ]);
+  useEffect(() => {
+    setContent(value);
+    setRenderId(uuidv4());
+  }, [value]);
 
   const onChangeHandler = result => {
     setContent(result.text);
@@ -180,12 +184,14 @@ const Text = props => {
   };
 
   const onBlurHandler = result => {
-    onUpdateProps({
-      id: id,
-      props: {
-        value: content
-      }
-    });
+    if (content !== props.value)
+      onUpdateProps({
+        id: id,
+        props: {
+          value: content,
+          renderId: uuidv4()
+        }
+      });
   };
 
   const getInnerRef = ref => {
@@ -199,6 +205,7 @@ const Text = props => {
     <ContentEditable
       id={id}
       innerRef={getInnerRef}
+      renderId={renderId}
       content={content}
       placeHolder={props.t(placeHolder)}
       active={active}

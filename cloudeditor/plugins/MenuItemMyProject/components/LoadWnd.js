@@ -113,6 +113,8 @@ class LoadWnd extends React.Component {
           title={saTitle}
           text={saText}
           showCancelButton={true}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
           onConfirm={() => this.confirmtSweetAlert()}
           onCancel={() => this.setState({ showAlert: false })}
         />

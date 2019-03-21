@@ -145,6 +145,8 @@ class Gallery extends React.PureComponent {
           title={this.props.t("Warning")}
           text={this.props.t("Are you sure you want to delete ?")}
           showCancelButton={true}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
           onConfirm={() => this.deleteItemHandler()}
           onCancel={() => this.setState({ showAlert: false })}
         />

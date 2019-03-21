@@ -71,6 +71,8 @@ class Layouts extends React.Component {
             this.props.t("All changes for this page will be overwritten")
           }
           showCancelButton={true}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
           onConfirm={() => this.loadLayout()}
           onCancel={() => this.setState({ showAlert: false })}
         />

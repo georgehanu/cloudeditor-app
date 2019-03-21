@@ -12,7 +12,7 @@ class ToolbarGalleryPreviewWnd extends React.Component {
       mainHandler: true,
       payloadMainHandler: {
         type: this.props.type,
-        value: { ...imageId, subType: "image" }
+        value: { ...imageId, subType: "image", leftSlider: 0 }
       }
     });
   };

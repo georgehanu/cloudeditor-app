@@ -21,7 +21,7 @@ class Tinymce extends React.PureComponent {
 
     this.pasteContent =
       '<table class="dummyTable" style="font-size:15px;text-align:center"><tbody><tr><td>' +
-      this.props.t("Paste Your Table Here") +
+      props.t("Paste Your Table Here") +
       "</td></tr></tbody></table>";
   }
 

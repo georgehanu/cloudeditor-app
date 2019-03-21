@@ -8,7 +8,8 @@ const initialState = ProjectUtils.getEmptyProductInformation(
 );
 const {
   CALCULATE_PRICE,
-  CALCULATE_PRICE_INITIAL
+  CALCULATE_PRICE_INITIAL,
+  CHANGE_OPTIONS
 } = require("../actionTypes/productInformation");
 const calculatePrice = (state, payload) => {
   return {
@@ -26,6 +27,28 @@ const calculatePriceInital = (state, payload) => {
     total_price: payload.total_price
   };
 };
+
+const changeOptions = (state, payload) => {
+  const print_options = { ...state.productOptions.print_options };
+  let { qty } = state;
+  if (payload.code === "quantity") {
+    const splitVals = payload.value.split("_");
+    if (splitVals.length === 2) {
+      qty = parseInt(splitVals[1]);
+    }
+  } else {
+    print_options[state.contentCode][payload.code][0] = payload.value;
+    print_options[state.coverCode][payload.code][0] = payload.value;
+  }
+  return {
+    ...state,
+    qty,
+    productOptions: {
+      ...state.productOptions,
+      print_options: print_options
+    }
+  };
+};
 module.exports = handleActions(
   {
     [CALCULATE_PRICE]: (state, action) => {
@@ -33,6 +56,9 @@ module.exports = handleActions(
     },
     [CALCULATE_PRICE_INITIAL]: (state, action) => {
       return calculatePriceInital(state, action.payload);
+    },
+    [CHANGE_OPTIONS]: (state, action) => {
+      return changeOptions(state, action.payload);
     }
   },
   initialState
