@@ -7,7 +7,10 @@ const GalleryToolbarPreview = require("./GalleryToolbarPreview");
 const LazyLoad = require("react-lazy-load").default;
 const { connect } = require("react-redux");
 const { pathOr } = require("ramda");
-const { removeAssetFromGalleryStart } = require("../../stores/actions/assets");
+const {
+  removeAssetFromGalleryStart,
+  hideError
+} = require("../../stores/actions/assets");
 const {
   assetsLayoutForActivePageSelector
 } = require("../../stores/selectors/assets");
@@ -150,6 +153,18 @@ class Gallery extends React.PureComponent {
           onConfirm={() => this.deleteItemHandler()}
           onCancel={() => this.setState({ showAlert: false })}
         />
+        <SweetAlert
+          show={this.props.showUploadAlert}
+          type="warning"
+          title={this.props.t("Warning")}
+          text={this.props.t(this.props.uploadMessage)}
+          showCancelButton={false}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
+          onConfirm={() =>
+            this.props.onHideErrorAssetHandler({ type: this.props.type })
+          }
+        />
         {this.props.loadingDelete && (
           <div
             className={
@@ -185,6 +200,12 @@ const getLoadingByType = (state, props) => {
 const getLoadingNrByType = (state, props) => {
   return pathOr(0, [props.type, "loadingFiles"], state.assets);
 };
+const getAlertMessage = (state, props) => {
+  return pathOr(0, [props.type, "errorMessage"], state.assets);
+};
+const getShowAlert = (state, props) => {
+  return pathOr(0, [props.type, "showAlert"], state.assets);
+};
 
 const getLoadingDeleteByType = (state, props) => {
   if (props.fromToolbar) {
@@ -198,13 +219,16 @@ const mapStateToProps = (state, props) => {
     items: getItemsByType(state, props),
     loading: getLoadingByType(state, props),
     loadingNr: getLoadingNrByType(state, props),
-    loadingDelete: getLoadingDeleteByType(state, props)
+    loadingDelete: getLoadingDeleteByType(state, props),
+    showUploadAlert: getShowAlert(state, props),
+    uploadMessage: getAlertMessage(state, props)
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onDeleteAssetHandler: payload =>
-      dispatch(removeAssetFromGalleryStart(payload))
+      dispatch(removeAssetFromGalleryStart(payload)),
+    onHideErrorAssetHandler: payload => dispatch(hideError(payload))
   };
 };
 

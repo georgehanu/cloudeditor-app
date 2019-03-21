@@ -104,12 +104,15 @@ const getPreview = (state$, obs) => {
       "personalize/index/loadFonts/id/" +
       state$.value.productInformation.templateId
   };
+  const activePageId = state$.value.project.activePage;
+  const page = state$.value.project.pagesOrder.indexOf(activePageId) + 1;
   const serverData = {
     project,
     productId: state$.value.productInformation.productId,
     templateId: state$.value.productInformation.templateId,
     selection: state$.value.selection,
-    fonts: state$.value.ui.fonts
+    fonts: state$.value.ui.fonts,
+    page
   };
   axios
     .post(PRINT_PREVIEW_URL, qs.stringify(serverData))
@@ -123,7 +126,7 @@ const getPreview = (state$, obs) => {
           pageUrl = head(data.data.image);
         } else {
           pageUrl = data.data.image;
-          imageUrls[0] = data.data.image;
+          imageUrls[page - 1] = data.data.image;
         }
         obs.next({
           type: PREVIEW_LOAD_PAGE_SUCCESS,

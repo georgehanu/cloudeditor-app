@@ -78,7 +78,7 @@ class ProjectHeader extends React.Component {
   showPrintPreview = () => {
     const oldPreview = this.state.preview;
     if (oldPreview === false) {
-      this.props.changePage({ page_id: this.props.pagesOrder[0] });
+      //  this.props.changePage({ page_id: this.props.pagesOrder[0] });
       this.props.previewLoadPage(0);
     } else {
       this.props.previewDisableMode();
