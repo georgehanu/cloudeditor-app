@@ -113,6 +113,7 @@
   color: #737373;
   vertical-align: middle;
   float: left;
+  line-height: 35px;
 }
 
 .submenuItemHeaderFooterClose {
