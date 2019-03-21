@@ -29,6 +29,7 @@ class Settings extends React.Component {
         <Selection
           label={this.props.t(this.props.fields[el].label)}
           name={el}
+          key={el}
           value={
             el === "quantity"
               ? "qty_" + this.props.qty

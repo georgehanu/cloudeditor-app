@@ -354,6 +354,13 @@ class ImageBlock extends React.Component {
           height: canvasHeight
         });
 
+        this.refs.cropper.setData({
+          x: cropX,
+          y: cropY,
+          width: cropW,
+          height: cropH
+        });
+
         // this.refs.cropper.zoomTo(this.props.leftSlider / 100);
       }
     }

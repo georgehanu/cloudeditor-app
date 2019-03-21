@@ -64,7 +64,9 @@ const getPagesToRestore = (state, action) => {
   };
 };
 const undoRedoMiddleware = createUndoMiddleware({
-  getViewState: state => state.project,
+  getViewState: state => {
+    return { ...state.project };
+  },
   revertingActions: {
     UPDATE_OBJECT_PROPS: {
       action: (_, payload) => updateObjectProps(payload),
