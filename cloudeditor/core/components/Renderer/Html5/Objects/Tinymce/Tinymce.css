@@ -76,7 +76,7 @@
   box-shadow: none;
   border: none;
   height: 30px !important;
-  z-index: 500000 !important;
+  z-index: 500 !important;
 }
 
 body.sidebarContainerExpand
