@@ -1,4 +1,4 @@
-const { createUndoMiddleware } = require("redux-undo-redo");
+const { createUndoMiddleware } = require("@intactile/redux-undo-redo");
 const {
   updateObjectProps,
   addObject,
@@ -25,6 +25,10 @@ const getObject = (state, action) => {
     ])
   };
 };
+const {
+  UPDATE_OBJECT_PROPS_NO_UNDO_REDO,
+  UPDATE_OBJECT_PROPS
+} = require("../../../core/stores/actionTypes/project");
 const getPage = (state, action) => {
   return {
     page_id: pathOr("", ["project", "activePage"], { ...state })
@@ -68,11 +72,21 @@ const undoRedoMiddleware = createUndoMiddleware({
     return { ...state.project };
   },
   revertingActions: {
-    UPDATE_OBJECT_PROPS: {
+    [UPDATE_OBJECT_PROPS]: {
       action: (_, payload) => updateObjectProps(payload),
-      meta: (state, action) => {
+      createArgs: (state, action) => {
         return getObject(state, action);
-      }
+      },
+      groupWithPrevious: (action, previousAction) =>
+        previousAction.type === UPDATE_OBJECT_PROPS_NO_UNDO_REDO
+    },
+    [UPDATE_OBJECT_PROPS_NO_UNDO_REDO]: {
+      action: (_, payload) => updateObjectProps(payload),
+      createArgs: (state, action) => {
+        return getObject(state, action);
+      },
+      groupWithPrevious: (action, previousAction) =>
+        action.type === previousAction.type
     },
     DELETE_OBJ: {
       action: (_, payload) => addObject(payload.props),

@@ -4,7 +4,7 @@ const { mergeMap } = require("rxjs/operators");
 const axios = require("../../axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
-const { actions } = require("redux-undo-redo");
+const { actions } = require("@intactile/redux-undo-redo");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
