@@ -37,6 +37,7 @@ const { changePage } = require("../../core/stores/actions/project");
 
 const LoginWnd = require("../MenuItemMyProject/components/LoginWnd");
 const SaveWnd = require("../MenuItemMyProject/components/SaveWnd");
+const RegisterWnd = require("../MenuItemMyProject/components/RegisterWnd");
 
 const { authLoggedInSelector } = require("../ProjectMenu/store/selectors");
 
@@ -46,6 +47,7 @@ class ProjectHeader extends React.Component {
     preview: false,
     showLoginWnd: false,
     showSaveWnd: false,
+    showRegisterWnd: false,
     loggedIn: false,
     showAddToCartError: false
   };
@@ -66,6 +68,7 @@ class ProjectHeader extends React.Component {
       return {
         ...prevState,
         showLoginWnd: false,
+        showRegisterWnd: false,
         loggedIn: true
       };
     }
@@ -157,7 +160,21 @@ class ProjectHeader extends React.Component {
 
   closeWnd = () => {
     this.props.addContainerClasses("ProjectHeader", [], false);
-    this.setState({ showLoginWnd: false, showSaveWnd: false });
+    this.setState({
+      showLoginWnd: false,
+      showSaveWnd: false,
+      showRegisterWnd: false
+    });
+  };
+
+  showRegisterWnd = () => {
+    this.closeWnd();
+    this.props.addContainerClasses(
+      "ProjectHeader",
+      ["projectHeaderShowModal"],
+      false
+    );
+    this.setState({ showRegisterWnd: true });
   };
 
   render() {
@@ -185,10 +202,17 @@ class ProjectHeader extends React.Component {
     return (
       <React.Fragment>
         {this.state.showLoginWnd && (
-          <LoginWnd show={true} modalClosed={this.closeWnd} />
+          <LoginWnd
+            show={true}
+            modalClosed={this.closeWnd}
+            register={this.showRegisterWnd}
+          />
         )}
         {this.state.showSaveWnd && (
           <SaveWnd show={true} modalClosed={this.closeWnd} />
+        )}
+        {this.state.showRegisterWnd && (
+          <RegisterWnd show={true} modalClosed={this.closeWnd} />
         )}
 
         <div className="projectHeaderContainer">

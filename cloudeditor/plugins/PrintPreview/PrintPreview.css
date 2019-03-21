@@ -2,7 +2,7 @@
   position: relative;
   padding-left: 100px;
   width: 100%;
-  padding-top: 106px;
+  padding-top: 110px;
   height: 100%;
   background-color: white;
   float: left;
@@ -17,21 +17,18 @@
   /* should depend also on pagination height */
 }
 
-.showPrintPreview .projectPreviewContainer {
+.showPrintPreview .projectPreviewContainer,
+.pageSelectorNormal .projectPreviewContainer {
   display: block;
-  padding-bottom: 185px;
+  padding-bottom: 242px; /*185px;*/
 }
 
 .pageSelectorExtended .projectPreviewContainer {
-  padding-bottom: 340px;
+  padding-bottom: 381px;
 }
 
 .pageSelectorMinimized .projectPreviewContainer {
-  padding-bottom: 65px;
-}
-
-.pageSelectorNormal .projectPreviewContainer {
-  padding-bottom: 150px;
+  padding-bottom: 107px;
 }
 
 .projectPreviewContainer {

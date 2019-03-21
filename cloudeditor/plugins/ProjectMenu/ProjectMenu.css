@@ -3,7 +3,7 @@
   width: 100%;
   position: absolute;
   top: 66px;
-  z-index: 1000;
+  z-index: 1000; /*1010*/
 }
 
 .projectMenuContainer .projectMenuContainerUl {
@@ -98,7 +98,6 @@
 }
 
 .projectMenuContainer .projectMenuItem {
-  padding-bottom: 20px;
   position: absolute;
   z-index: 100;
   width: 200px;
@@ -111,8 +110,13 @@
   font-family: "PORTO", Arial, Helvetica, sans-serif;
   font-size: 13px;
   color: #666666;
-  padding: 0 0 20px 0;
+  padding: 0 0 5px 0;
   top: 37px;
+}
+
+.projectMenuItem .submenuItem {
+  height: 20px;
+  line-height: 20px;
 }
 
 .projectMenuContainer .projectMenuItemContent {

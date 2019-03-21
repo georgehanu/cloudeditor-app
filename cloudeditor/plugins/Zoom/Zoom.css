@@ -60,7 +60,7 @@
 
 .zoom {
   position: absolute;
-  bottom: 40px;
+  bottom: 0px;
 }
 
 #sidebar-wrapper-container .zoom button {

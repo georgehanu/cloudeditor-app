@@ -69,7 +69,7 @@ const MenuItemTablePlugin = connect(
 module.exports = {
   MenuItemTable: assign(MenuItemTablePlugin, {
     ProjectMenu: {
-      position: 7,
+      position: 6,
       priority: 1,
       text: "Table insert",
       embedButtonPlugin: true,

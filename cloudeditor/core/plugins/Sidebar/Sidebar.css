@@ -358,13 +358,13 @@
   display: none;
 }
 .pageSelectorMinimized .canvasContainer {
-  padding-bottom: 120px;
+  padding-bottom: 110px;
 }
 .pageSelectorNormal .canvasContainer {
-  padding-bottom: 270px;
+  padding-bottom: 243px;
 }
 .pageSelectorExtended .canvasContainer {
-  padding-bottom: 400px;
+  padding-bottom: 382px;
 }
 .pageSelectorExtended .pageSelectorContainer .canvasContainer,
 .pageSelectorNormal .pageSelectorContainer .canvasContainer,

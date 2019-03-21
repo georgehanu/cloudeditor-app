@@ -5,6 +5,10 @@
   z-index: 550;
   position: absolute;
   bottom: 0;
-  z-index: 1200;
+  z-index: 600;
   border-top: 1px solid #dcdee1;
+}
+
+.projectHeaderShowModal .projectFooterContainer {
+  z-index: 590;
 }

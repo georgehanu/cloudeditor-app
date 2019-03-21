@@ -32,12 +32,11 @@
       "MenuItemManual",
       "MenuItemHeaderFooter",
       "MenuItemTable",
+      "ProjectFooter",
       "HelperLines",
       "Background",
-
       "GraphicElements",
-      "Settings",
-      "ProjectFooter"
+      "Settings"
     ]
   },
   "Layout": {

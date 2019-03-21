@@ -57,7 +57,7 @@
   transition: width 0.2s ease;
   float: left;
   z-index: 11;
-  padding-bottom: 40px;
+  padding-bottom: 0px;
 }
 
 #sidebar-wrapper-container ul {
@@ -375,11 +375,11 @@
 }
 
 .pageSelector .pageHeaderButtonMinimize {
-  /*margin-left: 12px;*/
+  margin-left: 12px;
 }
 
 #container.pageSelectorMinimized .pageSelector .pageHeaderButtonExtend {
-  top: 1px;
+  top: -12px;
 }
 
 .pageSelector .pageHeaderButtonExtend .icon,
