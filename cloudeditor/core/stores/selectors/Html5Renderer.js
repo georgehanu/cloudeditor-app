@@ -143,13 +143,13 @@ const displayedPageSelector = groupSelector => {
 
       const offset = { left: 0, top: 0 };
       forEach(page => {
-        innerPages[page] = merge(pages[page], config);
+        innerPages[page] = merge(config, pages[page]);
         innerPages[page]["boxes"] = {
           trimbox: merge(
-            pathOr({}, [page, "boxes", "trimbox"], pages),
-            trimbox
+            trimbox,
+            pathOr({}, [page, "boxes", "trimbox"], pages)
           ),
-          bleed: merge(pathOr({}, [page, "boxes", "bleed"], pages), bleed)
+          bleed: merge(bleed, pathOr({}, [page, "boxes", "bleed"], pages))
         };
         innerPages[page]["offset"] = { ...offset };
         offset["left"] += innerPages[page]["width"];

@@ -1,4 +1,4 @@
-module.exports = (plugins, requires, localConfig) => {
+module.exports = (plugins, requires, localConfig, i18n, initialActions) => {
   const startApp = () => {
     const React = require("react");
     const ReactDOM = require("react-dom");
@@ -21,7 +21,9 @@ module.exports = (plugins, requires, localConfig) => {
     const editorConfig = {
       store,
       plugins: assign(PluginsUtils.getPlugins(plugins), { requires }),
-      pluginsConfig: ConfigUtils.getConfigProp("plugins")
+      pluginsConfig: ConfigUtils.getConfigProp("plugins"),
+      initialActions,
+      initialStoreActions: []
     };
 
     ReactDOM.render(

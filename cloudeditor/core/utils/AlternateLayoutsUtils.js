@@ -6,6 +6,7 @@ const applyLiquidRules = payloadData => {
       height: parseFloat(payloadData.realDimension.height)
     },
     alternateLayout = payloadData.layout;
+  return { ...alternateLayout };
   if (!isEmpty(alternateLayout.pages)) {
     forEachObjIndexed((pageData, pKey) => {
       let scale = Math.min(
@@ -13,7 +14,7 @@ const applyLiquidRules = payloadData => {
         realProductDim.width / pageData.width
       );
       switch (pageData.rule) {
-        case "scale":
+        case "SCALE":
           if (!isEmpty(pageData.objectsIds)) {
             forEach(blockID => {
               if (alternateLayout.objects[blockID]) {
@@ -71,7 +72,7 @@ const applyLiquidRules = payloadData => {
           break;
         case "objectBased":
         case "OBJECT_BASED":
-        case "guideBased":
+        case "GUIDE_BASED":
           if (!isEmpty(pageData.objectsIds)) {
             forEach(blockID => {
               if (alternateLayout.objects[blockID]) {
@@ -82,11 +83,11 @@ const applyLiquidRules = payloadData => {
 
                 if (
                   alternateLayout.objects[blockID].hasOwnProperty(
-                    "rule_proprieties"
+                    "rule_properties"
                   )
                 ) {
                   if (
-                    alternateLayout.objects[blockID].rule_proprieties[
+                    alternateLayout.objects[blockID].rule_properties[
                       "widthResizable"
                     ]
                   ) {
@@ -95,10 +96,10 @@ const applyLiquidRules = payloadData => {
                       alternateLayout.objects[blockID].width * scaleWidth;
 
                     if (
-                      alternateLayout.objects[blockID].rule_proprieties[
+                      alternateLayout.objects[blockID].rule_properties[
                         "leftMarginFixed"
                       ] &&
-                      alternateLayout.objects[blockID].rule_proprieties[
+                      alternateLayout.objects[blockID].rule_properties[
                         "rightMarginFixed"
                       ]
                     ) {
@@ -108,7 +109,7 @@ const applyLiquidRules = payloadData => {
                     }
                   }
                   if (
-                    alternateLayout.objects[blockID].rule_proprieties[
+                    alternateLayout.objects[blockID].rule_properties[
                       "heightResizable"
                     ]
                   ) {
@@ -117,10 +118,10 @@ const applyLiquidRules = payloadData => {
                       alternateLayout.objects[blockID].height * scaleHeight;
 
                     if (
-                      alternateLayout.objects[blockID].rule_proprieties[
+                      alternateLayout.objects[blockID].rule_properties[
                         "topMarginFixed"
                       ] &&
-                      alternateLayout.objects[blockID].rule_proprieties[
+                      alternateLayout.objects[blockID].rule_properties[
                         "topMarginFixed"
                       ]
                     ) {
@@ -131,7 +132,7 @@ const applyLiquidRules = payloadData => {
                   }
 
                   if (
-                    !alternateLayout.objects[blockID].rule_proprieties[
+                    !alternateLayout.objects[blockID].rule_properties[
                       "topMarginFixed"
                     ]
                   ) {
@@ -141,7 +142,7 @@ const applyLiquidRules = payloadData => {
                       (newHeight - alternateLayout.objects[blockID].height);
                   }
                   if (
-                    !alternateLayout.objects[blockID].rule_proprieties[
+                    !alternateLayout.objects[blockID].rule_properties[
                       "leftMarginFixed"
                     ]
                   ) {
@@ -151,7 +152,7 @@ const applyLiquidRules = payloadData => {
                       (newWidth - alternateLayout.objects[blockID].width);
                   }
                   if (
-                    alternateLayout.objects[blockID].rule_proprieties[
+                    alternateLayout.objects[blockID].rule_properties[
                       "rightMarginFixed"
                     ]
                   ) {
@@ -161,7 +162,7 @@ const applyLiquidRules = payloadData => {
                       (newWidth - alternateLayout.objects[blockID].width);
                   }
                   if (
-                    alternateLayout.objects[blockID].rule_proprieties[
+                    alternateLayout.objects[blockID].rule_properties[
                       "bottomMarginFixed"
                     ]
                   ) {

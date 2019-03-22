@@ -38,9 +38,9 @@ const {
   DAG_UPLOAD_IMAGE_SUCCESS
 } = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
 
-const {
+/* const {
   applyLiquidRules
-} = require("../../../core/utils/AlternateLayoutsUtils");
+} = require("../../../core/utils/AlternateLayoutsUtils"); */
 
 const changeProjectTitle = (state, action) => {
   return {
@@ -162,14 +162,14 @@ const removeActionSelection = (state, payload) => {
 
 const config = ConfigUtils.getDefaults();
 
-const project = applyLiquidRules({
+/* const project = applyLiquidRules({
   layout: config.project,
   realDimension: config.realDimension
-});
+}); */
 const emptyProject = ProjectUtils.getDGProject({
-  pages: project.pages,
-  pagesOrder: project.pagesOrder,
-  objects: project.objects,
+  pages: config.project.pages,
+  pagesOrder: config.project.pagesOrder,
+  objects: config.project.objects,
   title: config.title,
   description: config.description
 });

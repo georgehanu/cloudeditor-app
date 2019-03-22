@@ -157,10 +157,10 @@ const getObjectsDefaults = cfg => {
 const getDocumentDefaults = cfg => {
   const defaults = merge(
     {
-      facingPages: true,
+      facingPages: false,
       singleFirstLastPage: true,
       groupSize: 2,
-      includeBoxes: true,
+      includeBoxes: false,
       showTrimbox: true,
       predefinedGroups: [2, 3], //or false
       groups: {
