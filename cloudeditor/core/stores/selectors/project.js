@@ -291,7 +291,7 @@ const dagImageSelection = createSelector(
 
     const pageObjects = pick(selectedObjectsIds, objects);
     const imageIndex = Object.keys(pageObjects).find(el => {
-      return pageObjects[el].type === "image";
+      return pageObjects[el].type === "image" && pageObjects[el].dynamicImage;
     });
 
     return imageIndex === undefined ? null : pageObjects[imageIndex];

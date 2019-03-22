@@ -2,7 +2,7 @@ const React = require("react");
 
 const Input = props => {
   const className = "InputLabelContainer";
-  const maxLength = props.maxLength ? props.maxLength : 100;
+  const maxLength = props.maxLength ? props.maxLength : 999999;
   const inputType = props.type ? props.type : "text";
   return (
     <div className={props.class}>

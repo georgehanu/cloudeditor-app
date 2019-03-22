@@ -264,11 +264,11 @@ const getDGVariables = cfg => {
     ...state,
     variables: {
       ...state.variables,
-      [jarNameVar.name]: jarNameVar,
+      /*[jarNameVar.name]: jarNameVar,
       [jarTypeVar.name]: jarTypeVar,
       [tagLine1Var.name]: tagLine1Var,
       [tagLine2Var.name]: tagLine2Var,
-      [batchDateVar.name]: batchDateVar,
+      [batchDateVar.name]: batchDateVar,*/
       [color1.name]: color1,
       [color2.name]: color2,
       [color3.name]: color3,
