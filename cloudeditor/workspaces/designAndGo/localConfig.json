@@ -24,11 +24,11 @@
     }
   },
   "translations": {
-    "baseUrl": "https://weprint-poc.avery.co.uk/external/public/default/designandgo/",
+    "baseUrl": "http://work.cloudlab.at:9012/ig/avery-external/public/default/designandgo/",
     "publicPath": "",
     "basePath": "locales"
   },
-  "baseUrl": "https://weprint-poc.avery.co.uk/external/public/default/designandgo/",
+  "baseUrl": "http://work.cloudlab.at:9012/ig/avery-external/public/default/designandgo/",
   "publicPath": "",
   "assetsRelativePath": "/personalization/"
 }

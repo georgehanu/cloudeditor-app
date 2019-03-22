@@ -1305,7 +1305,7 @@ section.dropzone {
   }
 
   .renderContainer {
-    display: none;
+    left: -6000px;
   }
 }
 
