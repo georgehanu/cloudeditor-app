@@ -436,6 +436,11 @@ fabric.util.object.extend(fabric.Image.prototype, {
       canvasW,
       rBlockRatio = imageMargins.width / imageMargins.height,
       imageRatio = this._element.width / this._element.height;
+    let ratioImgBlock = Math.min(
+      this.width / this._element.width,
+      this.height / this._element.height
+    );
+
     if (cw == 0 || ch == 0) {
       switch (this.fitMethod) {
         case "contain":
@@ -452,10 +457,12 @@ fabric.util.object.extend(fabric.Image.prototype, {
               canvasX = -this.width / 2 + (this.width - canvasW) * 0.5;
               canvasY = -this.height / 2 + (this.height - canvasH) * 0.5;
             }
-            cx = 0;
-            cy = 0;
-            cw = this._element.width;
-            ch = this._element.height;
+            var retX = canvasW / this._element.width;
+            var retY = canvasH / this._element.height;
+            cx = (-1 * (this.width - canvasW)) / 2 / retX;
+            cy = (-1 * (this.height - canvasH)) / 2 / retY;
+            cw = this.width / retX;
+            ch = this.height / retY;
           }
           break;
         case "cover":
@@ -564,18 +571,34 @@ fabric.Image.prototype._renderFill = (function(_renderFill) {
     ) {
       this._setViewBox({});
     }
-    elementToDraw &&
-      ctx.drawImage(
-        elementToDraw,
-        this.cropX,
-        this.cropY,
-        this.cropW,
-        this.cropH,
-        this.canvasX,
-        this.canvasY,
-        this.canvasW,
-        this.canvasH
-      );
+
+    if (this.fitMethod == "contain") {
+      elementToDraw &&
+        ctx.drawImage(
+          elementToDraw,
+          this.cropX,
+          this.cropY,
+          this.cropW,
+          this.cropH,
+          -this.width / 2,
+          -this.height / 2,
+          this.width,
+          this.height
+        );
+    } else {
+      elementToDraw &&
+        ctx.drawImage(
+          elementToDraw,
+          this.cropX,
+          this.cropY,
+          this.cropW,
+          this.cropH,
+          this.canvasX,
+          this.canvasY,
+          this.canvasW,
+          this.canvasH
+        );
+    }
   };
 })(fabric.Image.prototype._renderFill);
 fabric.Image.prototype._initConfig = (function(_initConfig) {

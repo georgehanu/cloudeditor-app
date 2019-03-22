@@ -355,7 +355,7 @@ class CropImageBlock extends React.Component {
           guides={false}
           responsive={true}
           dragMode={"move"}
-          viewMode={1}
+          viewMode={0}
           resizable={false}
           cropBoxResizable={false}
           cropBoxMovable={false}
