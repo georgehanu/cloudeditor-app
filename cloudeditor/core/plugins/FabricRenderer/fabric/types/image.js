@@ -1,4 +1,4 @@
-const { shape, number, arrayOf } = require("prop-types");
+const { shape, number, arrayOf, string } = require("prop-types");
 const { merge } = require("ramda");
 
 const { objectTypes, objectDefaults } = require("./object");
@@ -6,8 +6,8 @@ const { objectTypes, objectDefaults } = require("./object");
 const imageTypes = arrayOf(
   shape(
     merge(objectTypes, {
-      type: "image",
-      fitMethod: "cover",
+      type: string,
+      fitMethod: string,
       cropX: number,
       cropY: number,
       cropW: number,

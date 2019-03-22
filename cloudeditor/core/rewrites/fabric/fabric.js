@@ -556,7 +556,14 @@ fabric.Image.prototype._renderFill = (function(_renderFill) {
     if (cotrast_brightness) {
       ctx.filter = cotrast_brightness;
     }
-
+    if (
+      this.cropX === 0 &&
+      this.cropY === 0 &&
+      this.cropW === 0 &&
+      this.cropH === 0
+    ) {
+      this._setViewBox({});
+    }
     elementToDraw &&
       ctx.drawImage(
         elementToDraw,

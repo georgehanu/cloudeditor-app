@@ -74,7 +74,9 @@ class PluginsContainer extends React.Component {
     return this.props.store;
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("plugins loaded");
+  }
   componentDidUpdate() {}
 
   render() {

@@ -46,7 +46,6 @@ class Page extends React.Component {
     } = this.props;
 
     const { pageOffsetX, pageOffsetY } = centerPage(this.props);
-
     return (
       <React.Fragment>
         <Fabric
