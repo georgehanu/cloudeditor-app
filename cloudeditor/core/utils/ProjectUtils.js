@@ -843,32 +843,38 @@ const getEmptyAssets = cfg => {
     {
       layout: {
         loading: false,
-        items: []
+        items: [],
+        showAlert: false
       },
       pdf: {
         loading: false,
         loadingDelete: false,
         loadingFiles: 0,
-        uploadedFiles: []
+        uploadedFiles: [],
+        showAlert: false
       },
       image: {
         loading: false,
         loadingDelete: false,
         loadingFiles: 0,
-        uploadedFiles: []
+        uploadedFiles: [],
+        showAlert: false
       },
       graphics: {
         loading: false,
-        items: []
+        items: [],
+        showAlert: false
       },
       layout: {
         loading: false,
         items: [],
-        categories: []
+        categories: [],
+        showAlert: false
       },
       footerheader: {
         loading: false,
-        items: []
+        items: [],
+        showAlert: false
       }
     },
     cfg || {}

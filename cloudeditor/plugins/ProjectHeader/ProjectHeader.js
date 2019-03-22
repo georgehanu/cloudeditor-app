@@ -133,7 +133,9 @@ class ProjectHeader extends React.Component {
       .then(resp => resp.data)
       .then(data => {
         if (data) {
-          this.props.calculatePriceInitial({ total_price: data.gross_price });
+          this.props.calculatePriceInitial({
+            total_price: data.total_gross_price
+          });
         }
         this.props.stopGlobalLoading();
       })

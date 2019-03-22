@@ -153,22 +153,28 @@ const Text = props => {
     ]
   );
 
-  useEffect(() => {
-    if (contentEditable) _checkDim();
-  }, [
-    content,
-    value,
-    fontFamily,
-    fontSize,
-    bold,
-    realWidth,
-    realHeight,
-    lineHeight
-  ]);
-  useEffect(() => {
-    setContent(value);
-    setRenderId(uuidv4());
-  }, [value]);
+  useEffect(
+    () => {
+      if (contentEditable) _checkDim();
+    },
+    [
+      content,
+      value,
+      fontFamily,
+      fontSize,
+      bold,
+      realWidth,
+      realHeight,
+      lineHeight
+    ]
+  );
+  useEffect(
+    () => {
+      setContent(value);
+      setRenderId(uuidv4());
+    },
+    [value]
+  );
 
   const onChangeHandler = result => {
     setContent(result.text);
