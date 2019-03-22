@@ -55,7 +55,10 @@ class SliderCarousel extends React.Component {
   }
 
   componentDidUpdate(previousProps, previousState) {
-    if (previousProps.renderId !== this.props.renderId) {
+    if (
+      previousProps.renderId !== this.props.renderId ||
+      previousProps.dagActiveSlider !== this.props.dagActiveSlider
+    ) {
       const currentSlider = this.state.currentSlider;
       this.setState({
         labels: {
