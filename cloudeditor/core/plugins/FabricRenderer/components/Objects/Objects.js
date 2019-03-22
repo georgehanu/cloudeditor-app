@@ -29,10 +29,10 @@ const objects = props => {
       blockVariables = extractVariablesFromString(completeObjects[obKey].text);
     } else if (
       completeObjects[obKey].type === "image" &&
-      completeObjects[obKey].image_upload_src
+      completeObjects[obKey].dynamicImage
     ) {
       blockVariables = extractVariablesFromString(
-        completeObjects[obKey].image_upload_src
+        completeObjects[obKey].dynamicImage
       );
     }
     return (

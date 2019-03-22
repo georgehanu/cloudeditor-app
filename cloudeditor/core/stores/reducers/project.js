@@ -198,11 +198,11 @@ const swap = (index1, index2, list) => {
 };
 
 const dagClearCropForUploadedImages = (state, payload) => {
-  /* for all images with image_upload_src ... reset crop to 0 */
+  /* for all images with dynamicImage ... reset crop to 0 */
   const imageObjs = Object.keys(state.objects)
     .filter(el => {
       return (
-        state.objects[el].type === "image" && state.objects[el].image_upload_src
+        state.objects[el].type === "image" && state.objects[el].dynamicImage
       );
     })
     .map(el => {

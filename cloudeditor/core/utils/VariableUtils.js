@@ -1,4 +1,11 @@
-const { merge, mergeDeepRight, forEachObjIndexed, pathOr } = require("ramda");
+const {
+  merge,
+  mergeDeepRight,
+  mergeDeepLeft,
+  forEachObjIndexed,
+  pathOr,
+  mergeAll
+} = require("ramda");
 const uuidv4 = require("uuid/v4");
 
 const getVariableTemplate = cfg => {
@@ -40,7 +47,7 @@ const getVariablesDefaults = cfg => {
 
   const textCfg = merge(
     {
-      length: 255,
+      length: 265,
       test: 13
     },
     text || {}
@@ -99,16 +106,40 @@ const getEmptyVariables = cfg => {
 
 const getVariablesState = cfg => {
   let state = {
-    variables: {},
+    variables: getVariablesFromProject(cfg),
     configs: getVariablesDefaults(cfg)
   };
 
   return state;
 };
 
+const getVariablesFromProject = cfg => {
+  const vars = cfg.map(el => {
+    return {
+      [el.markup]: {
+        name: el.markup,
+        label: el.label,
+        type: el.type,
+        value: el.defaultValue,
+        general: {
+          displayFilter: "dg"
+        },
+        specific: {
+          length: el.length
+        },
+        additional: {
+          inputClasses: el.classes.split(",")
+        }
+      }
+    };
+  });
+  return mergeAll(vars);
+};
+
 const getCompleteVariable = function(variable, configs) {
   const varType = pathOr(null, ["type"], variable);
-  return mergeDeepRight(variable, {
+  //return mergeDeepRight(variable, {
+  return mergeDeepLeft(variable, {
     general: pathOr({}, ["general"], configs),
     specific: pathOr({}, [varType + "Cfg"], configs)
   });
@@ -123,7 +154,7 @@ const getCompleteVariables = function(variables, configs) {
 };
 
 const getDGVariables = cfg => {
-  let state = getVariablesState(cfg);
+  let state = getVariablesState(cfg.variables);
 
   const jarNameVar = getEmptyVariables({
     name: "jarName",
@@ -221,8 +252,8 @@ const getDGVariables = cfg => {
     value: "rgb(150, 150, 0)"
   });
 
-  const uploadImage = getEmptyImageUploadVariable({
-    name: "uploadImage",
+  const userImage = getEmptyImageUploadVariable({
+    name: "userImage",
     type: "image",
     value: null, //"img1.jpg",
     imageHeight: 0,
@@ -241,7 +272,7 @@ const getDGVariables = cfg => {
       [color1.name]: color1,
       [color2.name]: color2,
       [color3.name]: color3,
-      [uploadImage.name]: uploadImage
+      [userImage.name]: userImage
     }
   };
 };

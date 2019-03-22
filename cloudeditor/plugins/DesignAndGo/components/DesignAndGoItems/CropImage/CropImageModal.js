@@ -46,15 +46,15 @@ class CropImageModal extends React.Component {
     let imageWidth = this.props.image.imageWidth;
     let image_src = this.props.image.image_src;
 
-    if (this.props.image.image_upload_src) {
+    if (this.props.image.dynamicImage) {
       let blockVariables = extractVariablesFromString(
-        this.props.image.image_upload_src
+        this.props.image.dynamicImage
       );
       const usedVariables = pick(blockVariables, this.props.variables);
 
       forEachObjIndexed((variable, key) => {
         if (variable.value) {
-          image_src = this.props.image.image_upload_src.replace(
+          image_src = this.props.image.dynamicImage.replace(
             "[%]" + key + "[/%]",
             variable.value
           );

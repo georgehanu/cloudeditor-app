@@ -1308,3 +1308,7 @@ section.dropzone {
     display: none;
   }
 }
+
+.renderContainer {
+  left: 600px;
+}

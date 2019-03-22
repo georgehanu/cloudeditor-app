@@ -88,10 +88,10 @@ class ObjectBlock extends React.PureComponent {
         text = text.replace("[%]" + key + "[/%]", variable.value);
         fontSize = 50;
       }, variables);
-    } else if (type === "image" && block.image_upload_src) {
+    } else if (type === "image" && block.dynamicImage) {
       forEachObjIndexed((variable, key) => {
         if (variable.value) {
-          image_src = block.image_upload_src.replace(
+          image_src = block.dynamicImage.replace(
             "[%]" + key + "[/%]",
             variable.value
           );
