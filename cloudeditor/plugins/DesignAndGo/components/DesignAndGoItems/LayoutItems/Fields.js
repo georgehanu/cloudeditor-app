@@ -71,6 +71,8 @@ const Fields = props => {
         )}
       </div>
     );
+  } else {
+    items = items.concat(<div key={index++} className="imageOpContainer" />);
   }
 
   return <div className="FieldsContainer">{items}</div>;

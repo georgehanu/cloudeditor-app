@@ -4,8 +4,9 @@ const Input = props => {
   const className = "InputLabelContainer";
   const maxLength = props.maxLength ? props.maxLength : 999999;
   const inputType = props.type ? props.type : "text";
+  const containerClass = "Input " + props.class;
   return (
-    <div className={props.class}>
+    <div className={containerClass}>
       <label className={className}>
         <span>{props.label}</span>
         <div className="InputLabelContent">

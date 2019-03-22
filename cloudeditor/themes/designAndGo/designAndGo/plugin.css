@@ -1312,3 +1312,7 @@ section.dropzone {
 .renderContainer {
   left: -6000px;
 }
+
+.imageOpContainer {
+  height: 50px;
+}

@@ -15,7 +15,9 @@ class MenuDataModal extends React.Component {
             <Fields />
           </div>
           <div className="MenuDataButton">
-            <button>{this.props.t("Ok")}</button>
+            <button onClick={this.props.modalClosed}>
+              {this.props.t("Close")}
+            </button>
           </div>
         </div>
       </React.Fragment>
