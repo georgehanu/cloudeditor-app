@@ -652,12 +652,10 @@ body,
   padding: 0px 16px;
   border-radius: 5px;
   text-decoration: none;
-  border-width: 0px;
-  border-style: initial;
-  border-color: initial;
   border-image: initial;
   background: rgb(234, 125, 125);
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
+  border-width: 0px;
 }
 .EditLabelButton {
   display: none;
