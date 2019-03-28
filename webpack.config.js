@@ -27,8 +27,8 @@ const config = {
       "/workspaces/" + workspace + "/index.html"
     )
   },
-  prod,
   publicPath,
+  prod,
   sourcemaps: !prod,
   resourceRoot: "/",
   fileLoaderDirs: {

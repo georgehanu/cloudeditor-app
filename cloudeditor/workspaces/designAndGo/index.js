@@ -1,19 +1,27 @@
 const { merge } = require("ramda");
-const { plugins, requires } = require("./plugins");
 let localConfig = require("./localConfig.json");
+let localConfigDev = require("./localConfigDev.json");
 const initialActions = require("./initialActions");
 
-//console.log("PRODUCTION", PRODUCTION);
 if (!PRODUCTION) {
-  localConfig.translations.baseUrl = "http://localhost:8081/";
-  localConfig.translations.publicPath = "";
-
-  localConfig.baseUrl = "http://localhost:8081/";
-  localConfig.publicPath = "";
+  localConfig = merge(localConfig, localConfigDev);
 }
 
-const i18n = require("./i18n")(localConfig.translations);
+const ConfigUtils = require("../../core/utils/ConfigUtils");
 
 localConfig = merge(localConfig, projectConfigGlobal || {});
+ConfigUtils.loadConfiguration(localConfig);
+
+const { plugins, requires } = require("./plugins");
+
+const translationsCfg = {
+  baseUrl: localConfig.baseUrl,
+  publicPath: localConfig.publicPath,
+  basePath: localConfig.translations.basePath,
+  lang: localConfig.translations.lang || "de-DE"
+};
+
+const i18n = require("../i18n")(translationsCfg);
+
 require("../../main")(plugins, requires, localConfig, i18n, initialActions);
 require("./theme");
