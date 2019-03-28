@@ -3,7 +3,7 @@ const { plugins, requires } = require("./plugins");
 let localConfig = require("./localConfig.json");
 const initialActions = require("./initialActions");
 
-console.log("PRODUCTION", PRODUCTION);
+//console.log("PRODUCTION", PRODUCTION);
 if (!PRODUCTION) {
   localConfig.translations.baseUrl = "http://localhost:8081/";
   localConfig.translations.publicPath = "";

@@ -28,7 +28,7 @@ class Fabric extends React.Component {
 
     window.canvas = this._stage.instance;
 
-    let elementBounding = this._stage.instance.wrapperEl.getBoundingClientRect(),
+    /*let elementBounding = this._stage.instance.wrapperEl.getBoundingClientRect(),
       parentElementBounding = this._stage.instance.wrapperEl.parentElement.getBoundingClientRect();
 
     this.props.uiUpdateContainerCanvasOffset({
@@ -42,7 +42,7 @@ class Fabric extends React.Component {
       d: this._stage.instance.viewportTransform[3],
       e: this._stage.instance.viewportTransform[4],
       f: this._stage.instance.viewportTransform[5]
-    });
+    });*/
     this._mountNode = FabricRenderer.createContainer(this._stage);
 
     this._stage.instance.totalChilds = Object.keys(
@@ -72,10 +72,10 @@ class Fabric extends React.Component {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    uiUpdateContainerCanvasOffset: props =>
+    /*uiUpdateContainerCanvasOffset: props =>
       dispatch(uiActions.uiUpdateContainerCanvasOffset(props)),
     uiUpdateViewportTransform: props =>
-      dispatch(uiActions.uiUpdateViewportTransform(props))
+      dispatch(uiActions.uiUpdateViewportTransform(props))*/
   };
 };
 
