@@ -30,6 +30,11 @@ class SliderCarousel extends React.Component {
       nextProps.dagActiveSlider !== prevState.dagActiveSlider
     ) {
       if (
+        nextProps.productColors.colors.length === 0 &&
+        nextProps.productColors.colorPicker === false
+      ) {
+        nextProps.changeColorVariableValue({});
+      } else if (
         nextProps.productColors.activeColorButton ===
         nextProps.productColors.colors.length
       ) {

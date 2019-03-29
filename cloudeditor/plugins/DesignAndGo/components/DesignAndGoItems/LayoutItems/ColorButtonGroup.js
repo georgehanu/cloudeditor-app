@@ -36,6 +36,7 @@ const ColorButtonGroup = props => {
         handleColorChange={props.dagChangeColorPicker}
         clicked={() => {
           props.dagChangeActiveColorSchema(counter);
+          props.changeColorVariableValue({ color1: props.palleteBgColor });
         }}
         active={props.activeColorButton === counter}
         changeColorVariableValue={props.changeColorVariableValue}

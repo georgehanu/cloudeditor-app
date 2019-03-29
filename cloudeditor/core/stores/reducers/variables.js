@@ -45,11 +45,17 @@ const changeColorVariableValue = (state, payload) => {
   const colors = Object.keys(payload).map(el => {
     return { [el]: { ...state.variables[el], value: payload[el] } };
   });
+  const clearColors = {
+    color1: { ...state.variables.color1, value: null },
+    color2: { ...state.variables.color2, value: null },
+    color3: { ...state.variables.color3, value: null }
+  };
 
   return {
     ...state,
     variables: {
       ...state.variables,
+      ...clearColors,
       ...mergeAll(colors)
     }
   };

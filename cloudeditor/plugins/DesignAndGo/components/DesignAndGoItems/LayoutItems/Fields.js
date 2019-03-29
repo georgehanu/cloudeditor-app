@@ -56,7 +56,7 @@ const Fields = props => {
 
   let index = Object.keys(variables).length + 1;
 
-  if (productColors.colors.length > 0) {
+  if (productColors.colors.length > 0 || productColors.colorPicker) {
     items = items.concat(<ColorButtonGroup key={index++} {...productColors} />);
   }
 

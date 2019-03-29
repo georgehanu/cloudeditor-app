@@ -33,12 +33,20 @@ const { applyZoomScaleToTarget } = require("../../../../utils/UtilUtils");
 const ImageLoad = require("./ImageLoad");
 const TextLoad = require("./TextLoad");
 const GraphicsLoad = require("./GraphicsLoad");
+const Rectangle = require("./Rectangle");
 
 const replaceColor = (type, object, variables) => {
   let color = object[type];
   const colorVariables = extractVariablesFromString(object[type]);
   forEachObjIndexed((variable, key) => {
-    color = object[type].replace("[%]" + key + "[/%]", variable.value);
+    if (variable.value === null) {
+      if (object.fillColor) {
+        color = "rgb(" + object.fillColor.htmlRGB + ")";
+      } else {
+        // default color
+        color = "rgb(0,0,0)";
+      }
+    } else color = object[type].replace("[%]" + key + "[/%]", variable.value);
   }, pick(colorVariables, variables));
   return { [type]: color };
 };
@@ -121,7 +129,15 @@ class ObjectBlock extends React.PureComponent {
         ...fillColor
       };
     } else {
-      delete blockProps.fill;
+      if (
+        (type === "textbox" || type === "rectangle") &&
+        this.props.object.fillColor
+      ) {
+        blockProps = {
+          ...blockProps,
+          fill: "rgb(" + this.props.object.fillColor.htmlRGB + ")"
+        };
+      }
     }
 
     switch (type) {
@@ -151,6 +167,14 @@ class ObjectBlock extends React.PureComponent {
             key={id}
             {...blockProps}
             ddesignerCallbacks={designerCallbacks}
+          />
+        );
+      case "rectangle":
+        return (
+          <Rectangle
+            key={id}
+            {...blockProps}
+            designerCallbacks={designerCallbacks}
           />
         );
       default:

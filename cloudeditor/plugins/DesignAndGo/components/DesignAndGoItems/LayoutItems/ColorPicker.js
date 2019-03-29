@@ -19,7 +19,8 @@ class ColorButton extends React.Component {
       };
     }
     return {
-      ...prevState
+      ...prevState,
+      showPicker: true
     };
   }
 
