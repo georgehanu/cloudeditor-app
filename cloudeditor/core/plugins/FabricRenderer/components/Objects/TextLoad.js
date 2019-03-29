@@ -21,7 +21,7 @@ class TextLoad extends React.Component {
   loadFonts() {
     let props = this.props;
     if (!isLoadedFont(this.props.fontFamily)) {
-      console.log("loadfont");
+      //console.log("loadfont");
       fabric.util.fontsLoaded(props, fontsLoaded => {
         if (fontsLoaded) {
           for (let i = 0; i < fontsLoaded.length; i++) {
@@ -31,7 +31,7 @@ class TextLoad extends React.Component {
         this.setState({ loaded: true });
       });
     } else {
-      console.log("dont loadfont");
+      //console.log("dont loadfont");
       this.setState({ loaded: true });
     }
   }

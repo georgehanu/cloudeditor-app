@@ -75,7 +75,7 @@ class PluginsContainer extends React.Component {
   };
 
   componentDidMount() {
-    console.log("plugins loaded");
+    //console.log("plugins loaded");
   }
   componentDidUpdate() {}
 
