@@ -57,6 +57,10 @@ class DesignAndGo extends React.Component {
     this.onMenuCloseHandler();
   };
 
+  onClickDebug = () => {
+    toggleContainer();
+  };
+
   render() {
     return (
       <div className="DesignAndGo cloudeditor">
@@ -95,6 +99,9 @@ class DesignAndGo extends React.Component {
           onDataOpenHandler={this.onDataOpenHandler}
           onCropImageModalOpenHandler={this.onCropImageModalOpenHandler}
         />
+        <div id="debugButton" onClick={this.onClickDebug}>
+          Debug
+        </div>
       </div>
     );
   }

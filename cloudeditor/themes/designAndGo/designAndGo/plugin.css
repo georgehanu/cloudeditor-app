@@ -140,13 +140,21 @@ body,
     width: calc(50% - 4px);
   }
 
+  .Input25Left.Input {
+    width: 25%;
+  }
+  .Input25Right.Input {
+    margin-right: 8px;
+    width: calc(25% - 8px);
+  }
+
   .InputDate.Input,
   .Input.ColorButtonGroup {
-    width: calc(50% - 4px);
+    width: calc(50% - 8px);
   }
 
   .Input.ColorButtonGroup {
-    margin-left: 5px;
+    margin-left: 8px;
   }
   .FieldsContainer {
     margin-bottom: -6px;
@@ -1313,4 +1321,16 @@ section.dropzone {
 
 .imageOpContainer {
   height: 50px;
+}
+
+#debugButton {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 50px;
+  height: 30px;
+  z-index: 99999;
+  color: red;
+  cursor: pointer;
+  line-height: 30px;
 }
