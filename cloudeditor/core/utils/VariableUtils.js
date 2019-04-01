@@ -121,6 +121,7 @@ const getVariablesFromProject = cfg => {
         label: el.label,
         type: el.type,
         value: el.defaultValue,
+        order: el.order,
         general: {
           displayFilter: "dg"
         },

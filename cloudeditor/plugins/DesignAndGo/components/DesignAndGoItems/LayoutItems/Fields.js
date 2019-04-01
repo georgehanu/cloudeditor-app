@@ -42,17 +42,21 @@ const Fields = props => {
 
   const { variables, variablesConfigs, dagChangeInput, productColors } = props;
 
-  let items = Object.keys(variables).map((vKey, idx) => {
-    return (
-      <InputVariable
-        key={idx}
-        varName={vKey}
-        variable={variables[vKey]}
-        configs={variablesConfigs}
-        onInputChange={dagChangeInput}
-      />
-    );
-  });
+  let items = Object.keys(variables)
+    .sort((a, b) => {
+      return variables[a].order - variables[b].order;
+    })
+    .map((vKey, idx) => {
+      return (
+        <InputVariable
+          key={idx}
+          varName={vKey}
+          variable={variables[vKey]}
+          configs={variablesConfigs}
+          onInputChange={dagChangeInput}
+        />
+      );
+    });
 
   let index = Object.keys(variables).length + 1;
 
