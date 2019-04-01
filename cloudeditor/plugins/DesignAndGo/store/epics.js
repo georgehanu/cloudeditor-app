@@ -14,10 +14,12 @@ const { Observable, of } = require("rxjs");
 const { mergeMap, switchMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
 
-//const URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/upload.php";
-const URL =
-  "http://work.cloudlab.at:9012/ig/avery-external/public/cloudeditor/uploadImage";
-const LOGIN_URL = "http://work.cloudlab.at:9012/ig/designAndGoUpload/login.php";
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
+const config = ConfigUtils.getDefaults();
+
+const URL = config.baseUrl + "/cloudeditor/uploadImage";
+// ("http://work.cloudlab.at:9012/ig/avery-external/public/");
+const LOGIN_URL = config.baseUrl + "/login";
 
 module.exports = {
   //export default {
