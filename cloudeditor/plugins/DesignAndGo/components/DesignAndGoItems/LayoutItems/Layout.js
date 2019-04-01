@@ -42,11 +42,15 @@ class Layout extends React.Component {
                 }
                 showSlider={this.state.width > MobileBreakpoint ? false : true}
                 products={this.props.products}
+                onZoomImageHandler={this.props.onZoomImageHandler}
               />
               <RightPanel />
             </div>
             {this.state.width > MobileBreakpoint && (
-              <SliderCarousel products={this.props.products} />
+              <SliderCarousel
+                products={this.props.products}
+                onZoomImageHandler={this.props.onZoomImageHandler}
+              />
             )}
           </div>
         </div>

@@ -10,6 +10,7 @@ const MenuModal = require("./components/DesignAndGoItems/UI/MenuModal");
 const MenuDataModal = require("./components/DesignAndGoItems/UI/MenuDataModal");
 const SignInModal = require("./components/DesignAndGoItems/UI/SignInModal");
 const CropImageModal = require("./components/DesignAndGoItems/CropImage/CropImageModal");
+const ZoomImageModal = require("./components/DesignAndGoItems/ZoomImage/ZoomImageModal");
 
 const assign = require("object-assign");
 const { dagImageSelection } = require("../../core/stores/selectors/project");
@@ -23,7 +24,8 @@ class DesignAndGo extends React.Component {
     menuOpened: false,
     dataOpened: false,
     signInOpened: false,
-    cropImageModalOpened: false
+    cropImageModalOpened: false,
+    zoomImageModalOpened: false
   };
 
   onMenuCloseHandler = () => {
@@ -31,7 +33,8 @@ class DesignAndGo extends React.Component {
       menuOpened: false,
       dataOpened: false,
       signInOpened: false,
-      cropImageModalOpened: false
+      cropImageModalOpened: false,
+      zoomImageModalOpened: false
     });
   };
   onMenuOpenHandler = () => {
@@ -45,6 +48,9 @@ class DesignAndGo extends React.Component {
   };
   onCropImageModalOpenHandler = () => {
     this.setState({ cropImageModalOpened: true });
+  };
+  onZoomImageModalOpenedHandler = () => {
+    this.setState({ zoomImageModalOpened: true });
   };
 
   onCropImageHandler = cropInfo => {
@@ -93,11 +99,18 @@ class DesignAndGo extends React.Component {
             variables={this.props.variables}
           />
         )}
+        {this.state.zoomImageModalOpened && (
+          <ZoomImageModal
+            show={this.state.zoomImageModalOpened}
+            modalClosed={this.onMenuCloseHandler}
+          />
+        )}
 
         <Layout
           onMenuOpenHandler={this.onMenuOpenHandler}
           onDataOpenHandler={this.onDataOpenHandler}
           onCropImageModalOpenHandler={this.onCropImageModalOpenHandler}
+          onZoomImageHandler={this.onZoomImageModalOpenedHandler}
         />
         <div id="debugButton" onClick={this.onClickDebug}>
           Debug

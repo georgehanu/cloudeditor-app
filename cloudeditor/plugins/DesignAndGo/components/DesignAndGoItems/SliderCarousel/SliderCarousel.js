@@ -138,6 +138,12 @@ class SliderCarousel extends React.Component {
     return (
       <div className={className}>
         <CustomSlider {...settings}>{productsSlider}</CustomSlider>
+        <div
+          className="zoomSliderContainer"
+          onClick={this.props.onZoomImageHandler}
+        >
+          <span className="zoomCanvasButton icon awesome-plus" />
+        </div>
       </div>
     );
   }

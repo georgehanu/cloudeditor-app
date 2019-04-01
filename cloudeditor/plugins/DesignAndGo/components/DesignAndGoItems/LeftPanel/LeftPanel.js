@@ -32,6 +32,7 @@ class LeftPanel extends React.Component {
                 <SliderCarousel
                   products={this.props.products}
                   onDataOpenHandler={this.props.onDataOpenHandler}
+                  onZoomImageHandler={this.props.onZoomImageHandler}
                 />
                 <div className="EditLabelButtonContainer">
                   <a
