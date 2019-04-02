@@ -1,7 +1,19 @@
 {
   "plugins": {
-    "mobile": ["Html5Renderer"],
-    "desktop": ["Html5Renderer"]
+    "mobile": [
+      "StepChooser",
+      "LpfLpf",
+      "StepsConfigurator",
+      "PanelConfigurator",
+      "MaterialConfigurator"
+    ],
+    "desktop": [
+      "StepChooser",
+      "LpfLpf",
+      "StepsConfigurator",
+      "PanelConfigurator",
+      "MaterialConfigurator"
+    ]
   },
 
   "mainComponent": {

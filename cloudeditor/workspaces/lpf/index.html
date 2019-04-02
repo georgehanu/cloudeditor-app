@@ -3,11 +3,55 @@
   <head>
     <script>
       var projectConfigGlobal = {
-        auth: {
-          userName: null,
-          loggedIn: false,
-          loading: false,
-          errorMessage: false
+        project: {
+          steps: {
+            step1: {
+              type: "panels",
+              code: "step1",
+              label: "Size"
+            },
+            step2: {
+              type: "userinput",
+              code: "material",
+              label: "Material"
+            },
+            step3: {
+              type: "userinput",
+              code: "step3",
+              label: "Motiv"
+            },
+            step4: {
+              type: "userinput",
+              code: "step3",
+              label: "Ausschnitte"
+            },
+            step5: {
+              type: "userinput",
+              code: "step3",
+              label: "Befestitung"
+            },
+            step6: {
+              type: "userinput",
+              code: "ste43",
+              label: "Bemerkung"
+            }
+          },
+          activeStep: "step1",
+          panels: {
+            panel1: {
+              id: "panel1",
+              width: 500,
+              height: 500,
+              label: "Panel %panel_no%"
+            },
+            panel2: {
+              id: "panel2",
+              width: 500,
+              height: 500,
+              label: "Panel %panel_no%"
+            }
+          },
+          panelsOrder: ["panel1", "panel2"]
         }
       };
     </script>

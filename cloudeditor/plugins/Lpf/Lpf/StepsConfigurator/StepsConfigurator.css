@@ -1,0 +1,14 @@
+.stepsConfiguratorContainer {
+  width: 60%;
+  margin: 0 auto;
+  float: left;
+  clear: both;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  height: auto;
+  min-height: 200px;
+  margin-left: 20px;
+  padding: 20px 10px;
+}

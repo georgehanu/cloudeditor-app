@@ -14,11 +14,9 @@ const DebugUtils = {
 
     const epicMiddleware = createEpicMiddleware();
 
-    let middlewares = [
-      thunkMiddleware,
-      epicMiddleware,
-      undoRedoMiddleWare
-    ].concat(userMiddlewares || []);
+    let middlewares = [thunkMiddleware, epicMiddleware].concat(
+      userMiddlewares || []
+    );
 
     const store = createStore(
       reducer,

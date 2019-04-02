@@ -1,7 +1,14 @@
-const Html5Renderer = require("../../core/plugins/Html5Renderer");
-
+const LpfLpf = require("../../plugins/Lpf/Lpf/Lpf");
+const StepChooser = require("../../plugins/Lpf/Lpf/StepChooser/StepChooser");
+const StepsConfigurator = require("../../plugins/Lpf/Lpf/StepsConfigurator/StepsConfigurator");
+const PanelConfigurator = require("../../plugins/Lpf/Lpf/PanelConfigurator/PanelConfigurator");
+const MaterialConfigurator = require("../../plugins/Lpf/Lpf/MaterialConfigurator/MaterialConfigurator");
 const plugins = {
-  Html5Renderer: Html5Renderer
+  LpfLpf: LpfLpf,
+  StepChooser: StepChooser,
+  StepsConfigurator: StepsConfigurator,
+  PanelConfigurator: PanelConfigurator,
+  MaterialConfigurator: MaterialConfigurator
 };
 
 const requires = {};

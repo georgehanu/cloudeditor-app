@@ -1,0 +1,12 @@
+.container {
+  width: 65%;
+  height: 100%;
+  margin: 0 auto;
+}
+.canvasContainer {
+  width: 60%;
+  float: left;
+  height: 500px;
+  height: 500px;
+  background-color: #c8c8c8;
+}

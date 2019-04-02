@@ -1,0 +1,55 @@
+.panelContainer {
+  width: 100%;
+  height: 40px;
+  margin: 0 auto;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 32px;
+}
+.panelContainer div.panelArea {
+  width: 22%;
+  float: left;
+  text-align: right;
+}
+.panelContainer div.panelArea.panelWidth,
+.panelContainer div.panelArea.panelHeight {
+  text-align: center;
+}
+.uncontrolledInputContainer {
+  width: auto;
+  display: inline-block;
+  padding: 0 5px;
+}
+.uncontrolledInputContainer input {
+  width: 40px;
+  border: 1px solid #c8c8c8;
+}
+.addPanelsContainer {
+  widows: 100%;
+  text-align: center;
+}
+.addPanelsContainer span {
+  cursor: pointer;
+  color: #808080;
+}
+.deletePanel {
+  width: 20px;
+  float: left;
+  height: 100%;
+}
+.deletePanel div {
+  display: none;
+  width: 15px;
+  height: 15px;
+  border: 1px solid red;
+  border-radius: 50%;
+  line-height: 11px;
+  text-align: center;
+  color: red;
+  top: 9px;
+  position: relative;
+  cursor: pointer;
+}
+.panelContainer:hover .deletePanel div {
+  display: block;
+}
