@@ -240,7 +240,6 @@ body,
   max-width: 403px;
   width: 100%;
   height: 79px;
-  background-image: url("./assets/jamLabel.png");
   background-size: contain;
 }
 .Title h1 {
