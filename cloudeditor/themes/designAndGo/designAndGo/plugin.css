@@ -1210,11 +1210,13 @@ section.dropzone {
 }
 
 .zoomModalImageContainer {
-  width: 600px;
-  height: 600px;
+  width: 500px;
+  height: 500px;
   z-index: 500;
   display: flex;
   flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .zoomModalImage {
