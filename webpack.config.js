@@ -44,28 +44,28 @@ config["copyFrom"].push({
   to: "./"
 });
 
-if (workspace === "designAndGo")
-  config["copyFrom"].push({
-    from: "./" + namespace + "/themes/" + workspace + "/images/*",
-    to: "./editorImages/[name].[ext]"
-  });
-else {
-  // config["copyFrom"].push({
-  //   from: "./" + namespace + "/themes/" + workspace + "/tinymce/js/",
-  //   to: "./tinymce/js"
-  // });
-  config["copyFrom"].push({
-    from:
-      "./" +
-      namespace +
-      "/themes/" +
-      workspace +
-      "/tinymce/resetTinyMceTable.css",
-    to: "./tinymce/resetTinyMceTable.css"
-  });
-  config["copyFrom"].push({
-    from: "./" + namespace + "/core/assets/chromoselector",
-    to: "./chromoselector"
-  });
+switch (workspace) {
+  case "designAndGo":
+    config["copyFrom"].push({
+      from: "./" + namespace + "/themes/" + workspace + "/images/*",
+      to: "./editorImages/[name].[ext]"
+    });
+    break;
+  case "stadion":
+    config["copyFrom"].push({
+      from:
+        "./" +
+        namespace +
+        "/themes/" +
+        workspace +
+        "/tinymce/resetTinyMceTable.css",
+      to: "./tinymce/resetTinyMceTable.css"
+    });
+    config["copyFrom"].push({
+      from: "./" + namespace + "/core/assets/chromoselector",
+      to: "./chromoselector"
+    });
+    break;
 }
+
 module.exports = require("./buildConfig")(config);

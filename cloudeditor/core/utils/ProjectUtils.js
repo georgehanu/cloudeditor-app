@@ -428,7 +428,7 @@ const getProjectTemplate = cfg => {
         pages: getPagesDefaults({}),
         objects: getObjectsDefaults({})
       },
-      ui: getEmptyUI(cfg.ui)
+      ui: getEmptyUI(cfg ? cfg.ui || {} : {})
     },
     cfg || {}
   );
@@ -816,7 +816,7 @@ const getEmptyUI = cfg => {
           workingHeight: 0
         }
       },
-      permissions: getUIPermissionsTemplate(cfg.permissions)
+      permissions: getUIPermissionsTemplate(cfg ? cfg.permissions || {} : {})
     },
     cfg || {}
   );

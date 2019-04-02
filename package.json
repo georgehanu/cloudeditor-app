@@ -21,6 +21,10 @@
     "hot:stadion": "webpack-dev-server --mode development --hot-only --workspace stadion",
     "dev:stadion": "webpack --mode development --workspace stadion",
     "build:stadion": "webpack --mode production --workspace stadion",
+    "start:lpf": "webpack-dev-server --mode development --workspace lpf",
+    "hot:lpf": "webpack-dev-server --mode development --hot-only --workspace lpf",
+    "dev:lpf": "webpack --mode development --workspace lpf",
+    "build:lpf": "webpack --mode production --workspace lpf",
     "start:client": "webpack-dev-server --mode development --workspace client",
     "dev:client": "webpack --mode development --workspace client",
     "build:client": "webpack --mode production --workspace client"
