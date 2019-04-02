@@ -1,4 +1,4 @@
-module.exports = (plugins, requires) => {
+module.exports = (plugins, requires, appReducers, appEpics) => {
   const startApp = () => {
     const React = require("react");
     const ReactDOM = require("react-dom");
@@ -15,7 +15,7 @@ module.exports = (plugins, requires) => {
 
     axios.baseURL = ConfigUtils.getConfigProp("baseUrl");
 
-    const store = StandardStore({}, {}, {}, plugins);
+    const store = StandardStore({}, appReducers, appEpics, plugins);
     const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");
 
     ReselectTools.getStateWith(() => store.getState());
