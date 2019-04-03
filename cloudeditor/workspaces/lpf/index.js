@@ -13,6 +13,16 @@ ConfigUtils.loadConfiguration(localConfig);
 
 const { plugins, requires } = require("./plugins");
 
+const appReducers = {
+  project: require("../../plugins/Lpf/Lpf/store/reducers/lpf"),
+  productInformation: require("../../core/stores/reducers/productInformation"),
+  globalLoading: require("../../core/stores/reducers/globalLoading")
+};
+const productInformationEpics = require("../../core/stores/epics/productInformation");
+const appEpics = {
+  ...productInformationEpics
+};
+
 const translationsCfg = {
   baseUrl: localConfig.baseUrl,
   publicPath: localConfig.publicPath,
@@ -22,5 +32,5 @@ const translationsCfg = {
 
 const i18n = require("../i18n")(translationsCfg);
 
-require("../../main")(plugins, requires, i18n);
+require("../../main")(plugins, requires, appReducers, appEpics);
 require("./theme");

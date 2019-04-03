@@ -1,0 +1,23 @@
+.productSumaryContainer {
+  width: 20%;
+  height: auto;
+  display: inline-block;
+  float: left;
+  padding: 0 10px;
+}
+.productSumaryContainer .productTitle {
+  font-size: 18px;
+  color: #000;
+  font-weight: bold;
+}
+.productSumaryContainer .printOptionValue {
+  font-size: 12px;
+  color: #c8c8c8;
+}
+.productSumaryContainer .pageOptionTitle {
+  font-size: 16px;
+  font-weight: bold;
+}
+.informationContainer {
+  margin-bottom: 10px;
+}

@@ -9,10 +9,31 @@ const {
   getPanelsOrderSelector
 } = require("../store/selectors/lpf");
 require("./PanelConfigurator.css");
+const {
+  addPanel,
+  removePanel,
+  updatePanelProps
+} = require("../store/actions/lpf");
 
 class PanelConfigurator extends React.Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     return !isEqual(nextProps, this.props);
+  };
+  updateWidth = (id, value) => {
+    this.props.updatePanelPropsHandler({
+      id,
+      props: {
+        width: value
+      }
+    });
+  };
+  updateHeight = (id, value) => {
+    this.props.updatePanelPropsHandler({
+      id,
+      props: {
+        height: value
+      }
+    });
   };
   render() {
     let order = 1;
@@ -22,13 +43,22 @@ class PanelConfigurator extends React.Component {
           order={order++}
           {...this.props.panels[panelKey]}
           key={panelKey}
+          removePanelHandler={this.props.removePanelHandler}
+          updateWidth={this.updateWidth}
+          updateHeight={this.updateHeight}
+          hasDelete={this.props.panelsOrder.length > 1 ? true : false}
         />
       );
     });
     return (
       <div className="panelConfiguratorContainer">
         {panels}
-        <div className="addPanelsContainer">
+        <div
+          className="addPanelsContainer"
+          onClick={() => {
+            this.props.addPanelHandler();
+          }}
+        >
           <span> {this.props.t("+ weitere Platte hunzufugen")}</span>
         </div>
       </div>
@@ -41,9 +71,17 @@ const mapStateToProps = state => {
     panelsOrder: getPanelsOrderSelector(state)
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    addPanelHandler: payload => dispatch(addPanel(payload)),
+    removePanelHandler: payload => dispatch(removePanel(payload)),
+    updatePanelPropsHandler: payload => dispatch(updatePanelProps(payload))
+  };
+};
+
 const PanelConfiguratorPlugin = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNamespaces("panelContainer")(PanelConfigurator));
 
 module.exports = {

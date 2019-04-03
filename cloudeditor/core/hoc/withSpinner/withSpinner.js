@@ -7,8 +7,10 @@ const withSpinner = WrappedComponent => props => {
     return (
       <NamespacesConsumer ns="fupa">
         {(t, { i18n, ready }) => (
-          <div className="loader">
-            <span className="spinnerText">{t("Loading") + "..."}</span>
+          <div className="loaderMask">
+            <div className="loader">
+              <span className="spinnerText">{t("Loading") + "..."}</span>
+            </div>
           </div>
         )}
       </NamespacesConsumer>

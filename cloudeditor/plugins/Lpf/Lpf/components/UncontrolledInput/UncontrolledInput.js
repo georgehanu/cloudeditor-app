@@ -47,15 +47,7 @@ class UncontrolledInput extends React.Component {
     if (val === null) {
       val = this.props.defaultValue;
     }
-    val = val;
-    this.props.selectWidth({
-      mainHandler: true,
-      payloadMainHandler: {
-        type: this.props.type,
-        value: parseFloat(val)
-      },
-      keepDetailsWnd: true
-    });
+    this.props.changeInput(this.props.objId, val);
   }
   validateInput = value => {
     value = value.replace(",", ".");
@@ -97,15 +89,15 @@ class UncontrolledInput extends React.Component {
 
   componentDidUpdate() {
     if (this.input) {
-      const $input = $(this.input.current);
+      const $input = this.input.current;
       $input.value = this.checkUpdatedValue();
     }
   }
   componentWillUnmount() {
     if (this.input) {
       const $input = this.input.current;
-      $input.removeEventListener("blur");
-      $input.removeEventListener("keypress");
+      $input.removeEventListener("blur", {});
+      $input.removeEventListener("keypress", {});
     }
   }
   render() {

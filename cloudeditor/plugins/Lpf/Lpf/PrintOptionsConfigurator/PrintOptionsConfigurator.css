@@ -1,0 +1,41 @@
+.printOptionContainer.isActive {
+  background: #e9f7e6;
+}
+.printOptionContainer {
+  width: 100%;
+  height: auto;
+  min-height: 100px;
+  padding: 10px 5px;
+  float: left;
+  margin: 5px 0px;
+  cursor: pointer;
+}
+.printOptionContainer .descriptionContainer {
+  width: 80%;
+  float: left;
+  display: inline-block;
+  padding: 0 10px 10px 10px;
+  box-sizing: border-box;
+}
+.printOptionContainer .imageContainer {
+  width: 20%;
+  height: 100%;
+  float: left;
+  display: inline-block;
+}
+.printOptionContainer .imageContainer img {
+  max-height: 100px;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+.printOptionContainer .title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 16px;
+  padding-bottom: 5px;
+}
+body * {
+  box-sizing: border-box;
+}

@@ -9,7 +9,9 @@ const initialState = ProjectUtils.getEmptyProductInformation(
 const {
   CALCULATE_PRICE,
   CALCULATE_PRICE_INITIAL,
-  CHANGE_OPTIONS
+  CHANGE_OPTIONS,
+  START_CHANGE_PRINT_OPTIONS,
+  STOP_CHANGE_PRINT_OPTIONS
 } = require("../actionTypes/productInformation");
 const calculatePrice = (state, payload) => {
   return {
@@ -49,6 +51,19 @@ const changeOptions = (state, payload) => {
     }
   };
 };
+const startChangePrintOption = (state, payload) => {
+  return {
+    ...state
+  };
+};
+const stopChangePrintOptions = (state, payload) => {
+  const { print_options } = payload;
+  return {
+    ...state,
+    productOptions: { ...state.productOptions, print_options: print_options }
+  };
+};
+
 module.exports = handleActions(
   {
     [CALCULATE_PRICE]: (state, action) => {
@@ -59,6 +74,12 @@ module.exports = handleActions(
     },
     [CHANGE_OPTIONS]: (state, action) => {
       return changeOptions(state, action.payload);
+    },
+    [START_CHANGE_PRINT_OPTIONS]: (state, action) => {
+      return startChangePrintOption(state, action.payload);
+    },
+    [STOP_CHANGE_PRINT_OPTIONS]: (state, action) => {
+      return stopChangePrintOptions(state, action.payload);
     }
   },
   initialState

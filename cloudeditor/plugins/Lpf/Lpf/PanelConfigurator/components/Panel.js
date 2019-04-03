@@ -3,6 +3,20 @@ const UncontrolledInput = require("../../components/UncontrolledInput/Uncontroll
 const { withNamespaces } = require("react-i18next");
 
 const panel = props => {
+  let deleteHandler = null;
+  if (props.hasDelete) {
+    deleteHandler = (
+      <div className="deletePanel">
+        <div
+          onClick={() => {
+            props.removePanelHandler({ id: props.id });
+          }}
+        >
+          x
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="panelContainer">
       <div className="panelArea panelTitle">
@@ -14,6 +28,8 @@ const panel = props => {
           displayedValue={props.width}
           defaultValue={props.width}
           id={"width_panel_" + props.id}
+          objId={props.id}
+          changeInput={props.updateWidth}
         />
       </div>
       <div className="panelArea panelHeight">
@@ -22,11 +38,11 @@ const panel = props => {
           displayedValue={props.width}
           defaultValue={props.width}
           id={"height_panel_" + props.id}
+          objId={props.id}
+          changeInput={props.updateHeight}
         />
       </div>
-      <div className="deletePanel">
-        <div>x</div>
-      </div>
+      {deleteHandler}
     </div>
   );
 };

@@ -25,6 +25,7 @@ class StepsContainerConfiguratorContainer extends React.Component {
             cfg={tool.cfg || {}}
             items={tool.items || []}
             key={i}
+            activeStep={this.props.activeStep}
             addContainerClasses={this.props.addContainerClasses}
           />
         );

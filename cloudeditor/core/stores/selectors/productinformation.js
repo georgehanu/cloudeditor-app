@@ -22,6 +22,9 @@ const displyedOptionsSelector = state =>
 const getProductIdSelector = state =>
   pathOr("", ["productInformation", "productId"], state);
 const getProductInformationSelector = state => state.productInformation;
+const getPrintOptionsInformation = state => {
+  return pathOr({}, ["productInformation", "productOptionsInfo"], state);
+};
 
 module.exports = {
   getProductNameSelector,
@@ -31,5 +34,6 @@ module.exports = {
   getProductInformationSelector,
   displyedOptionsSelector,
   getPrintOptionsSelector,
-  getContentCode
+  getContentCode,
+  getPrintOptionsInformation
 };

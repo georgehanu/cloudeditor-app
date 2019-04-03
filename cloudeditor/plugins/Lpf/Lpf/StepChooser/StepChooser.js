@@ -6,8 +6,13 @@ const {
   getActiveStepSelector
 } = require("../store/selectors/lpf");
 require("./StepChooser.css");
+
+const { changeStep } = require("../store/actions/lpf");
 const Step = require("./components/Step");
 class StepChooser extends React.Component {
+  onClickStepStepHandler = payload => {
+    this.props.changeStepHandler(payload);
+  };
   render() {
     let order = 1;
     const steps = Object.keys(this.props.steps).map(key => {
@@ -17,6 +22,7 @@ class StepChooser extends React.Component {
           order={order++}
           {...this.props.steps[key]}
           key={key}
+          changeStepHandler={this.onClickStepStepHandler}
         />
       );
     });
@@ -29,9 +35,14 @@ const mapStateToProps = (state, _) => {
     activeStep: getActiveStepSelector(state)
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    changeStepHandler: payload => dispatch(changeStep(payload))
+  };
+};
 const StepChooserPlugin = connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withNamespaces("StepChooser")(StepChooser));
 
 module.exports = {

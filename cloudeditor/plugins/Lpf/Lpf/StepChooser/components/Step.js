@@ -7,7 +7,12 @@ const step = props => {
     props.code === props.activeStep ? "activeStep" : ""
   ].join(" ");
   return (
-    <div className={stepClasses}>
+    <div
+      className={stepClasses}
+      onClick={() => {
+        props.changeStepHandler({ code: props.code });
+      }}
+    >
       <span className={"orderNumber"}>{props.order}</span>.
       <span className={"stepLabel"}>{props.t(props.label)}</span>
     </div>

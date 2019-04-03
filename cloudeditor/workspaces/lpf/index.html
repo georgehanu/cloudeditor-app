@@ -11,9 +11,11 @@
               label: "Size"
             },
             step2: {
-              type: "userinput",
-              code: "material",
-              label: "Material"
+              type: "print_options",
+              code: "step2",
+              label: "Material",
+              pp: "PP_pp1",
+              po: "material"
             },
             step3: {
               type: "userinput",
@@ -22,17 +24,17 @@
             },
             step4: {
               type: "userinput",
-              code: "step3",
+              code: "step4",
               label: "Ausschnitte"
             },
             step5: {
               type: "userinput",
-              code: "step3",
+              code: "step5",
               label: "Befestitung"
             },
             step6: {
               type: "userinput",
-              code: "ste43",
+              code: "step6",
               label: "Bemerkung"
             }
           },
@@ -52,6 +54,53 @@
             }
           },
           panelsOrder: ["panel1", "panel2"]
+        },
+        productInformation: {
+          productId: 1,
+          name: "My product",
+          qty: 2,
+          productOptions: {
+            print_options: {
+              PP: ["pp1"],
+              PP_pp1: {
+                material: ["material_1"]
+              }
+            }
+          },
+          productOptionsInfo: {
+            PP_pp1: {
+              material: {
+                name: "Material",
+                show_in_sumary: 1,
+                options: {
+                  material_1: {
+                    code: "material_1",
+                    name: "Material 1 title",
+                    description:
+                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dum",
+                    image_src:
+                      "https://archello.s3.eu-central-1.amazonaws.com/images/2017/06/22/34581fenixtable.1507022766.9151.jpg"
+                  },
+                  material_2: {
+                    code: "material_2",
+                    name: "Material 2 title",
+                    description:
+                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scra",
+                    image_src:
+                      "https://placesweb.net/wp-content/uploads/2015/12/FENIXNTM_colours02-arpa.jpg"
+                  },
+                  material_3: {
+                    code: "material_3",
+                    name: "Material 3 title",
+                    description:
+                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard du",
+                    image_src:
+                      "https://placesweb.net/wp-content/uploads/2015/12/arpa-FENIXNTM_colours01.jpg"
+                  }
+                }
+              }
+            }
+          }
         }
       };
     </script>
