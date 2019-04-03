@@ -4,7 +4,7 @@ const { mergeMap } = require("rxjs/operators");
 const axios = require("../../axios/project/axios");
 const qs = require("qs");
 const { Observable } = require("rxjs");
-const { actions } = require("redux-undo-redo");
+const { actions } = require("@intactile/redux-undo-redo");
 
 const { rerenderPage } = require("../../../core/utils/UtilUtils");
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
@@ -27,6 +27,7 @@ const {
   DELETE_PAGE,
   PROJ_SHOW_POPUP
 } = require("../actionTypes/project");
+const { CHANGE_OPTIONS } = require("../actionTypes/productInformation");
 const {
   START_GLOBAL_LOADING,
   STOP_GLOBAL_LOADING
@@ -58,7 +59,7 @@ const calculatePrice = (serverData, obs) => {
       if (data) {
         obs.next({
           type: CALCULATE_PRICE,
-          total_price: data.total_price,
+          total_price: data.total_gross_price,
           print_options: serverData.print_options
         });
       }
@@ -297,6 +298,26 @@ module.exports = {
             }
             print_options[contentCode]["pages"][0] = page_code;
           }
+          const serverData = {
+            product: productInformation.productId,
+            related_product: false,
+            qty: productInformation.qty,
+            print_options: print_options,
+            options: productInformation.productOptions.options
+          };
+          calculatePrice(serverData, obs);
+        })
+      )
+    ),
+  onEpiceChangeOptionsPrice: (action$, state$) =>
+    action$.pipe(
+      ofType(CHANGE_OPTIONS),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          const productInformation = { ...state$.value.productInformation };
+          let print_options = {
+            ...productInformation.productOptions.print_options
+          };
           const serverData = {
             product: productInformation.productId,
             related_product: false,

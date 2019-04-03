@@ -32,3 +32,45 @@
 .boxLine.magneticSnap.snaped {
   background: #000;
 }
+.boxLine.left:before {
+  content: "";
+  border-left: 1px dashed #fff;
+  height: 100%;
+  width: 1px;
+  position: absolute;
+  left: -1px;
+  top: -1px;
+}
+.boxLine.right:before {
+  content: "";
+  border-left: 1px dashed #fff;
+  height: 100%;
+  width: 1px;
+  position: absolute;
+  left: -1px;
+  top: -1px;
+}
+.boxLine.bottom:before {
+  content: "";
+  border-top: 1px dashed #fff;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: -1px;
+}
+.boxLine.top:before {
+  content: "";
+  border-top: 1px dashed #fff;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0px;
+  top: -1px;
+}
+.boxLine.magneticSnap.right:before,
+.boxLine.magneticSnap.left:before,
+.boxLine.magneticSnap.top:before,
+.boxLine.magneticSnap.bottom:before {
+  border: 0px;
+}

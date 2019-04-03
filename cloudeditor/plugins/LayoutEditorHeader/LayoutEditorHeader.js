@@ -220,6 +220,8 @@ class LayoutEditorHeader extends React.Component {
           type="warning"
           title={this.props.t("Warning")}
           text={this.props.message}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
           onConfirm={() => this.closeSweetAlert()}
         />
         {this.props.loading && (

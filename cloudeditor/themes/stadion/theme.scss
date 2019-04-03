@@ -63,6 +63,7 @@ body {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  padding-bottom: 40px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -205,12 +206,12 @@ section.dropzone {
 
 #container.sidebarContainerExpand .render-container {
   flex-grow: 1000;
-  width: calc(100% - 500px);
-  margin-left: 500px;
+  width: calc(100% - 480px);
+  margin-left: 480px;
 }
 
 #container.sidebarContainerExpand .PageSelector {
-  left: 500px;
+  left: 480px;
 }
 
 .canvas-container {

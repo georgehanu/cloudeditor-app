@@ -4,7 +4,7 @@ const { changeSearchValue } = require("../../store/actions");
 
 class ClubsSearch extends React.Component {
   state = {
-    value: "Bayern"
+    value: ""
   };
 
   inputChangedHandler = value => {
@@ -25,6 +25,7 @@ class ClubsSearch extends React.Component {
           value={value}
           onChange={event => this.inputChangedHandler(event.target.value)}
           onKeyPress={this._handleKeyPress}
+          placeholder={this.props.t("Enter club name")}
         />
         <button
           className="OkButton"

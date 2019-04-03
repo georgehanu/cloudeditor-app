@@ -37,8 +37,7 @@ const AddPdfPlugin = withNamespaces("addPdf")(AddPdf);
 
 module.exports = {
   AddPdf: assign(AddPdfPlugin, {
-    disablePluginIf:
-      "{store().getState().project.title==='Empty Project!!@!!@!@'}",
+    disablePluginIf: "{!store().getState().ui.permissions.uploadPdf|0}",
     SideBar: {
       position: 3,
       priority: 1,

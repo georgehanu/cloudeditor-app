@@ -21,6 +21,7 @@ const GraphicElementsPlugin = withNamespaces("graphicElements")(
 
 module.exports = {
   GraphicElements: assign(GraphicElementsPlugin, {
+    disablePluginIf: "{!store().getState().ui.permissions.allowGraphics|0}",
     SideBar: {
       position: 9,
       priority: 1,

@@ -8,12 +8,12 @@
   font-smooth: always;
 }
 .pageSelectorContainer {
-  height: 150px;
+  height: 160px;
   width: 100%;
   display: inline-flex;
   position: absolute;
-  bottom: 0px;
-  padding-left: 100px;
+  bottom: 40px;
+  padding-left: 80px;
   z-index: 501;
 }
 
@@ -23,8 +23,7 @@
 
 .pageSelectorHeader {
   height: 25px;
-  background-color: #f9fafc;
-  border-bottom: 1px solid #dcdee1;
+  background-color: #fff;
   line-height: 25px;
   border-radius: 0;
   /*font-family: "Avenir LT W01 85 Heavy";*/
@@ -41,7 +40,6 @@
 .pageSelector {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #dcdee1;
   border-top: 1px solid #dcdee1;
   box-sizing: border-box;
   z-index: 1000;
@@ -127,7 +125,7 @@
 }
 
 #container.pageSelectorMinimized .pageSelectorContainer {
-  height: 25px;
+  height: 30px;
 }
 
 #container.pageSelectorMinimized .pageHeaderButtonExtend {
@@ -175,7 +173,7 @@
 }
 
 #container.pageSelectorExtended .html5LivePaginationContainer {
-  padding: 10px 0px;
+  padding: 24px 0px 10px 0px;
 }
 
 .pageHeaderText,
@@ -252,10 +250,12 @@
   font-size: 14px;
   color: #666666;
   margin-left: 5px;
+  top: -3px;
+  position: relative;
 }
 
 .pageHeaderText .icon {
-  font-size: 14px;
+  font-size: 20px;
   color: #666666;
 }
 
@@ -265,13 +265,17 @@
   font-family: ArialMT;
 }
 
+.pageHeaderTextInfoContainer {
+  margin-left: 150px;
+}
+
 .pageHeaderTextTitleContainer {
   width: 170px;
   text-align: left;
 }
 /*.pageSelectorNormal*/
 .html5LivePaginationContainer {
-  padding: 14px 0px 7px 0px;
+  padding: 24px 0px 7px 0px;
 }
 
 .pageSelectorNormal .html5LivePaginationContainer .paginationPage {
@@ -283,7 +287,8 @@
 }
 
 .pageHeaderButtonsContainer {
-  text-align: center;
+  position: absolute;
+  left: 210px;
 }
 
 .pageSelectorContainer .pageContainer.page * {
@@ -302,4 +307,16 @@
 
 .pageHeaderTextTitleContainer.pageHeaderTextTitleContainerDisabled {
   cursor: not-allowed;
+}
+
+.pageHeaderButtonsContainer button {
+  top: -25px;
+}
+
+.pageSelectorHeader {
+  top: 10px;
+}
+
+.pageSelectorMinimized .pageSelectorHeader {
+  top: 4px;
 }

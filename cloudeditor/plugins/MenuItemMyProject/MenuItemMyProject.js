@@ -10,12 +10,14 @@ const { connect } = require("react-redux");
 const LoginWnd = require("./components/LoginWnd");
 const SaveWnd = require("./components/SaveWnd");
 const LoadWnd = require("./components/LoadWnd");
+const RegisterWnd = require("./components/RegisterWnd");
 
 require("./MenuItemMyProject.css");
 class MenuItemMyProject extends React.Component {
   state = {
     showLoginWnd: false,
     showSaveWnd: false,
+    showRegisterWnd: false,
     showLoadWnd: false,
     loginMode: false,
     projectId: null
@@ -27,7 +29,8 @@ class MenuItemMyProject extends React.Component {
         ...prevState,
         showLoginWnd: false,
         showSaveWnd: false,
-        showLoadWnd: false
+        showLoadWnd: false,
+        showRegisterWnd: false
       };
 
     if (nextProps.loggedIn === true && prevState.loginMode === false) {
@@ -35,6 +38,7 @@ class MenuItemMyProject extends React.Component {
       return {
         ...prevState,
         showLoginWnd: false,
+        showRegisterWnd: false,
         loginMode: true
       };
     }
@@ -58,7 +62,8 @@ class MenuItemMyProject extends React.Component {
     this.setState({
       showLoginWnd: false,
       showSaveWnd: false,
-      showLoadWnd: false
+      showLoadWnd: false,
+      showRegisterWnd: false
     });
     this.props.onSetSubWndHandler(false);
   };
@@ -70,6 +75,12 @@ class MenuItemMyProject extends React.Component {
 
   showLoadWnd = () => {
     this.setState({ showLoadWnd: true });
+    this.props.onSetSubWndHandler(true);
+  };
+
+  showRegisterWnd = () => {
+    this.closeWnd();
+    this.setState({ showRegisterWnd: true });
     this.props.onSetSubWndHandler(true);
   };
 
@@ -96,12 +107,17 @@ class MenuItemMyProject extends React.Component {
     const showSubmenu =
       this.state.showLoginWnd === false &&
       this.state.showSaveWnd === false &&
-      this.state.showLoadWnd === false;
+      this.state.showLoadWnd === false &&
+      this.state.showRegisterWnd === false;
 
     return (
       <React.Fragment>
         {this.state.showLoginWnd && (
-          <LoginWnd show={true} modalClosed={this.closeWnd} />
+          <LoginWnd
+            show={true}
+            modalClosed={this.closeWnd}
+            register={this.showRegisterWnd}
+          />
         )}
         {this.state.showSaveWnd && (
           <SaveWnd show={true} modalClosed={this.closeWnd} />
@@ -109,6 +125,10 @@ class MenuItemMyProject extends React.Component {
         {this.state.showLoadWnd && (
           <LoadWnd show={true} modalClosed={this.closeWnd} />
         )}
+        {this.state.showRegisterWnd && (
+          <RegisterWnd show={true} modalClosed={this.closeWnd} />
+        )}
+
         {showSubmenu && (
           <div className="menuItemMyProjectContainer projectMenuItem">
             <div className="projectMenuItemHeader" />

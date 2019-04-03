@@ -71,6 +71,8 @@ class Layouts extends React.Component {
             this.props.t("All changes for this page will be overwritten")
           }
           showCancelButton={true}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
           onConfirm={() => this.loadLayout()}
           onCancel={() => this.setState({ showAlert: false })}
         />
@@ -115,6 +117,7 @@ const LayoutsPlugin = connect(
 
 module.exports = {
   Layouts: assign(LayoutsPlugin, {
+    disablePluginIf: "{!store().getState().assets.layout.items.length}",
     SideBar: {
       position: 4,
       priority: 1,

@@ -37,6 +37,7 @@ const { changePage } = require("../../core/stores/actions/project");
 
 const LoginWnd = require("../MenuItemMyProject/components/LoginWnd");
 const SaveWnd = require("../MenuItemMyProject/components/SaveWnd");
+const RegisterWnd = require("../MenuItemMyProject/components/RegisterWnd");
 
 const { authLoggedInSelector } = require("../ProjectMenu/store/selectors");
 
@@ -46,10 +47,13 @@ class ProjectHeader extends React.Component {
     preview: false,
     showLoginWnd: false,
     showSaveWnd: false,
-    loggedIn: false
+    showRegisterWnd: false,
+    loggedIn: false,
+    showAddToCartError: false
   };
   componentDidMount() {
     this.calculatePrice();
+    this.setTimer();
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
@@ -64,6 +68,7 @@ class ProjectHeader extends React.Component {
       return {
         ...prevState,
         showLoginWnd: false,
+        showRegisterWnd: false,
         loggedIn: true
       };
     }
@@ -73,7 +78,7 @@ class ProjectHeader extends React.Component {
   showPrintPreview = () => {
     const oldPreview = this.state.preview;
     if (oldPreview === false) {
-      this.props.changePage({ page_id: this.props.pagesOrder[0] });
+      //  this.props.changePage({ page_id: this.props.pagesOrder[0] });
       this.props.previewLoadPage(0);
     } else {
       this.props.previewDisableMode();
@@ -86,12 +91,28 @@ class ProjectHeader extends React.Component {
         true
       );
     });
+    this.setState({ showAddToCartError: false });
+    if (this._timer) {
+      clearTimeout(this._timer);
+    }
   };
   attachPreview = () => {
     const previewState = this.state.preview;
     if (previewState) {
       this.props.attachPreview();
+    } else {
+      this.setState({ showAddToCartError: true });
+      this.setTimer();
     }
+  };
+  setTimer = () => {
+    if (this._timer) {
+      clearTimeout(this._timer);
+    }
+    this._timer = setTimeout(() => {
+      this.setState({ showAddToCartError: false });
+      this._timer = null;
+    }, 10000);
   };
   calculatePrice = () => {
     const CALCULATE_PRICE_URL =
@@ -112,7 +133,9 @@ class ProjectHeader extends React.Component {
       .then(resp => resp.data)
       .then(data => {
         if (data) {
-          this.props.calculatePriceInitial({ total_price: data.total_price });
+          this.props.calculatePriceInitial({
+            total_price: data.total_gross_price
+          });
         }
         this.props.stopGlobalLoading();
       })
@@ -139,10 +162,25 @@ class ProjectHeader extends React.Component {
 
   closeWnd = () => {
     this.props.addContainerClasses("ProjectHeader", [], false);
-    this.setState({ showLoginWnd: false, showSaveWnd: false });
+    this.setState({
+      showLoginWnd: false,
+      showSaveWnd: false,
+      showRegisterWnd: false
+    });
+  };
+
+  showRegisterWnd = () => {
+    this.closeWnd();
+    this.props.addContainerClasses(
+      "ProjectHeader",
+      ["projectHeaderShowModal"],
+      false
+    );
+    this.setState({ showRegisterWnd: true });
   };
 
   render() {
+    let addToCartError = null;
     const showPagesWarning = this.props.pagesOrder.length % 4 ? true : false;
     const addToCartTooltip = showPagesWarning
       ? { title: "Invalid number of pages", position: "left" }
@@ -152,27 +190,45 @@ class ProjectHeader extends React.Component {
       this.props.projProjectId === null || this.props.projProjectId === 0
         ? { cursor: "pointer" }
         : {};
+    if (this.state.showAddToCartError) {
+      addToCartError = (
+        <div className={"cartError"}>
+          <span>
+            {this.props.t(
+              "Please check your preview first, then add product to cart"
+            )}
+          </span>
+        </div>
+      );
+    }
     return (
       <React.Fragment>
         {this.state.showLoginWnd && (
-          <LoginWnd show={true} modalClosed={this.closeWnd} />
+          <LoginWnd
+            show={true}
+            modalClosed={this.closeWnd}
+            register={this.showRegisterWnd}
+          />
         )}
         {this.state.showSaveWnd && (
           <SaveWnd show={true} modalClosed={this.closeWnd} />
+        )}
+        {this.state.showRegisterWnd && (
+          <RegisterWnd show={true} modalClosed={this.closeWnd} />
         )}
 
         <div className="projectHeaderContainer">
           <div className="projectHeaderLogo" />
           <div className="projectHeaderCenter">
             <span className="projectHeaderTitle">
-              {this.props.t("My project")}:
+              {this.props.t("My project") + ": "}
             </span>
             <span
               className="projectHeaderName"
               onClick={this.showModal}
               style={titleStyle}
             >
-              {this.props.projectTitle}
+              {this.props.t(this.props.projectTitle)}
             </span>
             <span className="projectHeaderSeparator">|</span>
             <div className="printPreviewButtonContainer">
@@ -190,7 +246,7 @@ class ProjectHeader extends React.Component {
             <div className="projectRighInfo">
               <div className="projectRightPrice">
                 {this.props.qty} {this.props.t("pieces")}{" "}
-                {this.props.totalPrice}
+                {this.props.totalPrice} {"*"}
               </div>
               <div className="projectRrightDescription">
                 {this.props.productName}, {this.props.numberOfPages}{" "}
@@ -205,6 +261,7 @@ class ProjectHeader extends React.Component {
             />
           </div>
         </div>
+        {addToCartError}
       </React.Fragment>
     );
   }

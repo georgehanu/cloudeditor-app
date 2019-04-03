@@ -59,7 +59,7 @@ const withDraggable = WrappedComponent => {
       }
     };
     onDragStartHandler = (event, ui) => {
-      this.changePropsOnDragHandler(ui, 1, 0);
+      //this.changePropsOnDragHandler(ui, 1, 0);
       const draggable = $(event.target).data("ui-draggable");
       draggable.options.snapToleranceDynamic =
         this.props.snapTolerance * this.props.zoomScale;
@@ -91,7 +91,7 @@ const withDraggable = WrappedComponent => {
       this.enableUI =
         !this.props.active &&
         !this.props.viewOnly &&
-        this.props.movable &&
+        (this.props.movable || this.props.backendEditor) &&
         this.props.permissions.moveBlocks;
       this.$el = $(this.el);
       handleUI(

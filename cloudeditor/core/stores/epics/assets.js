@@ -31,7 +31,7 @@ module.exports = {
               .post(URL, serverData)
               .then(resp => resp.data)
               .then(data => {
-                if (data.status !== "failure") {
+                if (data.success) {
                   obs.next({
                     type: UPLOAD_ASSET_SUCCESS,
                     payload: {
@@ -42,7 +42,10 @@ module.exports = {
                 } else {
                   obs.next({
                     type: UPLOAD_ASSET_FAILED,
-                    payload: { message: data.error_message }
+                    payload: {
+                      type: action$.payload.type,
+                      message: data.message
+                    }
                   });
                   obs.complete();
                 }
@@ -50,7 +53,10 @@ module.exports = {
               .catch(error => {
                 obs.next({
                   type: UPLOAD_ASSET_FAILED,
-                  payload: { message: "Error message: " + error.message }
+                  payload: {
+                    type: action$.payload.type,
+                    message: "Error message: " + error.message
+                  }
                 });
                 obs.complete();
               });

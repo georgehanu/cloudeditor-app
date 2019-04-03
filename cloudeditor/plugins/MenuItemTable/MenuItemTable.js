@@ -15,9 +15,11 @@ const {
 class MenuItemTable extends React.Component {
   render() {
     const pageWidth = this.props.pages[this.props.activePageId].width;
+    const pageHeight = this.props.pages[this.props.activePageId].height;
     const columnsNo = this.props.columnsNo;
     const tableWidth = pageWidth / 2; //columnsNo > 0 ? pageWidth / columnsNo : pageWidth;
-
+    const left = (pageWidth - tableWidth) / 2;
+    const top = (pageHeight - tableWidth) / 2;
     return (
       <div className="projectMenuButtonLink">
         <ProjectMenuButton
@@ -28,11 +30,15 @@ class MenuItemTable extends React.Component {
             this.props.addTable({
               type: "tinymceTable",
               subType: "tinymceTable",
-              left: 17,
-              top: 17,
+              left,
+              top,
               id: uuidv4(),
               width: tableWidth,
-              height: tableWidth
+              height: tableWidth,
+              tableContent:
+                '<table class="dummyTable" style="font-size:15px;text-align:center"><tbody><tr><td>' +
+                this.props.t("Paste Your Table Here") +
+                "</td></tr></tbody></table>"
             });
           }}
         >
@@ -63,7 +69,7 @@ const MenuItemTablePlugin = connect(
 module.exports = {
   MenuItemTable: assign(MenuItemTablePlugin, {
     ProjectMenu: {
-      position: 7,
+      position: 6,
       priority: 1,
       text: "Table insert",
       embedButtonPlugin: true,

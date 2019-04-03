@@ -72,11 +72,11 @@
 
 .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
   left: 100px !important;
-  top: 90px !important;
+  top: 104px !important;
   box-shadow: none;
   border: none;
   height: 30px !important;
-  z-index: 500000 !important;
+  z-index: 500 !important;
 }
 
 body.sidebarContainerExpand
@@ -86,7 +86,7 @@ body.sidebarContainerExpand
 
 body.submenuHeaderFooter
   .mce-tinymce.mce-tinymce-inline.mce-panel.mce-floatpanel {
-  top: 120px !important;
+  top: 142px !important;
 }
 
 .mce-tinymce.mce-tinymce-inline .mce-container-body.mce-abs-layout,
@@ -120,4 +120,10 @@ body.submenuHeaderFooter
 }
 .mce-tinymce.mce-tinymce-inline .mce-i-fupaBackcolor {
   background: #bbb;
+}
+
+/* hide menus from table insert */
+.mce-container-body.mce-stack-layout
+  .mce-menu-item-normal.mce-stack-layout-item:not(:first-child) {
+  display: none;
 }

@@ -5,6 +5,7 @@ const PropTypes = require("prop-types");
 const { DragDropContextProvider } = require("react-dnd");
 const HTML5Backend = require("react-dnd-html5-backend");
 const PaginationBottomContainer = require("../../Html5/PaginationBottomContainer/PaginationBottomContainer");
+const { withNamespaces } = require("react-i18next");
 
 const Zoom = require("../Zoom/Zoom");
 
@@ -68,7 +69,9 @@ class Canvas extends React.Component {
             ].join(" ");
             return (
               <div key={pageKey} className={classes}>
-                <div>{this.props.labels[pageKey]["longLabel"]}</div>
+                <div>
+                  {this.props.t(this.props.labels[pageKey]["longLabel"])}
+                </div>
               </div>
             );
           });
@@ -228,4 +231,4 @@ const CanvasComponent = hot(module)(
     null
   )(Canvas)
 );
-module.exports = CanvasComponent;
+module.exports = withNamespaces("translate")(CanvasComponent);

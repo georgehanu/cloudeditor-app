@@ -10,7 +10,8 @@ const {
   UPLOAD_ASSET_SUCCESS,
   ASSETS_LAYOUT_START,
   ASSETS_LAYOUT_SUCCESS,
-  ASSETS_LAYOUT_FAILED
+  ASSETS_LAYOUT_FAILED,
+  HIDE_ERROR
 } = require("../actionTypes/assets");
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
@@ -26,7 +27,8 @@ uploadFileStart = (state, action) => {
     [action.type]: {
       ...state[action.type],
       loading: true,
-      loadingFiles: action.files.length
+      loadingFiles: action.files.length,
+      showAlert: false
     }
   };
 };
@@ -37,7 +39,8 @@ uploadAssetFailed = (state, action) => {
       ...state[action.type],
       loading: false,
       errorMessage: action.message,
-      loadingFiles: 0
+      loadingFiles: 0,
+      showAlert: true
     }
   };
 };
@@ -55,7 +58,8 @@ uploadAssetSuccces = (state, action) => {
       loading: state[action.type].loadingFiles === 1 ? false : true,
       loadingFiles: loadingFiles,
 
-      uploadedFiles: newUploadedFiles
+      uploadedFiles: newUploadedFiles,
+      showAlert: false
     }
   };
 };
@@ -82,6 +86,15 @@ const removeAssetFromGallery = (state, action) => {
       ...state[action.type],
       uploadedFiles: newUploadedFiles,
       loadingDelete: false
+    }
+  };
+};
+const hideError = (state, action) => {
+  return {
+    ...state,
+    [action.type]: {
+      ...state[action.type],
+      showAlert: false
     }
   };
 };
@@ -189,6 +202,9 @@ module.exports = handleActions(
     },
     [ASSETS_LAYOUT_FAILED]: (state, action) => {
       return layoutsFailed(state, action.payload);
+    },
+    [HIDE_ERROR]: (state, action) => {
+      return hideError(state, action.payload);
     }
   },
   initialState

@@ -1,11 +1,12 @@
 const React = require("react");
 const PropTypes = require("prop-types");
 const { useState } = require("react");
+const { withNamespaces } = require("react-i18next");
 
 const ContentEditable = require("./useContentEditable");
 
 function EditableText({ content, active, placeHolder }) {
-  const [value, setValue] = useState(placeHolder);
+  const [value, setValue] = useState(this.props.t(placeHolder));
   return <ContentEditable content={value} editable={active} tagName="div" />;
 }
 
@@ -20,4 +21,4 @@ EditableText.defaultProps = {
   placeHolder: "Insert text Here!"
 };
 
-module.exports = EditableText;
+module.exports = withNamespaces("translate")(EditableText);

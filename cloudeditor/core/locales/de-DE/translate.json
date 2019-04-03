@@ -14,7 +14,7 @@
   "Edit action": "Arbeitsschritt",
   "Dieses Element befindet sich außerhalb des Druckbereiches.": "Dieses Element befindet sich außerhalb des Druckbereiches.",
   "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden.": "Dieses Element liegt im Sicherheitsbereich des Beschnitts und kann angeschnitten werden. Für randlos zu druckende Bereiche oder Bilder kann diese Info ignoriert werden.",
-  "Graphic elements" : "Grafik Elemente",
+  "Graphic elements": "Grafik Elemente",
   "Layouts": "Layout hinzufügen",
   "Background": "Hintergründe",
   "Change the background": "Hintergründe ändern",
@@ -23,7 +23,7 @@
   "Add a new pdf block": "PDF-Block hinzufügen",
   "Pdf": "PDF",
   "Text and content": "TEXT UND INHALTE",
-  "Fupa" : "Fupa Inhalte",
+  "Fupa": "Fupa Inhalte",
   "MENU": "MENU",
   "Edit label": "Edit label",
   "Password": "Password",
@@ -37,7 +37,7 @@
   "Are you sure you want to delete ?": "Are you sure you want to delete ?",
   "Add pages": "Seiten hinzufügen",
   "You can drag and drop pages along with their content": "Sie können Seiten mitsamt den Inhalten darauf per Drag & Drop verschieben",
-  "Invalid number of pages. It should be a multiply of 4.": "Invalid number of pages. It should be a multiply of 4.",
+  "apo": "Invalid number of pages. It should be a multiply of 4.",
   "Page 1": "1",
   "Add Text": "DE_Text hinzufügen"
 }

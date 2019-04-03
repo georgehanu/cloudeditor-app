@@ -104,6 +104,7 @@ class Blocks extends React.Component {
             deleteMissingImages={that.props.deleteMissingImages}
             setMissingImages={that.props.setMissingImages}
             data={objectData}
+            t={that.props.t}
             {...obj}
           >
             {that.recursiveRenderBlocks(newObjects, objectsData)}
@@ -126,6 +127,7 @@ class Blocks extends React.Component {
           deleteMissingImages={that.props.deleteMissingImages}
           setMissingImages={that.props.setMissingImages}
           data={objectData}
+          t={that.props.t}
           {...obj}
         />
       );

@@ -48,7 +48,7 @@ const MenuItemManualPlugin = withNamespaces("menuItemManual")(MenuItemManual);
 module.exports = {
   MenuItemManual: assign(MenuItemManualPlugin, {
     ProjectMenu: {
-      position: 6,
+      position: 10,
       priority: 1,
       text: "Manual & Help",
       embedButtonPlugin: true,

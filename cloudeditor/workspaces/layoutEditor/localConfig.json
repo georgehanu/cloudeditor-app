@@ -13,7 +13,13 @@
       "Zoom",
       "Background",
       "GraphicElements",
-      "LayoutEditorHeader"
+      "LayoutEditorHeader",
+      "ProjectMenu",
+      "MenuItemTextImage",
+      "MenuItemUndoRedo",
+      "MenuItemTable",
+      "HelperLines",
+      "MakeEditable"
     ]
   },
   "Layout": {

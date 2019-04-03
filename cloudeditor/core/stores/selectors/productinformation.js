@@ -12,6 +12,12 @@ const getTotalPriceSelector = state =>
   pathOr("", ["productInformation", "total_price"], state);
 
 const getQtySelector = state => pathOr(1, ["productInformation", "qty"], state);
+const getPrintOptionsSelector = state =>
+  pathOr({}, ["productInformation", "productOptions", "print_options"], state);
+const getContentCode = state =>
+  pathOr("", ["productInformation", "contentCode"], state);
+const displyedOptionsSelector = state =>
+  pathOr({}, ["productInformation", "displayedOptions"], state);
 
 const getProductIdSelector = state =>
   pathOr("", ["productInformation", "productId"], state);
@@ -22,5 +28,8 @@ module.exports = {
   getQtySelector,
   getProductIdSelector,
   getTotalPriceSelector,
-  getProductInformationSelector
+  getProductInformationSelector,
+  displyedOptionsSelector,
+  getPrintOptionsSelector,
+  getContentCode
 };

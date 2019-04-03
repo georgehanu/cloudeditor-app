@@ -40,8 +40,8 @@
   font-size: 12px;
   line-height: normal;
   color: #ffffff;
-  margin: 0 10px;
-  vertical-align: bottom;
+  margin: 0 3px;
+  vertical-align: middle;
 }
 
 .layoutEditorHeaderContainer .duplicateLabel {
@@ -167,15 +167,13 @@
   opacity: 1;
 }
 .storeViewSelect {
-  height: 40px;
+  height: auto;
   width: 100%;
 }
 .submenuItemHeaderFooter {
   background-color: transparent !important;
 }
-.submenuItemHeaderFooterHeight span {
-  color: #fff !important;
-}
+
 .submenuItemHeaderFooterHeightReset {
   background-color: #66b764 !important;
   color: white !important;
@@ -183,4 +181,41 @@
 .submenuItemHeaderFooter {
   z-index: -1;
   width: 40% !important;
+}
+.projectMenuContainer {
+  top: 110px !important;
+}
+
+.canvasContainer {
+  padding-top: 170px !important;
+}
+#sidebar-wrapper {
+  padding-top: 140px !important;
+}
+
+.projectMenuButtonLink {
+  float: left;
+}
+.submenuItemHeaderFooter {
+  width: 345px !important;
+  position: relative !important;
+  float: left !important;
+  top: 0px !important;
+}
+.submenuItemHeaderFooter {
+  width: 271px !important;
+  margin: 0px !important;
+  float: left !important;
+}
+.submenuItemHeaderFooterHeight span {
+  color: #0000;
+}
+.projectMenuButtonLink {
+  display: none !important;
+}
+.helperLinesContainer {
+  top: 140px !important;
+}
+.buttonMenuItemTable .projectMenuButtonLink {
+  display: block !important;
 }

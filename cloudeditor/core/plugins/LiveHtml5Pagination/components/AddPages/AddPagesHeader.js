@@ -1,10 +1,10 @@
 const React = require("react");
-//const { withNamespaces } = require("react-i18next");
+const { withNamespaces } = require("react-i18next");
 
 const AddPagesHeader = props => {
   return (
     <div className="addPagesHeader">
-      Add pages
+      {props.t("Add pages")}
       <div className="close">
         <a
           href="javascript:void(0)"
@@ -19,5 +19,5 @@ const AddPagesHeader = props => {
   );
 };
 
-//module.exports = withNamespaces("pageSelector")(AddPagesHeader);
-module.exports = AddPagesHeader;
+module.exports = withNamespaces("translate")(AddPagesHeader);
+//module.exports = AddPagesHeader;

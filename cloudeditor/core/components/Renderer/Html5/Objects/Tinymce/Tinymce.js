@@ -5,9 +5,13 @@ const { pathOr } = require("ramda");
 require("./Tinymce.css");
 const uuidv4 = require("uuid/v4");
 const { connect } = require("react-redux");
+const { hot } = require("react-hot-loader");
 const { debounce } = require("underscore");
 const striptags = require("striptags");
 const ConfigUtils = require("../../../../../utils/ConfigUtils");
+const {
+  languageSelector
+} = require("../../../../../../core/stores/selectors/project");
 
 class Tinymce extends React.PureComponent {
   constructor(props) {
@@ -16,9 +20,9 @@ class Tinymce extends React.PureComponent {
     this.coverRef = React.createRef();
 
     this.pasteContent =
-      `<div class="pasteTableContainer">` +
+      '<table class="dummyTable" style="font-size:15px;text-align:center"><tbody><tr><td>' +
       props.t("Paste Your Table Here") +
-      `</div>`;
+      "</td></tr></tbody></table>";
   }
 
   hasClass(el, className) {
@@ -529,6 +533,7 @@ class Tinymce extends React.PureComponent {
             paste_retain_style_properties: "all",
             paste_webkit_styles: "all",
             paste_retain_style_properties: "all",
+            language: this.props.language,
             paste_merge_formats: true,
             paste_preprocess: (plugin, args) => {
               if (!args.content.includes("<table")) {
@@ -562,6 +567,8 @@ class Tinymce extends React.PureComponent {
                       height: 1000
                     }
                   });
+
+                  this.tinyEditor.setContent("");
                 }
               }
             },
@@ -583,7 +590,7 @@ class Tinymce extends React.PureComponent {
             ],
 
             table_toolbar:
-              "tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor fupaBackcolor fontselect decrementFontSize fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
+              "table tableText tableprops  | rowsText tablerowprops tablecellprops   | rowsText tableinsertrowbefore tableinsertrowafter tabledeleterow  | colsText tableinsertcolbefore tableinsertcolafter tabledeletecol | forecolor fupaBackcolor fontselect decrementFontSize fontValue incrementFontSize bold italic underline  | alignleft aligncenter alignright alignjustify ",
             content_css: [
               PRODUCTION
                 ? globalConfig.baseUrl +
@@ -594,12 +601,25 @@ class Tinymce extends React.PureComponent {
                 "personalize/index/loadFonts/id/" +
                 (templateId || 0)
             ],
-            menubar: false,
+            menubar: "table",
             resize: !this.props.viewOnly,
             object_resizing: !this.props.viewOnly,
             body_class: "TinymceContainer",
 
             setup: function(editor) {
+              editor.on("ExecCommand", function(e) {
+                if (e.command === "mceInsertContent") {
+                  const tableFormat =
+                    '<table border="1" data-mce-id="__mce" style="font-size:10px;';
+                  const newContent = e.value.replace(
+                    '<table border="1" data-mce-id="__mce" style="',
+                    tableFormat
+                  );
+
+                  editor.setContent(newContent);
+                }
+              });
+
               editor.addButton("tableText", {
                 text: labelTableName,
                 classes: "tableLabels"
@@ -676,4 +696,15 @@ class Tinymce extends React.PureComponent {
   }
 }
 
-module.exports = Tinymce;
+const mapStateToProps = (state, _) => {
+  return {
+    language: languageSelector(state)
+  };
+};
+
+module.exports = hot(module)(
+  connect(
+    mapStateToProps,
+    null
+  )(Tinymce)
+);

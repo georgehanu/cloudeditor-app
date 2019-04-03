@@ -1,10 +1,10 @@
 const React = require("react");
 const ModalWnd = require("../../../core/components/Modal/ModalWnd");
 const { connect } = require("react-redux");
-const Input = require("./Input");
-const Textarea = require("./Textarea");
+const Input = require("./UI/Input");
+const Textarea = require("./UI/Textarea");
 const Backdrop = require("../../../core/components/Backdrop/Backdrop");
-const MessageForm = require("./MessageForm");
+const MessageForm = require("./UI/MessageForm");
 
 const { withNamespaces } = require("react-i18next");
 

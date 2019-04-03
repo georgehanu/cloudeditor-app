@@ -122,6 +122,7 @@ const getObjectsDefaults = cfg => {
       rotate: 0,
       dragging: 0,
       rotating: 0,
+      noCrop: false,
       resizing: 0,
       bgColor: getObjectColorTemplate((general && general.bgColor) || {}),
       borderColor: getObjectColorTemplate(
@@ -240,9 +241,9 @@ const getObjectsDefaults = cfg => {
       type: "section",
       global: false,
       objectsIds: [],
-      movable: 0,
-      resizable: 0,
-      rotatable: 0,
+      movable: 1,
+      resizable: 1,
+      rotatable: 1,
       rotateAngle: 0
     },
     section || {}
@@ -311,7 +312,7 @@ const getDocumentDefaults = cfg => {
       allowLayoutColumns: false,
       predefinedGroups: false, //[2,2]or false
       headerEditor: false, //[2,2]or false
-      backendEditor: false, //[2,2]or false
+      backendEditor: 0, //[2,2]or false
       footerEditor: false, //[2,2]or false
       groups: {
         group_1: ["page_1"],
@@ -320,7 +321,7 @@ const getDocumentDefaults = cfg => {
       header: {
         enabled: true,
         mode: "read", // (read, edit)
-        activeOn: "all", //(all inner)
+        activeOn: "inner", //(all inner)
         display: "before", // (before, after)
         mirrored: true,
         height: 12,
@@ -423,6 +424,7 @@ const getProjectTemplate = cfg => {
       globalObjectsIds: { before: [], after: [] },
       selectedObjectsIds: [],
       activeSelection: null,
+      emptyPage: null,
       configs: {
         document: getDocumentDefaults({}),
         pages: getPagesDefaults({}),
@@ -528,7 +530,10 @@ const getUIPermissionsTemplate = cfg => {
       rotateBlocks: 1,
       resizeBlocks: 1,
       snapBlocks: 1,
-      alertOnExit: 0
+      alertOnExit: 0,
+      uploadPdf: 1,
+      allowFupa: 1,
+      allowGraphics: 1
     },
     cfg || {}
   );
@@ -791,6 +796,14 @@ const getEmptyObject = cfg => {
 
   return object;
 };
+const getEmptyPanel = cfg => {
+  let object = merge(
+    { id: uuidv4(), width: 200, height: 200, label: "Panel %panel_no%" },
+    cfg || {}
+  );
+
+  return object;
+};
 
 const getEmptyUI = cfg => {
   return mergeDeepRight(
@@ -837,32 +850,38 @@ const getEmptyAssets = cfg => {
     {
       layout: {
         loading: false,
-        items: []
+        items: [],
+        showAlert: false
       },
       pdf: {
         loading: false,
         loadingDelete: false,
         loadingFiles: 0,
-        uploadedFiles: []
+        uploadedFiles: [],
+        showAlert: false
       },
       image: {
         loading: false,
         loadingDelete: false,
         loadingFiles: 0,
-        uploadedFiles: []
+        uploadedFiles: [],
+        showAlert: false
       },
       graphics: {
         loading: false,
-        items: []
+        items: [],
+        showAlert: false
       },
       layout: {
         loading: false,
         items: [],
-        categories: []
+        categories: [],
+        showAlert: false
       },
       footerheader: {
         loading: false,
-        items: []
+        items: [],
+        showAlert: false
       }
     },
     cfg || {}
@@ -889,7 +908,8 @@ const getEmptyProductInformation = cfg => {
       contentCode: null,
       coverCode: null,
       no_page_cover: 0,
-      pages_codes: []
+      pages_codes: [],
+      displayedOptions: []
     },
     cfg || {}
   );
@@ -944,7 +964,8 @@ const ProjectUtils = {
   getEmptyAssets,
   getEmptyAuth,
   getEmptyLayoutTemplateConfig,
-  getObjectHeaderFooterIds
+  getObjectHeaderFooterIds,
+  getEmptyPanel
 };
 
 module.exports = ProjectUtils;

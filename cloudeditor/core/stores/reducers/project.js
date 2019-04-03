@@ -10,6 +10,8 @@ const {
   last,
   omit,
   pick,
+  pathOr,
+  values,
   forEachObjIndexed
 } = require("ramda");
 const {
@@ -83,31 +85,40 @@ const addPages = (state, action) => {
   const { activePage, pages, pagesOrder } = state;
   let newPages = { ...pages };
   const { nrPagesToInsert, location } = action;
-  const newObjects = {};
+  let newObjects = {};
   let newIds = [];
   let newOrder = clone(pagesOrder);
   const firstPage = newPages[head(pagesOrder)];
   const firstPageWidth = firstPage["width"];
   const firstPageHeight = firstPage["height"];
   for (let i = 0; i < nrPagesToInsert; i++) {
-    const newObject = ProjectUtils.getEmptyObject({
-      type: "image",
-      backgroundblock: 1,
-      width: firstPageWidth,
-      height: firstPageHeight,
-      left: 0,
-      top: 0,
-      subType: "pdf"
-    });
-    const emptyPage = ProjectUtils.getEmptyPage({
-      width: firstPageWidth,
-      height: firstPageHeight
-    });
-    emptyPage.objectsIds = [newObject.id];
-    const { id } = emptyPage;
-    newPages[id] = emptyPage;
-    newIds.push(id);
-    newObjects[newObject.id] = newObject;
+    if (state.emptyPage) {
+      let savedData = JSON.parse(state.emptyPage);
+      if (state.configs.document.includeBoxes)
+        savedData = savedData.with_trimbox;
+      else savedData = savedData.no_trimbox;
+      const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
+        const id = uuidv4();
+        if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds")) {
+          newObjects[id] = { ...savedData.activePage.objects[key], id: id };
+          return { ...savedData.activePage.objects[key], id: id };
+        }
+      });
+      // store the new keys into objectsIds
+      const addPageObj = {};
+      const pageObj = pageObjects.map(el => {
+        addPageObj[el.id] = el;
+        return el.id;
+      });
+      const page_id = uuidv4();
+      const newActivePage = {
+        ...savedData.activePage.page,
+        id: page_id,
+        objectsIds: [...pageObj]
+      };
+      newPages[page_id] = newActivePage;
+      newIds.push(page_id);
+    }
   }
   let pageIndex = pagesOrder.findIndex(el => {
     return el === activePage;
@@ -275,6 +286,32 @@ const updateObjectProps = (state, payload) => {
     /* update the image with given imageId */
     return updateImageProps(state, payload);
   }
+  if (typeof payload.props.leftSlider != "undefined") {
+    const props = { ...payload.props };
+    props.noCrop = false;
+    if (payload.props.leftSlider === -1) {
+      const objectProps = { ...state.objects[payload.id] };
+      props.cropX = 0;
+      props.cropY = 0;
+      props.cropW = 0;
+      props.cropH = 0;
+      props.noCrop = true;
+      const ratioWidth = objectProps.imageWidth / objectProps.imageHeight;
+      const ratioHeight = objectProps.imageHeight / objectProps.imageWidth;
+      if (ratioWidth > ratioHeight) {
+        props.height = objectProps.width / ratioWidth;
+      } else {
+        props.width = objectProps.height / ratioHeight;
+      }
+    }
+    return {
+      ...state,
+      objects: {
+        ...state.objects,
+        [payload.id]: merge(state.objects[payload.id], props)
+      }
+    };
+  }
   return {
     ...state,
     objects: {
@@ -303,6 +340,7 @@ const updateImageProps = (state, payload) => {
     image: payload.props.image,
     subType: payload.props.image.subType
   };
+
   return {
     ...state,
     objects: {
@@ -466,14 +504,38 @@ addObjectMiddle = (state, action) => {
   const headerSelector = projectHeaderEnabledSelector(state);
   const footerSelector = projectFooterEnabledSelector(state);
   let defaultBlock = {};
-  let blockWidth = width / 2;
-  let blockHeight = blockWidth * 0.5;
-  if (width > height) {
-    blockHeight = height / 2;
-    blockWidth = blockHeight * 0.5;
+
+  let colNumbers = pathOr(0, ["configs", "pages", "columnsNo"], state);
+  colNumbers = pathOr(colNumbers, ["columnsNo"], page);
+  const columnSpacing = pathOr(0, ["configs", "pages", "columnSpacing"], state);
+  const safeCutDocument = pathOr(0, ["configs", "pages", "safeCut"], state);
+  const allowSafeCut = pathOr(0, ["configs", "pages", "allowSafeCut"], state);
+  const widthPage =
+    width +
+    page["boxes"]["trimbox"]["left"] +
+    page["boxes"]["trimbox"]["right"];
+  const safeCut =
+    Math.max(...values(page["boxes"]["trimbox"])) * 2 + safeCutDocument;
+  let leftMargin = 0;
+  let rightMargin = 0;
+  if (allowSafeCut) {
+    leftMargin = safeCut;
+    rightMargin = leftMargin;
+  } else {
+    leftMargin = page["boxes"]["trimbox"]["left"];
+    rightMargin = page["boxes"]["trimbox"]["right"];
   }
+  blockWidth = widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing - 2;
+  if (colNumbers) {
+    blockWidth =
+      (widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing) /
+        colNumbers -
+      2;
+  }
+  let blockHeight = blockWidth * 0.5;
   const left = (width - blockWidth) / 2;
   const top = (height - blockHeight) / 2;
+
   defaultBlock = {
     ...action,
     left,
@@ -543,7 +605,11 @@ loadLayout = (state, payload) => {
   );
 
   // add the new objects ... create new ids
-  const savedData = JSON.parse(payload.saved_data);
+  let savedData = JSON.parse(payload.saved_data);
+  if (payload.page_id === "*") {
+    if (state.configs.document.includeBoxes) savedData = savedData.with_trimbox;
+    else savedData = savedData.no_trimbox;
+  }
   const pageObjects = Object.keys(savedData.activePage.objects).map(key => {
     const id = uuidv4();
     if (!savedData.activePage.objects[key].hasOwnProperty("objectsIds"))
