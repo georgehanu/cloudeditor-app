@@ -1,6 +1,20 @@
 const { isEmpty, forEachObjIndexed } = require("ramda");
 const { updateCropParams } = require("../../core/stores/actions/project");
+const {
+  updateObjFromVariableInit
+} = require("../../core/stores/actions/variables");
 const smartcrop = require("smartcrop");
+
+const applyVariables = (store, ConfigUtils) => {
+  const state = store.getState();
+
+  store.dispatch(
+    updateObjFromVariableInit({
+      objects: state.project.objects,
+      variables: state.variables.variables
+    })
+  );
+};
 
 const applySmartcropToProject = (store, ConfigUtils) => {
   const state = store.getState();
@@ -57,4 +71,4 @@ const applySmartcropToProject = (store, ConfigUtils) => {
   }
 };
 
-module.exports = [applySmartcropToProject];
+module.exports = [applySmartcropToProject, applyVariables];

@@ -4,7 +4,10 @@ const Input = props => {
   const className = "InputLabelContainer";
   const maxLength = props.maxLength ? props.maxLength : 999999;
   const inputType = props.type ? props.type : "text";
-  const containerClass = "Input " + props.class;
+  const containerClass =
+    "Input " +
+    props.class +
+    (props.invalidMessage !== null ? " InputInvalid" : "");
   return (
     <div className={containerClass}>
       <label className={className}>
@@ -18,6 +21,10 @@ const Input = props => {
             name={props.name}
           />
         </div>
+
+        <label className="InputInvalidMessage">
+          {props.invalidMessage !== null ? props.invalidMessage : " "}
+        </label>
       </label>
     </div>
   );

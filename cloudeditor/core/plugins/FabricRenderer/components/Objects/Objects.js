@@ -4,10 +4,6 @@ const ObjectBlock = require("./Object");
 const { pick, keys } = require("ramda");
 const { connect } = require("react-redux");
 
-const {
-  extractVariablesFromString
-} = require("../../../../utils/VariableUtils");
-
 const objects = props => {
   const {
     objects,
@@ -24,17 +20,6 @@ const objects = props => {
 
   return Object.keys(objects).map(obKey => {
     const { offsetLeft, offsetTop } = objects[obKey];
-    let blockVariables = [];
-    if (completeObjects[obKey].type === "textbox") {
-      blockVariables = extractVariablesFromString(completeObjects[obKey].text);
-    } else if (
-      completeObjects[obKey].type === "image" &&
-      completeObjects[obKey].dynamicImage
-    ) {
-      blockVariables = extractVariablesFromString(
-        completeObjects[obKey].dynamicImage
-      );
-    }
     return (
       <ObjectBlock
         key={obKey}
@@ -42,7 +27,6 @@ const objects = props => {
         offsetLeft={offsetLeft + pageOffsetX}
         offsetTop={offsetTop + pageOffsetY}
         object={completeObjects[obKey]}
-        variables={pick(blockVariables, variables)}
         configs={configs}
         scale={scale}
         viewOnly={viewOnly}
@@ -54,17 +38,3 @@ const objects = props => {
 };
 
 module.exports = objects;
-// const mapStateToProps = (state, props) => {
-//   return {
-//     //items: dagDataItemsSelector(state),
-//     //completeObjects: pick(keys(props.objects), state.project.objects),
-//     stateObjects: state.project.objects,
-//     variables: state.variables.variables,
-//     configs: state.project.configs.objects
-//   };
-// };
-
-// module.exports = connect(
-//   mapStateToProps,
-//   null
-// )(objects);

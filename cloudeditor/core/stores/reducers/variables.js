@@ -1,7 +1,8 @@
 const {
   TEST_CHANGE_VARIABLE,
   CHANGE_VARIABLE_VALUE,
-  CHANGE_COLOR_VARIABLE_VALUE
+  CHANGE_COLOR_VARIABLE_VALUE,
+  CHECK_VARIABLE_VALID
 } = require("../actionTypes/variables");
 
 const {
@@ -14,6 +15,7 @@ const ConfigUtils = require("../../../core/utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
 const VariableUtils = require("../../utils/VariableUtils");
 const initialState = VariableUtils.getDGVariables(ConfigUtils.getDefaults());
+const { checkIfVariableIsValid } = require("../../utils/ObjectUtils");
 
 const testChangeVariable = state => {
   return {
@@ -82,6 +84,9 @@ module.exports = handleActions(
         imageHeight: action.payload.imageHeight,
         imageWidth: action.payload.imageWidth
       });
+    },
+    [CHECK_VARIABLE_VALID]: (state, action) => {
+      return checkIfVariableIsValid(state, action.payload);
     }
   },
   initialState

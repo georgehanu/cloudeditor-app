@@ -59,8 +59,7 @@ class ObjectBlock extends React.PureComponent {
       designerCallbacks,
       scale,
       object,
-      configs,
-      variables
+      configs
     } = this.props;
 
     const newBlock = mergeAll([
@@ -90,23 +89,14 @@ class ObjectBlock extends React.PureComponent {
     let imageWidth = block.imageWidth || 0;
 
     if (type === "textbox") {
-      text = block.text || {};
+      text = block.value || "";
+    }
 
-      forEachObjIndexed((variable, key) => {
-        text = text.replace("[%]" + key + "[/%]", variable.value);
-        fontSize = 50;
-      }, variables);
-    } else if (type === "image" && block.dynamicImage) {
-      forEachObjIndexed((variable, key) => {
-        if (variable.value) {
-          image_src = block.dynamicImage.replace(
-            "[%]" + key + "[/%]",
-            variable.value
-          );
-          imageHeight = variable.imageHeight;
-          imageWidth = variable.imageWidth;
-        }
-      }, variables);
+    if (block.visibleDepend !== undefined) {
+      block = {
+        ...block,
+        visible: block.visibleDepend
+      };
     }
 
     let blockProps = {
@@ -118,15 +108,10 @@ class ObjectBlock extends React.PureComponent {
       offsetTop: offsetTop
     };
 
-    if (this.props.object.fill) {
-      const fillColor = replaceColor(
-        "fill",
-        this.props.object,
-        this.props.mainVariables
-      );
+    if (this.props.object.fillNew) {
       blockProps = {
         ...blockProps,
-        ...fillColor
+        fill: this.props.object.fillNew
       };
     } else {
       if (

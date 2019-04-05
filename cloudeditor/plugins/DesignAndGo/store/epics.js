@@ -10,12 +10,23 @@ const {
 const { dagChangeRenderId } = require("./actions");
 const axios = require("axios");
 
-const { Observable, of } = require("rxjs");
-const { mergeMap, switchMap } = require("rxjs/operators");
+const { Observable, of, concat } = require("rxjs");
+const { mergeMap, switchMap, flatMap, mapTo, map } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
+
+const { pick } = require("ramda");
 
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
 const config = ConfigUtils.getDefaults();
+
+const {
+  CHANGE_VARIABLE_VALUE,
+  UPDATE_OBJ_FROM_VARIABLE,
+  CHECK_VARIABLE_VALID,
+  CHANGE_COLOR_VARIABLE_VALUE,
+  UPDATE_OBJ_COLOR_FROM_VARIABLE,
+  UPDATE_OBJ_IMAGE_FROM_VARIABLE
+} = require("../../../core/stores/actionTypes/variables");
 
 const URL = config.baseUrl + "/cloudeditor/uploadImage";
 // ("http://work.cloudlab.at:9012/ig/avery-external/public/");
@@ -104,6 +115,59 @@ module.exports = {
       ofType("OBJECTS_READY"),
       switchMap(action$ => {
         return of(dagChangeRenderId());
+      })
+    ),
+  onVariableChange: (action$, state$) =>
+    action$.pipe(
+      ofType(CHANGE_VARIABLE_VALUE),
+      switchMap(action$ => {
+        return of({
+          type: UPDATE_OBJ_FROM_VARIABLE,
+          payload: {
+            variables: state$.value.variables.variables,
+            variable: state$.value.variables.variables[action$.payload.name]
+          }
+        });
+      })
+    ),
+  onVariableColorChange: (action$, state$) =>
+    action$.pipe(
+      ofType(CHANGE_COLOR_VARIABLE_VALUE),
+      switchMap(action$ => {
+        return of({
+          type: UPDATE_OBJ_COLOR_FROM_VARIABLE,
+          payload: {
+            variables: pick(
+              ["color1", "color2", "color3"],
+              state$.value.variables.variables
+            )
+          }
+        });
+      })
+    ),
+  onVariableImageChange: (action$, state$) =>
+    action$.pipe(
+      ofType(DAG_UPLOAD_IMAGE_SUCCESS),
+      switchMap(action$ => {
+        return of({
+          type: UPDATE_OBJ_IMAGE_FROM_VARIABLE,
+          payload: {
+            variables: pick(["userImage"], state$.value.variables.variables)
+          }
+        });
+      })
+    ),
+  onValidateVariable: (action$, state$) =>
+    action$.pipe(
+      ofType(UPDATE_OBJ_FROM_VARIABLE),
+      switchMap(action$ => {
+        return of({
+          type: CHECK_VARIABLE_VALID,
+          payload: {
+            objects: state$.value.project.objects,
+            variable: action$.payload.variable
+          }
+        });
       })
     )
 };

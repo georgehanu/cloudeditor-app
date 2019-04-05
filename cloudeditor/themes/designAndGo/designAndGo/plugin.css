@@ -261,8 +261,8 @@ body,
 }
 
 .Input {
-  margin-top: 14px;
-  margin-bottom: 10px;
+  /*margin-top: 14px;
+  margin-bottom: 10px;*/
   width: 100%;
   vertical-align: top;
   display: inline-block;
@@ -1485,4 +1485,14 @@ section.dropzone {
   .zoomModalClose.CloseMenu {
     right: 0px;
   }
+}
+
+.Input.InputInvalid .InputLabelContent input {
+  box-shadow: red 0px 0px 3px 3px;
+}
+
+.Input .InputInvalidMessage {
+  color: red;
+  height: 24px;
+  display: block;
 }

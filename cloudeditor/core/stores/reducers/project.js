@@ -30,6 +30,20 @@ const {
   OBJECTS_READY
 } = require("../actionTypes/project");
 
+const {
+  UPDATE_OBJ_FROM_VARIABLE,
+  UPDATE_OBJ_COLOR_FROM_VARIABLE,
+  UPDATE_OBJ_IMAGE_FROM_VARIABLE,
+  UPDATE_OBJ_FROM_VARIABLE_INIT
+} = require("../actionTypes/variables");
+
+const {
+  updateObjVariable,
+  updateObjColorVariable,
+  updateObjImageVariable,
+  updateObjVariableInit
+} = require("../../utils/ObjectUtils");
+
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
@@ -377,6 +391,18 @@ module.exports = handleActions(
     },
     [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
       return dagClearCropForUploadedImages(state, action.payload);
+    },
+    [UPDATE_OBJ_FROM_VARIABLE]: (state, action) => {
+      return updateObjVariable(state, action);
+    },
+    [UPDATE_OBJ_COLOR_FROM_VARIABLE]: (state, action) => {
+      return updateObjColorVariable(state, action);
+    },
+    [UPDATE_OBJ_IMAGE_FROM_VARIABLE]: (state, action) => {
+      return updateObjImageVariable(state, action);
+    },
+    [UPDATE_OBJ_FROM_VARIABLE_INIT]: (state, action) => {
+      return updateObjVariableInit(state, action);
     }
   },
   initialState

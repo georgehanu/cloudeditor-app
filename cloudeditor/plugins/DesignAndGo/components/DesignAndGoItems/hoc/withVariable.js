@@ -25,7 +25,8 @@ const withVariables = WrappedComponent => {
         maxLength: variable.specific.length,
         text: variable.value,
         name: variable.name,
-        order: variable.order
+        order: variable.order,
+        invalidMessage: variable.invalidMessage || null
       };
       return <WrappedComponent {...inputProps} {...otherProps} />;
     }

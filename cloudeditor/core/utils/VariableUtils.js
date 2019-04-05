@@ -115,6 +115,24 @@ const getVariablesState = cfg => {
 
 const getVariablesFromProject = cfg => {
   const vars = cfg.map(el => {
+    if (el.type === "color") {
+      return {
+        [el.markup]: {
+          name: el.markup,
+          label: el.label,
+          type: el.type,
+          registered: el.registered
+        }
+      };
+    } else if (el.type === "image") {
+      return {
+        [el.markup]: {
+          name: el.markup,
+          type: el.type,
+          registered: el.registered
+        }
+      };
+    }
     return {
       [el.markup]: {
         name: el.markup,
@@ -122,6 +140,7 @@ const getVariablesFromProject = cfg => {
         type: el.type,
         value: el.defaultValue,
         order: el.order,
+        registered: el.registered,
         general: {
           displayFilter: "dg"
         },
@@ -264,16 +283,16 @@ const getDGVariables = cfg => {
   return {
     ...state,
     variables: {
-      ...state.variables,
+      ...state.variables
       /*[jarNameVar.name]: jarNameVar,
       [jarTypeVar.name]: jarTypeVar,
       [tagLine1Var.name]: tagLine1Var,
       [tagLine2Var.name]: tagLine2Var,
-      [batchDateVar.name]: batchDateVar,*/
+      [batchDateVar.name]: batchDateVar,
       [color1.name]: color1,
       [color2.name]: color2,
       [color3.name]: color3,
-      [userImage.name]: userImage
+      [userImage.name]: userImage*/
     }
   };
 };
