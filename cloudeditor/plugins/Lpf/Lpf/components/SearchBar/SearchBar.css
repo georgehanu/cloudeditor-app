@@ -1,0 +1,27 @@
+.searchItem {
+  width: 33.3%;
+  display: inline-block;
+  float: left;
+}
+.searchItemLabel {
+  width: 40%;
+  float: left;
+  display: inline-block;
+}
+.searchItem .inputContainer {
+  width: 60%;
+  float: left;
+  display: inline-block;
+}
+.searchItem .uncontrolledSelectboxContainer {
+  width: 100px;
+  float: left;
+  padding: 0px;
+}
+.searchBarContainer {
+  padding: 10px;
+  line-height: 25px;
+}
+.searchItem .unit {
+  display: none;
+}

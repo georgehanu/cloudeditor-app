@@ -18,17 +18,17 @@
               po: "material"
             },
             step3: {
-              type: "userinput",
+              type: "image_api",
               code: "step3",
               label: "Motiv"
             },
             step4: {
-              type: "userinput",
+              type: "wall_decoration",
               code: "step4",
               label: "Ausschnitte"
             },
             step5: {
-              type: "userinput",
+              type: "related_products",
               code: "step5",
               label: "Befestitung"
             },
@@ -67,6 +67,36 @@
               }
             }
           },
+          relatedProducts: [],
+          relatedProductsInfo: [
+            {
+              name: "Montakleb fur aclyle - und ESG GLAS",
+              id: 1,
+              description:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dum",
+              image_src:
+                "https://media.bahag.com/assets/resp_product/22/18/90221812_21204680.jpg",
+              selectedQty: 2,
+              quantityCanBeChanged: true,
+              price: "13",
+              avaibleQty: [
+                { label: "1 qty", value: 1 },
+                { label: "2 qty", value: 2 }
+              ]
+            },
+            {
+              name: "Magnethaler",
+              id: 2,
+              description:
+                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dum",
+              image_src:
+                "https://cdn11.bigcommerce.com/s-khsslgut0t/images/stencil/500x659/products/210/1179/DSC_9112_H2_web_WM__79601__85671.1507248729.jpg?c=2",
+              selectedQty: 2,
+              avaibleQty: [],
+              price: "12",
+              quantityCanBeChanged: false
+            }
+          ],
           productOptionsInfo: {
             PP_pp1: {
               material: {
@@ -99,6 +129,161 @@
                   }
                 }
               }
+            }
+          }
+        },
+        image_api: {
+          current_api: "free_images",
+          items: {
+            free_images: {
+              code: "free_images",
+              fetch_url:
+                "http://192.168.1.119/rv/vers31/freeimages/freeimagesfilter/",
+              type: "fetch",
+              label: "Free Images",
+              images: [],
+              tags: "",
+              category: 9,
+              categories: [
+                { value: 9, label: "TopSelller" },
+                { value: 10, label: "TopSelller 2" }
+              ],
+              perPage: 1,
+              page: 0,
+              totalItems: 100
+            },
+            adobe_images: {
+              code: "adobe_images",
+              fetch_url: "google.com",
+              label: "Adobe stock",
+              type: "fetch",
+              images: []
+            },
+            upload: {
+              code: "upload",
+              fetch_url: "google.com",
+              type: "upload",
+              label: "Upload your own",
+              images: []
+            }
+          }
+        },
+        decorations: {
+          currentDecoration: "sockets",
+          items: {
+            sockets: {
+              label: "SteckDosen",
+              items: [
+                {
+                  thumbnail_src:
+                    "https://schoen-und-wieder.de/images/selectimages/ed833d8ac4300621fce3a759331245f6.png"
+                },
+                {
+                  thumbnail_src:
+                    "https://schoen-und-wieder.de/images/selectimages/f8a34631b6fdf431d3de9cfdfb6f1ea9.png"
+                },
+                {
+                  thumbnail_src:
+                    "https://schoen-und-wieder.de/images/selectimages/606a206cd3cd6942b5b0535940cbcc2c.png"
+                }
+              ]
+            },
+            cutouts: {
+              label: "Ausshnitte",
+              items: [
+                {
+                  label: "Rechteng hinzufugen"
+                },
+                {
+                  label: "Kreis hinzufugen"
+                }
+              ]
+            },
+            shapes: {
+              label: "Abschruagungen",
+              items: [
+                {
+                  code: "corner_1",
+                  isActive: true,
+                  subItems: [
+                    {
+                      code: "circle_1",
+                      type: "circle",
+                      selected: false,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_1.png"
+                    },
+                    {
+                      code: "circle_2",
+                      type: "circle",
+                      selected: true,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_2.png"
+                    },
+                    {
+                      code: "line_3",
+                      type: "line",
+                      selected: false,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_3.png"
+                    }
+                  ]
+                },
+                {
+                  code: "corner_2",
+                  isActive: false,
+                  subItems: [
+                    {
+                      code: "circle_12",
+                      type: "circle",
+                      selected: false,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_1.png"
+                    },
+                    {
+                      code: "circle_22",
+                      type: "circle",
+                      selected: true,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_2.png"
+                    },
+                    {
+                      code: "line_32",
+                      type: "line",
+                      selected: false,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_3.png"
+                    }
+                  ]
+                },
+                {
+                  code: "corner_3",
+                  isActive: false,
+                  subItems: [
+                    {
+                      code: "circle_13",
+                      type: "circle",
+                      selected: false,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_1.png"
+                    },
+                    {
+                      code: "circle_23",
+                      type: "circle",
+                      selected: true,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_2.png"
+                    },
+                    {
+                      code: "line_33",
+                      type: "line",
+                      selected: false,
+                      thumbnail_src:
+                        "https://schoen-und-wieder.de/components/com_expresseditor/html5/images/border_radius/top_left_3.png"
+                    }
+                  ]
+                }
+              ]
             }
           }
         }

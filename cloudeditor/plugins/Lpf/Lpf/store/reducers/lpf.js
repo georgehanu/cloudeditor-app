@@ -53,6 +53,7 @@ const changeStep = (state, action) => {
     activeStep: action.code
   };
 };
+
 module.exports = handleActions(
   {
     [UPDATE_PANEL_PROPS]: (state, action) => {

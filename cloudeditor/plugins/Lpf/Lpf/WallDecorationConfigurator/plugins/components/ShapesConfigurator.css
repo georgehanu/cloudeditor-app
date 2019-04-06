@@ -1,0 +1,44 @@
+.shapeItem .container {
+  width: 33.3%;
+  float: left;
+}
+.shapeItem .container .shapeImageItem {
+  width: 25%;
+  height: 100%;
+  float: left;
+  display: inline-block;
+  padding: 2px;
+}
+.shapeItem .container .shapeImageItem img {
+  width: 100%;
+  height: auto;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.shapeItem .container .shapeImageItem.isActive img {
+  width: 100%;
+  height: auto;
+  border: 2px solid grey;
+  cursor: pointer;
+}
+
+.shapeItem .uncontrolledInputContainer .unit {
+  float: left;
+}
+.shapeItem .uncontrolledInputContainer .unit {
+  display: none;
+}
+.shapeItem .react-switch-handle {
+  background: grey !important;
+  box-shadow: none !important;
+}
+.react-switch-bg {
+  border: 1px solid;
+}
+.ShapesConfiguratorContainer {
+  width: auto;
+  height: 100%;
+  background: rgb(231, 231, 231);
+  display: inline-block;
+  padding: 20px 10px;
+}

@@ -1,0 +1,17 @@
+.menuBarContainer {
+  width: 100%;
+  min-height: 40px;
+  background: #e9f7e6;
+}
+.menuBarContainer .barStep {
+  width: auto;
+  height: 100%;
+  float: left;
+  padding: 0 10px;
+  font-size: 16px;
+  display: inline-block;
+  line-height: 40px;
+}
+.menuBarContainer .barStep.isActive {
+  font-weight: bold;
+}

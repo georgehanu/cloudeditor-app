@@ -914,6 +914,21 @@ const getEmptyProductInformation = cfg => {
     cfg || {}
   );
 };
+const getEmptyDecorations = cfg => {
+  return mergeDeepRight(
+    {
+      items: {
+        sockets: {},
+        cutouts: {},
+        shapes: {}
+      }
+    },
+    cfg || {}
+  );
+};
+const getEmptyImageApiConfig = cfg => {
+  return mergeDeepRight({}, cfg || {});
+};
 const getPrice = (serverData, callbackSuccess, callbackFailure, obs) => {
   axios
     .post(ATTACH_URL, serverData)
@@ -965,7 +980,9 @@ const ProjectUtils = {
   getEmptyAuth,
   getEmptyLayoutTemplateConfig,
   getObjectHeaderFooterIds,
-  getEmptyPanel
+  getEmptyPanel,
+  getEmptyDecorations,
+  getEmptyImageApiConfig
 };
 
 module.exports = ProjectUtils;

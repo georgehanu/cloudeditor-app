@@ -11,4 +11,5 @@
   transform: translateX(-50%);
   height: auto;
   min-height: 200px;
+  padding-top: 20px;
 }

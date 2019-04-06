@@ -10,15 +10,19 @@ const {
   getPanelsOrderSelector,
   getPanelsSelector
 } = require("../store/selectors/lpf");
+const { findIndex } = require("ramda");
 const {
   getPrintOptionsSelector,
-  getPrintOptionsInformation
+  getPrintOptionsInformation,
+  getRelatedProductsInfoSelector,
+  getRelatedProductsSelector
 } = require("../../../../core/stores/selectors/productinformation");
 const PanelIformation = require("./components/PanelInformation");
 const PrintOptionsInformation = require("./components/PrintOptionsInformation");
 class ProductSumary extends React.Component {
   render() {
     const { printOptions, printOptionsInformation } = this.props;
+    let rpInfo = null;
     const poInfo = printOptions.PP.map((key, index) => {
       const productPartCode = "PP_" + key;
       return Object.keys(printOptions[productPartCode]).map(
@@ -31,7 +35,7 @@ class ProductSumary extends React.Component {
               return (
                 <PrintOptionsInformation
                   name={printOpInfo.name}
-                  value={printOpInfo.options[selectedValue].name}
+                  values={[printOpInfo.options[selectedValue].name]}
                   key={productPartCode + selectedValue}
                 />
               );
@@ -41,6 +45,31 @@ class ProductSumary extends React.Component {
         }
       );
     });
+
+    const rpValues = this.props.relatedPoducts.map(item => {
+      const info = this.props.relatedProductsInfo;
+      const relatedItemIndex = findIndex(relatedItem => {
+        return relatedItem.id === item;
+      }, info);
+      const relatedProduct = info[relatedItemIndex];
+      const relatedItemValue =
+        relatedProduct.selectedQty +
+        "x " +
+        relatedProduct.name +
+        " (" +
+        parseInt(relatedProduct.selectedQty) * parseInt(relatedProduct.price) +
+        ")";
+      return relatedItemValue;
+    });
+    if (this.props.relatedPoducts.length)
+      rpInfo = (
+        <PrintOptionsInformation
+          name={this.props.t("Related products")}
+          values={rpValues}
+          key="related_product"
+        />
+      );
+
     return (
       <div className="productSumaryContainer">
         <div className="productTitle">{this.props.productName}</div>
@@ -49,6 +78,7 @@ class ProductSumary extends React.Component {
           panelsOrder={this.props.panelsOrder}
         />
         {poInfo}
+        {rpInfo}
       </div>
     );
   }
@@ -59,7 +89,9 @@ const mapStateToProps = (state, _) => {
     panelsOrder: getPanelsOrderSelector(state),
     panels: getPanelsSelector(state),
     printOptions: getPrintOptionsSelector(state),
-    printOptionsInformation: getPrintOptionsInformation(state)
+    printOptionsInformation: getPrintOptionsInformation(state),
+    relatedProductsInfo: getRelatedProductsInfoSelector(state),
+    relatedPoducts: getRelatedProductsSelector(state)
   };
 };
 const mapDispatchToProps = dispatch => {

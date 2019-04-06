@@ -7,7 +7,15 @@
       "StepsConfigurator",
       "PanelConfigurator",
       "PrintOptionsConfigurator",
-      "GlobalLoading"
+      "WallDecorationConfigurator",
+      "GlobalLoading",
+      "DecorationConfigurator",
+      "SocketConfigurator",
+      "OvalRectangleConfigurator",
+      "ShapesConfigurator",
+      "ImageApiConfigurator",
+      "ApiConfigurator",
+      "ApiGalleryFreeImages"
     ],
     "desktop": [
       "StepChooser",
@@ -16,7 +24,16 @@
       "StepsConfigurator",
       "PanelConfigurator",
       "PrintOptionsConfigurator",
-      "GlobalLoading"
+      "RelatedProductsConfigurator",
+      "WallDecorationConfigurator",
+      "GlobalLoading",
+      "DecorationConfigurator",
+      "SocketConfigurator",
+      "OvalRectangleConfigurator",
+      "ShapesConfigurator",
+      "ImageApiConfigurator",
+      "ApiConfigurator",
+      "ApiGalleryFreeImages"
     ]
   },
 

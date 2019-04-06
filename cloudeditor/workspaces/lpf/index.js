@@ -19,8 +19,10 @@ const appReducers = {
   globalLoading: require("../../core/stores/reducers/globalLoading")
 };
 const productInformationEpics = require("../../core/stores/epics/productInformation");
+const apiEpics = require("../../core/stores/epics/api");
 const appEpics = {
-  ...productInformationEpics
+  ...productInformationEpics,
+  ...apiEpics
 };
 
 const translationsCfg = {

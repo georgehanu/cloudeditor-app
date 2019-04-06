@@ -21,11 +21,13 @@ class UncontrolledInput extends React.Component {
     if (value === null) {
       value = this.props.defaultValue;
     }
-    if (("" + value).includes(".") === false) {
-      value += ".00";
-    }
-
-    return this.numberWithCommas(parseFloat(value), 3);
+    if (this.props.type === "number")
+      if (("" + value).includes(".") === false) {
+        value += ".00";
+      }
+    if (this.props.type === "number")
+      return this.numberWithCommas(parseFloat(value), 3);
+    return value;
   }
   componentDidMount() {
     if (this.input) {
@@ -50,6 +52,7 @@ class UncontrolledInput extends React.Component {
     this.props.changeInput(this.props.objId, val);
   }
   validateInput = value => {
+    if (this.props.type !== "number") return value;
     value = value.replace(",", ".");
     if (value.includes(".")) {
       let parts = value.split(".");

@@ -1,0 +1,15 @@
+.ovalRectangleItem {
+  margin-bottom: 10px;
+  line-height: 23px;
+  clear: both;
+  height: 28px;
+  border: 1px solid #ccc;
+  width: auto;
+  display: inline-block;
+  padding: 0 20px;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  float: left;
+  min-width: 180px;
+}

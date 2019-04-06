@@ -57,9 +57,11 @@ const startChangePrintOption = (state, payload) => {
   };
 };
 const stopChangePrintOptions = (state, payload) => {
-  const { print_options } = payload;
+  const { print_options, relatedProducts, relatedProductsInfo } = payload;
   return {
     ...state,
+    relatedProducts: relatedProducts,
+    relatedProductsInfo: [...relatedProductsInfo],
     productOptions: { ...state.productOptions, print_options: print_options }
   };
 };

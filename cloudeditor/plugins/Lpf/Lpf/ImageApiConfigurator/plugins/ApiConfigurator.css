@@ -1,0 +1,21 @@
+.ApiGalleryFreeImagesContainer ul {
+  width: auto;
+  display: inline-block;
+  list-style: none;
+  text-align: center;
+  margin: 0 auto;
+  padding: 0px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 0px;
+}
+.ApiGalleryFreeImagesContainer ul li {
+  width: auto;
+  float: left;
+  padding: 0 3px;
+  cursor: pointer;
+}
+.ApiGalleryFreeImagesContainer ul li.disabled {
+  opacity: 0.5;
+}

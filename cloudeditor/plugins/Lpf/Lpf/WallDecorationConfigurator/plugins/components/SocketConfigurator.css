@@ -1,0 +1,19 @@
+.socketConfiguratorContainer {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  max-height: 100%;
+}
+.socketItem {
+  width: 25%;
+  height: 100%;
+  display: inline-block;
+  max-height: 200px;
+  cursor: pointer;
+  padding: 0 10px;
+}
+.socketItem img {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+}

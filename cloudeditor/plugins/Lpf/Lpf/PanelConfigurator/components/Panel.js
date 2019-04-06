@@ -25,6 +25,7 @@ const panel = props => {
       <div className=" panelArea panelWidth">
         <label htmlFor={"width_panel_" + props.id}>{props.t("Width")}</label>
         <UncontrolledInput
+          type="number"
           displayedValue={props.width}
           defaultValue={props.width}
           id={"width_panel_" + props.id}
@@ -35,6 +36,7 @@ const panel = props => {
       <div className="panelArea panelHeight">
         <label htmlFor={"height_panel_" + props.id}>{props.t("Height")}</label>
         <UncontrolledInput
+          type="number"
           displayedValue={props.width}
           defaultValue={props.width}
           id={"height_panel_" + props.id}
