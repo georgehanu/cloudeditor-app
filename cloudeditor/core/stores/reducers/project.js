@@ -42,7 +42,7 @@ const {
   updateObjColorVariable,
   updateObjImageVariable,
   updateObjVariableInit
-} = require("../../utils/ObjectUtils");
+} = require("../../utils/ObjectFromVariableUtils");
 
 const ProjectUtils = require("../../utils/ProjectUtils");
 const ConfigUtils = require("../../utils/ConfigUtils");

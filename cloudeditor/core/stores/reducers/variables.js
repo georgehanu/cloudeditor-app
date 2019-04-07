@@ -15,7 +15,9 @@ const ConfigUtils = require("../../../core/utils/ConfigUtils");
 const { handleActions } = require("redux-actions");
 const VariableUtils = require("../../utils/VariableUtils");
 const initialState = VariableUtils.getDGVariables(ConfigUtils.getDefaults());
-const { checkIfVariableIsValid } = require("../../utils/ObjectUtils");
+const {
+  checkIfVariableIsValid
+} = require("../../utils/ObjectFromVariableUtils");
 
 const testChangeVariable = state => {
   return {
