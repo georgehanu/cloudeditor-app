@@ -227,7 +227,7 @@ const updateObjOneVariable = payload => {
       // search if this object is set as depended for another block
       const visibleDepend = obj.value.length === 0 ? false : true;
       for (const objDependId of values(obj.Dependency)) {
-        objDepend = {
+        const objDepend = {
           ...objects[objDependId],
           visibleDepend
         };
@@ -246,14 +246,14 @@ const updateObjOneVariable = payload => {
           (mode === HIDE_LINE_UP && obj.HideLineUp) ||
           (mode === HIDE_LINE_DOWN && obj.HideLineDown)
         ) {
-          let targetBlocks = findTargetBlocks(
+          const targetBlocks = findTargetBlocks(
             obj,
             mode,
             objects,
             mode === HIDE_LINE_UP ? "HideLineUpTarget" : "HideLineDownTarget"
           );
 
-          for (let keyObj in targetBlocks) {
+          for (const keyObj in targetBlocks) {
             const block = moveBlock(objects[keyObj], obj, mode);
 
             objects = {
