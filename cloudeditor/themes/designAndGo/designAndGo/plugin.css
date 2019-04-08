@@ -1485,6 +1485,10 @@ section.dropzone {
   .zoomModalClose.CloseMenu {
     right: 0px;
   }
+
+  .cropImageContainer {
+    margin-bottom: 15px;
+  }
 }
 
 .Input.InputInvalid .InputLabelContent input {
@@ -1495,4 +1499,14 @@ section.dropzone {
   color: red;
   height: 24px;
   display: block;
+}
+
+.Input.ColorButtonGroup {
+  min-height: 92px;
+  margin-left: 0px;
+}
+
+.ColorPicker {
+  display: flex;
+  justify-content: center;
 }
