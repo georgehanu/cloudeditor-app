@@ -754,12 +754,13 @@ fabric.Textbox.prototype.initDimensions = function() {
   var unit = 1;
   if (textWidth > this.width) {
     this.fontSize -= unit;
-    this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
+    //this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
 
     this.initDimensions();
   } else if (textHeight > this.height) {
     this.fontSize -= unit;
-    this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
+    //this.fontSize = Math.round(this.fontSize / this.scale) * this.scale;
+
     this.initDimensions();
   }
 };

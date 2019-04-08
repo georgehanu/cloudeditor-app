@@ -246,7 +246,7 @@ const updateObjOneVariable = payload => {
           (mode === HIDE_LINE_UP && obj.HideLineUp) ||
           (mode === HIDE_LINE_DOWN && obj.HideLineDown)
         ) {
-          const targetBlocks = findTargetBlocks(
+          let targetBlocks = findTargetBlocks(
             obj,
             mode,
             objects,
@@ -290,7 +290,7 @@ const updateObjColorImageVar = (state, action, mode) => {
   }
   const newObjs = {};
 
-  for (const objId of values(uniq(registered))) {
+  for (const objId of values(registered)) {
     let obj = objects[objId];
     if (mode === MODE_COLOR && obj.dynamicFillColor) {
       const newColor = replaceVariable(obj.fill, variables, obj, MODE_COLOR);
