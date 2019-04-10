@@ -32,11 +32,11 @@ const blocksAreInSameColumn = (block, obj) => {
   return block_x1 < obj_x2 && block_x2 > obj_x1;
 };
 
-const findTargetBlocks = (obj, mode, objects, fieldTarget) => {
+const findTargetBlocks = (obj, mode, fieldTarget, pageObjects) => {
   let target = {};
 
   if (obj[fieldTarget]) {
-    target = pick(obj[fieldTarget].split(","), objects);
+    target = pick(obj[fieldTarget].split(","), pageObjects);
   } else {
     const isText = item => {
       let offset = originalTopPosition(item) - originalTopPosition(obj);
@@ -47,7 +47,7 @@ const findTargetBlocks = (obj, mode, objects, fieldTarget) => {
         blocksAreInSameColumn(obj, item)
       );
     };
-    target = filter(isText, objects);
+    target = filter(isText, pageObjects);
   }
 
   return target;
@@ -101,7 +101,7 @@ const moveBlock = (block, obj, mode) => {
   let hideLineOffset = block[field] || {};
   if (moveUp) {
     if (
-      hideLineOffset[obj.id] === undefined ||
+      // hideLineOffset[obj.id] === undefined ||
       mode === HIDE_LINE_UP ||
       (mode === HIDE_LINE_DOWN && hideLineOffset[obj.id] <= 0)
     ) {
@@ -118,7 +118,7 @@ const moveBlock = (block, obj, mode) => {
       };
     }
     if (
-      hideLineOffset[obj.id] === undefined ||
+      //  hideLineOffset[obj.id] === undefined ||
       (mode === HIDE_LINE_UP && hideLineOffset[obj.id] > 0) ||
       mode === HIDE_LINE_DOWN
     ) {
@@ -137,7 +137,8 @@ const updateObjVariable = (state, action) => {
   const updatedObjects = updateObjOneVariable({
     objects: state.objects,
     variables: action.payload.variables,
-    variable: action.payload.variable
+    variable: action.payload.variable,
+    pages: state.pages
   });
 
   return {
@@ -159,7 +160,8 @@ const updateObjVariableInit = (state, payload) => {
     const updatedObjects = updateObjOneVariable({
       objects,
       variables,
-      variable: oneVar
+      variable: oneVar,
+      pages: state.pages
     });
 
     objects = {
@@ -177,14 +179,23 @@ const updateObjVariableInit = (state, payload) => {
   };
 };
 
+const findObjsInSamePage = (objId, pages) => {
+  for (const pageId in pages) {
+    if (pages[pageId].objectsIds.includes(objId)) {
+      return pages[pageId].objectsIds;
+    }
+  }
+};
+
 const updateObjOneVariable = payload => {
   let objects = { ...payload.objects };
-  const { variables, variable } = payload;
+  const { variables, variable, pages } = payload;
   const { registered } = variable;
   const newObjs = {};
 
   for (const objId of values(registered)) {
     // update the value based on the variable
+    const pageObjects = pick(findObjsInSamePage(objId, pages), objects);
     let obj = objects[objId];
     if (obj.type === "textbox") {
       obj = {
@@ -227,16 +238,18 @@ const updateObjOneVariable = payload => {
       // search if this object is set as depended for another block
       const visibleDepend = obj.value.length === 0 ? false : true;
       for (const objDependId of values(obj.Dependency)) {
-        const objDepend = {
-          ...objects[objDependId],
-          visibleDepend
-        };
+        if (objects.hasOwnProperty(objDependId)) {
+          const objDepend = {
+            ...objects[objDependId],
+            visibleDepend
+          };
 
-        objects = {
-          ...objects,
-          [objDepend]: objDepend
-        };
-        newObjs[objDepend.id] = objDepend;
+          objects = {
+            ...objects,
+            [objDepend]: objDepend
+          };
+          newObjs[objDepend.id] = objDepend;
+        }
       }
     }
 
@@ -249,8 +262,8 @@ const updateObjOneVariable = payload => {
           let targetBlocks = findTargetBlocks(
             obj,
             mode,
-            objects,
-            mode === HIDE_LINE_UP ? "HideLineUpTarget" : "HideLineDownTarget"
+            mode === HIDE_LINE_UP ? "HideLineUpTarget" : "HideLineDownTarget",
+            pageObjects
           );
 
           for (const keyObj in targetBlocks) {
