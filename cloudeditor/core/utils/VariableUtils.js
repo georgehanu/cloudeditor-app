@@ -148,7 +148,7 @@ const getVariablesFromProject = cfg => {
           length: el.length
         },
         additional: {
-          inputClasses: el.classes.split(",")
+          inputClasses: el.classes ? el.classes.split(",") : []
         }
       }
     };
