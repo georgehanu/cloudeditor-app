@@ -23,7 +23,11 @@
     "build:stadion": "webpack --mode production --workspace stadion",
     "start:client": "webpack-dev-server --mode development --workspace client",
     "dev:client": "webpack --mode development --workspace client",
-    "build:client": "webpack --mode production --workspace client"
+    "build:client": "webpack --mode production --workspace client",
+    "start:broschure": "webpack-dev-server --mode development --workspace broschure",
+    "hot:broschure": "webpack-dev-server --mode development --hot-only --workspace broschure",
+    "dev:broschure": "webpack --mode development --workspace broschure",
+    "build:broschure": "webpack --mode production --workspace broschure"
   },
   "keywords": [],
   "author": "",

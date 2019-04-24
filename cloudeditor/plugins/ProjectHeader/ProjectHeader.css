@@ -7,7 +7,7 @@
 }
 
 .projectHeaderContainer .projectHeaderLogo {
-  background-image: url("./assets/cewe_logo.png");
+  background-image: url("./assets/logo.svg");
   height: 60px;
   background-size: contain;
   background-repeat: no-repeat;

@@ -949,7 +949,8 @@ const ProjectUtils = {
   getEmptyAssets,
   getEmptyAuth,
   getEmptyLayoutTemplateConfig,
-  getObjectHeaderFooterIds
+  getObjectHeaderFooterIds,
+  getPagesDefaults
 };
 
 module.exports = ProjectUtils;

@@ -35,7 +35,6 @@ class AddPages extends React.Component {
   }
 
   onCheckboxChanged = checkboxesSelected => {
-    console.log(checkboxesSelected, "SELE");
     this.setState({ checkboxesSelected });
     this.props.onCheckboxChanged(checkboxesSelected);
   };

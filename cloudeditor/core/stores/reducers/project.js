@@ -116,6 +116,13 @@ const addPages = (state, action) => {
       };
       newPages[page_id] = newActivePage;
       newIds.push(page_id);
+    } else {
+      const page_id = uuidv4();
+      const newActivePage = ProjectUtils.getPagesDefaults({
+        id: page_id
+      });
+      newPages[page_id] = newActivePage;
+      newIds.push(page_id);
     }
   }
   let pageIndex = pagesOrder.findIndex(el => {

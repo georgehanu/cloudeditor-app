@@ -2,9 +2,8 @@ const React = require("react");
 const withTooltip = require("../../../../hoc/withTooltip/withTooltip");
 
 const AddPagesButton = props => {
-  const className =
-    "pageHeaderTextTitleContainer " +
-    (props.active ? "" : "pageHeaderTextTitleContainerDisabled");
+  const className = "pageHeaderTextTitleContainer ";
+  //(props.active ? "" : "pageHeaderTextTitleContainerDisabled");
 
   return (
     <div
@@ -18,4 +17,5 @@ const AddPagesButton = props => {
   );
 };
 
-module.exports = withTooltip(AddPagesButton, "");
+//module.exports = withTooltip(AddPagesButton, "");
+module.exports = AddPagesButton;

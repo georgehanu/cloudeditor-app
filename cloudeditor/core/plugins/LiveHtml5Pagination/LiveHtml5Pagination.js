@@ -131,7 +131,8 @@ class LiveHtml5Pagination extends React.Component {
   }
   showAddPages = () => {
     const currentPage = this.props.pages[this.props.activePageId];
-    if (!currentPage.lockPosition) this.setState({ showAddPages: true });
+    //if (!currentPage.lockPosition)
+    this.setState({ showAddPages: true });
   };
   hideAddPages = () => {
     this.setState({ showAddPages: false });
