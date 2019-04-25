@@ -37,6 +37,7 @@ const { changePage } = require("../../core/stores/actions/project");
 
 const LoginWnd = require("../MenuItemMyProject/components/LoginWnd");
 const SaveWnd = require("../MenuItemMyProject/components/SaveWnd");
+const RegisterWnd = require("../MenuItemMyProject/components/RegisterWnd");
 
 const { authLoggedInSelector } = require("../ProjectMenu/store/selectors");
 
@@ -46,6 +47,7 @@ class ProjectHeader extends React.Component {
     preview: false,
     showLoginWnd: false,
     showSaveWnd: false,
+    showRegisterWnd: false,
     loggedIn: false,
     showAddToCartError: false
   };
@@ -66,6 +68,7 @@ class ProjectHeader extends React.Component {
       return {
         ...prevState,
         showLoginWnd: false,
+        showRegisterWnd: false,
         loggedIn: true
       };
     }
@@ -75,7 +78,7 @@ class ProjectHeader extends React.Component {
   showPrintPreview = () => {
     const oldPreview = this.state.preview;
     if (oldPreview === false) {
-      this.props.changePage({ page_id: this.props.pagesOrder[0] });
+      //  this.props.changePage({ page_id: this.props.pagesOrder[0] });
       this.props.previewLoadPage(0);
     } else {
       this.props.previewDisableMode();
@@ -99,6 +102,7 @@ class ProjectHeader extends React.Component {
       this.props.attachPreview();
     } else {
       this.setState({ showAddToCartError: true });
+      this.setTimer();
     }
   };
   setTimer = () => {
@@ -129,7 +133,9 @@ class ProjectHeader extends React.Component {
       .then(resp => resp.data)
       .then(data => {
         if (data) {
-          this.props.calculatePriceInitial({ total_price: data.gross_price });
+          this.props.calculatePriceInitial({
+            total_price: data.total_gross_price
+          });
         }
         this.props.stopGlobalLoading();
       })
@@ -156,7 +162,21 @@ class ProjectHeader extends React.Component {
 
   closeWnd = () => {
     this.props.addContainerClasses("ProjectHeader", [], false);
-    this.setState({ showLoginWnd: false, showSaveWnd: false });
+    this.setState({
+      showLoginWnd: false,
+      showSaveWnd: false,
+      showRegisterWnd: false
+    });
+  };
+
+  showRegisterWnd = () => {
+    this.closeWnd();
+    this.props.addContainerClasses(
+      "ProjectHeader",
+      ["projectHeaderShowModal"],
+      false
+    );
+    this.setState({ showRegisterWnd: true });
   };
 
   render() {
@@ -184,17 +204,24 @@ class ProjectHeader extends React.Component {
     return (
       <React.Fragment>
         {this.state.showLoginWnd && (
-          <LoginWnd show={true} modalClosed={this.closeWnd} />
+          <LoginWnd
+            show={true}
+            modalClosed={this.closeWnd}
+            register={this.showRegisterWnd}
+          />
         )}
         {this.state.showSaveWnd && (
           <SaveWnd show={true} modalClosed={this.closeWnd} />
+        )}
+        {this.state.showRegisterWnd && (
+          <RegisterWnd show={true} modalClosed={this.closeWnd} />
         )}
 
         <div className="projectHeaderContainer">
           <div className="projectHeaderLogo" />
           <div className="projectHeaderCenter">
             <span className="projectHeaderTitle">
-              {this.props.t("My project")}:
+              {this.props.t("My project") + ": "}
             </span>
             <span
               className="projectHeaderName"

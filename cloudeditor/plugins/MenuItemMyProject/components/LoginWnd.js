@@ -1,8 +1,8 @@
 const React = require("react");
 const ModalWnd = require("../../../core/components/Modal/ModalWnd");
 const { connect } = require("react-redux");
-const Input = require("./Input");
-const MessageForm = require("./MessageForm");
+const Input = require("./UI/Input");
+const MessageForm = require("./UI/MessageForm");
 
 require("./LoginWnd.css");
 const { withNamespaces } = require("react-i18next");
@@ -105,9 +105,9 @@ class LoginWnd extends React.Component {
             />
           </div>
           <div className="loginWndButtons">
-            {/*} <button onClick={this.props.modalClosed}>
+            <button onClick={this.props.register}>
               {this.props.t("Register")}
-    </button>*/}
+            </button>
             <button onClick={this.onLoginButton}>
               {this.props.t("Login")}
             </button>

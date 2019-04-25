@@ -9,7 +9,7 @@ const { debounce } = require("underscore");
 const posed = require("react-pose").default;
 const { filter } = require("ramda");
 const Box = posed.div({
-  visible: { top: 30 },
+  visible: { top: 37 },
   hidden: { top: 0 }
 });
 

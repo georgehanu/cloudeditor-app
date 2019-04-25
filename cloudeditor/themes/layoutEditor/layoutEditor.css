@@ -333,6 +333,11 @@
   content: "\F010";
 }
 
+.icon.awesome-user:before {
+  font-family: "FontAwesome" !important;
+  content: "\F007";
+}
+
 @font-face {
   font-family: "ArialMT";
   src: url("assets/arialmt_fonts/arialmt.ttf") format("truetype");

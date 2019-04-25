@@ -279,3 +279,81 @@
 body.swal2-height-auto.swal2-shown {
   height: inherit !important;
 }
+
+.loginWnd.registerWnd {
+  height: 780px;
+}
+
+.registerWnd .selectionLabelContainer .inputLabel {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+  vertical-align: middle;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.registerWnd .selectionLabelContainer {
+  font-family: "PORTO", Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #666666;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.registerWnd .selectionLabelContainer select {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #ccc;
+}
+
+.registerWnd .selectionLabelContainer option,
+.registerWnd select,
+.registerWnd .checkboxLabel {
+  color: #777;
+}
+
+.loginWnd input {
+  color: #777 !important;
+}
+
+.registerWnd .checkboxLabelContainer {
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+.registerWnd .checkboxContainer {
+  display: inline-block;
+}
+
+.registerWnd .checkboxContainer input,
+.registerWnd .checkboxContainer div {
+  float: left;
+}
+
+.registerWnd .inputLabelContainer.inputEmpty .inputLabelContent,
+.registerWnd .selectionLabelContainer.inputEmpty select {
+  border: 1px solid red;
+}
+
+.registerWnd .messageForm {
+  color: red;
+  height: auto;
+}
+
+.loginWnd.registerWnd {
+  height: auto;
+}
+.loginWnd.registerWnd .loginWndContainer {
+  box-shadow: none;
+}
+.loginWnd.registerWnd .loginWndButtons {
+  position: relative;
+  padding: 10px 0px;
+}

@@ -91,6 +91,7 @@
     "yargs": "^12.0.5"
   },
   "dependencies": {
+    "@intactile/redux-undo-redo": "^0.10.1",
     "@tinymce/tinymce-react": "^2.4.0",
     "axios": "^0.18.0",
     "cors": "^2.8.5",

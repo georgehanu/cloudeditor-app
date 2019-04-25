@@ -41,16 +41,16 @@
 }
 
 .pageSelectorMinimized .paginationBottomContainer {
-  padding-bottom: 57px;
+  padding-bottom: 107px; /*97px;*/
 }
 .pageSelectorExtended .paginationBottomContainer {
-  padding-bottom: 335px;
+  padding-bottom: 381px; /*375px;*/
 }
 .paginationBottomContainer {
   position: absolute;
   width: 100%;
   bottom: 0px;
-  padding-bottom: 185px;
+  padding-bottom: 242px; /*225px;*/
   height: 25px;
 }
 .paginationBottomContainer .paginationSubContainer {

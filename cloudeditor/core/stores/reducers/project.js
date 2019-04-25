@@ -10,6 +10,8 @@ const {
   last,
   omit,
   pick,
+  pathOr,
+  values,
   forEachObjIndexed
 } = require("ramda");
 const {
@@ -291,6 +293,32 @@ const updateObjectProps = (state, payload) => {
     /* update the image with given imageId */
     return updateImageProps(state, payload);
   }
+  if (typeof payload.props.leftSlider != "undefined") {
+    const props = { ...payload.props };
+    props.noCrop = false;
+    if (payload.props.leftSlider === -1) {
+      const objectProps = { ...state.objects[payload.id] };
+      props.cropX = 0;
+      props.cropY = 0;
+      props.cropW = 0;
+      props.cropH = 0;
+      props.noCrop = true;
+      const ratioWidth = objectProps.imageWidth / objectProps.imageHeight;
+      const ratioHeight = objectProps.imageHeight / objectProps.imageWidth;
+      if (ratioWidth > ratioHeight) {
+        props.height = objectProps.width / ratioWidth;
+      } else {
+        props.width = objectProps.height / ratioHeight;
+      }
+    }
+    return {
+      ...state,
+      objects: {
+        ...state.objects,
+        [payload.id]: merge(state.objects[payload.id], props)
+      }
+    };
+  }
   return {
     ...state,
     objects: {
@@ -319,6 +347,7 @@ const updateImageProps = (state, payload) => {
     image: payload.props.image,
     subType: payload.props.image.subType
   };
+
   return {
     ...state,
     objects: {
@@ -482,14 +511,38 @@ addObjectMiddle = (state, action) => {
   const headerSelector = projectHeaderEnabledSelector(state);
   const footerSelector = projectFooterEnabledSelector(state);
   let defaultBlock = {};
-  let blockWidth = width / 2;
-  let blockHeight = blockWidth * 0.5;
-  if (width > height) {
-    blockHeight = height / 2;
-    blockWidth = blockHeight * 0.5;
+
+  let colNumbers = pathOr(0, ["configs", "pages", "columnsNo"], state);
+  colNumbers = pathOr(colNumbers, ["columnsNo"], page);
+  const columnSpacing = pathOr(0, ["configs", "pages", "columnSpacing"], state);
+  const safeCutDocument = pathOr(0, ["configs", "pages", "safeCut"], state);
+  const allowSafeCut = pathOr(0, ["configs", "pages", "allowSafeCut"], state);
+  const widthPage =
+    width +
+    page["boxes"]["trimbox"]["left"] +
+    page["boxes"]["trimbox"]["right"];
+  const safeCut =
+    Math.max(...values(page["boxes"]["trimbox"])) * 2 + safeCutDocument;
+  let leftMargin = 0;
+  let rightMargin = 0;
+  if (allowSafeCut) {
+    leftMargin = safeCut;
+    rightMargin = leftMargin;
+  } else {
+    leftMargin = page["boxes"]["trimbox"]["left"];
+    rightMargin = page["boxes"]["trimbox"]["right"];
   }
+  blockWidth = widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing - 2;
+  if (colNumbers) {
+    blockWidth =
+      (widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing) /
+        colNumbers -
+      2;
+  }
+  let blockHeight = blockWidth * 0.5;
   const left = (width - blockWidth) / 2;
   const top = (height - blockHeight) / 2;
+
   defaultBlock = {
     ...action,
     left,

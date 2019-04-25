@@ -4,7 +4,7 @@ const { connect } = require("react-redux");
 const { withNamespaces } = require("react-i18next");
 const LoadProjects = require("./LoadProjects");
 const SweetAlert = require("sweetalert-react").default;
-const MessageForm = require("./MessageForm");
+const MessageForm = require("./UI/MessageForm");
 
 require("sweetalert/dist/sweetalert.css");
 
@@ -113,6 +113,8 @@ class LoadWnd extends React.Component {
           title={saTitle}
           text={saText}
           showCancelButton={true}
+          confirmButtonText={this.props.t("Ok")}
+          cancelButtonText={this.props.t("Cancel")}
           onConfirm={() => this.confirmtSweetAlert()}
           onCancel={() => this.setState({ showAlert: false })}
         />

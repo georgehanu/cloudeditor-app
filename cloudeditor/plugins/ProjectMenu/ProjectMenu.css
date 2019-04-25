@@ -1,9 +1,9 @@
 .projectMenuContainer {
-  height: 30px;
+  height: 38px;
   width: 100%;
   position: absolute;
-  top: 60px;
-  z-index: 1000;
+  top: 66px;
+  z-index: 1000; /*1010*/
 }
 
 .projectMenuContainer .projectMenuContainerUl {
@@ -14,14 +14,14 @@
   position: relative;
   display: block;
   background-color: #eeeeee;
-  height: 30px;
+  height: 38px;
 }
 
 .projectMenuContainer .projectMenuButtonContainer {
   height: 100%;
   display: block;
   margin-bottom: -1px;
-  line-height: 20px;
+
   float: left !important;
 }
 
@@ -98,7 +98,6 @@
 }
 
 .projectMenuContainer .projectMenuItem {
-  padding-bottom: 20px;
   position: absolute;
   z-index: 100;
   width: 200px;
@@ -111,8 +110,13 @@
   font-family: "PORTO", Arial, Helvetica, sans-serif;
   font-size: 13px;
   color: #666666;
-  padding: 0 0 20px 0;
-  top: 29px;
+  padding: 0 0 5px 0;
+  top: 37px;
+}
+
+.projectMenuItem .submenuItem {
+  height: 20px;
+  line-height: 20px;
 }
 
 .projectMenuContainer .projectMenuItemContent {
@@ -158,9 +162,13 @@
 }
 
 .projectMenuButtonLink {
-  height: 30px;
+  height: 38px;
 }
 
 .projectMenuContainer .projectMenuButtonLink .projectMenuButton .buttonIcon {
   display: none;
+}
+
+.projectMenuContainer .projectMenuButtonContainer button {
+  line-height: 34px;
 }

@@ -156,6 +156,7 @@ class ObjectBlock extends React.Component {
       placeHolder: this.props.placeHolder,
       contentEditable,
       lineheightn: props.lineheightn,
+      renderId: props.renderId,
       lineheightp: props.lineheightp
     };
     const block = <TextBlock {...textProps} />;
@@ -209,7 +210,10 @@ class ObjectBlock extends React.Component {
       naturalHeight: props.naturalHeight
     };
     let block = null;
-    if (viewOnly) {
+    if (
+      viewOnly &&
+      (!this.props.backgroundBlock && this.props.bottomPagination)
+    ) {
       block = <DummyImage {...imageProps} />;
     } else {
       block = <ImageBlock key={props.id} {...imageProps} />;

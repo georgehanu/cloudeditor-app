@@ -8,7 +8,8 @@ const {
   includes,
   concat,
   without,
-  indexOf
+  indexOf,
+  values
 } = require("ramda");
 const now = require("performance-now");
 
@@ -30,7 +31,8 @@ const {
   headerConfigSelector,
   footerConfigSelector,
   projectHeaderEnabledSelector,
-  projectFooterEnabledSelector
+  projectFooterEnabledSelector,
+  allowSafeCutSelector
 } = require("../../../../stores/selectors/project");
 const BlockMessage = require("../BlockMesage/BlockMessage");
 
@@ -62,14 +64,43 @@ const PageTarget = {
       ).getBoundingClientRect();
       const activePageId = props.activePageId;
       innerPage = props.activePage.innerPages[activePageId];
+      activePage = props.activePage;
       let aspectRatio = innerPage.height / innerPage.width;
-      const columns = innerPage.columnsNo > 0 ? innerPage.columnsNo : 6;
-      width = innerPage.width / columns;
+      const colNumbers = innerPage.columnsNo;
+      const columnSpacing = innerPage.columnSpacing;
+      const safeCutDocument = innerPage.safeCut;
+      //fit the image in col
+
+      const widthPage =
+        innerPage.width +
+        activePage["boxes"]["trimbox"]["left"] +
+        activePage["boxes"]["trimbox"]["right"];
+
+      const safeCut =
+        Math.max(...values(innerPage["boxes"]["trimbox"])) * 2 +
+        safeCutDocument;
+
+      let leftMargin = 0;
+      let rightMargin = 0;
+      if (props.allowSafeCut) {
+        leftMargin = safeCut;
+        rightMargin = leftMargin;
+      } else {
+        leftMargin = page["boxes"]["trimbox"]["left"];
+        rightMargin = page["boxes"]["trimbox"]["right"];
+      }
+      width = widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing - 2;
+      if (colNumbers) {
+        width =
+          (widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing) /
+            colNumbers -
+          2;
+      }
+
       switch (object.type) {
         case "image":
           aspectRatio = object.imageHeight / object.imageWidth;
           break;
-
         default:
           break;
       }
@@ -519,7 +550,8 @@ const makeMapStateToProps = (state, props) => {
       footerConfig: footerConfigSelector(state),
       headerEnabled: projectHeaderEnabledSelector(state.project),
       footerEnabled: projectFooterEnabledSelector(state.project),
-      objectsOffsetList: getObjectsOffsetsList(state, props)
+      objectsOffsetList: getObjectsOffsetsList(state, props),
+      allowSafeCut: allowSafeCutSelector(state, props)
     };
   };
   return mapStateToProps;

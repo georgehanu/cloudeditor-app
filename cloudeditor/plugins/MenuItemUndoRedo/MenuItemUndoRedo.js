@@ -1,7 +1,7 @@
 const React = require("react");
 const assign = require("object-assign");
 const { connect } = require("react-redux");
-const { actions } = require("redux-undo-redo");
+const { actions } = require("@intactile/redux-undo-redo");
 
 const { withNamespaces } = require("react-i18next");
 

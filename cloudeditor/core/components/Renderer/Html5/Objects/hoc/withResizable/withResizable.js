@@ -56,7 +56,7 @@ const withResizable = WrappedComponent => {
         this.props.snapTolerance * this.props.zoomScale;
       resizable.options.snapTolerance = 10;
       ui = addSnapElements(event, ui, resizable.coords, resizable);
-      this.changePropsOnDragHandler(ui, 1);
+      //    this.changePropsOnDragHandler(ui, 1);
     };
     onResizeHandler = (event, ui) => {
       var text = $(event.target).find(".text");
@@ -100,7 +100,8 @@ const withResizable = WrappedComponent => {
         this.enableUI,
         this.onResizeStartHandler,
         this.onResizeHandler,
-        this.onResizeStopHandler
+        this.onResizeStopHandler,
+        this.props.noCrop
       );
     };
     getReference = ref => {

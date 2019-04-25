@@ -8,7 +8,8 @@ const {
   UPLOAD_ASSET_FAILED,
   ASSETS_LAYOUT_START,
   ASSETS_LAYOUT_SUCCESS,
-  ASSETS_LAYOUT_FAILED
+  ASSETS_LAYOUT_FAILED,
+  HIDE_ERROR
 } = require("../actionTypes/assets");
 
 const {
@@ -20,7 +21,8 @@ const {
   uploadAssetFailed,
   assetsLayoutStart,
   assetsLayoutSuccess,
-  assetsLayoutFailed
+  assetsLayoutFailed,
+  hideError
 } = createActions(
   REMOVE_ASSET_FROM_GALLERY_START,
   REMOVE_ASSET_FROM_GALLERY_SUCCESS,
@@ -30,7 +32,8 @@ const {
   UPLOAD_ASSET_FAILED,
   ASSETS_LAYOUT_START,
   ASSETS_LAYOUT_SUCCESS,
-  ASSETS_LAYOUT_FAILED
+  ASSETS_LAYOUT_FAILED,
+  HIDE_ERROR
 );
 
 module.exports = {
@@ -42,5 +45,6 @@ module.exports = {
   uploadAssetFailed,
   assetsLayoutStart,
   assetsLayoutSuccess,
-  assetsLayoutFailed
+  assetsLayoutFailed,
+  hideError
 };

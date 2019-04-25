@@ -1,5 +1,5 @@
 .projectHeaderContainer {
-  height: 60px;
+  height: 66px;
   background-color: #fff;
   width: 100%;
   z-index: 550;
@@ -23,7 +23,7 @@
   float: left;
   position: absolute;
   color: #737373;
-  line-height: 60px;
+  line-height: 66px;
 }
 
 .projectHeaderContainer .projectHeaderTitle {
@@ -74,7 +74,7 @@
 }
 
 .projectHeaderContainer .projectRightAddContainer {
-  line-height: 60px;
+  line-height: 66px;
   margin-right: 10px;
 }
 
@@ -125,7 +125,7 @@
 .cartError {
   width: auto;
   height: 20px;
-  top: 121px;
+  top: 141px;
   position: absolute;
   right: 0px;
   padding: 0 20px;
