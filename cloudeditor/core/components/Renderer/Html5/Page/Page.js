@@ -71,10 +71,16 @@ const PageTarget = {
       const safeCutDocument = innerPage.safeCut;
       //fit the image in col
 
-      const widthPage =
-        innerPage.width +
-        activePage["boxes"]["trimbox"]["left"] +
-        activePage["boxes"]["trimbox"]["right"];
+      const trimboxLeft =
+        activePage["boxes"]["trimbox"] === undefined
+          ? 0
+          : activePage["boxes"]["trimbox"]["left"];
+      const trimboxRight =
+        activePage["boxes"]["trimbox"] === undefined
+          ? 0
+          : activePage["boxes"]["trimbox"]["right"];
+
+      const widthPage = innerPage.width + trimboxLeft + trimboxRight;
 
       const safeCut =
         Math.max(...values(innerPage["boxes"]["trimbox"])) * 2 +
@@ -86,8 +92,8 @@ const PageTarget = {
         leftMargin = safeCut;
         rightMargin = leftMargin;
       } else {
-        leftMargin = page["boxes"]["trimbox"]["left"];
-        rightMargin = page["boxes"]["trimbox"]["right"];
+        leftMargin = trimboxLeft;
+        rightMargin = trimboxRight;
       }
       width = widthPage - 2 * safeCut - (colNumbers - 1) * columnSpacing - 2;
       if (colNumbers) {
