@@ -46,7 +46,7 @@
 
 #sidebar-wrapper-container {
   width: 250px;
-  position: absolute;
+  position: relative; /*absolute;*/
   display: block;
   background-color: #f0eff0;
   height: 100%;
@@ -57,6 +57,7 @@
   transition: width 0.2s ease;
   float: left;
   z-index: 11;
+  padding-bottom: 0px;
 }
 
 #sidebar-wrapper-container ul {
@@ -200,17 +201,17 @@
 }
 
 /*
-.RightTriangle {
-  width: 0px;
-  height: 0px;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-  border-right: 20px solid white;
-  float: right;
-  margin-top: 10px;
-  display: none;
-}
-*/
+  .RightTriangle {
+    width: 0px;
+    height: 0px;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white;
+    float: right;
+    margin-top: 10px;
+    display: none;
+  }
+  */
 
 .RightTriangle {
 }
@@ -243,7 +244,7 @@
 }
 
 #sidebar-wrapper-container {
-  width: 100px;
+  width: 80px;
 }
 
 #sidebar-wrapper-container ul li.SidebarButtonContainer {
@@ -374,11 +375,11 @@
 }
 
 .pageSelector .pageHeaderButtonMinimize {
-  /*margin-left: 12px;*/
+  margin-left: 12px;
 }
 
 #container.pageSelectorMinimized .pageSelector .pageHeaderButtonExtend {
-  top: 1px;
+  top: -12px;
 }
 
 .pageSelector .pageHeaderButtonExtend .icon,
@@ -406,6 +407,7 @@
 
 #sidebar-wrapper-container .paneContainer {
   background-color: #f9fafc;
+  padding-bottom: 40px;
 }
 
 #sidebar-wrapper-container ul .uploadGalleryUl {

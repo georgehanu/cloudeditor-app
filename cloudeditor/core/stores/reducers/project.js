@@ -121,7 +121,9 @@ const addPages = (state, action) => {
     } else {
       const page_id = uuidv4();
       const newActivePage = ProjectUtils.getPagesDefaults({
-        id: page_id
+        id: page_id,
+        width: pages[activePage].width,
+        height: pages[activePage].height
       });
       newPages[page_id] = newActivePage;
       newIds.push(page_id);

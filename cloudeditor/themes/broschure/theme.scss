@@ -63,6 +63,7 @@ body {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+  padding-bottom: 40px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -155,31 +156,31 @@ section.dropzone {
   height: 60px;
 }
 /*
-#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading {
-  text-align: -webkit-center;
-}
-
-#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .Loader {
-  font-size: 8px;
-  margin: 0px;
-}
-
-#sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .Loader .SpinnerText {
-  left: 2px;
-  top: 35px;
-  font-size: 12px;
-}
-
-#sidebar-wrapper .uploadLabel {
-  background-color: #f9fafc;
-  border: 1px solid #dcdee1;
-}
-
-#sidebar-wrapper .uploadLabel .uploadMessage {
-  color: #58595b;
-  margin-left: 3px;
-}
-*/
+  #sidebar-wrapper .uploadGallery .uploadGalleryLiLoading {
+    text-align: -webkit-center;
+  }
+  
+  #sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .Loader {
+    font-size: 8px;
+    margin: 0px;
+  }
+  
+  #sidebar-wrapper .uploadGallery .uploadGalleryLiLoading .Loader .SpinnerText {
+    left: 2px;
+    top: 35px;
+    font-size: 12px;
+  }
+  
+  #sidebar-wrapper .uploadLabel {
+    background-color: #f9fafc;
+    border: 1px solid #dcdee1;
+  }
+  
+  #sidebar-wrapper .uploadLabel .uploadMessage {
+    color: #58595b;
+    margin-left: 3px;
+  }
+  */
 #sidebar-wrapper-container .SidebarButton:hover,
 #sidebar-wrapper-container .SidebarButtonSelected {
   color: #666666;
@@ -205,12 +206,12 @@ section.dropzone {
 
 #container.sidebarContainerExpand .render-container {
   flex-grow: 1000;
-  width: calc(100% - 500px);
-  margin-left: 500px;
+  width: calc(100% - 480px);
+  margin-left: 480px;
 }
 
 #container.sidebarContainerExpand .PageSelector {
-  left: 500px;
+  left: 480px;
 }
 
 .canvas-container {
@@ -284,13 +285,13 @@ section.dropzone {
 }
 /* [[[ Test picture one line */
 /*
-#sidebar-wrapper .uploadGallery .uploadGalleryLi {
-  width: 100%;
-}
-#sidebar-wrapper .uploadGalleryItem {
-  width: 97%;
-}
-/* ]]] */
+  #sidebar-wrapper .uploadGallery .uploadGalleryLi {
+    width: 100%;
+  }
+  #sidebar-wrapper .uploadGalleryItem {
+    width: 97%;
+  }
+  /* ]]] */
 #sidebar-wrapper .uploadContainer {
   height: calc(100% - 25px);
 }
@@ -337,4 +338,8 @@ section.dropzone {
 
 .projectRighInfo {
   display: none;
+}
+
+#sidebar-wrapper {
+  padding-bottom: 0px;
 }
