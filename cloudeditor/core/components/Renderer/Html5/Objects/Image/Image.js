@@ -96,7 +96,7 @@ class ImageBlock extends React.Component {
       }
     }
     if (nextProps.currentPageId !== this.props.currentPageId) {
-      if (!this.refs.cropper.cropper.ready) {
+      if (!this.refs.cropper || !this.refs.cropper.cropper.ready) {
         return false;
       }
       this.refs.cropper.enable();
