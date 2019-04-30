@@ -25,7 +25,7 @@ const AddText = props => {
         <div className="iconContainer">
           <div className="icon printqicon-newtext" />
         </div>
-        <div className="iconTitle">{props.t("Add Text")}</div>
+        <div className="iconTitle">{props.t("Text")}</div>
       </SidebarButton>
     </div>
   );

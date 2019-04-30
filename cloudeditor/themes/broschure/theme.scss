@@ -343,3 +343,98 @@ section.dropzone {
 #sidebar-wrapper {
   padding-bottom: 0px;
 }
+
+/* color blue */
+#sidebar-wrapper-container ul {
+  background-color: #213246;
+}
+
+#sidebar-wrapper-container .sidebarButton {
+  background-color: #213246;
+}
+
+#sidebar-wrapper-container .sidebarButton .icon,
+#sidebar-wrapper-container .sidebarButton .iconTitle,
+#sidebar-wrapper-container .sidebarButtonContainer .zoomButtons button,
+#sidebar-wrapper-container .sidebarButtonContainer .zoomValue {
+  color: #6cbfe8;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .zoomButtons button {
+  background-color: #1b2939;
+}
+
+#sidebar-wrapper-container ul {
+  padding-top: 10px;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .zoomButtons button:hover {
+  color: #99d122;
+  background-color: #1b2939;
+}
+
+#sidebar-wrapper-container .sidebarButton:hover .iconTitle,
+#sidebar-wrapper-container .sidebarButton:hover .icon {
+  color: #99d122;
+}
+
+#sidebar-wrapper-container .sidebarButtonContainer .paneContainer.paneShow,
+#sidebar-wrapper-container
+  .sidebarButtonContainer
+  .paneContainer.paneShow
+  .uploadGalleryUl {
+  background-color: #1b2939;
+}
+
+#sidebar-wrapper-container ul {
+  border-right: 1px solid #213246;
+}
+
+.rightTriangle:before,
+.rightTriangle:after {
+  border-color: transparent #6cbfe8 transparent transparent;
+}
+
+.projectMenuContainer .projectMenuItemHeader,
+.projectMenuContainer .projectMenuButtonActive,
+.projectHeaderContainer .projectRightAddContainerButton:hover,
+.projectHeaderContainer .printPreviewButtonContainer button:hover,
+.projectMenuButtonSubMenuOpened .projectMenuButton {
+  background-color: #213246;
+}
+
+.projectMenuContainer .projectMenuItemContent ul li.submenuItem:hover,
+.projectMenuContainer .projectMenuItemContent ul li .submenuItem:hover,
+.projectMenuContainer
+  .projectMenuItemContent
+  ul
+  li
+  .submenuItem.disabled:hover {
+  color: #213246;
+}
+
+.singlePageContainer.singlePageSelected,
+.singlePageContainer.singlePageSelected .singlePageText {
+  color: #213246;
+}
+
+.singlePageContainer.singlePageSelected {
+  border: 1px solid #213246;
+}
+
+.pageName.isActive div {
+  background-color: #213246;
+}
+
+.uploadLabel {
+  background-color: #99d122;
+  border: none;
+}
+.uploadLabel .uploadMessage,
+#sidebar-wrapper-container .uploadLabel .uploadIcon {
+  color: white;
+}
+
+.deletePage {
+  background-color: #213246;
+}
