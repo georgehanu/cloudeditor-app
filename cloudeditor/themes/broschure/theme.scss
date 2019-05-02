@@ -438,3 +438,14 @@ section.dropzone {
 .deletePage {
   background-color: #213246;
 }
+
+.projectHeaderContainer .projectHeaderLogo {
+  background-image: url("./assets/logo.svg");
+  height: 66px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: inherit;
+  float: left;
+  padding-left: 20px;
+  background-position: 20px center;
+}
