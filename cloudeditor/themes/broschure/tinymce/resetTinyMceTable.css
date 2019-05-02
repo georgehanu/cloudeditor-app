@@ -1,0 +1,128 @@
+html {
+  font-size: 1px;
+}
+body {
+  padding: 0px !important;
+  margin: 0px !important;
+  overflow-x: hidden !important;
+  width: 10000px;
+  height: 10000px;
+  overflow: hidden;
+}
+table {
+  width: auto;
+  height: auto;
+  transform-origin: top left;
+  white-space: nowrap;
+}
+body,
+td,
+pre {
+  color: #000000;
+  font-family: Arial;
+}
+body .tableContainer {
+  transform-origin: left top;
+}
+.mce-panel {
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none;
+  box-shadow: none;
+}
+
+.mce-content-body {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.tinymce-content {
+  white-space: normal;
+}
+
+.mce-widget.mce-label.mce-abs-layout-item {
+  color: white !important;
+}
+
+.mce-container.mce-flow-layout-item {
+  color: white !important;
+}
+
+.mce-container-body.mce-abs-layout {
+  background-color: #666666 !important;
+}
+
+.mce-btn-group .mce-btn {
+  background-color: #666666;
+}
+
+.mce-btn button {
+  background-color: #666666 !important;
+  color: white !important;
+}
+
+.mce-btn button i {
+  color: white !important;
+}
+div.mce-edit-area {
+  background: transparent;
+}
+.hideTableResize {
+  display: none !important;
+}
+.mce-item-table,
+.mce-item-table td,
+.mce-item-table th,
+.mce-item-table caption {
+  border: none;
+  border-spacing: 0px;
+}
+
+.tableContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.hideResize .mce-resizehandle {
+  display: none !important;
+}
+html {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+html body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  transform-origin: top left;
+}
+.mce-content-body .mce-clonedresizable {
+  transform-origin: left top;
+}
+
+.mce-resizehandle {
+  border-radius: 50% !important;
+  width: 10px !important;
+  height: 10px !important;
+  background-color: #646464 !important;
+}
+
+.ephox-snooker-resizer-rows {
+  width: 100% !important;
+}
+
+.ephox-snooker-resizer-cols {
+  height: 100% !important;
+}
+
+.pasteTableContainer {
+  font-size: 50px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  font-size: calc(100vw * 7 / 100);
+}
