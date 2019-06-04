@@ -2,6 +2,7 @@ const React = require("react");
 const Fields = require("../LayoutItems/Fields");
 const Title = require("../LayoutItems/Title");
 const Description = require("../LayoutItems/Description");
+const Continue = require("../LayoutItems/Continue");
 const { withNamespaces } = require("react-i18next");
 const SliderCarousel = require("../SliderCarousel/SliderCarousel");
 const {
@@ -50,6 +51,7 @@ class LeftPanel extends React.Component {
                 this.props.onCropImageModalOpenHandler
               }
             />
+            <Continue />
           </div>
         </div>
       </div>

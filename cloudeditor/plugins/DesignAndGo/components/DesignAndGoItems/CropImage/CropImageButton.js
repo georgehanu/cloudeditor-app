@@ -3,11 +3,11 @@ const React = require("react");
 const cropImageButton = props => {
   return (
     <div
-      className="cropImageContainer"
+      className="cropImageContainer dgButton"
       onClick={() => props.onCropImageModalOpenHandler()}
     >
-      <label className="UploadLabel">
-        <span className="UploadMessage">Crop image</span>
+      <label className="label">
+        <span className="message">Crop image</span>
       </label>
     </div>
   );
