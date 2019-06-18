@@ -148,6 +148,16 @@ const build = config => {
                 var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\locales\\en-US\\translate.json';
                */
           },
+          {
+            from: "./" + namespace + "/plugins/*/plugins/*/locales/*/*.json",
+            to: "./locales/[7]/[3]/[name].[ext]",
+            toType: "template",
+            test: /^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/
+            /**
+               * var regex1 = new RegExp(/^(.*)\\(.*)\\(.*)\\(.*)\\(.*)\\(.*)\.json$/)
+                var str1 = '\\cloudeditor-app\\cloudeditor\\plugins\\p1\\plugins\\p1_1\\locales\\en-US\\translate.json';
+               */
+          },
           ...copyFrom
         ],
         { debug: prod ? "" : "" }

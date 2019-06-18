@@ -13,6 +13,25 @@ const {
 const { connect } = require("react-redux");
 
 class LeftPanel extends React.Component {
+  getTool = tool => {
+    return tool.plugin;
+  };
+
+  renderTools = () => {
+    return this.props.tools.map((tool, i) => {
+      const Tool = this.getTool(tool);
+      return (
+        <Tool
+          addContainerClasses={tool.addContainerClasses}
+          cfg={tool.cfg || {}}
+          items={tool.items || []}
+          key={i}
+          index={i}
+        />
+      );
+    });
+  };
+
   render() {
     return (
       <div className="LeftPanel">
@@ -51,7 +70,8 @@ class LeftPanel extends React.Component {
                 this.props.onCropImageModalOpenHandler
               }
             />
-            <Continue />
+            {this.renderTools()}
+            <Continue addContainerClasses={this.props.addContainerClasses} />
           </div>
         </div>
       </div>

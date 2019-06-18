@@ -1,12 +1,12 @@
-.Loader,
-.Loader:before,
-.Loader:after {
+/* .loader,
+.loader:before,
+.loader:after {
   border-radius: 50%;
 }
-.Loader {
-  color: #521751;
+.loader {
+  color: #666666;
   font-size: 11px;
-  /*text-indent: -99999em;*/
+  //text-indent: -99999em;
   margin: 55px auto;
   position: relative;
   width: 10em;
@@ -16,12 +16,12 @@
   -ms-transform: translateZ(0);
   transform: translateZ(0);
 }
-.Loader:before,
-.Loader:after {
+.loader:before,
+.loader:after {
   position: absolute;
   content: "";
 }
-.Loader:before {
+.loader:before {
   width: 5.2em;
   height: 10.2em;
   background: #fff;
@@ -33,7 +33,7 @@
   -webkit-animation: load2 2s infinite ease 1.5s;
   animation: load2 2s infinite ease 1.5s;
 }
-.Loader:after {
+.loader:after {
   width: 5.2em;
   height: 10.2em;
   background: #fff;
@@ -64,15 +64,42 @@
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+} */
+
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.SpinnerText {
-  display: block;
-  z-index: 2000;
-  color: 521751;
-  height: 30px;
-  left: 28px;
+.loadingSpinner {
+  max-width: 50%;
   position: relative;
-  top: 46px;
-  font-size: 14px;
+}
+
+.spinnerText {
+  display: block;
+  color: #cb6261;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  font-size: 20px;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.backdropSpinnerContainer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1200;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.backdropSpinnerContainer .loader {
+  color: #737373;
 }

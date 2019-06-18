@@ -107,7 +107,7 @@ const getEmptyVariables = cfg => {
 const getVariablesState = cfg => {
   let state = {
     variables: getVariablesFromProject(cfg),
-    configs: getVariablesDefaults(cfg)
+    configs: getVariablesDefaults()
   };
 
   return state;
@@ -129,7 +129,13 @@ const getVariablesFromProject = cfg => {
         [el.markup]: {
           name: el.markup,
           type: el.type,
-          registered: el.registered
+          registered: el.registered,
+          image_path: el.image_path || "",
+          image_src: el.image_src || "",
+          ratioWidth: el.ratioWidth || 1,
+          ratioHeight: el.ratioHeight || 1,
+          imageWidth: el.imageWidth || 0,
+          imageHeight: el.imageHeight || 0
         }
       };
     }

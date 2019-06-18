@@ -1,4 +1,11 @@
-const { pick, forEachObjIndexed, filter, values, uniq } = require("ramda");
+const {
+  pick,
+  forEachObjIndexed,
+  filter,
+  values,
+  uniq,
+  indexOf
+} = require("ramda");
 const { extractVariablesFromString } = require("./VariableUtils");
 
 const MODE_COLOR = 1;
@@ -53,27 +60,42 @@ const findTargetBlocks = (obj, mode, fieldTarget, pageObjects) => {
   return target;
 };
 const replaceVariable = (variableValue, variables, obj, mode) => {
-  const usedVariables = pick(
+  /* const usedVariables = pick(
     extractVariablesFromString(variableValue),
     variables
-  );
+  ); */
+  const usedVariables = pick([variableValue], variables);
 
   if (mode === MODE_IMAGE) {
     let image_src = obj.image_src;
+    let image_path = obj.image_path;
     let imageHeight = obj.imageHeight || 0;
     let imageWidth = obj.imageWidth || 0;
+    let rationHeight = obj.rationHeight || 1;
+    let rationWidth = obj.rationWidth || 1;
     forEachObjIndexed((variable, key) => {
-      if (variable.value) {
-        image_src = obj.dynamicImage.replace(
+      if (variable.value && key == obj.dynamicImage) {
+        /* image_src = obj.dynamicImage.replace(
           "[%]" + key + "[/%]",
           variable.value
-        );
+        ); */
+        image_src = variable.value;
+        image_path = variable.image_path;
         imageHeight = variable.imageHeight;
         imageWidth = variable.imageWidth;
+        ratioHeight = variable.ratioHeight;
+        ratioWidth = variable.ratioWidth;
       }
     }, usedVariables);
 
-    return { imageHeight, imageWidth, image_src };
+    return {
+      imageHeight,
+      imageWidth,
+      image_src,
+      image_path,
+      ratioWidth,
+      ratioHeight
+    };
   } else {
     let newValue = variableValue;
     forEachObjIndexed((variable, key) => {
@@ -84,7 +106,10 @@ const replaceVariable = (variableValue, variables, obj, mode) => {
           // default color
           newValue = "rgb(0,0,0)";
         }
-      } else newValue = newValue.replace("[%]" + key + "[/%]", variable.value);
+      } else {
+        //newValue = newValue.replace("[%]" + key + "[/%]", variable.value);
+        newValue = variable.value;
+      }
     }, usedVariables);
 
     return newValue;
@@ -138,7 +163,8 @@ const updateObjVariable = (state, action) => {
     objects: state.objects,
     variables: action.payload.variables,
     variable: action.payload.variable,
-    pages: state.pages
+    pages: state.pages,
+    activePage: state.activePage
   });
 
   return {
@@ -161,7 +187,8 @@ const updateObjVariableInit = (state, payload) => {
       objects,
       variables,
       variable: oneVar,
-      pages: state.pages
+      pages: state.pages,
+      activePage: state.activePage
     });
 
     objects = {
@@ -189,101 +216,108 @@ const findObjsInSamePage = (objId, pages) => {
 
 const updateObjOneVariable = payload => {
   let objects = { ...payload.objects };
-  const { variables, variable, pages } = payload;
+  const { variables, variable, pages, activePage } = payload;
   const { registered } = variable;
   const newObjs = {};
 
   for (const objId of values(registered)) {
     // update the value based on the variable
-    const pageObjects = pick(findObjsInSamePage(objId, pages), objects);
-    let obj = objects[objId];
-    if (obj.type === "textbox") {
-      obj = {
-        ...obj,
-        value: replaceVariable(obj.text, variables, obj, MODE_TEXT)
-      };
-    }
-
-    if (obj.ValidationRule) {
-      obj.invalidMessage = null;
-      const returnValue = eval(obj.ValidationRule);
-      if (returnValue !== true) {
-        obj.invalidMessage = returnValue;
-
-        newObjs[obj.id] = obj;
-        // object was updated, we need it updated in objects
-        objects = {
-          ...objects,
-          [obj.id]: obj
+    if (indexOf(objId, pages[activePage]["objectsIds"]) !== -1) {
+      const pageObjects = pick(findObjsInSamePage(objId, pages), objects);
+      let obj = objects[objId];
+      if (
+        obj.type === "textbox" &&
+        obj.hasOwnProperty("dynamicText") &&
+        obj.dynamicText !== ""
+      ) {
+        obj = {
+          ...obj,
+          //value: replaceVariable(obj.text, variables, obj, MODE_TEXT)
+          value: replaceVariable(obj.dynamicText, variables, obj, MODE_TEXT)
         };
-        continue;
       }
-    }
 
-    if (obj.FormatRule) {
-      const newObj = eval(obj.FormatRule);
-      if (newObj !== null) {
-        obj = { ...newObj };
-      }
-    }
+      if (obj.ValidationRule) {
+        obj.invalidMessage = null;
+        const returnValue = eval(obj.ValidationRule);
+        if (returnValue !== true) {
+          obj.invalidMessage = returnValue;
 
-    if (obj.ConcatAfter) {
-      obj.value = obj.value + obj.ConcatAfter;
-    }
-    if (obj.ConcatBefore) {
-      obj.value = obj.ConcatBefore + obj.value;
-    }
-
-    if (obj.value.length <= 1 && obj.Dependency) {
-      // search if this object is set as depended for another block
-      const visibleDepend = obj.value.length === 0 ? false : true;
-      for (const objDependId of values(obj.Dependency)) {
-        if (objects.hasOwnProperty(objDependId)) {
-          const objDepend = {
-            ...objects[objDependId],
-            visibleDepend
-          };
-
+          newObjs[obj.id] = obj;
+          // object was updated, we need it updated in objects
           objects = {
             ...objects,
-            [objDepend]: objDepend
+            [obj.id]: obj
           };
-          newObjs[objDepend.id] = objDepend;
+          continue;
         }
       }
-    }
 
-    if (obj.value.length <= 1) {
-      for (const mode of [HIDE_LINE_UP, HIDE_LINE_DOWN]) {
-        if (
-          (mode === HIDE_LINE_UP && obj.HideLineUp) ||
-          (mode === HIDE_LINE_DOWN && obj.HideLineDown)
-        ) {
-          let targetBlocks = findTargetBlocks(
-            obj,
-            mode,
-            mode === HIDE_LINE_UP ? "HideLineUpTarget" : "HideLineDownTarget",
-            pageObjects
-          );
+      if (obj.FormatRule) {
+        const newObj = eval(obj.FormatRule);
+        if (newObj !== null) {
+          obj = { ...newObj };
+        }
+      }
 
-          for (const keyObj in targetBlocks) {
-            const block = moveBlock(objects[keyObj], obj, mode);
+      if (obj.ConcatAfter) {
+        obj.value = obj.value + obj.ConcatAfter;
+      }
+      if (obj.ConcatBefore) {
+        obj.value = obj.ConcatBefore + obj.value;
+      }
+
+      if (obj.value.length <= 1 && obj.Dependency) {
+        // search if this object is set as depended for another block
+        const visibleDepend = obj.value.length === 0 ? false : true;
+        for (const objDependId of values(obj.Dependency)) {
+          if (objects.hasOwnProperty(objDependId)) {
+            const objDepend = {
+              ...objects[objDependId],
+              visibleDepend
+            };
 
             objects = {
               ...objects,
-              [block.id]: block
+              [objDepend]: objDepend
             };
-            newObjs[block.id] = block;
+            newObjs[objDepend.id] = objDepend;
           }
         }
       }
-    }
 
-    newObjs[obj.id] = obj;
-    objects = {
-      ...objects,
-      [obj.id]: obj
-    };
+      if (obj.value.length <= 1) {
+        for (const mode of [HIDE_LINE_UP, HIDE_LINE_DOWN]) {
+          if (
+            (mode === HIDE_LINE_UP && obj.HideLineUp) ||
+            (mode === HIDE_LINE_DOWN && obj.HideLineDown)
+          ) {
+            let targetBlocks = findTargetBlocks(
+              obj,
+              mode,
+              mode === HIDE_LINE_UP ? "HideLineUpTarget" : "HideLineDownTarget",
+              pageObjects
+            );
+
+            for (const keyObj in targetBlocks) {
+              const block = moveBlock(objects[keyObj], obj, mode);
+
+              objects = {
+                ...objects,
+                [block.id]: block
+              };
+              newObjs[block.id] = block;
+            }
+          }
+        }
+      }
+
+      newObjs[obj.id] = obj;
+      objects = {
+        ...objects,
+        [obj.id]: obj
+      };
+    }
   }
 
   return {
@@ -294,6 +328,7 @@ const updateObjOneVariable = payload => {
 };
 
 const updateObjColorImageVar = (state, action, mode) => {
+  console.log("updateObjColorImageVar activepage", state.activePage);
   let objects = { ...state.objects };
   const { variables } = action.payload;
   let registered = [];
@@ -305,17 +340,27 @@ const updateObjColorImageVar = (state, action, mode) => {
 
   for (const objId of values(registered)) {
     let obj = objects[objId];
-    if (mode === MODE_COLOR && obj.dynamicFillColor) {
-      const newColor = replaceVariable(obj.fill, variables, obj, MODE_COLOR);
-      obj = { ...obj, fillNew: newColor };
-    } else if (mode === MODE_IMAGE && obj.dynamicImage) {
-      const newFields = replaceVariable(
-        obj.dynamicImage,
-        variables,
-        obj,
-        MODE_IMAGE
-      );
-      obj = { ...obj, ...newFields };
+
+    if (indexOf(objId, state.pages[state.activePage]["objectsIds"]) !== -1) {
+      if (mode === MODE_COLOR && obj.dynamicFillColor) {
+        //const newColor = replaceVariable(obj.fill, variables, obj, MODE_COLOR);
+        const newColor = replaceVariable(
+          obj.dynamicFillColor,
+          variables,
+          obj,
+          MODE_COLOR
+        );
+        obj = { ...obj, fillNew: newColor };
+        //obj = { ...obj, fillColor: { ...obj.fillColor, htmlRGB: newColor } };
+      } else if (mode === MODE_IMAGE && obj.dynamicImage) {
+        const newFields = replaceVariable(
+          obj.dynamicImage,
+          variables,
+          obj,
+          MODE_IMAGE
+        );
+        obj = { ...obj, ...newFields };
+      }
     }
     newObjs[obj.id] = obj;
   }

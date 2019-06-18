@@ -28,6 +28,18 @@ class DesignAndGo extends React.Component {
     zoomImageModalOpened: false
   };
 
+  getLayoutPlugins = () => {
+    return this.props.items
+      .filter(item => {
+        return item.target === "Layout";
+      })
+      .map(item => {
+        item.addContainerClasses = this.props.addContainerClasses;
+        return item;
+      })
+      .sort((a, b) => a.position - b.position);
+  };
+
   onMenuCloseHandler = () => {
     this.setState({
       menuOpened: false,
@@ -107,6 +119,8 @@ class DesignAndGo extends React.Component {
         )}
 
         <Layout
+          addContainerClasses={this.props.addContainerClasses}
+          tools={this.getLayoutPlugins()}
           onMenuOpenHandler={this.onMenuOpenHandler}
           onDataOpenHandler={this.onDataOpenHandler}
           onCropImageModalOpenHandler={this.onCropImageModalOpenHandler}

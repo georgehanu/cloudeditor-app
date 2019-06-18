@@ -171,7 +171,6 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        //imagePath: action.payload,
         errorMessage: null
       };
     },
@@ -179,7 +178,7 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        imagePath: null,
+        //imagePath: null,
         errorMessage: action.payload
       };
     },

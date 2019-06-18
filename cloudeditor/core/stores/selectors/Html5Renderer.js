@@ -296,7 +296,7 @@ const displayedMergedObjectSelector = displayedObjectSelector => {
       console.log(defaults, "defaults");
       return mergeAll([
         defaults.generalCfg,
-        defaults[object.realType + "Cfg"],
+        defaults[object.subType + "Cfg"],
         object
       ]);
     }
@@ -350,7 +350,7 @@ const displayedMergedObjectCachedSelector = createCachedSelector(
     console.log("displayedMergedObjectCachedSelector", object.id);
     return mergeAll([
       defaults.generalCfg,
-      defaults[object.realType + "Cfg"],
+      defaults[object.subType + "Cfg"],
       object
     ]);
   }

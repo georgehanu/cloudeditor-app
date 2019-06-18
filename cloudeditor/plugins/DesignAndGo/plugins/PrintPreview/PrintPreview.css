@@ -1,0 +1,178 @@
+.projectPreviewContainer {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0;
+  display: none;
+}
+
+.previewContainer {
+  position: relative;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  padding: 80px;
+  box-sizing: border-box;
+}
+
+.showPrintPreview .projectPreviewContainer {
+  display: block;
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  top: 0px;
+}
+
+.previewImage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  width: auto;
+  height: auto;
+}
+
+.previewImagecontainer {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative;
+  text-align: center;
+  display: flex;
+}
+
+.magnifier {
+  /*  width: auto !important; */
+  /*height: auto !important;*/
+  /*width: 100%;*/
+  /*height: auto;*/
+  overflow: visible;
+  margin: 0 auto;
+  display: inline-block;
+  margin: auto auto;
+}
+/* Magnify class */
+/*
+.showPrintPreview #sidebar-wrapper .sidebarButton,
+.showPrintPreview #sidebar-wrapper .zoom {
+  pointer-events: none;
+  opacity: 0.4;
+}
+/* Zoom [[[*/
+.showPrintPreview #sidebar-wrapper .sidebarButton {
+  pointer-events: none;
+  opacity: 0.4;
+}
+.showPrintPreview #sidebar-wrapper .zoom .sidebarButton {
+  pointer-events: all;
+  opacity: 1;
+}
+/* .magnifying-glass.circle {
+  display: none;
+} */
+.magnifier-image {
+  cursor: default;
+}
+.previewImagecontainerOverflow {
+  overflow: auto;
+}
+/* Zoom [[[*/
+.showPrintPreview.containerPrintPreviewMaxZindex .previewImagecontainer {
+  z-index: 5000;
+}
+
+.showPrintPreview.showHeaderFooter #sidebar-wrapper {
+  padding-top: 100px;
+}
+
+.showPrintPreview .renderContainer .zoomContainer,
+.showPrintPreview .helperLinesContainer {
+  display: none;
+}
+
+.showPrintPreview .buttonMenuItemTable {
+  display: none;
+}
+
+.magnifier-image {
+  /*max-height: -webkit-fill-available;
+  max-width: -webkit-fill-available;*/
+  /*max-height: inherit;*/
+}
+
+.previewImagecontainer {
+}
+
+.showPrintPreview .paneContainer,
+.showPrintPreview .rightTriangle {
+  display: none;
+}
+
+#container.showPrintPreview.sidebarContainerExpand .pageSelectorContainer {
+  padding-left: 100px;
+}
+
+.magnifier-image {
+  height: inherit !important;
+  width: inherit !important;
+}
+
+.projectPreviewContainer {
+  overflow: hidden;
+}
+
+.previewImagecontainer .loader .spinnerText {
+  left: 0px;
+}
+.previewImagecontainer .loader {
+  color: #737373;
+}
+
+.showPrintPreview .pageHeaderTextTitleContainer {
+  pointer-events: none;
+}
+
+.showPrintPreview .html5LivePaginationContainer a {
+  pointer-events: none;
+}
+
+.showPrintPreview .singlePageContainer:hover .deletePage {
+  display: none;
+}
+
+.magnifier-image {
+  height: inherit !important;
+  width: inherit !important;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.showPrintPreview ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.projectPreviewContainer .paginationBottomContainer {
+  width: 100%;
+  height: 25px;
+  display: inline-block;
+  position: relative;
+  float: left;
+  padding-left: 100px;
+}
+
+@media screen and (max-width: 842px) {
+  .showPrintPreview .projectPreviewContainer {
+    display: block;
+    position: relative;
+    left: 0;
+    width: 100%;
+    min-height: 530px;
+    overflow: visible;
+    margin: 20px 0 0 0;
+  }
+
+  .previewContainer {
+    padding: 0;
+    position: absolute;
+  }
+}

@@ -64,7 +64,7 @@ class ObjectBlock extends React.PureComponent {
 
     const newBlock = mergeAll([
       configs.generalCfg,
-      configs[object.realType + "Cfg"],
+      configs[object.subType + "Cfg"],
       object
     ]);
 

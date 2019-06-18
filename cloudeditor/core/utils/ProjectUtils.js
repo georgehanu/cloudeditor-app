@@ -5,6 +5,21 @@ const randomcolor = require("randomcolor");
 
 const config = ConfigUtils.getDefaults();
 
+const getObjectColorTemplateFill = cfg => {
+  return merge(
+    {
+      colorSpace: "DeviceRGB",
+      htmlRGB: null,
+      RGB: "0 0 0",
+      CMYK: "0 0 0 1",
+      separation: null,
+      separationColorSpace: null,
+      separationColor: null
+    },
+    cfg || {}
+  );
+};
+
 const getObjectColorTemplate = cfg => {
   return merge(
     {
@@ -22,10 +37,25 @@ const getObjectColorTemplate = cfg => {
 };
 
 const getObjectsDefaults = cfg => {
-  const { general, image, graphics, text, pdf, qr, ...custom } = cfg || {};
+  const {
+    general,
+    image,
+    graphics,
+    pdf,
+    qr,
+    text,
+    textline,
+    textflow,
+    rectangle,
+    ...custom
+  } = cfg || {};
   const generalCfg = merge(
     {
+      id: null,
+      type: "none",
+      subType: "none", //specifies what is the real type of the block(image, pdf, qr, )
       editable: 1, //user can edit a block
+      deletable: 1, //user can delete a block
       ignoreOnRest: 0, //this block will be ignored on rest
       onTop: 0, //specify if a block is on top
       required: 0, //user must specify a value for this block
@@ -38,16 +68,24 @@ const getObjectsDefaults = cfg => {
       visible: 1, //if false, a block is NOT visible in the editor, but visible in PDF
       orientate: "north", //PDFLIB orientation - not used
       opacity: 1, // opacity of the block
-      realType: null, //specifies what is the real type of the block(image, pdf, qr, )
       width: 0,
       height: 0,
       left: 0,
       top: 0,
+      value: null,
+      ispSnap: 0,
+      orientation: "north",
+      rotate: 0,
+      dragging: 0,
+      rotating: 0,
+      noCrop: false,
+      resizing: 0,
       bgColor: getObjectColorTemplate((general && general.bgColor) || {}),
       borderColor: getObjectColorTemplate(
         (general && general.borderColor) || {}
       ),
       borderWidth: 0,
+      renderId: uuidv4(),
       rule_properties: {}
     },
     general || {}
@@ -56,9 +94,9 @@ const getObjectsDefaults = cfg => {
   const imageCfg = merge(
     {
       type: "image",
-      realType: "image",
+      subType: "image",
       alternateZoom: 0,
-      backgroundBlock: 0,
+      backgroundblock: 0,
       borderWidth: 0,
       contrast: 0,
       luminosite: 0,
@@ -71,74 +109,106 @@ const getObjectsDefaults = cfg => {
       leftSlider: 0,
       localImages: 0,
       selectBox: 0,
-      src: 0
+      filter: "",
+      image_src: "",
+      cropH: 0,
+      cropX: 0,
+      cropY: 0,
+      cropW: 0,
+      ratio: 1,
+      workingWidth: 0,
+      workingHeight: 0,
+      brightness: 0,
+      imageWidth: 0,
+      imageHeight: 0,
+      ratioWidth: 1,
+      ratioHeight: 1,
+      missingImage: false,
+      flip: ""
     },
     image || {}
   );
-  const graphicsCfg = merge(
+  const graphicsCfg = mergeAll([
+    imageCfg,
     {
       type: "graphics",
-      realType: "graphics",
-      alternateZoom: 0,
-      backgroundBlock: 0,
-      borderWidth: 0,
-      contrast: 0,
-      luminosite: 0,
-      flipHorizontal: 0,
-      flipVertical: 0,
-      flipBoth: 0,
-      greyscale: 0,
-      invert: 0,
-      leftSlider: 0,
-      localImages: 0,
-      selectBox: 0,
-      src: null
+      subType: "graphics"
     },
     graphics || {}
-  );
+  ]);
   const pdfCfg = mergeAll([
-    image,
+    imageCfg,
     {
-      realType: "pdf"
+      subType: "pdf"
     },
     pdf || {}
   ]);
 
   const qrCfg = mergeAll([
-    image,
+    imageCfg,
     {
-      realType: "qr"
+      subType: "qr"
     },
     qr || {}
   ]);
 
   const textCfg = merge(
     {
-      type: "text",
-      realType: "text",
-      alignment: "center",
+      textAlign: "left",
       bold: 0,
       charSpacing: 0,
       circleText: 0,
-      fillColor: getObjectColorTemplate((text && text.fillColor) || {}),
+      fillColor: getObjectColorTemplateFill((text && text.fillColor) || {}),
+      bgColor: getObjectColorTemplate((text && text.bgColor) || {}),
+      borderColor: getObjectColorTemplate((text && text.borderColor) || {}),
       deviationX: 0,
       deviationY: 0,
       fontId: 1,
-      fontSize: 24,
+      fontSize: 14,
       italic: 0,
-      lineHeightN: 120,
-      lineHeightP: false,
       maxLength: 0,
       prefix: "",
       sufix: "",
+      type: "text",
       underline: 0,
-      vAlignment: "middle",
+      vAlign: "top",
       wordSpacing: "normal",
-      value: "Edit Text Here",
+      fontFamily: "",
+      prefix: "",
+      value: "",
+      lineheightn: null,
+      lineheightp: 100,
+      placeHolder: "Edit Text Here",
+      firstlinedist: "ascender",
+      lastlinedist: 0,
       defaultFontZise: 24,
       useDefaultFontSize: true
     },
     text || {}
+  );
+
+  const textlineCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textline"
+    },
+    textline || {}
+  ]);
+
+  const textflowCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textflow"
+    },
+    textflow || {}
+  ]);
+
+  const rectangleCfg = merge(
+    {
+      type: "rectangle",
+      subType: "rectangle"
+    },
+    rectangle || {}
   );
 
   const customCfg = custom || {};
@@ -150,6 +220,9 @@ const getObjectsDefaults = cfg => {
     pdfCfg,
     qrCfg,
     textCfg,
+    textflowCfg,
+    textlineCfg,
+    rectangleCfg,
     ...customCfg
   };
 };
@@ -688,7 +761,7 @@ const getEmptyVariables = cfg => {
       display_name: "Full Name",
       prefix: "",
       sufix: "",
-      value: "Marius Turcu"
+      value: ""
     }
   ];
 };
@@ -1077,6 +1150,29 @@ const getDGProject = cfg => {
   };
 };
 
+const getEmptySelection = cfg => {
+  return cfg;
+};
+
+const getEmptyProductInformation = cfg => {
+  return mergeDeepRight(
+    {
+      name: "",
+      productId: null,
+      templateId: null,
+      qty: 1,
+      productOptions: {},
+      total_price: false,
+      contentCode: null,
+      coverCode: null,
+      no_page_cover: 0,
+      pages_codes: [],
+      displayedOptions: []
+    },
+    cfg || {}
+  );
+};
+
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
@@ -1087,7 +1183,9 @@ const ProjectUtils = {
   getRandomUI,
   getEmptyColor,
   getEmptyFont,
-  getDGProject
+  getDGProject,
+  getEmptySelection,
+  getEmptyProductInformation
 };
 
 module.exports = ProjectUtils;

@@ -217,7 +217,7 @@ body,
 }
 
 .LeftPaneHorizontalStyled {
-  position: relative;
+  /*  position: relative; */
   /*overflow-y: auto;*/
 }
 
@@ -726,6 +726,18 @@ body,
   background: rgb(203, 98, 97);
 }
 
+.dgTextButton {
+}
+
+.dgTextButton a {
+  color: #ea7d7d;
+  font-size: 15px;
+  font-weight: 700;
+}
+.dgTextButton a:hover {
+  color: #cb6261;
+}
+
 .ColorButton:hover,
 .EditLabelButton:hover {
   color: white;
@@ -961,6 +973,28 @@ section.dropzone {
 
 .continueSection {
   margin: 20px 0 0 0;
+  display: flex;
+}
+
+.continueSection .previewBtn {
+  display: flex;
+  width: 45%;
+}
+.continueSection .backToEdit {
+  display: none;
+  width: 45%;
+  align-items: center;
+  justify-content: left;
+}
+
+.showPrintPreview .continueSection .backToEdit {
+  display: flex;
+}
+
+.showPrintPreview .SliderCarousel,
+.showPrintPreview .LeftPaneHorizontal .FieldsContainer,
+.showPrintPreview .EditLabelButtonContainer {
+  display: none;
 }
 
 @-webkit-keyframes sk-circleBounceDelay {
@@ -1183,7 +1217,9 @@ section.dropzone {
 }
 
 .imageOpContainer {
-  height: 50px;
+  /*  height: 50px; */
+  display: flex;
+  justify-content: space-between;
 }
 
 #debugButton {
@@ -1371,8 +1407,29 @@ section.dropzone {
   }
 
   .imageOpContainer {
+    display: block;
     position: relative;
     top: 15px;
+  }
+
+  .continueSection {
+    position: relative;
+    top: 20px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .continueSection .previewBtn {
+    width: 100%;
+  }
+
+  .showPrintPreview .continueSection .backToEdit {
+    display: block;
+    width: 100%;
+  }
+  .showPrintPreview .continueSection .backToEdit span {
+    width: 100%;
+    display: block;
   }
 
   .slick-track {
