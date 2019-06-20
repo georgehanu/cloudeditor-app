@@ -26,6 +26,13 @@ module.exports = handleActions(
         enabled: true
       };
     },
+    [actionTypes.COMPLETE_PERSONALIZATION]: (state, action) => {
+      return {
+        ...state,
+        loading: true,
+        enabled: true
+      };
+    },
     [actionTypes.PREVIEW_GET_PAGE]: (state, action) => {
       return {
         ...state,

@@ -1,4 +1,5 @@
 const React = require("react");
+const convert = require("color-convert");
 
 const ColorButton = require("./ColorButton");
 const ColorPicker = require("./ColorPicker");
@@ -27,13 +28,39 @@ const ColorButtonGroup = props => {
     );
   });
 
+  const changeColorPicker = color => {
+    const decimals = 1000;
+    const rgb = color.rgb;
+    const CMYK = convert.rgb.cmyk.raw(rgb.r, rgb.g, rgb.b);
+    const palleteBgColor = {
+      htmlRGB: rgb.r + "," + rgb.g + "," + rgb.b,
+      RGB:
+        Math.round((rgb.r / 255) * decimals) / decimals +
+        " " +
+        Math.round((rgb.g / 255) * decimals) / decimals +
+        " " +
+        Math.round((rgb.b / 255) * decimals) / decimals,
+      CMYK:
+        Math.round((CMYK[0] / 100) * decimals) / decimals +
+        " " +
+        Math.round((CMYK[1] / 100) * decimals) / decimals +
+        " " +
+        Math.round((CMYK[2] / 100) * decimals) / decimals +
+        " " +
+        Math.round((CMYK[3] / 100) * decimals) / decimals
+    };
+
+    props.dagChangeColorPicker(palleteBgColor);
+    props.changeColorVariableValue({ color1: palleteBgColor });
+  };
+
   if (props.colorPicker) {
     let counter = items.length;
     items.push(
       <ColorPicker
         key={counter}
-        containerBgColor={props.palleteBgColor}
-        handleColorChange={props.dagChangeColorPicker}
+        containerBgColor={"rgb(" + props.palleteBgColor.htmlRGB + ")"}
+        handleColorChange={changeColorPicker}
         clicked={() => {
           props.dagChangeActiveColorSchema(counter);
           props.changeColorVariableValue({ color1: props.palleteBgColor });

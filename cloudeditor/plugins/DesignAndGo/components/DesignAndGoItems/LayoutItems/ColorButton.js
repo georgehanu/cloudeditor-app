@@ -3,10 +3,14 @@ const React = require("react");
 const ColorButton = props => {
   const className = "ColorButton" + (props.active ? " ColorButtonActive" : "");
   const containerBgColorStyle = props.color3
-    ? { backgroundColor: props.color3 }
+    ? { backgroundColor: "rgb(" + props.color3.htmlRGB + ")" }
     : {};
-  const color1Style = props.color1 ? { backgroundColor: props.color1 } : {};
-  const color2Style = props.color2 ? { backgroundColor: props.color2 } : {};
+  const color1Style = props.color1
+    ? { backgroundColor: "rgb(" + props.color1.htmlRGB + ")" }
+    : {};
+  const color2Style = props.color2
+    ? { backgroundColor: "rgb(" + props.color2.htmlRGB + ")" }
+    : {};
 
   return (
     <div className={className} onClick={props.clicked}>

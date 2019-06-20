@@ -92,6 +92,7 @@
   "dependencies": {
     "@tinymce/tinymce-react": "^2.4.0",
     "axios": "^0.18.0",
+    "color-convert": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "fabric": "^2.6.0",

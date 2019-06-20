@@ -42,6 +42,7 @@ class Layout extends React.Component {
     return (
       <React.Fragment>
         <div className="Layout">
+          <div className="LayoutHeader" />
           <div className="MainContainer">
             <div className="StyledSplitPane">
               <LeftPanel

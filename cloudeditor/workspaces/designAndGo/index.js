@@ -19,7 +19,8 @@ const appReducers = {
   ui: require("../../core/stores/reducers/ui"),
   variables: require("../../core/stores/reducers/variables"),
   selection: require("../../core/stores/reducers/selection"),
-  productInformation: require("../../core/stores/reducers/productinformation")
+  productInformation: require("../../core/stores/reducers/productinformation"),
+  apiInformation: require("../../core/stores/reducers/apiInformation")
 };
 
 const appEpics = {};

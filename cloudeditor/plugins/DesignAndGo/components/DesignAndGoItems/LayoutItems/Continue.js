@@ -6,7 +6,8 @@ const { withNamespaces } = require("react-i18next");
 const {
   previewLoadPage,
   previewDisableMode,
-  attachPreview
+  attachPreview,
+  completePersonalization
 } = require("../../../plugins/PrintPreview/store/actions");
 
 const Continue = props => {
@@ -19,7 +20,7 @@ const Continue = props => {
       props.addContainerClasses("DGPrintPreview", ["showPrintPreview"], false);
       props.previewLoadPage(0);
     } else {
-      //add 2 cart
+      props.completePersonalization();
     }
   };
 
@@ -33,7 +34,12 @@ const Continue = props => {
     <div className="continueSection">
       <div className="dgButton previewBtn" onClick={showPrintPreview}>
         <label className="label">
-          <span className="message">{t("Next")}</span>
+          <span className="message">{t("Preview")}</span>
+        </label>
+      </div>
+      <div className="dgButton add2CartBtn" onClick={showPrintPreview}>
+        <label className="label">
+          <span className="message">{t("Add To Cart")}</span>
         </label>
       </div>
       <div className="backToEdit">
@@ -56,11 +62,12 @@ const mapDispatchToProps = dispatch => {
   return {
     previewLoadPage: pageNo => dispatch(previewLoadPage(pageNo)),
     attachPreview: () => dispatch(attachPreview()),
-    previewDisableMode: () => dispatch(previewDisableMode()),
-    startGlobalLoading: () => dispatch(startGlobalLoading()),
+    completePersonalization: () => dispatch(completePersonalization()),
+    previewDisableMode: () => dispatch(previewDisableMode())
+    /* startGlobalLoading: () => dispatch(startGlobalLoading()),
     stopGlobalLoading: () => dispatch(stopGlobalLoading()),
     calculatePriceInitial: payload => dispatch(calculatePriceInitial(payload)),
-    changePage: pageId => dispatch(changePage(pageId))
+    changePage: pageId => dispatch(changePage(pageId)) */
   };
 };
 

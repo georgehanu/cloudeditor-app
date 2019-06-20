@@ -71,8 +71,8 @@ const replaceVariable = (variableValue, variables, obj, mode) => {
     let image_path = obj.image_path;
     let imageHeight = obj.imageHeight || 0;
     let imageWidth = obj.imageWidth || 0;
-    let rationHeight = obj.rationHeight || 1;
-    let rationWidth = obj.rationWidth || 1;
+    let ratioHeight = obj.ratioHeight || 1;
+    let ratioWidth = obj.ratioWidth || 1;
     forEachObjIndexed((variable, key) => {
       if (variable.value && key == obj.dynamicImage) {
         /* image_src = obj.dynamicImage.replace(
@@ -97,14 +97,20 @@ const replaceVariable = (variableValue, variables, obj, mode) => {
       ratioHeight
     };
   } else {
-    let newValue = variableValue;
+    let newValue = obj.fillColor;
     forEachObjIndexed((variable, key) => {
       if (variable.value === null && mode === MODE_COLOR) {
         if (obj.fillColor) {
-          newValue = "rgb(" + obj.fillColor.htmlRGB + ")";
+          newValue = obj.fillColor;
         } else {
           // default color
-          newValue = "rgb(0,0,0)";
+          newValue = {
+            htmlRGB: "0,0,0",
+            RGB: "0 0 0",
+            CMYK: "0 0 0 1",
+            name: "Black",
+            colorSpace: "DeviceCMYK"
+          };
         }
       } else {
         //newValue = newValue.replace("[%]" + key + "[/%]", variable.value);
@@ -350,7 +356,15 @@ const updateObjColorImageVar = (state, action, mode) => {
           obj,
           MODE_COLOR
         );
-        obj = { ...obj, fillNew: newColor };
+        obj = {
+          ...obj,
+          fillColor: {
+            ...obj.fillColor,
+            htmlRGB: newColor.htmlRGB,
+            RGB: newColor.RGB,
+            CMYK: newColor.CMYK
+          }
+        };
         //obj = { ...obj, fillColor: { ...obj.fillColor, htmlRGB: newColor } };
       } else if (mode === MODE_IMAGE && obj.dynamicImage) {
         const newFields = replaceVariable(

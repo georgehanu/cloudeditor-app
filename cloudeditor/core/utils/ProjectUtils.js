@@ -1173,6 +1173,23 @@ const getEmptyProductInformation = cfg => {
   );
 };
 
+const getEmptyApiInformation = cfg => {
+  return mergeDeepRight(
+    {
+      cancelUrl: null,
+      hookUrl: null,
+      storeId: null,
+      session: "guest",
+      targetFolder: "default",
+      designId: null,
+      projectEditId: null,
+      branding: [],
+      sourceParameters: []
+    },
+    cfg || {}
+  );
+};
+
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
@@ -1185,7 +1202,8 @@ const ProjectUtils = {
   getEmptyFont,
   getDGProject,
   getEmptySelection,
-  getEmptyProductInformation
+  getEmptyProductInformation,
+  getEmptyApiInformation
 };
 
 module.exports = ProjectUtils;

@@ -101,7 +101,11 @@ const dagProductColorsSelector = createSelector(
     return {
       colors: activeProduct.collorPallets || [],
       colorPicker: activeProduct.hasCustomPallete || false,
-      palleteBgColor: activeProduct.palleteBgColor || "rgb(255, 0, 0)",
+      palleteBgColor: activeProduct.palleteBgColor || {
+        htmlRGB: "0,0,0",
+        RGB: "0 0 0",
+        CMYK: "0 0 0 1"
+      },
       activeColorButton: activeProduct.activeColorButton || 0
     };
   }

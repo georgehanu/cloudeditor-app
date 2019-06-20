@@ -16,11 +16,12 @@ const Title = props => {
             "url(" + (ConfigUtils.getDefaults().projectLogo || "") + ")"
         }}
       />
-      <div className="MenuButtonContainerMobile">
+
+      {/* <div className="MenuButtonContainerMobile">
         <a className="MenuButton" onClick={props.onMenuOpenHandler}>
           {props.t("MENU")}
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };

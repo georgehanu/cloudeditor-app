@@ -228,16 +228,10 @@ module.exports = handleActions(
         return state;
       }
       const newProducts = [...state.products];
+      const palleteBgColor = action.payload;
       newProducts[index] = {
         ...state.products[index],
-        palleteBgColor:
-          "rgb(" +
-          action.payload.rgb.r +
-          "," +
-          action.payload.rgb.g +
-          "," +
-          action.payload.rgb.b +
-          ")"
+        palleteBgColor
       };
       return {
         ...state,

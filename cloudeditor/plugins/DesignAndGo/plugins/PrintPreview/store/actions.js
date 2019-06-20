@@ -7,7 +7,8 @@ const actionCreators = createActions(
   actionTypes.PREVIEW_LOAD_PAGE_FAILED,
   actionTypes.PREVIEW_LOAD_PAGE_SUCCESS,
   actionTypes.PREVIEW_DISABLE_MODE,
-  actionTypes.ATTACH_PREVIEW
+  actionTypes.ATTACH_PREVIEW,
+  actionTypes.COMPLETE_PERSONALIZATION
 );
 
 module.exports = actionCreators;

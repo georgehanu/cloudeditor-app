@@ -3,7 +3,8 @@ const {
   PREVIEW_GET_PAGE,
   PREVIEW_LOAD_PAGE_SUCCESS,
   PREVIEW_LOAD_PAGE_FAILED,
-  ATTACH_PREVIEW
+  ATTACH_PREVIEW,
+  COMPLETE_PERSONALIZATION
 } = require("./actionTypes");
 const {
   CHANGE_PAGE
@@ -13,104 +14,43 @@ const qs = require("qs");
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
-const { head, forEachObjIndexed, findIndex } = require("ramda");
+const { head, forEachObjIndexed, findIndex, pick } = require("ramda");
 
 const ConfigUtils = require("../../../../../core/utils/ConfigUtils");
 
 const PRINT_PREVIEW_URL =
-  //  ConfigUtils.getConfigProp("baseUrl") + "/personalization/dgpreview";
   ConfigUtils.getConfigProp("baseUrl") + "/cloudeditor/preview";
-const PRINT_GET_PAGE_URL =
-  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/getPageCloudeditor";
-const ATTACH_URL =
-  ConfigUtils.getConfigProp("baseUrl") + "personalize/index/attachCloudEditor";
+const COMPLETE_PERSONALIZATION_URL =
+  ConfigUtils.getConfigProp("baseUrl") + "/cloudeditor/complete";
 
-const getPage = (state$, obs, payload) => {
-  const index = state$.value.project.pagesOrder.indexOf(payload.page_id);
-  let imageUrls = { ...state$.value.preview.imageUrls };
-  let pageUrl = "";
-  if (typeof imageUrls[index] !== "undefined") {
-    pageUrl = imageUrls[index];
-    obs.next({
-      type: PREVIEW_LOAD_PAGE_SUCCESS,
-      payload: {
-        imageUrls,
-        pageUrl
-      }
-    });
-    obs.next({
-      type: CHANGE_PAGE,
-      payload: {
-        page_id: payload.page_id
-      }
-    });
-    return false;
-  }
-  const serverData = {
-    page: index + 1
-    /* productId: state$.value.productInformation.productId,
-    templateId: state$.value.productInformation.templateId,
-    selection: state$.value.selection */
-  };
-  axios
-    .post(PRINT_GET_PAGE_URL, qs.stringify(serverData))
-    .then(resp => resp.data)
-    .then(data => {
-      if (data.success) {
-        if (Array.isArray(data.data.image)) {
-          imageUrls = data.data.image;
-          pageUrl = data.data.image[index];
-        } else {
-          pageUrl = data.data.image;
-          imageUrls[index] = data.data.image;
-        }
-        obs.next({
-          type: PREVIEW_LOAD_PAGE_SUCCESS,
-          payload: {
-            imageUrls,
-            pageUrl
-          }
-        });
-        obs.next({
-          type: CHANGE_PAGE,
-          payload: {
-            page_id: payload.page_id
-          }
-        });
-      } else {
-        obs.next({
-          type: PREVIEW_LOAD_PAGE_FAILED,
-          payload: data.message
-        });
-      }
-      obs.complete();
-    })
-    .catch(error => {
-      obs.next({
-        type: PREVIEW_LOAD_PAGE_FAILED,
-        payload: "Error message: " + error.message
-      });
-      obs.complete();
-    });
-};
-const getPreview = (state$, obs) => {
-  const project = {
-    pages: { ...state$.value.project.pages },
-    objects: { ...state$.value.project.objects },
-    pagesOrder: { ...state$.value.project.pagesOrder },
+const getPreviewProject = state => {
+  const activePage = state.project.activePage;
+  let project = {
+    pages: {
+      [activePage]: state.project.pages[activePage]
+    },
+    objects: pick(
+      state.project.pages[activePage].objectsIds,
+      state.project.objects
+    ),
+    pagesOrder: { activePage },
     configs: {
-      ...state$.value.project.configs.document,
-      objects: { ...state$.value.project.configs.objects }
+      ...state.project.configs.document,
+      objects: { ...state.project.configs.objects }
     }
   };
+  return project;
+};
+
+const getPreview = (state$, obs) => {
+  const project = getPreviewProject(state$.value);
   const activePageId = state$.value.project.activePage;
   const page = state$.value.project.pagesOrder.indexOf(activePageId) + 1;
   const serverData = {
     project,
-    id: 37,
-    productId: state$.value.productInformation.productId,
-    templateId: state$.value.productInformation.templateId,
+    id: state$.value.productInformation.templateId,
     selection: state$.value.selection,
+    storeFolder: state$.value.apiInformation.targetFolder,
     page
   };
   axios
@@ -158,47 +98,42 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           const { payload } = action$;
-          if (!Object.keys(state$.value.preview.imageUrls).length) {
-            getPreview(state$, obs);
-          } else {
-            getPage(state$, obs, payload);
-          }
+          getPreview(state$, obs);
         })
       )
     ),
-  onEpicAttach: (action$, state$) =>
+  onEpicCompletePersonalization: (action$, state$) =>
     action$.pipe(
-      ofType(ATTACH_PREVIEW),
+      ofType(COMPLETE_PERSONALIZATION),
       mergeMap(action$ =>
         Observable.create(obs => {
-          const project = {
-            pages: { ...state$.value.project.pages },
-            objects: { ...state$.value.project.objects },
-            pagesOrder: { ...state$.value.project.pagesOrder },
-            configs: {
-              ...state$.value.project.configs.document,
-              objects: { ...state$.value.project.configs.objects }
-            },
-            fontsLoadUrl:
-              ConfigUtils.getConfigProp("baseUrl") +
-              "personalize/index/loadFonts/id/" +
-              state$.value.productInformation.templateId
-          };
+          const project = getPreviewProject(state$.value);
           const serverData = {
-            project,
-            productId: state$.value.productInformation.productId,
-            templateId: state$.value.productInformation.templateId,
-            productInformation: state$.value.productInformation,
-            selection: state$.value.selection,
-            fonts: state$.value.ui.fonts,
-            preview: state$.value.preview.imageUrls[0]
+            file: state$.value.selection,
+            preview: state$.value.preview.pageUrl,
+            template_id: state$.value.productInformation.templateId,
+            store_id: state$.value.apiInformation.storeId,
+            hook_url: state$.value.apiInformation.hookUrl,
+            product_id: state$.value.productInformation.productId,
+            storeFolder: state$.value.apiInformation.targetFolder,
+            session: state$.value.apiInformation.session,
+            basketId: state$.value.apiInformation.basketId,
+            designId: state$.value.apiInformation.designId,
+            sourceParameters: state$.value.apiInformation.sourceParameters,
+            projectEditId: state$.value.apiInformation.projectEditId,
+            project_data: {
+              content: project,
+              template_id: state$.value.productInformation.templateId
+            }
           };
           axios
-            .post(ATTACH_URL, qs.stringify(serverData))
+            .post(COMPLETE_PERSONALIZATION_URL, qs.stringify(serverData))
             .then(resp => resp.data)
             .then(data => {
               if (data.success) {
-                window.location = data.cartUrl;
+                console.log(data);
+                window.location =
+                  state$.value.apiInformation.hookUrl + "?jwt=" + data.data;
               } else {
                 obs.next({
                   type: PREVIEW_LOAD_PAGE_FAILED,

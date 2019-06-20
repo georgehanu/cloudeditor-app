@@ -96,22 +96,36 @@ body,
   color: rgb(102, 102, 102);
   text-shadow: transparent 0px 1px 1px;
   background-color: white;
+  padding: 161px 0 0 0;
+  box-sizing: border-box;
+}
+
+.LayoutHeader {
+  background-position: top center;
+  background-image: url("./assets/averyHeader.png");
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  height: 161px;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .MainContainer {
   /*background-image: url("/editor/design/assets/bg.png");*/
-  background-image: url("./assets/bg.png");
+  /* background-image: url("./assets/bg.png"); */
+  background-color: #fff;
   flex-direction: row;
   -webkit-box-align: stretch;
   align-items: stretch;
   overflow-x: hidden;
 
-  position: absolute;
+  position: relative;
   top: 0px;
   left: 0px;
   right: 0px;
   height: 100%;
-  display: flex;
+  display: block;
   flex-direction: column;
   margin: 0px auto;
 }
@@ -191,7 +205,7 @@ body,
   -webkit-box-pack: center;
   justify-content: center;
   flex: 1 0 50%;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 1);
 }
 
 .RightPanel {
@@ -212,7 +226,7 @@ body,
   height: 100%;
   flex-direction: column;
   -webkit-box-pack: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1 1 0%;
 }
 
@@ -244,14 +258,16 @@ body,
 }
 .Title h1 {
   text-shadow: transparent 1px 1px 1px;
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #d40027;
   font-weight: 500;
 }
 
 .DescriptionHeader {
   font-size: 22px;
   text-shadow: transparent 1px 1px 1px;
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #0039a6;
   font-weight: 500;
 }
 
@@ -271,7 +287,8 @@ body,
 .InputLabelContainer {
   font-weight: 300;
   margin-bottom: 5px;
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #0039a6;
 }
 
 .InputLabelContent {
@@ -297,7 +314,8 @@ body,
 }
 
 .InputLabelContent input:focus {
-  box-shadow: rgb(234, 125, 125) 0px 0px 2px 2px;
+  /* box-shadow: rgb(234, 125, 125) 0px 0px 2px 2px; */
+  box-shadow: #0039a6 0px 0px 2px 2px;
   z-index: 100;
   position: relative;
   outline: none;
@@ -322,7 +340,8 @@ body,
   height: 50px;
   padding: 0px 16px;
   text-decoration: none;
-  background-color: rgb(234, 125, 125);
+  /* background-color: rgb(234, 125, 125); */
+  background-color: #d40027;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   border-radius: 50%;
   border-width: 0px;
@@ -333,7 +352,8 @@ body,
 }
 .slick-arrow.slick-prev:focus,
 .slick-arrow.slick-next:focus {
-  background-color: rgb(234, 125, 125) !important;
+  /* background-color: rgb(234, 125, 125) !important; */
+  background-color: #d40027 !important;
 }
 
 .slick-dots {
@@ -436,7 +456,8 @@ body,
   text-decoration: none;
   border-width: 0px 1px 0px 0px;
   border-image: initial;
-  background: rgb(234, 125, 125);
+  /* background: rgb(234, 125, 125); */
+  background: #0039a6;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   margin: 0px;
   padding: 0px;
@@ -449,7 +470,7 @@ body,
 }
 .ColorButton.ColorButtonActive {
   color: white;
-  background: rgb(203, 98, 97);
+  background: #406bbc;
 }
 
 .ColorButtonBg {
@@ -509,7 +530,8 @@ body,
 }
 
 .MenuButton {
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #d40027;
   text-decoration: none;
   cursor: pointer;
   font-weight: 700;
@@ -566,7 +588,7 @@ body,
 
   color: white;
   text-shadow: none;
-  background: rgb(234, 125, 125);
+  background: #0039a6;
 }
 
 .MenuTitle {
@@ -596,7 +618,7 @@ body,
   content: " ";
   height: 33px;
   width: 2px;
-  background-color: #333;
+  background-color: #fff;
 }
 .CloseMenu:before {
   transform: rotate(45deg);
@@ -669,7 +691,7 @@ body,
   border-radius: 5px;
   text-decoration: none;
   border-image: initial;
-  background: rgb(234, 125, 125);
+  background: #0039a6;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   border-width: 0px;
 }
@@ -700,6 +722,7 @@ body,
   display: inline-block;
   width: 100%;
   height: 100%;
+  opacity: 1;
 
   font-family: inherit;
   font-size: 15px;
@@ -717,31 +740,32 @@ body,
   border-style: initial;
   border-color: initial;
   border-image: initial;
-  background: rgb(234, 125, 125);
-  transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
+  /* background: rgb(234, 125, 125); */
+  background-color: #0039a6;
+  transition: opacity 0.3s ease 0s, color 0.3s ease 0s;
 }
 
 .dgButton .label:hover {
   color: white;
-  background: rgb(203, 98, 97);
-}
-
-.dgTextButton {
+  opacity: 0.75;
 }
 
 .dgTextButton a {
-  color: #ea7d7d;
+  /* color: #ea7d7d; */
+  color: #0039a6;
+  opacity: 1;
   font-size: 15px;
   font-weight: 700;
+  transition: opacity 0.3s ease 0s, color 0.3s ease 0s;
 }
 .dgTextButton a:hover {
-  color: #cb6261;
+  opacity: 0.75;
 }
 
 .ColorButton:hover,
 .EditLabelButton:hover {
   color: white;
-  background: rgb(203, 98, 97);
+  background: #406bbc;
 }
 
 .ColorPicker .hue-picker {
@@ -976,10 +1000,21 @@ section.dropzone {
   display: flex;
 }
 
-.continueSection .previewBtn {
+.continueSection .add2CartBtn,
+.showPrintPreview .continueSection .previewBtn {
+  display: none;
+}
+
+.continueSection .previewBtn,
+.showPrintPreview .continueSection .add2CartBtn {
   display: flex;
   width: 45%;
 }
+.continueSection .previewBtn label,
+.showPrintPreview .continueSection .add2CartBtn label {
+  background-color: #d40027;
+}
+
 .continueSection .backToEdit {
   display: none;
   width: 45%;
@@ -1299,7 +1334,8 @@ section.dropzone {
   height: 50px;
   padding: 0px 0px;
   text-decoration: none;
-  background-color: #ea7d7d;
+  /* background-color: #ea7d7d; */
+  background-color: #d40027;
   -webkit-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   -o-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
@@ -1325,7 +1361,8 @@ section.dropzone {
   height: 50px;
   padding: 0px 0px;
   text-decoration: none;
-  background-color: #ea7d7d;
+  /* background-color: #ea7d7d; */
+  background-color: #d40027;
   -webkit-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   -o-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
@@ -1419,8 +1456,9 @@ section.dropzone {
     display: block;
   }
 
-  .continueSection .previewBtn {
-    width: 100%;
+  .continueSection .previewBtn,
+  .continueSection .add2CartBtn {
+    width: 100% !important;
   }
 
   .showPrintPreview .continueSection .backToEdit {
