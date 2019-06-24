@@ -140,8 +140,8 @@ module.exports = {
             .then(resp => resp.data)
             .then(data => {
               if (data.success) {
-                /*  window.location =
-                  state$.value.apiInformation.hookUrl + "?jwt=" + data.data; */
+                window.location =
+                  state$.value.apiInformation.hookUrl + "?jwt=" + data.data;
               } else {
                 obs.next({
                   type: PREVIEW_LOAD_PAGE_FAILED,
