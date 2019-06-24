@@ -279,7 +279,7 @@ const getProjectTemplate = cfg => {
     {
       title: pathOr("Empty Project", ["title", "document"], cfg),
       pages: {},
-      activePage: "page_0",
+      activePage: cfg.activePage || "page_0",
       pagesOrder: [],
       selectedPage: null, // designer
       activeGroup: null, // designer

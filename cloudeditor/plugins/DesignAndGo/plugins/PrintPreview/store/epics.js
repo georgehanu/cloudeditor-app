@@ -34,6 +34,7 @@ const getPreviewProject = state => {
       state.project.objects
     ),
     pagesOrder: { activePage },
+    activePage,
     configs: {
       ...state.project.configs.document,
       objects: { ...state.project.configs.objects }
@@ -122,7 +123,15 @@ module.exports = {
             sourceParameters: state$.value.apiInformation.sourceParameters,
             projectEditId: state$.value.apiInformation.projectEditId,
             project_data: {
-              content: project,
+              content: {
+                project,
+                variables: state$.value.variables.variables,
+                activeSlider: state$.value.designAndGo.activeSlider,
+                activeColorButton:
+                  state$.value.designAndGo.products[
+                    state$.value.designAndGo.activeSlider
+                  ].activeColorButton
+              },
               template_id: state$.value.productInformation.templateId
             }
           };
@@ -131,9 +140,8 @@ module.exports = {
             .then(resp => resp.data)
             .then(data => {
               if (data.success) {
-                console.log(data);
-                window.location =
-                  state$.value.apiInformation.hookUrl + "?jwt=" + data.data;
+                /*  window.location =
+                  state$.value.apiInformation.hookUrl + "?jwt=" + data.data; */
               } else {
                 obs.next({
                   type: PREVIEW_LOAD_PAGE_FAILED,

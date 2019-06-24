@@ -131,6 +131,7 @@ class SliderCarousel extends React.Component {
       // afterChange: index => {
       //   this.afterChangeHandler(index);
       // },
+
       beforeChange: (onldIndex, newIndex) => {
         this.beforeChangeHandler(onldIndex, newIndex);
       }

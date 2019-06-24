@@ -30,8 +30,13 @@ const Continue = props => {
     props.addContainerClasses("DGPrintPreview", [""], false);
   };
 
+  let containerClasses = ["continueSection"];
+  if (props.loading) {
+    containerClasses.push("loading");
+  }
+
   return (
-    <div className="continueSection">
+    <div className={containerClasses.join(" ")}>
       <div className="dgButton previewBtn" onClick={showPrintPreview}>
         <label className="label">
           <span className="message">{t("Preview")}</span>
@@ -43,7 +48,7 @@ const Continue = props => {
         </label>
       </div>
       <div className="backToEdit">
-        <span>&nbsp;{t("or")}&nbsp;</span>
+        <span>&nbsp;&nbsp;&nbsp;</span>
         <div className="dgTextButton" onClick={showEditForm}>
           <a href="javascript:void(0)" className="label">
             {t("Back")}
@@ -55,7 +60,9 @@ const Continue = props => {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    loading: state.preview.loading
+  };
 };
 
 const mapDispatchToProps = dispatch => {

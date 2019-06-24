@@ -121,7 +121,7 @@ class PrintPreview extends React.Component {
               onMouseEnterHandler={this.onMouseEnterHandler}
               onMouseLeaveHandler={this.onMouseLeaveHandler}
               width={this.state.imageContainerWidth}
-              height={this.state.imageContainerHeight * this.props.zoomValue}
+              height={this.state.imageContainerHeight}
               previewPageUrl={this.props.previewPageUrl}
             />
           </div>

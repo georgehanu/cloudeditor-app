@@ -184,6 +184,7 @@ const emptyProject = ProjectUtils.getDGProject({
   pages: config.project.pages,
   pagesOrder: config.project.pagesOrder,
   objects: config.project.objects,
+  activePage: config.project.activePage || "page_0",
   title: config.title,
   description: config.description
 });

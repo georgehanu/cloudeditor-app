@@ -9,13 +9,13 @@ const Title = props => {
 
   return (
     <div className={className}>
-      <div
+      {/* <div
         className="Title"
         style={{
           backgroundImage:
             "url(" + (ConfigUtils.getDefaults().projectLogo || "") + ")"
         }}
-      />
+      /> */}
 
       {/* <div className="MenuButtonContainerMobile">
         <a className="MenuButton" onClick={props.onMenuOpenHandler}>

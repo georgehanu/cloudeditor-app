@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Roboto";
-  src: url("./fonts/Roboto-Regular.ttf") format("truetype");
+  font-family: "Ubuntu";
+  src: url("./fonts/Ubuntu-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -20,6 +20,9 @@ body,
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  font-family: "Ubuntu", "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  font-weight: 300;
 }
 
 /*.renderContainer {
@@ -83,16 +86,12 @@ body,
 .Layout {
   width: 100%;
   height: 100%;
-  font-family: "factoria, serif";
   margin: 0;
   padding: 0;
   border: 0;
   font: inherit;
   vertical-align: baseline;
-  font-family: factoria, serif;
-  font-weight: 400;
   font-size: 14px;
-  line-height: 1.6;
   color: rgb(102, 102, 102);
   text-shadow: transparent 0px 1px 1px;
   background-color: white;
@@ -128,6 +127,18 @@ body,
   display: block;
   flex-direction: column;
   margin: 0px auto;
+}
+
+.slick-prev:before {
+  color: #d40027;
+  opacity: 1;
+  font-size: 50px;
+}
+
+.slick-next:before {
+  color: #d40027;
+  opacity: 1;
+  font-size: 50px;
 }
 
 @media screen and (min-width: 842px) {
@@ -301,7 +312,9 @@ body,
 .InputLabelContent input {
   height: 32px;
   font-size: 15px;
-  font-family: factoria, serif;
+  font-family: "Ubuntu", "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  font-weight: 300;
   color: rgb(102, 102, 102);
   padding: 3px 8px 0px;
   border-radius: 5px;
@@ -338,22 +351,22 @@ body,
   font-size: 0px;
   width: 50px;
   height: 50px;
-  padding: 0px 16px;
+  padding: 0;
   text-decoration: none;
   /* background-color: rgb(234, 125, 125); */
-  background-color: #d40027;
+  background-color: #fff;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   border-radius: 50%;
   border-width: 0px;
 }
 .slick-arrow.slick-prev:hover,
 .slick-arrow.slick-next:hover {
-  background: rgb(203, 98, 97) !important;
+  /* background: rgb(203, 98, 97) !important; */
 }
 .slick-arrow.slick-prev:focus,
 .slick-arrow.slick-next:focus {
   /* background-color: rgb(234, 125, 125) !important; */
-  background-color: #d40027 !important;
+  /* background-color: #d40027 !important; */
 }
 
 .slick-dots {
@@ -726,7 +739,7 @@ body,
 
   font-family: inherit;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   height: 40px;
   line-height: 40px;
   cursor: pointer;
@@ -743,6 +756,7 @@ body,
   /* background: rgb(234, 125, 125); */
   background-color: #0039a6;
   transition: opacity 0.3s ease 0s, color 0.3s ease 0s;
+  -webkit-font-smoothing: antialiased;
 }
 
 .dgButton .label:hover {
@@ -755,8 +769,9 @@ body,
   color: #0039a6;
   opacity: 1;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   transition: opacity 0.3s ease 0s, color 0.3s ease 0s;
+  -webkit-font-smoothing: antialiased;
 }
 .dgTextButton a:hover {
   opacity: 0.75;
@@ -998,6 +1013,10 @@ section.dropzone {
 .continueSection {
   margin: 20px 0 0 0;
   display: flex;
+}
+
+.continueSection.loading {
+  display: none !important;
 }
 
 .continueSection .add2CartBtn,
@@ -1454,6 +1473,10 @@ section.dropzone {
     top: 20px;
     margin-bottom: 10px;
     display: block;
+  }
+
+  .continueSection.loading {
+    display: none !important;
   }
 
   .continueSection .previewBtn,
