@@ -1,5 +1,5 @@
 const uuidv4 = require("uuid/v4");
-const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
+const { merge, mergeAll, pathOr, mergeDeepRight, map } = require("ramda");
 const ConfigUtils = require("../utils/ConfigUtils");
 const randomcolor = require("randomcolor");
 
@@ -278,6 +278,18 @@ const getProjectTemplate = cfg => {
   const project = mergeDeepRight(
     {
       title: pathOr("Empty Project", ["title", "document"], cfg),
+      description: "Project description",
+      projectId: null,
+      save: { loading: false, errorMessage: null, showAlert: false },
+      load: {
+        loading: false,
+        errorMessage: null,
+        loadedProjects: [],
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadingProject: false,
+        errorMessageProject: null
+      },
       pages: {},
       activePage: cfg.activePage || "page_0",
       pagesOrder: [],
@@ -649,7 +661,7 @@ const getEmptyObject = cfg => {
           ...object,
           src: cfg.src,
           cropH: 0,
-          cropX: 538,
+          cropX: 0,
           cropY: 0,
           cropW: 0,
           cropH: 0,
@@ -769,385 +781,21 @@ const getEmptyVariables = cfg => {
 const getDGProject = cfg => {
   let project = getProjectTemplate(cfg);
 
-  return project;
-
-  let page1 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-  let page2 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-  let page3 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-
-  const page_1_bg = require("../../workspaces/designAndGo/svg/page1.svg");
-  const page_2_blue_bg = require("../../workspaces/designAndGo/svg/page_2_blue.svg");
-
-  let bg1 = getEmptyObject({
-    type: "graphics",
-    width: 500,
-    height: 733,
-    left: 0,
-    top: 0,
-    src: config.baseUrl + config.publicPath + page_1_bg
-  });
-  let bg2 = getEmptyObject({
-    type: "graphics",
-    width: 500,
-    height: 663,
-    left: 0,
-    top: 0,
-    src: config.baseUrl + config.publicPath + page_2_blue_bg
-  });
-
-  let page1JamName = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 230,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]",
-    fill: "[%]color1[/%]"
-  });
-
-  let page1JamType = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 300,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]",
-    fill: "[%]color2[/%]"
-  });
-
-  let page1TagLine1 = getEmptyObject({
-    type: "textbox",
-    width: 400,
-    height: 50,
-    left: 50,
-    top: 400,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine1[/%]",
-    text: "[%]tagLine1[/%]"
-  });
-
-  let page1TagLine2 = getEmptyObject({
-    type: "textbox",
-    width: 400,
-    height: 50,
-    left: 50,
-    top: 460,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine2[/%]",
-    text: "[%]tagLine2[/%]"
-  });
-
-  let page1BatchDate = getEmptyObject({
-    type: "textbox",
-    width: 200,
-    height: 30,
-    left: 150,
-    top: 520,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]batchDate[/%]",
-    text: "[%]batchDate[/%]"
-  });
-
-  let page1Image = getEmptyObject({
-    type: "image",
-    width: 200,
-    height: 400,
-    left: 0,
-    orientation: "north",
-    top: 0,
-    // bottle
-    imageWidth: 400,
-    imageHeight: 1300,
-    //bear
-    //imageWidth: 1200,
-    //imageHeight: 675,
-    src:
-      "http://work.cloudlab.at:9012/hp/avery-external/public/images/wineBottle.png"
-    //"http://work.cloudlab.at:9012/ig/uploads/big_bear.jpg"
-  });
-
-  let page2JamName = getEmptyObject({
-    type: "textbox",
-    width: 200,
-    height: 50,
-    left: 150,
-    top: 170,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]",
-    fill: "[%]color1[/%]"
-  });
-
-  let page2JamType = getEmptyObject({
-    type: "textbox",
-    width: 270,
-    height: 50,
-    left: 115,
-    top: 230,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]"
-  });
-
-  let page2TagLine1 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 320,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine1[/%]",
-    text: "[%]tagLine1[/%]"
-  });
-
-  let page2TagLine2 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 380,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine2[/%]",
-    text: "[%]tagLine2[/%]"
-  });
-
-  let page2BatchDate = getEmptyObject({
-    type: "textbox",
-    width: 100,
-    height: 30,
-    left: 200,
-    top: 440,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]batchDate[/%]",
-    text: "[%]batchDate[/%]"
-  });
-
-  let page3JamName = getEmptyObject({
-    type: "textbox",
-    width: 200,
-    height: 50,
-    left: 150,
-    top: 170,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]",
-    fill: "[%]color1[/%]"
-  });
-
-  let page3JamType = getEmptyObject({
-    type: "textbox",
-    width: 270,
-    height: 50,
-    left: 115,
-    top: 230,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]"
-  });
-
-  let page3TagLine1 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 320,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine1[/%]",
-    text: "[%]tagLine1[/%]"
-  });
-
-  let page3TagLine2 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 380,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine2[/%]",
-    text: "[%]tagLine2[/%]"
-  });
-
-  let page3BatchDate = getEmptyObject({
-    type: "textbox",
-    width: 100,
-    height: 30,
-    left: 200,
-    top: 440,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]batchDate[/%]",
-    text: "[%]batchDate[/%]"
-  });
-
-  page1 = {
-    ...page1,
-    id: "page_1",
-    height: 733,
-    objectsIds: [
-      ...page1.objectsIds,
-      bg1.id,
-      page1JamName.id,
-      page1JamType.id,
-      page1TagLine1.id,
-      page1TagLine2.id,
-      page1BatchDate.id,
-      page1Image.id
-    ]
-  };
-
-  page2 = {
-    ...page2,
-    id: "page_2",
-    height: 663,
-    objectsIds: [
-      ...page2.objectsIds,
-      bg2.id,
-      page2JamName.id,
-      page2JamType.id,
-      page2TagLine1.id,
-      page2TagLine2.id,
-      page2BatchDate.id
-    ]
-  };
-
-  page3 = {
-    ...page3,
-    id: "page_3",
-    height: 663,
-    objectsIds: [
-      ...page3.objectsIds,
-      bg2.id,
-      page3JamName.id,
-      page3JamType.id,
-      page3TagLine1.id,
-      page3TagLine2.id,
-      page3BatchDate.id
-    ]
-  };
-
-  return {
+  project = {
     ...project,
-    pages: {
-      [page1.id]: page1,
-      [page2.id]: page2,
-      [page3.id]: page3
-    },
-    objects: {
-      [bg1.id]: bg1,
-      [bg2.id]: bg2,
-      [page1JamName.id]: page1JamName,
-      [page1JamType.id]: page1JamType,
-      [page1TagLine1.id]: page1TagLine1,
-      [page1TagLine2.id]: page1TagLine2,
-      [page1BatchDate.id]: page1BatchDate,
-      [page2JamName.id]: page2JamName,
-      [page2JamType.id]: page2JamType,
-      [page2TagLine1.id]: page2TagLine1,
-      [page2TagLine2.id]: page2TagLine2,
-      [page2BatchDate.id]: page2BatchDate,
-      [page1Image.id]: page1Image,
-      [page3JamName.id]: page3JamName,
-      [page3JamType.id]: page3JamType,
-      [page3TagLine1.id]: page3TagLine1,
-      [page3TagLine2.id]: page3TagLine2,
-      [page3BatchDate.id]: page3BatchDate
-    },
-    pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id],
-    activePage: page1.id
+    objects: map(object => {
+      if (object.hasOwnProperty("dynamicFillColor")) {
+        return {
+          ...object,
+          originalFillColor: object.fillColor,
+          originalBgColor: object.bgColor
+        };
+      }
+      return object;
+    }, project.objects)
   };
+
+  return project;
 };
 
 const getEmptySelection = cfg => {
@@ -1190,6 +838,18 @@ const getEmptyApiInformation = cfg => {
   );
 };
 
+const getEmptyAuth = cfg => {
+  return mergeDeepRight(
+    {
+      loggedIn: false,
+      userName: null,
+      loading: false,
+      errorMessage: null
+    },
+    cfg || {}
+  );
+};
+
 const ProjectUtils = {
   getEmptyProject,
   getRandomProject,
@@ -1203,7 +863,8 @@ const ProjectUtils = {
   getDGProject,
   getEmptySelection,
   getEmptyProductInformation,
-  getEmptyApiInformation
+  getEmptyApiInformation,
+  getEmptyAuth
 };
 
 module.exports = ProjectUtils;

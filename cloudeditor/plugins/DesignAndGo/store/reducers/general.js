@@ -13,7 +13,8 @@ const {
   DAG_SIGNIN_SUCCESS,
   DAG_SIGNIN_CLEAR_MESSAGE,
   DAG_CHANGE_RENDER_ID,
-  DAG_CHANGE_DIMMENSIONS
+  DAG_CHANGE_DIMMENSIONS,
+  PROJ_LOAD_DAG_SUCCESS
 } = require("./../actionTypes/designAndGo");
 
 const { merge } = require("ramda");
@@ -75,7 +76,7 @@ module.exports = handleActions(
       };
     },
     [DAG_CHANGE_SLIDER]: (state, action) => {
-      const sliderElements = state.products.length;
+      /* const sliderElements = state.products.length;
       let newActiveSlider = state.activeSlider;
       if (action.payload === null) {
         newActiveSlider = 0;
@@ -86,11 +87,11 @@ module.exports = handleActions(
           newActiveSlider === 0
             ? sliderElements - 1
             : --newActiveSlider % sliderElements;
-      }
+      } */
 
       return {
         ...state,
-        activeSlider: newActiveSlider
+        activeSlider: action.payload
       };
     },
     [DAG_CHANGE_ACTIVE_COLOR_SCHEMA]: (state, action) => {
@@ -157,8 +158,6 @@ module.exports = handleActions(
       };
     },
     [DAG_SIGNIN_SUCCESS]: (state, action) => {
-      //console.log(action.email);
-      //console.log(action.password);
       return {
         ...state,
         loadingSignIn: false,
@@ -190,6 +189,22 @@ module.exports = handleActions(
       return {
         ...state,
         realDimension: merge(state.realDimension, action.payload)
+      };
+    },
+    [PROJ_LOAD_DAG_SUCCESS]: (state, action) => {
+      const activeSlider = action.data.activeSlider;
+      const products = state.products.map((product, index) => {
+        if (index === activeSlider)
+          return {
+            ...product,
+            activeColorButton: action.data.activeColorButton,
+            palleteBgColor: action.data.palleteBgColor
+          };
+        return product;
+      });
+      return {
+        ...state,
+        products: products
       };
     }
   },

@@ -35,11 +35,13 @@ class LeftPanel extends React.Component {
   render() {
     return (
       <div className="LeftPanel">
-        {/* <div className="MenuButtonContainer">
-          <a className="MenuButton" onClick={this.props.onMenuOpenHandler}>
-            {this.props.t("MENU")}
-          </a>
-        </div> */}
+        {
+          <div className="MenuButtonContainer">
+            <a className="MenuButton" onClick={this.props.onMenuOpenHandler}>
+              {this.props.t("MENU")}
+            </a>
+          </div>
+        }
         <div className="LeftPaneHorizontal">
           <div className="LeftPaneHorizontalStyled">
             <Title

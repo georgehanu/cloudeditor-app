@@ -73,7 +73,26 @@ const build = config => {
                     prefix: cssPrefix,
                     exclude: [".cloudeditor", "body", "html"].concat(
                       cssPrefix ? [cssPrefix] : []
-                    )
+                    ),
+                    transform: function(prefix, selector, prefixedSelector) {
+                      if (
+                        selector.startsWith(".sweet-overlay") ||
+                        selector.startsWith(".sweet-alert") ||
+                        selector.startsWith(".rc-") ||
+                        selector.startsWith(".preview_image") ||
+                        selector.startsWith(
+                          ".mce-tinymce.mce-tinymce-inline"
+                        ) ||
+                        selector.startsWith("body") ||
+                        selector.startsWith(
+                          ".mce-container-body.mce-stack-layout"
+                        )
+                      ) {
+                        return selector;
+                      } else {
+                        return prefixedSelector;
+                      }
+                    }
                   }),
                   autoprefixer({
                     browsers: ["last 4 versions"]

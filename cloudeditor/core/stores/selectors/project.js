@@ -298,6 +298,44 @@ const dagImageSelection = createSelector(
   }
 );
 
+const titleSelector = state =>
+  pathOr("Empty project1", ["project", "title"], state);
+
+const projDescriptionSelector = state =>
+  pathOr("Project description", ["project", "description"], state);
+
+const projProjectIdSelector = state =>
+  pathOr(null, ["project", "projectId"], state);
+
+const projSaveLoadingSelector = state =>
+  pathOr(false, ["project", "save", "loading"], state);
+
+const projSaveErrorMessageSelector = state =>
+  pathOr(null, ["project", "save", "errorMessage"], state);
+const showAlertSelector = state =>
+  pathOr(false, ["project", "save", "showAlert"], state);
+
+const projLoadLoadingSelector = state =>
+  pathOr(false, ["project", "load", "loading"], state);
+
+const projLoadErrorMessageSelector = state =>
+  pathOr(null, ["project", "load", "errorMessage"], state);
+
+const projLoadLoadedProjectsSelector = state =>
+  pathOr(null, ["project", "load", "loadedProjects"], state);
+
+const projLoadLoadingDeleteSelector = state =>
+  pathOr(false, ["project", "load", "loadingDelete"], state);
+
+const projLoadErrorMessageDeleteSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageDelete"], state);
+
+const projLoadLoadingProjectSelector = state =>
+  pathOr(false, ["project", "load", "loadingProject"], state);
+
+const projLoadErrorMessageProjectSelector = state =>
+  pathOr(null, ["project", "load", "errorMessageProject"], state);
+
 module.exports = {
   pagesSelector,
   pagesOrderSelector,
@@ -326,5 +364,19 @@ module.exports = {
   variablesSelector,
 
   getObjectByIdSelector,
-  dagImageSelection
+  dagImageSelection,
+
+  titleSelector,
+  projDescriptionSelector,
+  projProjectIdSelector,
+  projSaveLoadingSelector,
+  projSaveErrorMessageSelector,
+  projLoadLoadingSelector,
+  projLoadErrorMessageSelector,
+  projLoadLoadedProjectsSelector,
+  projLoadLoadingDeleteSelector,
+  projLoadErrorMessageDeleteSelector,
+  projLoadLoadingProjectSelector,
+  projLoadErrorMessageProjectSelector,
+  showAlertSelector
 };

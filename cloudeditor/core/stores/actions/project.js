@@ -13,7 +13,24 @@ const {
   UPDATE_CROP_PARAMS,
   ON_TEXT_CHANGE,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY
+  OBJECTS_READY,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  PROJ_SHOW_POPUP
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -32,7 +49,24 @@ const {
   changeGroups,
   onTextChange,
   changeRandomPage,
-  objectsReady
+  objectsReady,
+  projSaveStart,
+  projSaveSuccess,
+  projSaveFailed,
+  projSaveClearMessage,
+  projLoadStart,
+  projLoadSuccess,
+  projLoadFailed,
+  projLoadClearMessage,
+  projLoadDeleteStart,
+  projLoadDeleteSuccess,
+  projLoadDeleteFailed,
+  projLoadDeleteClearMessage,
+  projLoadProjectStart,
+  projLoadProjectSuccess,
+  projLoadProjectFailed,
+  projLoadProjectClearMessage,
+  projShowPopup
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT,
@@ -48,7 +82,24 @@ const {
   CHANGE_GROUPS,
   ON_TEXT_CHANGE,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY
+  OBJECTS_READY,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  PROJ_SHOW_POPUP
 );
 
 module.exports = {
@@ -66,5 +117,22 @@ module.exports = {
   changeGroups,
   onTextChange,
   changeRandomPage,
-  objectsReady
+  objectsReady,
+  projSaveStart,
+  projSaveSuccess,
+  projSaveFailed,
+  projSaveClearMessage,
+  projLoadStart,
+  projLoadSuccess,
+  projLoadFailed,
+  projLoadClearMessage,
+  projLoadDeleteStart,
+  projLoadDeleteSuccess,
+  projLoadDeleteFailed,
+  projLoadDeleteClearMessage,
+  projLoadProjectStart,
+  projLoadProjectSuccess,
+  projLoadProjectFailed,
+  projLoadProjectClearMessage,
+  projShowPopup
 };

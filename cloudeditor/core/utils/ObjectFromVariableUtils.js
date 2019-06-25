@@ -74,12 +74,12 @@ const replaceVariable = (variableValue, variables, obj, mode) => {
     let ratioHeight = obj.ratioHeight || 1;
     let ratioWidth = obj.ratioWidth || 1;
     forEachObjIndexed((variable, key) => {
-      if (variable.value && key == obj.dynamicImage) {
+      if (variable.image_src && key == obj.dynamicImage) {
         /* image_src = obj.dynamicImage.replace(
           "[%]" + key + "[/%]",
           variable.value
         ); */
-        image_src = variable.value;
+        image_src = variable.image_src;
         image_path = variable.image_path;
         imageHeight = variable.imageHeight;
         imageWidth = variable.imageWidth;
@@ -100,8 +100,8 @@ const replaceVariable = (variableValue, variables, obj, mode) => {
     let newValue = obj.fillColor;
     forEachObjIndexed((variable, key) => {
       if (variable.value === null && mode === MODE_COLOR) {
-        if (obj.fillColor) {
-          newValue = obj.fillColor;
+        if (obj.originalFillColor) {
+          newValue = obj.originalFillColor;
         } else {
           // default color
           newValue = {
@@ -185,6 +185,7 @@ const updateObjVariable = (state, action) => {
 const updateObjVariableInit = (state, payload) => {
   const filterColorAndImage = variable =>
     variable.type !== "color" && variable.type !== "image";
+
   const variables = filter(filterColorAndImage, payload.payload.variables);
   let objects = payload.payload.objects;
 
@@ -334,7 +335,6 @@ const updateObjOneVariable = payload => {
 };
 
 const updateObjColorImageVar = (state, action, mode) => {
-  console.log("updateObjColorImageVar activepage", state.activePage);
   let objects = { ...state.objects };
   const { variables } = action.payload;
   let registered = [];

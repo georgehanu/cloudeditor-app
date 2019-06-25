@@ -23,7 +23,9 @@ const appReducers = {
   apiInformation: require("../../core/stores/reducers/apiInformation")
 };
 
-const appEpics = {};
+const projectEpics = require("../../core/stores/epics/project");
+
+const appEpics = { ...projectEpics };
 
 const translationsCfg = {
   baseUrl: localConfig.baseUrl,

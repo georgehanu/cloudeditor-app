@@ -7,14 +7,16 @@ const Backdrop = require("./Backdrop");
 class MenuModal extends React.Component {
   render() {
     const links = [
-      { linkName: "Sign In", clicked: this.props.onSignInOpenHandler },
-      { linkName: "Reset Your Design" },
+      /* { linkName: "Sign In", clicked: this.props.onSignInOpenHandler }, */
+      { linkName: "Save", clicked: this.props.onSaveProjectOpenHandler },
+      { linkName: "Load", clicked: this.props.onLoadProjectOpenHandler }
+      /* { linkName: "Reset Your Design" },
       { linkName: "About Our Labels" },
       { linkName: "Pricing" },
       { linkName: "Refund Policy" },
       { linkName: "Privacy Policy" },
       { linkName: "Rerport a Bug" },
-      { linkName: "Contact Us" }
+      { linkName: "Contact Us" } */
     ];
 
     const items = links.map((el, index) => {
