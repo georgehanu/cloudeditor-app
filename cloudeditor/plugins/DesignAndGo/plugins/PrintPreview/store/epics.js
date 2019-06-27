@@ -18,6 +18,10 @@ const { head, forEachObjIndexed, findIndex, pick } = require("ramda");
 
 const ConfigUtils = require("../../../../../core/utils/ConfigUtils");
 
+const {
+  createProjectData
+} = require("../../../../../core/utils/ObjectFromVariableUtils");
+
 const PRINT_PREVIEW_URL =
   ConfigUtils.getConfigProp("baseUrl") + "/cloudeditor/preview";
 const COMPLETE_PERSONALIZATION_URL =
@@ -108,7 +112,7 @@ module.exports = {
       ofType(COMPLETE_PERSONALIZATION),
       mergeMap(action$ =>
         Observable.create(obs => {
-          const project = getPreviewProject(state$.value);
+          const previewProject = getPreviewProject(state$.value);
           const serverData = {
             file: state$.value.selection,
             preview: state$.value.preview.pageUrl,
@@ -124,13 +128,8 @@ module.exports = {
             projectEditId: state$.value.apiInformation.projectEditId,
             project_data: {
               content: {
-                project,
-                variables: state$.value.variables.variables,
-                activeSlider: state$.value.designAndGo.activeSlider,
-                activeColorButton:
-                  state$.value.designAndGo.products[
-                    state$.value.designAndGo.activeSlider
-                  ].activeColorButton
+                previewProject,
+                saveData: createProjectData(state$.value)
               },
               template_id: state$.value.productInformation.templateId
             }

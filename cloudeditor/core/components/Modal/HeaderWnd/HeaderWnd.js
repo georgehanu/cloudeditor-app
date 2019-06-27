@@ -6,7 +6,7 @@ const headerWnd = props => {
       <div className="titleMenu">{props.title}</div>
       <a
         href="#"
-        className="closeMenu"
+        className="CloseMenu"
         onClick={e => {
           e.preventDefault();
           props.modalClosed();

@@ -3,17 +3,22 @@ const { updateCropParams } = require("../../core/stores/actions/project");
 const {
   updateObjFromVariableInit
 } = require("../../core/stores/actions/variables");
+const { loadSavedDataStart } = require("../../core/stores/actions/project");
 const smartcrop = require("smartcrop");
 
 const applyVariables = (store, ConfigUtils) => {
   const state = store.getState();
 
-  store.dispatch(
-    updateObjFromVariableInit({
-      objects: state.project.objects,
-      variables: state.variables.variables
-    })
-  );
+  if (projectConfigGlobal.savedData) {
+    store.dispatch(loadSavedDataStart(projectConfigGlobal.savedData));
+  } else {
+    store.dispatch(
+      updateObjFromVariableInit({
+        objects: state.project.objects,
+        variables: state.variables.variables
+      })
+    );
+  }
 };
 
 const applySmartcropToProject = (store, ConfigUtils) => {

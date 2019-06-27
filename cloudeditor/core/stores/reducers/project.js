@@ -45,7 +45,8 @@ const {
   PROJ_LOAD_PROJECT_START,
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
-  PROJ_LOAD_PROJECT_CLEAR_MESSAGE
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  LOAD_SAVED_DATA_START
 } = require("../actionTypes/project");
 
 const {
@@ -508,6 +509,9 @@ module.exports = handleActions(
       return handleLoad(state, { errorMessageDelete: null });
     },
     [PROJ_LOAD_PROJECT_START]: (state, action) => {
+      return handleLoad(state, { loadingProject: true });
+    },
+    [LOAD_SAVED_DATA_START]: (state, action) => {
       return handleLoad(state, { loadingProject: true });
     },
     [PROJ_LOAD_PROJECT_SUCCESS]: (state, action) => {

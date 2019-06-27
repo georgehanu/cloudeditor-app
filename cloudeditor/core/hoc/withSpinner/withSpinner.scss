@@ -17,17 +17,15 @@ svg {
   position: absolute;
 
   transform: rotate(-90deg);
+}
 
-  @for $i from 1 through 1 {
-    &:nth-child(#{$i}) circle {
-      stroke: nth($colors, $i);
-      stroke-dasharray: 1, 300;
-      stroke-dashoffset: 0;
+svg:nth-child(1) circle {
+  stroke: nth($colors, 1);
+  stroke-dasharray: 1, 300;
+  stroke-dashoffset: 0;
 
-      animation: strokeanim 3s calc(0.2s * (#{$i})) ease infinite;
-      transform-origin: center center;
-    }
-  }
+  animation: strokeanim 3s calc(0.2s * (1)) ease infinite;
+  transform-origin: center center;
 }
 
 @keyframes strokeanim {

@@ -30,7 +30,8 @@ const {
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
-  PROJ_SHOW_POPUP
+  PROJ_SHOW_POPUP,
+  LOAD_SAVED_DATA_START
 } = require("../actionTypes/project");
 const { createActions } = require("redux-actions");
 
@@ -66,7 +67,8 @@ const {
   projLoadProjectSuccess,
   projLoadProjectFailed,
   projLoadProjectClearMessage,
-  projShowPopup
+  projShowPopup,
+  loadSavedDataStart
 } = createActions(
   CHANGE_PROJECT_TITLE,
   ADD_OBJECT,
@@ -99,7 +101,8 @@ const {
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
   PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
-  PROJ_SHOW_POPUP
+  PROJ_SHOW_POPUP,
+  LOAD_SAVED_DATA_START
 );
 
 module.exports = {
@@ -134,5 +137,6 @@ module.exports = {
   projLoadProjectSuccess,
   projLoadProjectFailed,
   projLoadProjectClearMessage,
-  projShowPopup
+  projShowPopup,
+  loadSavedDataStart
 };

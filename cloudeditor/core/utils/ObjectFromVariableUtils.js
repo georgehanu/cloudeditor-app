@@ -4,7 +4,9 @@ const {
   filter,
   values,
   uniq,
-  indexOf
+  indexOf,
+  map,
+  forEach
 } = require("ramda");
 const { extractVariablesFromString } = require("./VariableUtils");
 
@@ -99,7 +101,12 @@ const replaceVariable = (variableValue, variables, obj, mode) => {
   } else {
     let newValue = obj.fillColor;
     forEachObjIndexed((variable, key) => {
-      if (variable.value === null && mode === MODE_COLOR) {
+      if (
+        (!variable.hasOwnProperty("value") ||
+          variable.value === null ||
+          variable.value === "") &&
+        mode === MODE_COLOR
+      ) {
         if (obj.originalFillColor) {
           newValue = obj.originalFillColor;
         } else {
@@ -418,10 +425,76 @@ const checkIfVariableIsValid = (state, payload) => {
   };
 };
 
+const createProjectData = state => {
+  let project = {};
+  //read variables
+  const activeSlider = state.designAndGo.activeSlider;
+
+  const variables = map(variable => {
+    switch (variable.type) {
+      case "color":
+      case "text":
+        return {
+          name: variable.name,
+          value: variable.value
+        };
+      case "image":
+        //read cropping params from page
+        const activePageId =
+          state.project.pagesOrder[
+            state.designAndGo.products[activeSlider].pageNo
+          ];
+        const activePageObjectsIds =
+          state.project.pages[activePageId].objectsIds;
+
+        let imageObjectId = null;
+        forEach(bId => {
+          if (indexOf(bId, activePageObjectsIds) >= 0) imageObjectId = bId;
+        }, variable.registered);
+
+        let cropX = null;
+        let cropY = null;
+        let cropW = null;
+        let cropH = null;
+
+        if (imageObjectId) {
+          const objectData = state.project.objects[imageObjectId];
+          cropX = objectData.cropX;
+          cropY = objectData.cropY;
+          cropW = objectData.cropW;
+          cropH = objectData.cropH;
+        }
+
+        return {
+          name: variable.name,
+          image_path: variable.image_path,
+          image_src: variable.image_src,
+          ratioWidth: variable.ratioWidth,
+          ratioHeight: variable.ratioHeight,
+          imageWidth: variable.imageWidth,
+          imageHeight: variable.imageHeight,
+          cropX,
+          cropY,
+          cropW,
+          cropH
+        };
+    }
+  }, state.variables.variables);
+
+  project["variables"] = variables;
+  project["activeSlider"] = activeSlider;
+  project["activeColorButton"] =
+    state.designAndGo.products[activeSlider].activeColorButton;
+  project["palleteBgColor"] =
+    state.designAndGo.products[activeSlider].palleteBgColor || null;
+  return project;
+};
+
 module.exports = {
   updateObjVariable,
   checkIfVariableIsValid,
   updateObjColorVariable,
   updateObjImageVariable,
-  updateObjVariableInit
+  updateObjVariableInit,
+  createProjectData
 };

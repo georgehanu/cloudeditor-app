@@ -357,3 +357,7 @@ body.swal2-height-auto.swal2-shown {
   position: relative;
   padding: 10px 0px;
 }
+
+.messageForm .loadingSpinner .spinner {
+  display: none !important;
+}

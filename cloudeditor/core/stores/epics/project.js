@@ -23,7 +23,9 @@ const {
   PROJ_LOAD_PROJECT_START,
   PROJ_LOAD_PROJECT_SUCCESS,
   PROJ_LOAD_PROJECT_FAILED,
-  PROJ_SHOW_POPUP
+  PROJ_SHOW_POPUP,
+  LOAD_SAVED_DATA_START,
+  CHANGE_PAGE
 } = require("../actionTypes/project");
 
 const {
@@ -34,77 +36,101 @@ const {
 } = require("../actionTypes/variables");
 const {
   PROJ_LOAD_DAG_SUCCESS,
-  DAG_CHANGE_RENDER_ID
+  DAG_CHANGE_RENDER_ID,
+  DAG_CHANGE_SLIDER
 } = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
+
+const {
+  createProjectData
+} = require("../../../core/utils/ObjectFromVariableUtils");
 
 const SAVE_PROJ = "projects/store";
 const LOAD_PROJ = "projects/list";
 const DELETE_PROJ = "projects/destroy";
 const LOAD_ONE_PROJ = "/projects/cloudeditoredit";
 
-const createProjectData = state => {
-  let project = {};
-  //read variables
-  const activeSlider = state.designAndGo.activeSlider;
+const loadProjectWithObserver = (obs, state, data, changeSlider) => {
+  const activeSlider = data.data.project_data.activeSlider;
+  const userImageVar = pathOr(
+    null,
+    ["userImage"],
+    pick(["userImage"], data.data.project_data.variables)
+  );
 
-  const variables = map(variable => {
-    switch (variable.type) {
-      case "color":
-      case "text":
-        return {
-          name: variable.name,
-          value: variable.value
+  let newObjects = {};
+  const activePageId =
+    state.project.pagesOrder[state.designAndGo.products[activeSlider].pageNo];
+  if (userImageVar) {
+    const activePageObjectsIds = state.project.pages[activePageId].objectsIds;
+
+    const activePageObjects = pick(activePageObjectsIds, state.project.objects);
+
+    forEachObjIndexed((block, blockId) => {
+      if (
+        block.hasOwnProperty("dynamicImage") &&
+        block.dynamicImage === "userImage"
+      ) {
+        newObjects[blockId] = {
+          ...block,
+          cropX: userImageVar.cropX,
+          cropY: userImageVar.cropY,
+          cropW: userImageVar.cropW,
+          cropH: userImageVar.cropH
         };
-      case "image":
-        //read cropping params from page
-        const activePageId =
-          state.project.pagesOrder[
-            state.designAndGo.products[activeSlider].pageNo
-          ];
-        const activePageObjectsIds =
-          state.project.pages[activePageId].objectsIds;
+      }
+    }, activePageObjects);
+  }
 
-        let imageObjectId = null;
-        forEach(bId => {
-          if (indexOf(bId, activePageObjectsIds) >= 0) imageObjectId = bId;
-        }, variable.registered);
+  obs.next({
+    type: PROJ_LOAD_DAG_SUCCESS,
+    data: data.data.project_data
+  });
+  obs.next({
+    type: PROJ_LOAD_VARIABLES_SUCCESS,
+    data: data.data.project_data
+  });
 
-        let cropX = null;
-        let cropY = null;
-        let cropW = null;
-        let cropH = null;
-
-        if (imageObjectId) {
-          const objectData = state.project.objects[imageObjectId];
-          cropX = objectData.cropX;
-          cropY = objectData.cropY;
-          cropW = objectData.cropW;
-          cropH = objectData.cropH;
-        }
-
-        return {
-          name: variable.name,
-          image_path: variable.image_path,
-          image_src: variable.image_src,
-          ratioWidth: variable.ratioWidth,
-          ratioHeight: variable.ratioHeight,
-          imageWidth: variable.imageWidth,
-          imageHeight: variable.imageHeight,
-          cropX,
-          cropY,
-          cropW,
-          cropH
-        };
+  obs.next({
+    type: UPDATE_OBJ_FROM_VARIABLE_INIT,
+    payload: {
+      objects: state.project.objects,
+      variables: state.variables.variables
     }
-  }, state.variables.variables);
+  });
 
-  project["variables"] = variables;
-  project["activeSlider"] = activeSlider;
-  project["activeColorButton"] =
-    state.designAndGo.products[activeSlider].activeColorButton;
-  project["palleteBgColor"] =
-    state.designAndGo.products[activeSlider].palleteBgColor || null;
-  return project;
+  obs.next({
+    type: PROJ_LOAD_PROJECT_SUCCESS,
+    data: { ...data.data, objects: newObjects },
+    projectId: data.data.projectId
+  });
+  obs.next({
+    type: UPDATE_OBJ_COLOR_FROM_VARIABLE,
+    payload: {
+      variables: pick(["color1", "color2", "color3"], state.variables.variables)
+    }
+  });
+  obs.next({
+    type: UPDATE_OBJ_IMAGE_FROM_VARIABLE,
+    payload: {
+      variables: pick(["userImage"], state.variables.variables)
+    }
+  });
+  if (changeSlider) {
+    obs.next({
+      type: CHANGE_PAGE,
+      payload: activePageId
+    });
+    obs.next({
+      type: DAG_CHANGE_SLIDER,
+      payload: parseInt(data.data.project_data.activeSlider)
+    });
+  }
+  obs.next(() => {
+    if (window.dgSlider) {
+      window.dgSlider.slickNext();
+      window.dgSlider.slickGoTo(parseInt(data.data.project_data.activeSlider));
+    }
+  });
 };
 
 module.exports = {
@@ -262,90 +288,7 @@ module.exports = {
             .then(data => {
               if (data.success) {
                 const state = state$.value;
-                const activeSlider = data.data.project_data.activeSlider;
-                const userImageVar = pathOr(
-                  null,
-                  ["userImage"],
-                  pick(["userImage"], data.data.project_data.variables)
-                );
-
-                let newObjects = {};
-
-                if (userImageVar) {
-                  const activePageId =
-                    state.project.pagesOrder[
-                      state.designAndGo.products[activeSlider].pageNo
-                    ];
-                  const activePageObjectsIds =
-                    state.project.pages[activePageId].objectsIds;
-
-                  const activePageObjects = pick(
-                    activePageObjectsIds,
-                    state.project.objects
-                  );
-
-                  forEachObjIndexed((block, blockId) => {
-                    if (
-                      block.hasOwnProperty("dynamicImage") &&
-                      block.dynamicImage === "userImage"
-                    ) {
-                      newObjects[blockId] = {
-                        ...block,
-                        cropX: userImageVar.cropX,
-                        cropY: userImageVar.cropY,
-                        cropW: userImageVar.cropW,
-                        cropH: userImageVar.cropH
-                      };
-                    }
-                  }, activePageObjects);
-                }
-
-                obs.next({
-                  type: PROJ_LOAD_DAG_SUCCESS,
-                  data: data.data.project_data
-                });
-                obs.next({
-                  type: PROJ_LOAD_VARIABLES_SUCCESS,
-                  data: data.data.project_data
-                });
-                obs.next({
-                  type: PROJ_LOAD_PROJECT_SUCCESS,
-                  data: { ...data.data, objects: newObjects },
-                  projectId: action$.payload.projectId
-                });
-                obs.next({
-                  type: UPDATE_OBJ_FROM_VARIABLE_INIT,
-                  payload: {
-                    objects: state$.value.project.objects,
-                    variables: state$.value.variables.variables
-                  }
-                });
-                obs.next({
-                  type: UPDATE_OBJ_COLOR_FROM_VARIABLE,
-                  payload: {
-                    variables: pick(
-                      ["color1", "color2", "color3"],
-                      state$.value.variables.variables
-                    )
-                  }
-                });
-                obs.next({
-                  type: UPDATE_OBJ_IMAGE_FROM_VARIABLE,
-                  payload: {
-                    variables: pick(
-                      ["userImage"],
-                      state$.value.variables.variables
-                    )
-                  }
-                });
-                obs.next(() => {
-                  window.dgSlider.slickGoTo(
-                    data.data.project_data.activeSlider
-                  );
-                });
-                /*  obs.next({
-                  type: DAG_CHANGE_RENDER_ID
-                }); */
+                loadProjectWithObserver(obs, state, data);
               } else {
                 obs.next({
                   type: PROJ_LOAD_PROJECT_FAILED,
@@ -361,6 +304,28 @@ module.exports = {
               });
               obs.complete();
             });
+        })
+      )
+    ),
+  onEpicLoadSavedData: (action$, state$) =>
+    action$.pipe(
+      ofType(LOAD_SAVED_DATA_START),
+      mergeMap(action$ =>
+        Observable.create(obs => {
+          console.log("LOAD_SAVED_DATA_START", action$);
+          const state = state$.value;
+          const data = {
+            data: {
+              project_data: {
+                ...action$.payload,
+                activeSlider: parseInt(action$.payload.activeSlider),
+                activeColorButton: parseInt(action$.payload.activeColorButton)
+              }
+            }
+          };
+          loadProjectWithObserver(obs, state, data, true);
+
+          obs.complete();
         })
       )
     )
