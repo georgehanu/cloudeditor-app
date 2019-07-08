@@ -127,8 +127,20 @@ const loadProjectWithObserver = (obs, state, data, changeSlider) => {
   }
   obs.next(() => {
     if (window.dgSlider) {
-      window.dgSlider.slickNext();
-      window.dgSlider.slickGoTo(parseInt(data.data.project_data.activeSlider));
+      if (!changeSlider) {
+        window.dgSlider.slickNext();
+
+        setTimeout(() => {
+          window.dgSlider.slickGoTo(
+            parseInt(data.data.project_data.activeSlider)
+          );
+        }, 700);
+      } else {
+        window.dgSlider.slickNext();
+        window.dgSlider.slickGoTo(
+          parseInt(data.data.project_data.activeSlider)
+        );
+      }
     }
   });
 };
