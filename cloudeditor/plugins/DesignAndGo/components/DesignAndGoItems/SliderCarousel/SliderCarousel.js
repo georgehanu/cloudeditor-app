@@ -89,7 +89,7 @@ class SliderCarousel extends React.Component {
     window.dgSlider = this.slider;
     //this.props.dagChangeSlider(0); // reset to 0 slider the active slider from store
     if (this.props.dagActiveSlider !== 0) {
-      this.slider.slickNext();
+      //this.slider.slickNext();
       this.slider.slickGoTo(this.props.dagActiveSlider);
     }
   }
