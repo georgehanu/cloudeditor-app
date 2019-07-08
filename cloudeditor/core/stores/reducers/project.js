@@ -425,7 +425,7 @@ module.exports = handleActions(
       return updateObjColorVariable(state, action);
     },
     [UPDATE_OBJ_IMAGE_FROM_VARIABLE]: (state, action) => {
-      console.log("UPDATE_OBJ_IMAGE_FROM_VARIABLE", action);
+      //console.log("UPDATE_OBJ_IMAGE_FROM_VARIABLE", action);
       return updateObjImageVariable(state, action);
     },
     [UPDATE_OBJ_FROM_VARIABLE_INIT]: (state, action) => {

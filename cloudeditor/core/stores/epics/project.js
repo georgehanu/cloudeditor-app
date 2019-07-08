@@ -312,7 +312,7 @@ module.exports = {
       ofType(LOAD_SAVED_DATA_START),
       mergeMap(action$ =>
         Observable.create(obs => {
-          console.log("LOAD_SAVED_DATA_START", action$);
+          //console.log("LOAD_SAVED_DATA_START", action$);
           const state = state$.value;
           const data = {
             data: {

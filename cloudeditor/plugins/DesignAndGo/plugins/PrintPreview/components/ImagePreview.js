@@ -33,7 +33,7 @@ const imagePreview = props => {
     }
   }
 
-  console.log("image ", imgDims);
+  //console.log("image ", imgDims);
 
   return (
     <React.Fragment>

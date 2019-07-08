@@ -81,7 +81,7 @@ module.exports = handleActions(
       return changeColorVariableValue(state, action.payload);
     },
     [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
-      console.log("Upload", action);
+      //console.log("Upload", action);
       return changeVariableValue(state, {
         name: "userImage",
         value: action.payload.image_src,
