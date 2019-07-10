@@ -16,6 +16,7 @@ const SaveWnd = require("./components/SaveLoadItems/SaveWnd");
 const LoadWnd = require("./components/SaveLoadItems/LoadWnd");
 
 const assign = require("object-assign");
+const { dagDebugModeSelector } = require("./store/selectors");
 const { dagImageSelection } = require("../../core/stores/selectors/project");
 const { updateObjectProps } = require("../../core/stores/actions/project");
 const {
@@ -107,6 +108,13 @@ class DesignAndGo extends React.Component {
   };
 
   render() {
+    const debugButton = this.props.debugMode ? (
+      <div className="show" id="debugButton" onClick={this.onClickDebug}>
+        Debug
+      </div>
+    ) : (
+      ""
+    );
     return (
       <React.Fragment>
         {this.state.showSaveWnd && (
@@ -162,9 +170,7 @@ class DesignAndGo extends React.Component {
             onCropImageModalOpenHandler={this.onCropImageModalOpenHandler}
             onZoomImageHandler={this.onZoomImageModalOpenedHandler}
           />
-          <div id="debugButton" onClick={this.onClickDebug}>
-            Debug
-          </div>
+          {debugButton}
         </div>
       </React.Fragment>
     );
@@ -173,6 +179,7 @@ class DesignAndGo extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    debugMode: dagDebugModeSelector(state),
     image: dagImageSelection(state),
     variables: variablesVariablesSelector(state)
   };

@@ -3,7 +3,7 @@ const { CHANGE_ZOOM, CHANGE_WORKAREA_PROPS } = require("../actionTypes/ui");
 
 const { handleActions, combineActions } = require("redux-actions");
 const ProjectUtils = require("../../utils/ProjectUtils");
-const initialState = ProjectUtils.getEmptyUI();
+const initialState = ProjectUtils.getEmptyUI({});
 const changeZoom = (state, payload) => {
   return {
     ...state,

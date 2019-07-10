@@ -22,6 +22,8 @@ const { handleActions } = require("redux-actions");
 const { dagActiveProductSelector } = require("../selectors");
 
 const initialState = {
+  navMenu: projectConfigGlobal.navMenu || 0,
+  debugMode: projectConfigGlobal.debugMode || 0,
   realDimension: projectConfigGlobal["realDimension"],
   loading: false,
   imagePath: null,

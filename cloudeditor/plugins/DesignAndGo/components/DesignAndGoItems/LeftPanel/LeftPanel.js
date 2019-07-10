@@ -7,7 +7,8 @@ const { withNamespaces } = require("react-i18next");
 const SliderCarousel = require("../SliderCarousel/SliderCarousel");
 const {
   dagDataTitleSelector,
-  dagDataDescriptionSelector
+  dagDataDescriptionSelector,
+  dagNavMenuSelector
 } = require("../../../store/selectors");
 
 const { connect } = require("react-redux");
@@ -33,15 +34,18 @@ class LeftPanel extends React.Component {
   };
 
   render() {
+    const menuContainer = this.props.navMenu ? (
+      <div className="MenuButtonContainer MenuShow">
+        <a className="MenuButton" onClick={this.props.onMenuOpenHandler}>
+          {this.props.t("MENU")}
+        </a>
+      </div>
+    ) : (
+      ""
+    );
     return (
       <div className="LeftPanel">
-        {
-          <div className="MenuButtonContainer">
-            <a className="MenuButton" onClick={this.props.onMenuOpenHandler}>
-              {this.props.t("MENU")}
-            </a>
-          </div>
-        }
+        {menuContainer}
         <div className="LeftPaneHorizontal">
           <div className="LeftPaneHorizontalStyled">
             <Title
@@ -84,7 +88,8 @@ class LeftPanel extends React.Component {
 const mapStateToProps = state => {
   return {
     title: dagDataTitleSelector(state),
-    description: dagDataDescriptionSelector(state)
+    description: dagDataDescriptionSelector(state),
+    navMenu: dagNavMenuSelector(state)
   };
 };
 

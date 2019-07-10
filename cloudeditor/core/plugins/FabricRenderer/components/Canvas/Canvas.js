@@ -9,7 +9,7 @@ const Page = require("../Page/Page");
 class Canvas extends React.Component {
   render() {
     const style = {
-      backgroundColor: randomColor()
+      backgroundColor: "rgba(0,0,0,0)"
     };
     const { getContainerRef, pageReady, ...otherProps } = this.props;
 

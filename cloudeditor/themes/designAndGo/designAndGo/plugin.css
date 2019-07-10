@@ -676,10 +676,16 @@ body,
 }
 
 .MenuButtonContainer {
+  display: none;
   width: 100%;
   text-align: -webkit-center;
   top: 75px;
 }
+
+.MenuButtonContainer.MenuShow {
+  display: block;
+}
+
 .MenuButtonContainerMobile {
   display: none;
 }
@@ -1295,6 +1301,9 @@ section.dropzone {
   cursor: pointer;
   line-height: 30px;
 }
+#debugButton.show {
+  display: block;
+}
 
 .zoomSliderContainer {
   position: absolute;
@@ -1760,9 +1769,6 @@ body.swal2-height-auto.swal2-shown {
     width: 230px !important;
   }
 
-  .MenuButtonContainer {
-    display: none;
-  }
   /* Menu */
   .MenuButtonContainerMobile,
   .EditLabelButtonContainer {

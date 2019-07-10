@@ -720,28 +720,31 @@ const getEmptyObject = cfg => {
 };
 
 const getEmptyUI = cfg => {
-  return {
-    colors: {},
-    fonts: {},
-    fontMetrics: {},
-    workArea: {
-      zoom: 1,
-      scale: 1,
-      pageOffset: {
-        x: 0,
-        y: 0
+  return mergeDeepRight(
+    {
+      colors: {},
+      fonts: {},
+      fontMetrics: {},
+      workArea: {
+        zoom: 1,
+        scale: 1,
+        pageOffset: {
+          x: 0,
+          y: 0
+        },
+        offsetCanvasContainer: {
+          x: 0,
+          y: 0
+        },
+        canvas: {
+          workingWidth: 0,
+          workingHeight: 0
+        }
       },
-      offsetCanvasContainer: {
-        x: 0,
-        y: 0
-      },
-      canvas: {
-        workingWidth: 0,
-        workingHeight: 0
-      }
+      permissions: getUIPermissionsTemplate(cfg)
     },
-    permissions: getUIPermissionsTemplate(cfg)
-  };
+    cfg || {}
+  );
 };
 
 const getRandomUI = cfg => {

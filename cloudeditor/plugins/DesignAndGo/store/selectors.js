@@ -69,6 +69,12 @@ const dagDataTitleSelector = state =>
     state.designAndGo.data.title) ||
   [];
 
+const dagNavMenuSelector = state =>
+  (state && state.designAndGo && state.designAndGo.navMenu) || "";
+
+const dagDebugModeSelector = state =>
+  (state && state.designAndGo && state.designAndGo.debugMode) || "";
+
 const dagDataDescriptionSelector = state =>
   (state &&
     state.designAndGo &&
@@ -136,5 +142,7 @@ module.exports = {
   dagErrorMessageSignInSelector,
   getVariablesByFilter,
   dagActiveProductSelector,
-  dagProductColorsSelector
+  dagProductColorsSelector,
+  dagNavMenuSelector,
+  dagDebugModeSelector
 };
