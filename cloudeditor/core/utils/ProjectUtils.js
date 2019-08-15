@@ -1,9 +1,24 @@
 const uuidv4 = require("uuid/v4");
-const { merge, mergeAll, pathOr, mergeDeepRight } = require("ramda");
+const { merge, mergeAll, pathOr, mergeDeepRight, map } = require("ramda");
 const ConfigUtils = require("../utils/ConfigUtils");
 const randomcolor = require("randomcolor");
 
 const config = ConfigUtils.getDefaults();
+
+const getObjectColorTemplateFill = cfg => {
+  return merge(
+    {
+      colorSpace: "DeviceRGB",
+      htmlRGB: null,
+      RGB: "0 0 0",
+      CMYK: "0 0 0 1",
+      separation: null,
+      separationColorSpace: null,
+      separationColor: null
+    },
+    cfg || {}
+  );
+};
 
 const getObjectColorTemplate = cfg => {
   return merge(
@@ -22,10 +37,25 @@ const getObjectColorTemplate = cfg => {
 };
 
 const getObjectsDefaults = cfg => {
-  const { general, image, graphics, text, pdf, qr, ...custom } = cfg || {};
+  const {
+    general,
+    image,
+    graphics,
+    pdf,
+    qr,
+    text,
+    textline,
+    textflow,
+    rectangle,
+    ...custom
+  } = cfg || {};
   const generalCfg = merge(
     {
+      id: null,
+      type: "none",
+      subType: "none", //specifies what is the real type of the block(image, pdf, qr, )
       editable: 1, //user can edit a block
+      deletable: 1, //user can delete a block
       ignoreOnRest: 0, //this block will be ignored on rest
       onTop: 0, //specify if a block is on top
       required: 0, //user must specify a value for this block
@@ -38,16 +68,24 @@ const getObjectsDefaults = cfg => {
       visible: 1, //if false, a block is NOT visible in the editor, but visible in PDF
       orientate: "north", //PDFLIB orientation - not used
       opacity: 1, // opacity of the block
-      realType: null, //specifies what is the real type of the block(image, pdf, qr, )
       width: 0,
       height: 0,
       left: 0,
       top: 0,
+      value: null,
+      ispSnap: 0,
+      orientation: "north",
+      rotate: 0,
+      dragging: 0,
+      rotating: 0,
+      noCrop: false,
+      resizing: 0,
       bgColor: getObjectColorTemplate((general && general.bgColor) || {}),
       borderColor: getObjectColorTemplate(
         (general && general.borderColor) || {}
       ),
       borderWidth: 0,
+      renderId: uuidv4(),
       rule_properties: {}
     },
     general || {}
@@ -56,9 +94,9 @@ const getObjectsDefaults = cfg => {
   const imageCfg = merge(
     {
       type: "image",
-      realType: "image",
+      subType: "image",
       alternateZoom: 0,
-      backgroundBlock: 0,
+      backgroundblock: 0,
       borderWidth: 0,
       contrast: 0,
       luminosite: 0,
@@ -71,74 +109,106 @@ const getObjectsDefaults = cfg => {
       leftSlider: 0,
       localImages: 0,
       selectBox: 0,
-      src: 0
+      filter: "",
+      image_src: "",
+      cropH: 0,
+      cropX: 0,
+      cropY: 0,
+      cropW: 0,
+      ratio: 1,
+      workingWidth: 0,
+      workingHeight: 0,
+      brightness: 0,
+      imageWidth: 0,
+      imageHeight: 0,
+      ratioWidth: 1,
+      ratioHeight: 1,
+      missingImage: false,
+      flip: ""
     },
     image || {}
   );
-  const graphicsCfg = merge(
+  const graphicsCfg = mergeAll([
+    imageCfg,
     {
       type: "graphics",
-      realType: "graphics",
-      alternateZoom: 0,
-      backgroundBlock: 0,
-      borderWidth: 0,
-      contrast: 0,
-      luminosite: 0,
-      flipHorizontal: 0,
-      flipVertical: 0,
-      flipBoth: 0,
-      greyscale: 0,
-      invert: 0,
-      leftSlider: 0,
-      localImages: 0,
-      selectBox: 0,
-      src: null
+      subType: "graphics"
     },
     graphics || {}
-  );
+  ]);
   const pdfCfg = mergeAll([
-    image,
+    imageCfg,
     {
-      realType: "pdf"
+      subType: "pdf"
     },
     pdf || {}
   ]);
 
   const qrCfg = mergeAll([
-    image,
+    imageCfg,
     {
-      realType: "qr"
+      subType: "qr"
     },
     qr || {}
   ]);
 
   const textCfg = merge(
     {
-      type: "text",
-      realType: "text",
-      alignment: "center",
+      textAlign: "left",
       bold: 0,
       charSpacing: 0,
       circleText: 0,
-      fillColor: getObjectColorTemplate((text && text.fillColor) || {}),
+      fillColor: getObjectColorTemplateFill((text && text.fillColor) || {}),
+      bgColor: getObjectColorTemplate((text && text.bgColor) || {}),
+      borderColor: getObjectColorTemplate((text && text.borderColor) || {}),
       deviationX: 0,
       deviationY: 0,
       fontId: 1,
-      fontSize: 24,
+      fontSize: 14,
       italic: 0,
-      lineHeightN: 120,
-      lineHeightP: false,
       maxLength: 0,
       prefix: "",
       sufix: "",
+      type: "text",
       underline: 0,
-      vAlignment: "middle",
+      vAlign: "top",
       wordSpacing: "normal",
-      value: "Edit Text Here",
+      fontFamily: "",
+      prefix: "",
+      value: "",
+      lineheightn: null,
+      lineheightp: 100,
+      placeHolder: "Edit Text Here",
+      firstlinedist: "ascender",
+      lastlinedist: 0,
       defaultFontZise: 24,
       useDefaultFontSize: true
     },
     text || {}
+  );
+
+  const textlineCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textline"
+    },
+    textline || {}
+  ]);
+
+  const textflowCfg = mergeAll([
+    textCfg,
+    {
+      subType: "textflow"
+    },
+    textflow || {}
+  ]);
+
+  const rectangleCfg = merge(
+    {
+      type: "rectangle",
+      subType: "rectangle"
+    },
+    rectangle || {}
   );
 
   const customCfg = custom || {};
@@ -150,6 +220,9 @@ const getObjectsDefaults = cfg => {
     pdfCfg,
     qrCfg,
     textCfg,
+    textflowCfg,
+    textlineCfg,
+    rectangleCfg,
     ...customCfg
   };
 };
@@ -205,8 +278,20 @@ const getProjectTemplate = cfg => {
   const project = mergeDeepRight(
     {
       title: pathOr("Empty Project", ["title", "document"], cfg),
+      description: "Project description",
+      projectId: null,
+      save: { loading: false, errorMessage: null, showAlert: false },
+      load: {
+        loading: false,
+        errorMessage: null,
+        loadedProjects: [],
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadingProject: false,
+        errorMessageProject: null
+      },
       pages: {},
-      activePage: "page_0",
+      activePage: cfg.activePage || "page_0",
       pagesOrder: [],
       selectedPage: null, // designer
       activeGroup: null, // designer
@@ -576,7 +661,7 @@ const getEmptyObject = cfg => {
           ...object,
           src: cfg.src,
           cropH: 0,
-          cropX: 538,
+          cropX: 0,
           cropY: 0,
           cropW: 0,
           cropH: 0,
@@ -635,28 +720,31 @@ const getEmptyObject = cfg => {
 };
 
 const getEmptyUI = cfg => {
-  return {
-    colors: {},
-    fonts: {},
-    fontMetrics: {},
-    workArea: {
-      zoom: 1,
-      scale: 1,
-      pageOffset: {
-        x: 0,
-        y: 0
+  return mergeDeepRight(
+    {
+      colors: {},
+      fonts: {},
+      fontMetrics: {},
+      workArea: {
+        zoom: 1,
+        scale: 1,
+        pageOffset: {
+          x: 0,
+          y: 0
+        },
+        offsetCanvasContainer: {
+          x: 0,
+          y: 0
+        },
+        canvas: {
+          workingWidth: 0,
+          workingHeight: 0
+        }
       },
-      offsetCanvasContainer: {
-        x: 0,
-        y: 0
-      },
-      canvas: {
-        workingWidth: 0,
-        workingHeight: 0
-      }
+      permissions: getUIPermissionsTemplate(cfg)
     },
-    permissions: getUIPermissionsTemplate(cfg)
-  };
+    cfg || {}
+  );
 };
 
 const getRandomUI = cfg => {
@@ -688,7 +776,7 @@ const getEmptyVariables = cfg => {
       display_name: "Full Name",
       prefix: "",
       sufix: "",
-      value: "Marius Turcu"
+      value: ""
     }
   ];
 };
@@ -696,385 +784,73 @@ const getEmptyVariables = cfg => {
 const getDGProject = cfg => {
   let project = getProjectTemplate(cfg);
 
-  return project;
-
-  let page1 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-  let page2 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-  let page3 = getProjectPageTemplate(pathOr({}, ["defaultPage"], cfg));
-
-  const page_1_bg = require("../../workspaces/designAndGo/svg/page1.svg");
-  const page_2_blue_bg = require("../../workspaces/designAndGo/svg/page_2_blue.svg");
-
-  let bg1 = getEmptyObject({
-    type: "graphics",
-    width: 500,
-    height: 733,
-    left: 0,
-    top: 0,
-    src: config.baseUrl + config.publicPath + page_1_bg
-  });
-  let bg2 = getEmptyObject({
-    type: "graphics",
-    width: 500,
-    height: 663,
-    left: 0,
-    top: 0,
-    src: config.baseUrl + config.publicPath + page_2_blue_bg
-  });
-
-  let page1JamName = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 230,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]",
-    fill: "[%]color1[/%]"
-  });
-
-  let page1JamType = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 300,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]",
-    fill: "[%]color2[/%]"
-  });
-
-  let page1TagLine1 = getEmptyObject({
-    type: "textbox",
-    width: 400,
-    height: 50,
-    left: 50,
-    top: 400,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine1[/%]",
-    text: "[%]tagLine1[/%]"
-  });
-
-  let page1TagLine2 = getEmptyObject({
-    type: "textbox",
-    width: 400,
-    height: 50,
-    left: 50,
-    top: 460,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine2[/%]",
-    text: "[%]tagLine2[/%]"
-  });
-
-  let page1BatchDate = getEmptyObject({
-    type: "textbox",
-    width: 200,
-    height: 30,
-    left: 150,
-    top: 520,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]batchDate[/%]",
-    text: "[%]batchDate[/%]"
-  });
-
-  let page1Image = getEmptyObject({
-    type: "image",
-    width: 200,
-    height: 400,
-    left: 0,
-    orientation: "north",
-    top: 0,
-    // bottle
-    imageWidth: 400,
-    imageHeight: 1300,
-    //bear
-    //imageWidth: 1200,
-    //imageHeight: 675,
-    src:
-      "http://work.cloudlab.at:9012/hp/avery-external/public/images/wineBottle.png"
-    //"http://work.cloudlab.at:9012/ig/uploads/big_bear.jpg"
-  });
-
-  let page2JamName = getEmptyObject({
-    type: "textbox",
-    width: 200,
-    height: 50,
-    left: 150,
-    top: 170,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]",
-    fill: "[%]color1[/%]"
-  });
-
-  let page2JamType = getEmptyObject({
-    type: "textbox",
-    width: 270,
-    height: 50,
-    left: 115,
-    top: 230,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]"
-  });
-
-  let page2TagLine1 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 320,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine1[/%]",
-    text: "[%]tagLine1[/%]"
-  });
-
-  let page2TagLine2 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 380,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine2[/%]",
-    text: "[%]tagLine2[/%]"
-  });
-
-  let page2BatchDate = getEmptyObject({
-    type: "textbox",
-    width: 100,
-    height: 30,
-    left: 200,
-    top: 440,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]batchDate[/%]",
-    text: "[%]batchDate[/%]"
-  });
-
-  let page3JamName = getEmptyObject({
-    type: "textbox",
-    width: 200,
-    height: 50,
-    left: 150,
-    top: 170,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarName[/%]",
-    text: "[%]jarName[/%]",
-    fill: "[%]color1[/%]"
-  });
-
-  let page3JamType = getEmptyObject({
-    type: "textbox",
-    width: 270,
-    height: 50,
-    left: 115,
-    top: 230,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]jarType[/%]",
-    text: "[%]jarType[/%]"
-  });
-
-  let page3TagLine1 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 320,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine1[/%]",
-    text: "[%]tagLine1[/%]"
-  });
-
-  let page3TagLine2 = getEmptyObject({
-    type: "textbox",
-    width: 300,
-    height: 50,
-    left: 100,
-    top: 380,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]tagLine2[/%]",
-    text: "[%]tagLine2[/%]"
-  });
-
-  let page3BatchDate = getEmptyObject({
-    type: "textbox",
-    width: 100,
-    height: 30,
-    left: 200,
-    top: 440,
-    fontSize: 30,
-    defaultFontSize: 30,
-    bold: false,
-    italic: false,
-    fontFamily: "Roboto",
-    textAlign: "center",
-    vAlign: "middle",
-    value: "[%]batchDate[/%]",
-    text: "[%]batchDate[/%]"
-  });
-
-  page1 = {
-    ...page1,
-    id: "page_1",
-    height: 733,
-    objectsIds: [
-      ...page1.objectsIds,
-      bg1.id,
-      page1JamName.id,
-      page1JamType.id,
-      page1TagLine1.id,
-      page1TagLine2.id,
-      page1BatchDate.id,
-      page1Image.id
-    ]
-  };
-
-  page2 = {
-    ...page2,
-    id: "page_2",
-    height: 663,
-    objectsIds: [
-      ...page2.objectsIds,
-      bg2.id,
-      page2JamName.id,
-      page2JamType.id,
-      page2TagLine1.id,
-      page2TagLine2.id,
-      page2BatchDate.id
-    ]
-  };
-
-  page3 = {
-    ...page3,
-    id: "page_3",
-    height: 663,
-    objectsIds: [
-      ...page3.objectsIds,
-      bg2.id,
-      page3JamName.id,
-      page3JamType.id,
-      page3TagLine1.id,
-      page3TagLine2.id,
-      page3BatchDate.id
-    ]
-  };
-
-  return {
+  project = {
     ...project,
-    pages: {
-      [page1.id]: page1,
-      [page2.id]: page2,
-      [page3.id]: page3
-    },
-    objects: {
-      [bg1.id]: bg1,
-      [bg2.id]: bg2,
-      [page1JamName.id]: page1JamName,
-      [page1JamType.id]: page1JamType,
-      [page1TagLine1.id]: page1TagLine1,
-      [page1TagLine2.id]: page1TagLine2,
-      [page1BatchDate.id]: page1BatchDate,
-      [page2JamName.id]: page2JamName,
-      [page2JamType.id]: page2JamType,
-      [page2TagLine1.id]: page2TagLine1,
-      [page2TagLine2.id]: page2TagLine2,
-      [page2BatchDate.id]: page2BatchDate,
-      [page1Image.id]: page1Image,
-      [page3JamName.id]: page3JamName,
-      [page3JamType.id]: page3JamType,
-      [page3TagLine1.id]: page3TagLine1,
-      [page3TagLine2.id]: page3TagLine2,
-      [page3BatchDate.id]: page3BatchDate
-    },
-    pagesOrder: [...project.pagesOrder, page1.id, page2.id, page3.id],
-    activePage: page1.id
+    objects: map(object => {
+      if (object.hasOwnProperty("dynamicFillColor")) {
+        return {
+          ...object,
+          originalFillColor: object.fillColor,
+          originalBgColor: object.bgColor
+        };
+      }
+      return object;
+    }, project.objects)
   };
+
+  return project;
+};
+
+const getEmptySelection = cfg => {
+  return cfg;
+};
+
+const getEmptyProductInformation = cfg => {
+  return mergeDeepRight(
+    {
+      name: "",
+      productId: null,
+      templateId: null,
+      qty: 1,
+      productOptions: {},
+      total_price: false,
+      contentCode: null,
+      coverCode: null,
+      no_page_cover: 0,
+      pages_codes: [],
+      displayedOptions: []
+    },
+    cfg || {}
+  );
+};
+
+const getEmptyApiInformation = cfg => {
+  return mergeDeepRight(
+    {
+      cancelUrl: null,
+      hookUrl: null,
+      storeId: null,
+      session: "guest",
+      targetFolder: "default",
+      designId: null,
+      projectEditId: null,
+      branding: [],
+      sourceParameters: []
+    },
+    cfg || {}
+  );
+};
+
+const getEmptyAuth = cfg => {
+  return mergeDeepRight(
+    {
+      loggedIn: false,
+      userName: null,
+      loading: false,
+      errorMessage: null
+    },
+    cfg || {}
+  );
 };
 
 const ProjectUtils = {
@@ -1087,7 +863,11 @@ const ProjectUtils = {
   getRandomUI,
   getEmptyColor,
   getEmptyFont,
-  getDGProject
+  getDGProject,
+  getEmptySelection,
+  getEmptyProductInformation,
+  getEmptyApiInformation,
+  getEmptyAuth
 };
 
 module.exports = ProjectUtils;

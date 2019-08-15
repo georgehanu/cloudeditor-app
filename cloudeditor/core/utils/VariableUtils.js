@@ -107,7 +107,7 @@ const getEmptyVariables = cfg => {
 const getVariablesState = cfg => {
   let state = {
     variables: getVariablesFromProject(cfg),
-    configs: getVariablesDefaults(cfg)
+    configs: getVariablesDefaults()
   };
 
   return state;
@@ -129,7 +129,13 @@ const getVariablesFromProject = cfg => {
         [el.markup]: {
           name: el.markup,
           type: el.type,
-          registered: el.registered
+          registered: el.registered,
+          image_path: el.image_path || "",
+          image_src: el.image_src || "",
+          ratioWidth: el.ratioWidth || 1,
+          ratioHeight: el.ratioHeight || 1,
+          imageWidth: el.imageWidth || 0,
+          imageHeight: el.imageHeight || 0
         }
       };
     }
@@ -176,123 +182,10 @@ const getCompleteVariables = function(variables, configs) {
 const getDGVariables = cfg => {
   let state = getVariablesState(cfg.variables);
 
-  const jarNameVar = getEmptyVariables({
-    name: "jarName",
-    label: "Jar Name",
-    type: "text",
-    value: "Sarah's Special",
-    general: {
-      displayFilter: "dg"
-    },
-    specific: {
-      length: 20
-    },
-    additional: {
-      inputClasses: ["Input", "InputName"]
-    }
-  });
-
-  const jarTypeVar = getEmptyVariables({
-    name: "jarType",
-    label: "Jar type",
-    type: "text",
-    value: "Mixed Berry Jam",
-    general: {
-      displayFilter: "dg"
-    },
-    specific: {
-      length: 30
-    },
-    additional: {
-      inputClasses: ["Input", "InputType"]
-    }
-  });
-
-  const tagLine1Var = getEmptyVariables({
-    name: "tagLine1",
-    label: "Tag Line - Part One",
-    type: "text",
-    value: "Homemade in Aotearoa",
-    general: {
-      displayFilter: "dg"
-    },
-    specific: {
-      length: 50
-    },
-    additional: {
-      inputClasses: ["Input"]
-    }
-  });
-
-  const tagLine2Var = getEmptyVariables({
-    name: "tagLine2",
-    label: "Tag Line - Part Two",
-    type: "text",
-    value: "by Sarah Crompton",
-    general: {
-      displayFilter: "dg"
-    },
-    specific: {
-      length: 50
-    },
-    additional: {
-      inputClasses: ["Input"]
-    }
-  });
-
-  const batchDateVar = getEmptyVariables({
-    name: "batchDate",
-    label: "Batch date",
-    type: "shortText",
-    value: "Nov 2018",
-    general: {
-      displayFilter: "dg"
-    },
-    specific: {
-      length: 15
-    },
-    additional: {
-      inputClasses: ["Input", "InputDate"]
-    }
-  });
-
-  const color1 = getEmptyColorVariable({
-    name: "color1",
-    type: "color",
-    value: "rgb(150, 150, 150)"
-  });
-  const color2 = getEmptyColorVariable({
-    name: "color2",
-    type: "color",
-    value: "rgb(0, 150, 150)"
-  });
-  const color3 = getEmptyColorVariable({
-    name: "color3",
-    type: "color",
-    value: "rgb(150, 150, 0)"
-  });
-
-  const userImage = getEmptyImageUploadVariable({
-    name: "userImage",
-    type: "image",
-    value: null, //"img1.jpg",
-    imageHeight: 0,
-    imageWidth: 0
-  });
-
   return {
     ...state,
     variables: {
       ...state.variables
-      /*[jarNameVar.name]: jarNameVar,
-      [jarTypeVar.name]: jarTypeVar,
-      [tagLine1Var.name]: tagLine1Var,
-      [tagLine2Var.name]: tagLine2Var,
-      [batchDateVar.name]: batchDateVar,
-      [color1.name]: color1,
-      [color2.name]: color2,
-      [color3.name]: color3,
-      [userImage.name]: userImage*/
     }
   };
 };

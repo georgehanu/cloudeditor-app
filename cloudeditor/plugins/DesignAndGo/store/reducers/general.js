@@ -13,7 +13,8 @@ const {
   DAG_SIGNIN_SUCCESS,
   DAG_SIGNIN_CLEAR_MESSAGE,
   DAG_CHANGE_RENDER_ID,
-  DAG_CHANGE_DIMMENSIONS
+  DAG_CHANGE_DIMMENSIONS,
+  PROJ_LOAD_DAG_SUCCESS
 } = require("./../actionTypes/designAndGo");
 
 const { merge } = require("ramda");
@@ -21,122 +22,16 @@ const { handleActions } = require("redux-actions");
 const { dagActiveProductSelector } = require("../selectors");
 
 const initialState = {
+  navMenu: projectConfigGlobal.navMenu || 0,
+  debugMode: projectConfigGlobal.debugMode || 0,
   realDimension: projectConfigGlobal["realDimension"],
   loading: false,
   imagePath: null,
   errorMessage: null,
   loadingSignIn: false,
   errorMessageSignIn: null,
-  activeSlider: 0,
+  activeSlider: projectConfigGlobal["activeSlider"] || 0,
   products: projectConfigGlobal["products"],
-  products1: [
-    {
-      id: 1,
-      label: "Wine 1",
-      pageNo: 0,
-      mainImage: {
-        src:
-          "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2.png",
-        width: 1200,
-        height: 1400
-      },
-      cropArea: {
-        left: 278,
-        top: 450,
-        width: 654,
-        height: 752
-      },
-      realDimension: {
-        width: 500,
-        height: 733
-      },
-      effects: [
-        "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam2_effect.png"
-      ],
-      hasUpload: true,
-      hasCustomPallete: true,
-      collorPallets: [{ color: "rgb(255,94,94)" }, { color: "rgb(61,39,255)" }]
-    },
-    {
-      id: 2,
-      label: "Wine 2",
-      pageNo: 1,
-      mainImage: {
-        src:
-          "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1.png",
-        width: 1200,
-        height: 1400
-      },
-      cropArea: {
-        width: 656,
-        height: 796,
-        top: 410,
-        left: 286
-      },
-      realDimension: {
-        width: 40,
-        height: 48.53
-      },
-      effects: [
-        "http://work.cloudlab.at:9012/hp/designAndGo/editorImages/Jam1_effect.png"
-      ],
-      hasUpload: true,
-      hasCustomPallete: true,
-      collorPallets: [{ color: "rgb(255,94,94)" }, { color: "rgb(61,39,255)" }]
-    }
-  ],
-  sliderData: [
-    {
-      productImage: "Jam1.png",
-      pageNo: 0,
-      upload: true,
-      colors: [
-        {
-          containerBgColor: "green",
-          color1: "blue",
-          color2: "yellow"
-        },
-        { color1: "blue", color2: "yellow" },
-        {},
-        { color1: "blue", color2: "yellow" },
-        {
-          colorPicker: true,
-          containerBgColor: "green"
-        }
-      ],
-      activeColorButton: 0,
-      labelArea: {
-        left: 100 / (1200 / 286),
-        top: 100 / (1400 / 410),
-        width: 100 / (1200 / 656),
-        height: 100 / (1400 / 796)
-      }
-    },
-    {
-      productImage: "Jam2.png",
-      pageNo: 1,
-      colors: [
-        {
-          containerBgColor: "red",
-          color1: "blue",
-          color2: "yellow"
-        },
-        { color1: "blue", color2: "yellow" },
-        {},
-        {
-          colorPicker: true,
-          containerBgColor: "yellow"
-        }
-      ],
-      activeColorButton: 1,
-      labelArea: {
-        left: 100 / (1200 / 278),
-        top: 100 / (1400 / 450),
-        width: 100 / (1200 / 654),
-        height: 100 / (1400 / 752)
-      }
-    }
-  ],
   data: {
     title: {
       type: Types.TITLE,
@@ -171,7 +66,6 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        //imagePath: action.payload,
         errorMessage: null
       };
     },
@@ -179,12 +73,12 @@ module.exports = handleActions(
       return {
         ...state,
         loading: false,
-        imagePath: null,
+        //imagePath: null,
         errorMessage: action.payload
       };
     },
     [DAG_CHANGE_SLIDER]: (state, action) => {
-      const sliderElements = state.products.length;
+      /* const sliderElements = state.products.length;
       let newActiveSlider = state.activeSlider;
       if (action.payload === null) {
         newActiveSlider = 0;
@@ -195,11 +89,11 @@ module.exports = handleActions(
           newActiveSlider === 0
             ? sliderElements - 1
             : --newActiveSlider % sliderElements;
-      }
+      } */
 
       return {
         ...state,
-        activeSlider: newActiveSlider
+        activeSlider: action.payload
       };
     },
     [DAG_CHANGE_ACTIVE_COLOR_SCHEMA]: (state, action) => {
@@ -229,16 +123,10 @@ module.exports = handleActions(
         return state;
       }
       const newProducts = [...state.products];
+      const palleteBgColor = action.payload;
       newProducts[index] = {
         ...state.products[index],
-        palleteBgColor:
-          "rgb(" +
-          action.payload.rgb.r +
-          "," +
-          action.payload.rgb.g +
-          "," +
-          action.payload.rgb.b +
-          ")"
+        palleteBgColor
       };
       return {
         ...state,
@@ -272,8 +160,6 @@ module.exports = handleActions(
       };
     },
     [DAG_SIGNIN_SUCCESS]: (state, action) => {
-      //console.log(action.email);
-      //console.log(action.password);
       return {
         ...state,
         loadingSignIn: false,
@@ -305,6 +191,22 @@ module.exports = handleActions(
       return {
         ...state,
         realDimension: merge(state.realDimension, action.payload)
+      };
+    },
+    [PROJ_LOAD_DAG_SUCCESS]: (state, action) => {
+      const activeSlider = action.data.activeSlider;
+      const products = state.products.map((product, index) => {
+        if (index === activeSlider)
+          return {
+            ...product,
+            activeColorButton: action.data.activeColorButton,
+            palleteBgColor: action.data.palleteBgColor
+          };
+        return product;
+      });
+      return {
+        ...state,
+        products: products
       };
     }
   },

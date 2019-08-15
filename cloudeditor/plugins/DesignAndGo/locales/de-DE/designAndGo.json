@@ -7,5 +7,16 @@
   "Members Login": "Members Login",
   "Please fill the password field": "Please fill the password field",
   "Invalid email field": "Invalid email field",
-  "Please fill the email field": "Please fill the email field"
+  "Please fill the email field": "Please fill the email field",
+  "Create your own wine label": "Kreieren Sie Ihr eigenes Weinetikett",
+  "Add the details about your wine and a custom label will be created for you. Use the arrows beside the bottle to try out different designs.": "Wenn Sie die Details zu Ihrem Wein hinzufügen, wird ein benutzerdefiniertes Etikett für Sie erstellt. Verwenden Sie die Pfeile neben der Flasche, um verschiedene Designs auszuprobieren.",
+  "Preview": "Vorschau",
+  "Add To Cart": "In den Warenkorb",
+  "Upload Your Image": "Laden Sie Ihr Bild hoch",
+  "Crop image": "Bild zuschneiden",
+  "Crop Image": "Bild zuschneiden",
+  "Back": "Zurück",
+  "Ok": "Ok",
+  "Cancel": "Annullieren",
+  "Wine name": "Wein Name"
 }

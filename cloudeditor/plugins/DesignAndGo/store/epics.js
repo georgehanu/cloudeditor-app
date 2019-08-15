@@ -25,8 +25,11 @@ const {
   CHECK_VARIABLE_VALID,
   CHANGE_COLOR_VARIABLE_VALUE,
   UPDATE_OBJ_COLOR_FROM_VARIABLE,
-  UPDATE_OBJ_IMAGE_FROM_VARIABLE
+  UPDATE_OBJ_IMAGE_FROM_VARIABLE,
+  UPDATE_OBJ_FROM_VARIABLE_INIT
 } = require("../../../core/stores/actionTypes/variables");
+
+const { CHANGE_PAGE } = require("../../../core/stores/actionTypes/project");
 
 const URL = config.baseUrl + "/cloudeditor/uploadImage";
 // ("http://work.cloudlab.at:9012/ig/avery-external/public/");
@@ -45,19 +48,22 @@ module.exports = {
             .post(URL, serverData)
             .then(resp => resp.data)
             .then(data => {
-              if (data.status !== "failure") {
+              if (data.success) {
                 obs.next({
                   type: DAG_UPLOAD_IMAGE_SUCCESS,
                   payload: {
-                    image_src: data.image_src,
-                    imageHeight: data.imageHeight,
-                    imageWidth: data.imageWidth
+                    image_src: data.data.image_src,
+                    image_path: data.data.image_path,
+                    imageHeight: data.data.imageHeight,
+                    imageWidth: data.data.imageWidth,
+                    ratioHeight: data.data.ratioHeight,
+                    ratioWidth: data.data.ratioWidth
                   }
                 });
               } else {
                 obs.next({
                   type: DAG_UPLOAD_IMAGE_FAILED,
-                  payload: data.error_message
+                  payload: data.message
                 });
               }
               obs.complete();
@@ -168,6 +174,27 @@ module.exports = {
             variable: action$.payload.variable
           }
         });
+      })
+    ),
+  onChangePage: (action$, state$) =>
+    action$.pipe(
+      ofType(CHANGE_PAGE),
+      switchMap(action$ => {
+        return of(
+          {
+            type: UPDATE_OBJ_FROM_VARIABLE_INIT,
+            payload: {
+              objects: state$.value.project.objects,
+              variables: state$.value.variables.variables
+            }
+          },
+          {
+            type: UPDATE_OBJ_IMAGE_FROM_VARIABLE,
+            payload: {
+              variables: pick(["userImage"], state$.value.variables.variables)
+            }
+          }
+        );
       })
     )
 };

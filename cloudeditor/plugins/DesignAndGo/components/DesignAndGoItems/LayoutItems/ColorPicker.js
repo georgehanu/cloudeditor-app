@@ -42,7 +42,7 @@ class ColorButton extends React.Component {
             <HuePicker
               onChangeComplete={color => {
                 this.props.handleColorChange(color);
-                this.props.changeColorVariableValue({
+                /* this.props.changeColorVariableValue({
                   color1:
                     "rgb(" +
                     color.rgb.r +
@@ -51,7 +51,7 @@ class ColorButton extends React.Component {
                     "," +
                     color.rgb.b +
                     ")"
-                });
+                }); */
               }}
               color={this.props.containerBgColor}
             />

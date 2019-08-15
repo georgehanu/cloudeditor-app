@@ -27,13 +27,26 @@ class Layout extends React.Component {
     this.setState({ width: window.innerWidth });
   };
 
+  getRightPanelTools = () => {
+    return this.props.tools.filter(tool => {
+      return tool.rightPanel;
+    });
+  };
+  getLeftPanelTools = () => {
+    return this.props.tools.filter(tool => {
+      return tool.leftPanel;
+    });
+  };
+
   render() {
     return (
       <React.Fragment>
         <div className="Layout">
+          <div className="LayoutHeader" />
           <div className="MainContainer">
             <div className="StyledSplitPane">
               <LeftPanel
+                addContainerClasses={this.props.addContainerClasses}
                 data={this.props.data}
                 onMenuOpenHandler={this.props.onMenuOpenHandler}
                 onDataOpenHandler={this.props.onDataOpenHandler}
@@ -43,8 +56,9 @@ class Layout extends React.Component {
                 showSlider={this.state.width > MobileBreakpoint ? false : true}
                 products={this.props.products}
                 onZoomImageHandler={this.props.onZoomImageHandler}
+                tools={this.getLeftPanelTools()}
               />
-              <RightPanel />
+              <RightPanel tools={this.getRightPanelTools()} />
             </div>
             {this.state.width > MobileBreakpoint && (
               <SliderCarousel

@@ -1,16 +1,17 @@
 const React = require("react");
+const { withNamespaces } = require("react-i18next");
 
 const cropImageButton = props => {
   return (
     <div
-      className="cropImageContainer"
+      className="cropImageContainer dgButton"
       onClick={() => props.onCropImageModalOpenHandler()}
     >
-      <label className="UploadLabel">
-        <span className="UploadMessage">Crop image</span>
+      <label className="label">
+        <span className="message">{props.t("Crop Image")}</span>
       </label>
     </div>
   );
 };
 
-module.exports = cropImageButton;
+module.exports = withNamespaces("designAndGo")(cropImageButton);

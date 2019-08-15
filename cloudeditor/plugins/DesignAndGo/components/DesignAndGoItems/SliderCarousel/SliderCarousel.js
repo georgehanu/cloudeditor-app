@@ -74,28 +74,24 @@ class SliderCarousel extends React.Component {
     }
   }
 
-  changeSlider = (value, increment) => {
-    if (value && this.state.showFullSlider) {
-      return false;
-    }
-    //this.setState({ showFullSlider: !this.state.showFullSlider });
-    if (increment !== undefined) {
-      this.props.dagChangeSlider(increment);
-    }
-    return !this.state.showFullSlider;
-  };
-
   beforeChangeHandler = (onldIndex, newIndex) => {
     const pageIndex = this.props.products[newIndex].pageNo;
     this.props.changePage(this.props.pagesOrder[pageIndex]);
     this.setState({
       currentSlider: newIndex
     });
+    this.props.dagChangeSlider(newIndex);
   };
 
+  afterChangeHandler = index => {};
+
   componentDidMount() {
-    window.changeSlider = this.changeSlider;
-    this.props.dagChangeSlider(null); // reset to 0 slider the active slider from store
+    window.dgSlider = this.slider;
+    //this.props.dagChangeSlider(0); // reset to 0 slider the active slider from store
+    if (this.props.dagActiveSlider !== 0) {
+      //this.slider.slickNext();
+      this.slider.slickGoTo(this.props.dagActiveSlider);
+    }
   }
 
   render() {
@@ -128,16 +124,19 @@ class SliderCarousel extends React.Component {
       verticalSwiping: false,
       className: "testClassName",
       centerPadding: "0px",
-      // afterChange: index => {
-      //   this.afterChangeHandler(index);
-      // },
+      afterChange: index => {
+        this.afterChangeHandler(index);
+      },
+
       beforeChange: (onldIndex, newIndex) => {
         this.beforeChangeHandler(onldIndex, newIndex);
       }
     };
     return (
       <div className={className}>
-        <CustomSlider {...settings}>{productsSlider}</CustomSlider>
+        <CustomSlider ref={slider => (this.slider = slider)} {...settings}>
+          {productsSlider}
+        </CustomSlider>
         <div
           className="zoomSliderContainer"
           onClick={this.props.onZoomImageHandler}

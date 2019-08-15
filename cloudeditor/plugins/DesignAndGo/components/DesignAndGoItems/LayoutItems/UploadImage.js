@@ -30,6 +30,7 @@ class UploadImage extends React.Component {
 
   render() {
     const show = true; //this.props.alwaysShow ? true : this.props.showUploadImage;
+    const { t } = this.props;
     return (
       <section className="dropzone">
         {show && (
@@ -41,8 +42,8 @@ class UploadImage extends React.Component {
               accept="image/*"
               className="Dropzone"
             >
-              <div className="UploadFileInputs">
-                <label className="UploadLabel">
+              <div className="UploadFileInputs dgButton">
+                <label className="label">
                   {this.props.loading && (
                     <div className="sk-circle">
                       <div className="sk-circle1 sk-child" />
@@ -59,17 +60,8 @@ class UploadImage extends React.Component {
                       <div className="sk-circle12 sk-child" />
                     </div>
                   )}
-                  <span className="UploadMessage">
-                    {this.props.t("Upload Your Image")}
-                  </span>
+                  <span className="message">{t("Upload Your Image")}</span>
                 </label>
-
-                {/*this.props.imagePath && (
-                  <img
-                    src={this.props.imagePath}
-                    style={{ width: "300px", height: "auto" }}
-                  />
-                )*/}
                 {this.props.errorMessage && (
                   <div>{this.props.errorMessage}</div>
                 )}

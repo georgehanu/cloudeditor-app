@@ -1,4 +1,4 @@
-module.exports = (plugins, requires, localConfig, i18n, initialActions) => {
+module.exports = (plugins, requires, appReducers, appEpics, initialActions) => {
   const startApp = () => {
     const React = require("react");
     const ReactDOM = require("react-dom");
@@ -11,9 +11,7 @@ module.exports = (plugins, requires, localConfig, i18n, initialActions) => {
     const PluginsUtils = require("./core/utils/PluginsUtils");
     const StandardStore = require("./core/stores/StandardStore");
 
-    ConfigUtils.loadConfiguration(localConfig);
-
-    const store = StandardStore({}, {}, {}, plugins);
+    const store = StandardStore({}, appReducers, appEpics, plugins);
     const mainComponentCfg = ConfigUtils.getConfigProp("mainComponent");
 
     ReselectTools.getStateWith(() => store.getState());

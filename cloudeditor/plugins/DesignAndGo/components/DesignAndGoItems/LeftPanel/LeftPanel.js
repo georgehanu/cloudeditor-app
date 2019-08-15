@@ -2,24 +2,50 @@ const React = require("react");
 const Fields = require("../LayoutItems/Fields");
 const Title = require("../LayoutItems/Title");
 const Description = require("../LayoutItems/Description");
+const Continue = require("../LayoutItems/Continue");
 const { withNamespaces } = require("react-i18next");
 const SliderCarousel = require("../SliderCarousel/SliderCarousel");
 const {
   dagDataTitleSelector,
-  dagDataDescriptionSelector
+  dagDataDescriptionSelector,
+  dagNavMenuSelector
 } = require("../../../store/selectors");
 
 const { connect } = require("react-redux");
 
 class LeftPanel extends React.Component {
+  getTool = tool => {
+    return tool.plugin;
+  };
+
+  renderTools = () => {
+    return this.props.tools.map((tool, i) => {
+      const Tool = this.getTool(tool);
+      return (
+        <Tool
+          addContainerClasses={tool.addContainerClasses}
+          cfg={tool.cfg || {}}
+          items={tool.items || []}
+          key={i}
+          index={i}
+        />
+      );
+    });
+  };
+
   render() {
+    const menuContainer = this.props.navMenu ? (
+      <div className="MenuButtonContainer MenuShow">
+        <a className="MenuButton" onClick={this.props.onMenuOpenHandler}>
+          {this.props.t("MENU")}
+        </a>
+      </div>
+    ) : (
+      ""
+    );
     return (
       <div className="LeftPanel">
-        <div className="MenuButtonContainer">
-          <a className="MenuButton" onClick={this.props.onMenuOpenHandler}>
-            {this.props.t("MENU")}
-          </a>
-        </div>
+        {menuContainer}
         <div className="LeftPaneHorizontal">
           <div className="LeftPaneHorizontalStyled">
             <Title
@@ -50,6 +76,8 @@ class LeftPanel extends React.Component {
                 this.props.onCropImageModalOpenHandler
               }
             />
+            {this.renderTools()}
+            <Continue addContainerClasses={this.props.addContainerClasses} />
           </div>
         </div>
       </div>
@@ -60,7 +88,8 @@ class LeftPanel extends React.Component {
 const mapStateToProps = state => {
   return {
     title: dagDataTitleSelector(state),
-    description: dagDataDescriptionSelector(state)
+    description: dagDataDescriptionSelector(state),
+    navMenu: dagNavMenuSelector(state)
   };
 };
 

@@ -2,14 +2,15 @@ const {
   TEST_CHANGE_VARIABLE,
   CHANGE_VARIABLE_VALUE,
   CHANGE_COLOR_VARIABLE_VALUE,
-  CHECK_VARIABLE_VALID
+  CHECK_VARIABLE_VALID,
+  PROJ_LOAD_VARIABLES_SUCCESS
 } = require("../actionTypes/variables");
 
 const {
   DAG_UPLOAD_IMAGE_SUCCESS
 } = require("../../../plugins/DesignAndGo/store/actionTypes/designAndGo");
 
-const { mergeAll } = require("ramda");
+const { mergeAll, mergeDeepRight } = require("ramda");
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
 
 const { handleActions } = require("redux-actions");
@@ -80,15 +81,31 @@ module.exports = handleActions(
       return changeColorVariableValue(state, action.payload);
     },
     [DAG_UPLOAD_IMAGE_SUCCESS]: (state, action) => {
+      //console.log("Upload", action);
       return changeVariableValue(state, {
         name: "userImage",
         value: action.payload.image_src,
+        image_path: action.payload.image_path,
+        image_src: action.payload.image_src,
         imageHeight: action.payload.imageHeight,
-        imageWidth: action.payload.imageWidth
+        imageWidth: action.payload.imageWidth,
+        ratioHeight: action.payload.ratioHeight,
+        ratioWidth: action.payload.ratioWidth
       });
     },
     [CHECK_VARIABLE_VALID]: (state, action) => {
       return checkIfVariableIsValid(state, action.payload);
+    },
+    [PROJ_LOAD_VARIABLES_SUCCESS]: (state, action) => {
+      var data = action.data;
+      const variables = mergeDeepRight(state.variables, data.variables);
+      return {
+        ...state,
+        variables: {
+          ...state.variables,
+          ...variables
+        }
+      };
     }
   },
   initialState

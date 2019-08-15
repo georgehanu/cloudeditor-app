@@ -293,10 +293,10 @@ const displayedMergedObjectSelector = displayedObjectSelector => {
     displayedObjectSelector,
     objectsDefaultConfigSelector,
     (object, defaults) => {
-      console.log(defaults, "defaults");
+      //console.log(defaults, "defaults");
       return mergeAll([
         defaults.generalCfg,
-        defaults[object.realType + "Cfg"],
+        defaults[object.subType + "Cfg"],
         object
       ]);
     }
@@ -338,7 +338,7 @@ const selectedObjectsIdSelector = state =>
 const cachedObjectsSelector = createSelector(
   objectsSelector,
   objects => {
-    console.log("objectsSelector");
+    //console.log("objectsSelector");
     return objects;
   }
 );
@@ -347,10 +347,10 @@ const displayedMergedObjectCachedSelector = createCachedSelector(
   getObjectByIdSelector,
   objectsDefaultConfigSelector,
   (object, defaults) => {
-    console.log("displayedMergedObjectCachedSelector", object.id);
+    //console.log("displayedMergedObjectCachedSelector", object.id);
     return mergeAll([
       defaults.generalCfg,
-      defaults[object.realType + "Cfg"],
+      defaults[object.subType + "Cfg"],
       object
     ]);
   }
@@ -372,12 +372,12 @@ const scaledDisplayedObjectCachedSelector = createCachedSelector(
     ];
 
     scaledBlock = applyZoomScaleToTarget(scaledBlock, zoomScale, defaultPaths);
-    console.log("scaledDisplayedObjectCachedSelector", zoomScale);
+    //console.log("scaledDisplayedObjectCachedSelector", zoomScale);
 
     //const variables = [];
     const variables = extractVariablesFromString(scaledBlock.text);
 
-    console.log("blockVariables", scaledBlock);
+    //console.log("blockVariables", scaledBlock);
 
     return {
       scaledBlock,

@@ -7,7 +7,8 @@ const {
   isEmpty,
   forEach,
   merge,
-  mergeAll
+  mergeAll,
+  pick
 } = require("ramda");
 const {
   CHANGE_PROJECT_TITLE,
@@ -27,7 +28,25 @@ const {
   CHANGE_PAGE,
   CHANGE_GROUPS,
   CHANGE_RANDOM_PAGE,
-  OBJECTS_READY
+  OBJECTS_READY,
+  PROJ_SAVE_START,
+  PROJ_SAVE_SUCCESS,
+  PROJ_SAVE_FAILED,
+  PROJ_SHOW_POPUP,
+  PROJ_SAVE_CLEAR_MESSAGE,
+  PROJ_LOAD_START,
+  PROJ_LOAD_SUCCESS,
+  PROJ_LOAD_FAILED,
+  PROJ_LOAD_CLEAR_MESSAGE,
+  PROJ_LOAD_DELETE_START,
+  PROJ_LOAD_DELETE_SUCCESS,
+  PROJ_LOAD_DELETE_FAILED,
+  PROJ_LOAD_DELETE_CLEAR_MESSAGE,
+  PROJ_LOAD_PROJECT_START,
+  PROJ_LOAD_PROJECT_SUCCESS,
+  PROJ_LOAD_PROJECT_FAILED,
+  PROJ_LOAD_PROJECT_CLEAR_MESSAGE,
+  LOAD_SAVED_DATA_START
 } = require("../actionTypes/project");
 
 const {
@@ -184,8 +203,7 @@ const emptyProject = ProjectUtils.getDGProject({
   pages: config.project.pages,
   pagesOrder: config.project.pagesOrder,
   objects: config.project.objects,
-  title: config.title,
-  description: config.description
+  activePage: config.project.activePage || "page_0"
 });
 
 const initialState = {
@@ -237,6 +255,14 @@ const dagClearCropForUploadedImages = (state, payload) => {
       ...mergeAll(imageObjs)
     }
   };
+};
+
+const handleLoad = (state, loadData) => {
+  return { ...state, load: { ...state.load, ...loadData } };
+};
+
+const handleSave = (state, saveData) => {
+  return { ...state, save: { ...state.save, ...saveData } };
 };
 
 module.exports = handleActions(
@@ -399,10 +425,122 @@ module.exports = handleActions(
       return updateObjColorVariable(state, action);
     },
     [UPDATE_OBJ_IMAGE_FROM_VARIABLE]: (state, action) => {
+      //console.log("UPDATE_OBJ_IMAGE_FROM_VARIABLE", action);
       return updateObjImageVariable(state, action);
     },
     [UPDATE_OBJ_FROM_VARIABLE_INIT]: (state, action) => {
       return updateObjVariableInit(state, action);
+    },
+    [PROJ_SAVE_START]: (state, action) => {
+      return handleSave(state, {
+        loading: true,
+        showAlert: false
+      });
+    },
+    [PROJ_SAVE_SUCCESS]: (state, action) => {
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          loading: false,
+          errorMessage: action.message,
+          showAlert: false
+        },
+        title: action.name,
+        description: action.description,
+        projectId: state.projectId !== null ? state.projectId : action.projectId
+      };
+    },
+    [PROJ_SAVE_FAILED]: (state, action) => {
+      return handleSave(state, {
+        loading: false,
+        errorMessage: action.payload,
+        showAlert: false
+      });
+    },
+    [PROJ_SHOW_POPUP]: (state, action) => {
+      return handleSave(state, {
+        loading: false,
+        errorMessage: action.payload,
+        showAlert: true
+      });
+    },
+    [PROJ_SAVE_CLEAR_MESSAGE]: (state, action) => {
+      return handleSave(state, { errorMessage: null, showAlert: false });
+    },
+    [PROJ_LOAD_START]: (state, action) => {
+      return handleLoad(state, { loading: true });
+    },
+    [PROJ_LOAD_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loading: false,
+        errorMessage: null,
+        loadedProjects: action.data
+      });
+    },
+    [PROJ_LOAD_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loading: false,
+        errorMessage: action.payload
+      });
+    },
+    [PROJ_LOAD_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessage: null });
+    },
+    [PROJ_LOAD_DELETE_START]: (state, action) => {
+      return handleLoad(state, { loadingDelete: true });
+    },
+    [PROJ_LOAD_DELETE_SUCCESS]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: null,
+        loadedProjects: state.load.loadedProjects.filter(function(project) {
+          return project.projectId !== action.projectId;
+        })
+      });
+    },
+    [PROJ_LOAD_DELETE_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingDelete: false,
+        errorMessageDelete: action.payload
+      });
+    },
+    [PROJ_LOAD_DELETE_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageDelete: null });
+    },
+    [PROJ_LOAD_PROJECT_START]: (state, action) => {
+      return handleLoad(state, { loadingProject: true });
+    },
+    [LOAD_SAVED_DATA_START]: (state, action) => {
+      return handleLoad(state, { loadingProject: true });
+    },
+    [PROJ_LOAD_PROJECT_SUCCESS]: (state, action) => {
+      const data = action.data;
+
+      return {
+        ...state,
+        title: data.title,
+        description: data.description,
+        projectId: data.projectId,
+        objects: {
+          ...state.objects,
+          ...data.objects
+        },
+        load: {
+          ...state.load,
+          loadingProject: false,
+          errorMessageProject: null
+        }
+      };
+    },
+    [PROJ_LOAD_PROJECT_FAILED]: (state, action) => {
+      return handleLoad(state, {
+        loadingProject: false,
+        errorMessageProject: action.payload
+      });
+    },
+    [PROJ_LOAD_PROJECT_CLEAR_MESSAGE]: (state, action) => {
+      return handleLoad(state, { errorMessageProject: null });
     }
   },
   initialState

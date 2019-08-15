@@ -1,4 +1,5 @@
 const React = require("react");
+const { withNamespaces } = require("react-i18next");
 
 const Input = props => {
   const className = "InputLabelContainer";
@@ -11,7 +12,7 @@ const Input = props => {
   return (
     <div className={containerClass}>
       <label className={className}>
-        <span>{props.label}</span>
+        <span>{props.t(props.label)}</span>
         <div className="InputLabelContent">
           <input
             type={inputType}
@@ -23,11 +24,11 @@ const Input = props => {
         </div>
 
         <label className="InputInvalidMessage">
-          {props.invalidMessage !== null ? props.invalidMessage : " "}
+          {props.invalidMessage !== null ? props.t(props.invalidMessage) : " "}
         </label>
       </label>
     </div>
   );
 };
 
-module.exports = Input;
+module.exports = withNamespaces("designAndGo")(Input);

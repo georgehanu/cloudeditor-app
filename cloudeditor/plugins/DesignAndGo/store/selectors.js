@@ -69,6 +69,12 @@ const dagDataTitleSelector = state =>
     state.designAndGo.data.title) ||
   [];
 
+const dagNavMenuSelector = state =>
+  (state && state.designAndGo && state.designAndGo.navMenu) || "";
+
+const dagDebugModeSelector = state =>
+  (state && state.designAndGo && state.designAndGo.debugMode) || "";
+
 const dagDataDescriptionSelector = state =>
   (state &&
     state.designAndGo &&
@@ -101,7 +107,11 @@ const dagProductColorsSelector = createSelector(
     return {
       colors: activeProduct.collorPallets || [],
       colorPicker: activeProduct.hasCustomPallete || false,
-      palleteBgColor: activeProduct.palleteBgColor || "rgb(255, 0, 0)",
+      palleteBgColor: activeProduct.palleteBgColor || {
+        htmlRGB: "0,0,0",
+        RGB: "0 0 0",
+        CMYK: "0 0 0 1"
+      },
       activeColorButton: activeProduct.activeColorButton || 0
     };
   }
@@ -132,5 +142,7 @@ module.exports = {
   dagErrorMessageSignInSelector,
   getVariablesByFilter,
   dagActiveProductSelector,
-  dagProductColorsSelector
+  dagProductColorsSelector,
+  dagNavMenuSelector,
+  dagDebugModeSelector
 };

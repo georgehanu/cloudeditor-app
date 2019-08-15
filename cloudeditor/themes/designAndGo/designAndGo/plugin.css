@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Roboto";
-  src: url("./fonts/Roboto-Regular.ttf") format("truetype");
+  font-family: "Ubuntu";
+  src: url("./fonts/Ubuntu-Regular.ttf") format("truetype");
 }
 
 @font-face {
@@ -20,6 +20,9 @@ body,
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  font-family: "Ubuntu", "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  font-weight: 300;
 }
 
 /*.renderContainer {
@@ -83,37 +86,59 @@ body,
 .Layout {
   width: 100%;
   height: 100%;
-  font-family: "factoria, serif";
   margin: 0;
   padding: 0;
   border: 0;
   font: inherit;
   vertical-align: baseline;
-  font-family: factoria, serif;
-  font-weight: 400;
   font-size: 14px;
-  line-height: 1.6;
-  color: rgb(102, 102, 102);
+  color: #404040;
   text-shadow: transparent 0px 1px 1px;
   background-color: white;
+  padding: 161px 0 0 0;
+  box-sizing: border-box;
+}
+
+.LayoutHeader {
+  background-position: top center;
+  background-image: url("./assets/averyHeader.png");
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  height: 161px;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .MainContainer {
   /*background-image: url("/editor/design/assets/bg.png");*/
-  background-image: url("./assets/bg.png");
+  /* background-image: url("./assets/bg.png"); */
+  background-color: #fff;
   flex-direction: row;
   -webkit-box-align: stretch;
   align-items: stretch;
   overflow-x: hidden;
 
-  position: absolute;
+  position: relative;
   top: 0px;
   left: 0px;
   right: 0px;
   height: 100%;
-  display: flex;
+  display: block;
   flex-direction: column;
   margin: 0px auto;
+}
+
+.slick-prev:before {
+  color: #d40027;
+  opacity: 1;
+  font-size: 50px;
+}
+
+.slick-next:before {
+  color: #d40027;
+  opacity: 1;
+  font-size: 50px;
 }
 
 @media screen and (min-width: 842px) {
@@ -191,7 +216,7 @@ body,
   -webkit-box-pack: center;
   justify-content: center;
   flex: 1 0 50%;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 1);
 }
 
 .RightPanel {
@@ -212,12 +237,12 @@ body,
   height: 100%;
   flex-direction: column;
   -webkit-box-pack: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex: 1 1 0%;
 }
 
 .LeftPaneHorizontalStyled {
-  position: relative;
+  /*  position: relative; */
   /*overflow-y: auto;*/
 }
 
@@ -244,14 +269,16 @@ body,
 }
 .Title h1 {
   text-shadow: transparent 1px 1px 1px;
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #d40027;
   font-weight: 500;
 }
 
 .DescriptionHeader {
   font-size: 22px;
   text-shadow: transparent 1px 1px 1px;
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #0039a6;
   font-weight: 500;
 }
 
@@ -271,7 +298,8 @@ body,
 .InputLabelContainer {
   font-weight: 300;
   margin-bottom: 5px;
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #0039a6;
 }
 
 .InputLabelContent {
@@ -284,7 +312,9 @@ body,
 .InputLabelContent input {
   height: 32px;
   font-size: 15px;
-  font-family: factoria, serif;
+  font-family: "Ubuntu", "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  font-weight: 300;
   color: rgb(102, 102, 102);
   padding: 3px 8px 0px;
   border-radius: 5px;
@@ -297,7 +327,8 @@ body,
 }
 
 .InputLabelContent input:focus {
-  box-shadow: rgb(234, 125, 125) 0px 0px 2px 2px;
+  /* box-shadow: rgb(234, 125, 125) 0px 0px 2px 2px; */
+  box-shadow: #0039a6 0px 0px 2px 2px;
   z-index: 100;
   position: relative;
   outline: none;
@@ -320,20 +351,22 @@ body,
   font-size: 0px;
   width: 50px;
   height: 50px;
-  padding: 0px 16px;
+  padding: 0;
   text-decoration: none;
-  background-color: rgb(234, 125, 125);
+  /* background-color: rgb(234, 125, 125); */
+  background-color: #fff;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   border-radius: 50%;
   border-width: 0px;
 }
 .slick-arrow.slick-prev:hover,
 .slick-arrow.slick-next:hover {
-  background: rgb(203, 98, 97) !important;
+  /* background: rgb(203, 98, 97) !important; */
 }
 .slick-arrow.slick-prev:focus,
 .slick-arrow.slick-next:focus {
-  background-color: rgb(234, 125, 125) !important;
+  /* background-color: rgb(234, 125, 125) !important; */
+  /* background-color: #d40027 !important; */
 }
 
 .slick-dots {
@@ -436,7 +469,8 @@ body,
   text-decoration: none;
   border-width: 0px 1px 0px 0px;
   border-image: initial;
-  background: rgb(234, 125, 125);
+  /* background: rgb(234, 125, 125); */
+  background: #0039a6;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   margin: 0px;
   padding: 0px;
@@ -449,7 +483,7 @@ body,
 }
 .ColorButton.ColorButtonActive {
   color: white;
-  background: rgb(203, 98, 97);
+  background: #406bbc;
 }
 
 .ColorButtonBg {
@@ -509,7 +543,8 @@ body,
 }
 
 .MenuButton {
-  color: rgb(234, 125, 125);
+  /* color: rgb(234, 125, 125); */
+  color: #0039a6;
   text-decoration: none;
   cursor: pointer;
   font-weight: 700;
@@ -551,7 +586,7 @@ body,
   top: 0px;
   box-shadow: rgb(0, 0, 0) 0px 0px 14px;
   height: 100%;
-  background: rgb(245, 245, 245);
+  background: #fff;
 }
 
 .MenuHeader {
@@ -566,7 +601,7 @@ body,
 
   color: white;
   text-shadow: none;
-  background: rgb(234, 125, 125);
+  background: #0039a6;
 }
 
 .MenuTitle {
@@ -596,7 +631,7 @@ body,
   content: " ";
   height: 33px;
   width: 2px;
-  background-color: #333;
+  background-color: #fff;
 }
 .CloseMenu:before {
   transform: rotate(45deg);
@@ -628,7 +663,7 @@ body,
 }
 
 .MenuLinks ul li a {
-  color: rgb(234, 125, 125);
+  color: #404040;
   text-decoration: none;
   cursor: pointer;
 }
@@ -641,10 +676,16 @@ body,
 }
 
 .MenuButtonContainer {
+  display: none;
   width: 100%;
   text-align: -webkit-center;
   top: 75px;
 }
+
+.MenuButtonContainer.MenuShow {
+  display: block;
+}
+
 .MenuButtonContainerMobile {
   display: none;
 }
@@ -654,10 +695,12 @@ body,
 .SingInButton button,
 .MenuDataButton button,
 .cropImageApplyContainer button,
-.zoomButtons button {
+.zoomButtons button,
+.loginWnd .loginWndButtons button,
+.loadWnd .loadProjectsContainer button {
   font-family: inherit;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   height: 40px;
   line-height: 40px;
   cursor: pointer;
@@ -669,9 +712,14 @@ body,
   border-radius: 5px;
   text-decoration: none;
   border-image: initial;
-  background: rgb(234, 125, 125);
+  background: #0039a6;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   border-width: 0px;
+}
+
+.loginWnd .loginWndButtons button,
+.loadWnd .loadProjectsContainer button {
+  margin: 0 20px;
 }
 .EditLabelButton {
   display: none;
@@ -696,14 +744,15 @@ body,
   display: none;
 }
 
-.UploadLabel {
+.dgButton .label {
   display: inline-block;
   width: 100%;
   height: 100%;
+  opacity: 1;
 
   font-family: inherit;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
   height: 40px;
   line-height: 40px;
   cursor: pointer;
@@ -717,15 +766,34 @@ body,
   border-style: initial;
   border-color: initial;
   border-image: initial;
-  background: rgb(234, 125, 125);
-  transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
+  /* background: rgb(234, 125, 125); */
+  background-color: #0039a6;
+  transition: opacity 0.3s ease 0s, color 0.3s ease 0s;
+  -webkit-font-smoothing: antialiased;
 }
 
-.UploadLabel:hover,
+.dgButton .label:hover {
+  color: white;
+  opacity: 0.75;
+}
+
+.dgTextButton a {
+  /* color: #ea7d7d; */
+  color: #0039a6;
+  opacity: 1;
+  font-size: 15px;
+  font-weight: 400;
+  transition: opacity 0.3s ease 0s, color 0.3s ease 0s;
+  -webkit-font-smoothing: antialiased;
+}
+.dgTextButton a:hover {
+  opacity: 0.75;
+}
+
 .ColorButton:hover,
 .EditLabelButton:hover {
   color: white;
-  background: rgb(203, 98, 97);
+  background: #406bbc;
 }
 
 .ColorPicker .hue-picker {
@@ -955,6 +1023,47 @@ section.dropzone {
   animation-delay: -0.1s;
 }
 
+.continueSection {
+  margin: 20px 0 0 0;
+  display: flex;
+}
+
+.continueSection.loading {
+  display: none !important;
+}
+
+.continueSection .add2CartBtn,
+.showPrintPreview .continueSection .previewBtn {
+  display: none;
+}
+
+.continueSection .previewBtn,
+.showPrintPreview .continueSection .add2CartBtn {
+  display: flex;
+  width: 45%;
+}
+.continueSection .previewBtn label,
+.showPrintPreview .continueSection .add2CartBtn label {
+  background-color: #d40027;
+}
+
+.continueSection .backToEdit {
+  display: none;
+  width: 45%;
+  align-items: center;
+  justify-content: left;
+}
+
+.showPrintPreview .continueSection .backToEdit {
+  display: flex;
+}
+
+.showPrintPreview .SliderCarousel,
+.showPrintPreview .LeftPaneHorizontal .FieldsContainer,
+.showPrintPreview .EditLabelButtonContainer {
+  display: none;
+}
+
 @-webkit-keyframes sk-circleBounceDelay {
   0%,
   80%,
@@ -1175,10 +1284,13 @@ section.dropzone {
 }
 
 .imageOpContainer {
-  height: 50px;
+  /*  height: 50px; */
+  display: flex;
+  justify-content: space-between;
 }
 
 #debugButton {
+  display: none;
   position: absolute;
   left: 10px;
   bottom: 10px;
@@ -1188,6 +1300,9 @@ section.dropzone {
   color: red;
   cursor: pointer;
   line-height: 30px;
+}
+#debugButton.show {
+  display: block;
 }
 
 .zoomSliderContainer {
@@ -1255,7 +1370,8 @@ section.dropzone {
   height: 50px;
   padding: 0px 0px;
   text-decoration: none;
-  background-color: #ea7d7d;
+  /* background-color: #ea7d7d; */
+  background-color: #d40027;
   -webkit-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   -o-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
@@ -1281,7 +1397,8 @@ section.dropzone {
   height: 50px;
   padding: 0px 0px;
   text-decoration: none;
-  background-color: #ea7d7d;
+  /* background-color: #ea7d7d; */
+  background-color: #d40027;
   -webkit-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   -o-transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
   transition: background-color 0.3s ease 0s, color 0.3s ease 0s;
@@ -1306,15 +1423,352 @@ section.dropzone {
   align-self: flex-end;
 }
 
+.loginWnd {
+  position: absolute;
+  margin: 0px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+.loginWnd * {
+  box-sizing: border-box;
+}
+.loginWnd .headerWnd {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  align-items: center;
+  font-size: 22px;
+  padding: 12px 20px;
+  color: #fff;
+  text-shadow: none;
+  background-color: #0039a6;
+}
+
+.loginWnd label.inputLabelContainer {
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.loginWnd .inputLabelContainer {
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: #404040;
+  line-height: 20px;
+}
+
+.loginWnd .loginWndContainer {
+  width: 100%;
+  z-index: 500;
+  box-shadow: 1px 1px 1px black;
+  padding: 16px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-out;
+  padding: 0px;
+  position: relative;
+  overflow-y: auto;
+  left: 0px;
+  top: 0px;
+  box-shadow: rgb(0, 0, 0) 0px 0px 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.loginContainer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  text-align: center;
+  z-index: 600;
+}
+
+.loginWnd {
+  text-align: center;
+  height: 330px;
+  text-align: center;
+  padding: 16px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  padding: 0px;
+  width: 530px;
+  -webkit-box-shadow: black 0px 0px 14px;
+  box-shadow: black 0px 0px 14px;
+  display: inline-block;
+  background: #fff;
+  z-index: 700;
+}
+
+.loginWnd .loginFields {
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.loginWnd .inputLabelContainer .inputLabel {
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+  vertical-align: middle;
+  color: #404040;
+  margin-bottom: 5px;
+}
+
+.loginWnd .inputLabelContent input,
+.loginWnd .inputLabelContent textarea {
+  padding: 8px 15px;
+  line-height: 20px;
+  border: 0;
+  background-color: transparent;
+  color: #404040;
+  font-family: Arial;
+  border-radius: 0px;
+  background: #fff;
+  vertical-align: middle;
+  overflow: visible;
+  border: 1px solid #ccc;
+  position: relative;
+  min-width: 250px;
+  outline: none;
+  width: 100%;
+}
+
+.loginWnd .loginWndButtons {
+  margin-top: 10px;
+  margin-bottom: 13px;
+  text-align: center;
+  width: 100%;
+  /* position: absolute; */
+}
+
+.loginWnd .titleMenu {
+  color: #fff;
+}
+
+.loginWnd .loginWndButtons button:hover {
+  cursor: pointer;
+}
+
+.loginWnd .messageForm {
+  height: 20px;
+}
+
+.messageForm {
+  color: #404040;
+}
+
+.loginWnd .loader {
+  margin: auto;
+  font-size: 20px;
+  color: #404040;
+  /* margin-top: 1px; */
+  position: absolute;
+  z-index: 700;
+  left: 165px;
+  top: 20%;
+}
+
+.loginWnd .loader .spinnerText {
+  display: none;
+}
+
+.loginWnd .closeMenu {
+  right: 20px;
+}
+
+.loginWnd.saveWnd {
+  height: 370px;
+}
+
+.textareaLabelContent textarea {
+  resize: none;
+}
+
+.loginWnd.loadWnd {
+  height: 500px;
+  width: 1000px;
+}
+
+.loadProjectsContainer {
+  padding-top: 10px;
+  /*  height: 350px; */
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 10px;
+}
+
+.loadProjectsContainer ul {
+  list-style: none;
+  /*border: 1px solid #dcdee1;*/
+  padding-left: 0px;
+}
+
+.loadProjectsContainer li div {
+  display: inline-block;
+  height: auto;
+  padding: 5px;
+}
+
+.loadProjectsContainer li {
+  border: 1px solid #dcdee1;
+  border-bottom: none;
+  display: flex;
+}
+
+.loadProjectsContainer .projIndex {
+  text-align: center;
+  width: 5%;
+  border-right: 1px solid #dcdee1;
+}
+
+.loadProjectsContainer .projName {
+  text-align: left;
+  width: 20%;
+  border-right: 1px solid #dcdee1;
+}
+.loadProjectsContainer .projDescription {
+  text-align: left;
+  width: 30%;
+  border-right: 1px solid #dcdee1;
+}
+.loadProjectsContainer .projDate {
+  width: 9%;
+  border-right: 1px solid #dcdee1;
+  text-align: center;
+}
+.loadProjectsContainer .projLoad {
+  width: 18%;
+  border-right: 1px solid #dcdee1;
+}
+.loadProjectsContainer .projDelete {
+  width: 18%;
+  border-right: 1px solid #dcdee1;
+}
+
+.loadWnd .loadProjectsContainer .projLoad button,
+.loadWnd .loadProjectsContainer .projDelete button {
+  margin: 0px;
+}
+
+.loadProjectsContainer li:last-child {
+  border-bottom: 1px solid #dcdee1;
+}
+
+.loadWnd.loginWnd .loader {
+  left: 400px;
+}
+
+.loadWnd.loginWnd .loginWndButtons {
+  bottom: 20px;
+}
+
+.loadProjectsContainer {
+  overflow: auto;
+  color: #404040;
+  font-size: 13px;
+}
+
+body.swal2-height-auto.swal2-shown {
+  height: inherit !important;
+}
+
+.loginWnd.registerWnd {
+  height: 780px;
+}
+
+.registerWnd .selectionLabelContainer .inputLabel {
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+  margin: 0;
+  vertical-align: middle;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.registerWnd .selectionLabelContainer {
+  font-size: 13px;
+  color: #666666;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.registerWnd .selectionLabelContainer select {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #ccc;
+}
+
+.registerWnd .selectionLabelContainer option,
+.registerWnd select,
+.registerWnd .checkboxLabel {
+  color: #777;
+}
+
+.loginWnd input {
+  color: #777 !important;
+}
+
+.registerWnd .checkboxLabelContainer {
+  text-align: center;
+  position: relative;
+  width: 100%;
+}
+
+.registerWnd .checkboxContainer {
+  display: inline-block;
+}
+
+.registerWnd .checkboxContainer input,
+.registerWnd .checkboxContainer div {
+  float: left;
+}
+
+.registerWnd .inputLabelContainer.inputEmpty .inputLabelContent,
+.registerWnd .selectionLabelContainer.inputEmpty select {
+  border: 1px solid red;
+}
+
+.registerWnd .messageForm {
+  color: red;
+  height: auto;
+}
+
+.loginWnd.registerWnd {
+  height: auto;
+}
+.loginWnd.registerWnd .loginWndContainer {
+  box-shadow: none;
+}
+.loginWnd.registerWnd .loginWndButtons {
+  position: relative;
+  padding: 10px 0px;
+}
+
+.messageForm .loadingSpinner .spinner {
+  display: none !important;
+}
+
 /* for Mobile */
 @media screen and (max-width: 842px) {
   .ColorPicker .hue-picker {
     width: 230px !important;
   }
 
-  .MenuButtonContainer {
-    display: none;
-  }
   /* Menu */
   .MenuButtonContainerMobile,
   .EditLabelButtonContainer {
@@ -1363,8 +1817,34 @@ section.dropzone {
   }
 
   .imageOpContainer {
+    display: block;
     position: relative;
     top: 15px;
+  }
+
+  .continueSection {
+    position: relative;
+    top: 20px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .continueSection.loading {
+    display: none !important;
+  }
+
+  .continueSection .previewBtn,
+  .continueSection .add2CartBtn {
+    width: 100% !important;
+  }
+
+  .showPrintPreview .continueSection .backToEdit {
+    display: block;
+    width: 100%;
+  }
+  .showPrintPreview .continueSection .backToEdit span {
+    width: 100%;
+    display: block;
   }
 
   .slick-track {

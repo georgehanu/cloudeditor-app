@@ -7,14 +7,14 @@ const i18nFunc = config => {
   const baseUrl = config.baseUrl || "http://localhost:8081";
   const publicPath = config.publicPath || "/";
   const basePath = config.basePath || "locales";
-  const lang = config.lang || "de-DE";
+  const lang = config.lang || "en-US";
 
   return i18n
     .use(Backend)
     .use(reactI18nextModule)
     .init({
       lng: lang,
-      fallbackLng: "de-DE",
+      fallbackLng: "en-US",
       fallbackNS: "translate",
       ns: "translate",
       defaultNS: "translate",
