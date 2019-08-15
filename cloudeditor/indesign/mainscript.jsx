@@ -523,56 +523,71 @@ function getDynamicBlocks(myDoc, dynamicLayers, alternateLayout, options) {
 						}
                     }
 				}
-				
-                if (obj instanceof TextFrame) {
-                    var story = obj.parentStory;
-                    var kerning = false;
-                    var underline = false;
-                    var textColor = '';
-                    var backgroundColor = '';
-                    var borderColor = "";
-                    if (story.fillColor && !(story.fillColor instanceof Swatch && story.fillColor.name.toString() == "None")) {
-                        textColor = getColorObject(story.fillColor, myDoc);
+                
+                /*global options*/
+                if ( obj instanceof TextFrame || obj instanceof Rectangle || obj instanceof Polygon ) {
+                    if ( obj instanceof Image ) {
+                        var obj = image.parent;
                     }
-                    if (obj.fillColor && !(obj.fillColor instanceof Swatch && obj.fillColor.name.toString() == "None")) {
-                        backgroundColor = getColorObject(obj.fillColor, myDoc);
-                    }
-                    if (obj.strokeColor && !(obj.strokeColor instanceof Swatch && obj.strokeColor.name.toString() == "None")) {
-                        borderColor = getColorObject(obj.strokeColor, myDoc);
-                    }
-                    blocks[BlockId] = {};
-                    var rules = getRules(obj);
-                    var position = calculatePositions(obj, myDoc, options);
+                    var position = calculatePositions( obj, myDoc, options );
                     var geometricBounds = obj.geometricBounds;
-                    var left = position[0] - myDoc.documentPreferences.documentBleedTopOffset;
-                    var top = (page_height - position[2]) + myDoc.documentPreferences.documentBleedTopOffset;
-                    var tracking = (story.tracking / 1000) * story.pointSize;
+                    var rules = getRules( obj );
+
+                    if ( obj.fillColor && !(obj.fillColor instanceof Swatch && obj.fillColor.name.toString() == "None") ) {
+                        var backgroundColor = getColorObject( obj.fillColor, myDoc );
+                    }
+
+                    if ( obj.strokeWeight && obj.strokeWeight > 1 ) {
+                        border = obj.strokeWeight.toString();
+                        borderColor = getColorObject( obj.strokeColor, myDoc );
+                    }
+
                     blocks[BlockId] = {
-                        'id': BlockId,
-                        'width': position[2] - position[0],
-                        'height': position[3] - position[1],
-                        'left': geometricBounds[1],
-                        'top': geometricBounds[0],
-                        'subType': 'textflow',
-                        'type': 'textbox',
-                        'layout': layout.replace(/ /g, "_"),
-                        'index': obj.index,
-                        'page': parseInt(page.name - 1),
-                        'vAlign': obj.textFramePreferences.verticalJustification.toString(),
-                        'rule_properties': rules,
-                        'text': obj.contents,
-                        'value': obj.contents,
-                        'layer': obj.itemLayer.name.toString(),
-                        'fillColor': textColor,
-                        'textAlign': getJustificationMapped(story.justification.toString()),
-                        'kerning': story.kerningMethod,
-                        'underline': story.underline,
-                        'bgColor': backgroundColor,
-                        'borderWidth': parseInt(obj.strokeWeight.toString()),
-                        'borderColor': borderColor,
-                        'fontSize': story.pointSize,
-                        'fontFamily': story.appliedFont.fontFamily.toString(),
-                        'font': {
+                        'id'              : BlockId,
+                        'name'            : BlockId,
+                        'layer'           : obj.itemLayer.name.toString(),
+                        'width'           : position[2] - position[0],
+                        'height'          : position[3] - position[1],
+                        'left'            : geometricBounds[1],
+                        'top'             : geometricBounds[0],
+                        'ruleProperties'  : rules,
+                        'page'            : parseInt( page.name - 1 ),
+                        'opacity'         : obj.transparencySettings.blendingSettings.opacity,
+                        'rotateAngle'     : obj.rotationAngle,
+                        'customOptions'   : obj.objectExportOptions.customAltText,
+                         //'custom'          : customOptionsData,
+                        'bgColor'         : backgroundColor,
+                        //'backgroundColor'         : backgroundColor,
+                        'borderwidth'     : border,
+                        'borderColor'     : borderColor,
+                    };
+
+                    if (obj instanceof TextFrame) {
+                        var story = obj.parentStory;
+                        var kerning = false;
+                        var underline = false;
+                        var textColor = '';
+                        if (story.fillColor && !(story.fillColor instanceof Swatch && story.fillColor.name.toString() == "None")) {
+                            textColor = getColorObject(story.fillColor, myDoc);
+                        }
+                        
+                        var tracking = (story.tracking / 1000) * story.pointSize;
+
+                        blocks[BlockId]['subType'] = 'textflow';
+                        blocks[BlockId]['type'] = 'textbox';
+                        blocks[BlockId]['layout'] = layout.replace(/ /g, "_");
+                        blocks[BlockId]['index'] = obj.index;
+                        
+                        blocks[BlockId]['vAlign'] = obj.textFramePreferences.verticalJustification.toString();
+                        blocks[BlockId]['text'] = obj.contents;
+                        blocks[BlockId]['value'] = obj.contents;
+                        blocks[BlockId]['fillColor'] = textColor;
+                        blocks[BlockId]['textAlign'] = getJustificationMapped(story.justification.toString());
+                        blocks[BlockId]['kerning'] = story.kerningMethod;
+                        blocks[BlockId]['underline'] = story.underline;
+                        blocks[BlockId]['fontSize'] = story.pointSize;
+                        blocks[BlockId]['fontFamily'] = story.appliedFont.fontFamily.toString();
+                        blocks[BlockId]['font'] = {
                             'fontSize': story.pointSize,
                             'appliedFont': story.appliedFont.name.toString(),
                             'fontFamily': story.appliedFont.fontFamily.toString(),
@@ -582,122 +597,185 @@ function getDynamicBlocks(myDoc, dynamicLayers, alternateLayout, options) {
                             'postscriptName': story.appliedFont.postscriptName.toString(),
                             'fontType': story.appliedFont.fontType.toString(),
                             'fontStyle': story.fontStyle
-                        },
-                        'horizontalScale': story.horizontalScale,
-                        'hyphenWeight': story.hyphenWeight,
-                        'hyphenateAcrossColumns': story.hyphenateAcrossColumns,
-                        'hyphenateAfterFirst': story.hyphenateAfterFirst,
-                        'hyphenateBeforeLast': story.hyphenateBeforeLast,
-                        'hyphenateCapitalizedWords': story.hyphenateCapitalizedWords,
-                        'hyphenateLadderLimit': story.hyphenateLadderLimit,
-                        'hyphenateLastWord': story.hyphenateLastWord,
-                        'hyphenateWordsLongerThan': story.hyphenateWordsLongerThan,
-                        'hyphenation': story.hyphenation,
-                        'hyphenationZone': story.hyphenationZone,
-                        'lastLineIndent': story.lastLineIndent,
-                        'autoLeading': story.autoLeading,
-                        'capitalization': story.capitalization.toString(),
-                        'paragraphStyle': story.appliedParagraphStyle.name.toString(),
-                        'italicAngle': story.skew,
-                        'opacity': obj.transparencySettings.blendingSettings.opacity,
-                        'rotationAngle': obj.rotationAngle,
-                        'shearAngle': obj.shearAngle,
-                        'position': calculatePositions(obj, myDoc, options),
-                        'customOptions': obj.objectExportOptions.customAltText,
-                        'tracking': story.tracking,
-                        'indesign': 1
-                    };
-                    var customOptions = obj.objectExportOptions.customAltText.split(';');
-                    for (var key in customOptions) {
-                        var value = customOptions[key].split('=');
-                        blocks[BlockId][value[0]] = value[1];
-                    }
-                    if (story.fontStyle == 'Bold') {
-                        blocks[BlockId]['bold'] = 1;
-                    } else if (story.fontStyle == 'Italic') {
-                        blocks[BlockId]['italic'] = 1;
-                    } else if (story.fontStyle == 'Bold Italic') {
-                        blocks[BlockId]['bold'] = 1;
-                        blocks[BlockId]['italic'] = 1;
-                    }
-
-                } else if (obj instanceof Rectangle) {
-                    if (obj instanceof Rectangle) {
-                        var image = '';
-                    } else if (obj instanceof Image) {
-                        var image = obj;
-                        var obj = image.parent;
-                    }
-
-                    if (obj.fillColor && !(obj.fillColor instanceof Swatch && obj.fillColor.name.toString() == "None")) {
-                        var backgroundColor = getColorObject(obj.fillColor, myDoc);
-
-                    }
-                    if (obj.strokeWeight && obj.strokeWeight > 1) {
-                        border = obj.strokeWeight.toString();
-                        borderColor = getColorObject(obj.strokeColor, myDoc);
-                    }
-                    if (obj instanceof Rectangle) {
-                        var position = calculatePositions(obj, myDoc, options);
-                        var geometricBounds = obj.geometricBounds;
-                        var left = position[0] - myDoc.documentPreferences.documentBleedTopOffset;
-                        var top = (page_height - position[2]) + myDoc.documentPreferences.documentBleedTopOffset;
-                        var rules = getRules(obj);
-                        blocks[BlockId] = {
-                            'id': BlockId,
-                            'width': position[2] - position[0],
-                            'height': position[3] - position[1],
-                            'left': geometricBounds[1],
-                            'top': geometricBounds[0],
-                            'subType': 'rectangle',
-                            'type': 'rectangle',
-                            'indesign': 1,
-                            'layout': layout.replace(/ /g, "_"),
-                            'layer': obj.itemLayer.name.toString(),
-                            'page': parseInt(page.name - 1),
-                            'rule_properties': rules,
-                            'index': obj.index,
-                            'opacity': obj.transparencySettings.blendingSettings.opacity,
-                            'rotationAngle': obj.rotationAngle,
-                            'shearAngle': obj.shearAngle,
-                            'borderWidth': border,
-                            'borderColor': borderColor,
-                            'bgColor': backgroundColor,
-                            'fillColor': backgroundColor,
-                            'position': position,
-                            'customOptions': obj.objectExportOptions.customAltText,
                         };
-
-                        if (obj.images.length > 0) {
-                            var img = obj.images[0];
-                            var imageCropData = getImageCropData(obj, img);
-
-                            blocks[BlockId]["type"] = "image";
-                            blocks[BlockId]["subType"] = "image";
-                            
-                            blocks[BlockId]["imageUri"] = obj.graphics[0].itemLink.name;
-                            blocks[BlockId]["image_src"] = '/Links/' + obj.graphics[0].itemLink.name;
-                            blocks[BlockId]["image_path"] = '/Links/' + obj.graphics[0].itemLink.name;
-
-                            blocks[BlockId]["cropX"] = imageCropData.cropX;
-                            blocks[BlockId]["cropY"] = imageCropData.cropY;
-                            blocks[BlockId]["cropW"] = imageCropData.cropW;
-                            blocks[BlockId]["cropH"] = imageCropData.cropH;
-
-                            blocks[BlockId]["fittingData"] = {
-                                'fittingType': obj.frameFittingOptions.fittingOnEmptyFrame.toString(),
-                                'rightCrop': obj.frameFittingOptions.rightCrop,
-                                'leftCrop': obj.frameFittingOptions.leftCrop,
-                                'bottomCrop': obj.frameFittingOptions.bottomCrop,
-                                'topCrop': obj.frameFittingOptions.topCrop,
-                            };
-
-                        }
-
+                        blocks[BlockId]['horizontalScale']= story.horizontalScale;
+                        blocks[BlockId]['hyphenWeight']= story.hyphenWeight;
+                        blocks[BlockId]['hyphenateAcrossColumns']= story.hyphenateAcrossColumns;
+                        blocks[BlockId]['hyphenateAfterFirst']= story.hyphenateAfterFirst;
+                        blocks[BlockId]['hyphenateBeforeLast']= story.hyphenateBeforeLast;
+                        blocks[BlockId]['hyphenateCapitalizedWords']= story.hyphenateCapitalizedWords;
+                        blocks[BlockId]['hyphenateLadderLimit']= story.hyphenateLadderLimit;
+                        blocks[BlockId]['hyphenateLastWord']= story.hyphenateLastWord;
+                        blocks[BlockId]['hyphenateWordsLongerThan']= story.hyphenateWordsLongerThan;
+                        blocks[BlockId]['hyphenation']= story.hyphenation;
+                        blocks[BlockId]['hyphenationZone']= story.hyphenationZone;
+                        blocks[BlockId]['lastLineIndent']= story.lastLineIndent;
+                        blocks[BlockId]['autoLeading']= story.autoLeading;
+                        blocks[BlockId]['capitalization']= story.capitalization.toString();
+                        blocks[BlockId]['paragraphStyle']= story.appliedParagraphStyle.name.toString();
+                        blocks[BlockId]['italicAngle']= story.skew;
+                        blocks[BlockId]['shearAngle']= obj.shearAngle;
+                        blocks[BlockId]['position']= position;
+                        blocks[BlockId]['tracking']= story.tracking;
+                        blocks[BlockId]['indesign']= 1;
+                        
                         var customOptions = obj.objectExportOptions.customAltText.split(';');
                         for (var key in customOptions) {
                             var value = customOptions[key].split('=');
                             blocks[BlockId][value[0]] = value[1];
+                        }
+                        if (story.fontStyle == 'Bold') {
+                            blocks[BlockId]['bold'] = 1;
+                        } else if (story.fontStyle == 'Italic') {
+                            blocks[BlockId]['italic'] = 1;
+                        } else if (story.fontStyle == 'Bold Italic') {
+                            blocks[BlockId]['bold'] = 1;
+                            blocks[BlockId]['italic'] = 1;
+                        }
+
+                    } else if (obj instanceof Rectangle) {
+                        if (obj instanceof Rectangle) {
+                            var image = '';
+                        } else if (obj instanceof Image) {
+                            var image = obj;
+                            var obj = image.parent;
+                        }
+                        
+                        if (obj instanceof Rectangle) {
+                            
+                            blocks[BlockId]['subType']= 'rectangle';
+                            blocks[BlockId]['type']= 'rectangle';
+                            blocks[BlockId]['indesign']= 1;
+                            blocks[BlockId]['layout']= layout.replace(/ /g, "_");
+                            blocks[BlockId]['index']= obj.index;
+                            blocks[BlockId]['shearAngle']= obj.shearAngle;
+                            blocks[BlockId]['fillColor']= backgroundColor;
+                            blocks[BlockId]['position']= position;                            
+
+                            if (obj.images.length > 0) {
+                                var img = obj.images[0];
+                                var imageCropData = getImageCropData(obj, img);
+
+                                blocks[BlockId]["type"] = "image";
+                                blocks[BlockId]["subType"] = "image";
+                                
+                                blocks[BlockId]["imageUri"] = obj.graphics[0].itemLink.name;
+                                blocks[BlockId]["image_src"] = '/Links/' + obj.graphics[0].itemLink.name;
+                                blocks[BlockId]["image_path"] = '/Links/' + obj.graphics[0].itemLink.name;
+
+                                blocks[BlockId]["cropX"] = imageCropData.cropX;
+                                blocks[BlockId]["cropY"] = imageCropData.cropY;
+                                blocks[BlockId]["cropW"] = imageCropData.cropW;
+                                blocks[BlockId]["cropH"] = imageCropData.cropH;
+
+                                blocks[BlockId]["fittingData"] = {
+                                    'fittingType': obj.frameFittingOptions.fittingOnEmptyFrame.toString(),
+                                    'rightCrop': obj.frameFittingOptions.rightCrop,
+                                    'leftCrop': obj.frameFittingOptions.leftCrop,
+                                    'bottomCrop': obj.frameFittingOptions.bottomCrop,
+                                    'topCrop': obj.frameFittingOptions.topCrop,
+                                };
+
+                            }
+
+                            var customOptions = obj.objectExportOptions.customAltText.split(';');
+                            for (var key in customOptions) {
+                                var value = customOptions[key].split('=');
+                                blocks[BlockId][value[0]] = value[1];
+                            }
+                        }
+                    }
+                    else if ( obj instanceof Polygon ) {
+                        myDoc.viewPreferences.horizontalMeasurementUnits = MeasurementUnits.points;
+                        myDoc.viewPreferences.verticalMeasurementUnits = MeasurementUnits.points;
+                        obj.parentPage.layoutRule = LayoutRuleOptions.OFF;
+                        var width = obj.visibleBounds[3] - obj.visibleBounds[1];
+                        var height = obj.visibleBounds[2] - obj.visibleBounds[0];
+                        obj.parentPage.marginPreferences.properties = {
+                            top    : 0,
+                            left   : 0,
+                            right  : 0,
+                            bottom : 0
+                        };
+                        var rotationAngle = obj.rotationAngle;
+                        var initialAnchorPoint = app.activeWindow.transformReferencePoint;
+                        app.activeWindow.transformReferencePoint =AnchorPoint.CENTER_ANCHOR;
+                        obj.rotationAngle = 0;
+                        app.activeWindow.transformReferencePoint = initialAnchorPoint;
+                        obj.parentPage.resize( CoordinateSpaces.INNER_COORDINATES, AnchorPoint.CENTER_ANCHOR, ResizeMethods.REPLACING_CURRENT_DIMENSIONS_WITH, [width, height] );
+                        obj.move( [0, 0] );
+                        var paths = obj.paths;
+                        var page = obj.parentPage;
+                        var page_height = page.bounds[2] - page.bounds[0];
+                        var topLeftX = geometricBounds[1];
+                        var rightLeftY = geometricBounds[2];
+                        var translateX = -1 * topLeftX;
+                        var translateY = -1 * Math.abs( page_height - rightLeftY );
+                        var transform = 'translate(0,0)';
+                        var pathColor = '';
+                        var pathStrokeColor = '';
+                        if ( typeof backgroundColor !== "undefined" && backgroundColor !== "" ) {
+                            if ( typeof backgroundColor.RGB !== "undefined" ) {
+                                var colorRgb = backgroundColor.RGB.split( ' ' );
+                                var pathColor = 'rgb(' + (255 * colorRgb[0]) + ',' + (255 * colorRgb[1]) + ',' + (255 * colorRgb[2]) + ')';
+                            }
+                        }
+                        if ( typeof borderColor !== "undefined" && borderColor !== "" ) {
+                            if ( typeof borderColor.RGB !== "undefined" ) {
+                                var colorBorderRgb = borderColor.RGB.split( ' ' );
+                                var pathStrokeColor = 'rgb(' + (255 * colorBorderRgb[0]) + ',' + (255 * colorBorderRgb[1]) + ',' + (255 * colorBorderRgb[2]) + ')';
+                            }
+                        }
+                        var strokeWidth = 1;
+                        if ( typeof border !== "undefined" ) {
+                            strokeWidth = border;
+                        }
+                        var svg = '<?xml version="1.0" standalone="no"?><svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.1" width="' + width + '" height="' + height + '">';
+                        for ( var p = 0; p < paths.count(); p++ ) {
+                            var currentPath = paths[p];
+                            var pathPoints = currentPath.pathPoints;
+                            svg += '<g tranform="' + transform + '"><path stroke-width="' + strokeWidth + '" fill="' + pathColor + '" stroke="' + pathStrokeColor + '" d="';
+                            for ( var pp = 0; pp < pathPoints.count(); pp++ ) {
+                                var currentPoint = pathPoints[pp];
+                                if ( pp == 0 ) {
+                                    svg += 'M ' + currentPoint.anchor.toString().replace( /,/g, ' ' );
+                                }
+                                var nextPoint = pathPoints[pp + 1];
+                                if ( nextPoint.isValid ) {
+                                    svg += ' C ' + currentPoint.rightDirection.toString().replace( /,/g, ' ' ) + ' ' + nextPoint.leftDirection.toString().replace( /,/g, ' ' ) + ' ' + nextPoint.anchor.toString().replace( /,/g, ' ' );
+                                    if ( (pp + 1) == (pathPoints.count() - 1) ) {
+                                        svg += ' C ' + nextPoint.rightDirection.toString().replace( /,/g, ' ' ) + ' ' + pathPoints[0].leftDirection.toString().replace( /,/g, ' ' ) + ' ' + pathPoints[0].anchor.toString().replace( /,/g, ' ' );
+                                    }
+                                }
+                            }
+                            svg += ' Z" /></g>';
+                        }
+                        svg += '</svg>';
+                        for ( var action = 0; action < 4; action++ ) {
+                            myDoc.undo( action );
+                        }
+                        var svgFolder = Folder( myDoc.filePath + '/svgs/' );
+                        if ( !svgFolder.exists ) {
+                            svgFolder.create();
+                        }
+                        writeSvg( svg, svgFolder, BlockId + '.svg' );
+                        if ( File( svgFolder + '/' + BlockId + '.svg' ).exists ) {
+                            blocks[BlockId]['fillColor'] = null;
+                            blocks[BlockId]['backgroundColor'] = null;
+                            blocks[BlockId]['borderColor'] = null;
+                            blocks[BlockId]['borderwidth'] = null;
+                            blocks[BlockId]["type"] = "graphics";
+                            blocks[BlockId]["subType"] = "graphics";
+
+                            blocks[BlockId]["imagePath"] = 'Links/' + BlockId + '.svg';
+                            blocks[BlockId]["packageRelative"] = 1;
+
+                            // new
+                            var customOptions = obj.objectExportOptions.customAltText.split(';');
+                            for (var key in customOptions) {
+                                var value = customOptions[key].split('=');
+                                blocks[BlockId][value[0]] = value[1];
+                            }
                         }
                     }
                 }
@@ -1200,6 +1278,21 @@ function writeJson(jsonData, location, file_name) {
     myFile.write(jsonData);
     myFile.close();
 }
+
+function writeSvg ( svg, location, file_name ) {
+    myFile = new File( location + "/" + file_name );
+    myFile.encoding = "UTF-8";
+    if ( myFile.exists ) {
+        myFile.open( "e" );
+        myFile.seek( 0, 2 );
+    }
+    else {
+        myFile.open( "w" );
+    }
+    myFile.write( svg );
+    myFile.close();
+}
+
 
 function GetDate() {
     var myDate = new Date();
