@@ -109,6 +109,9 @@ var png = packageTab.add("checkbox", undefined, "Include Png");
 png.value = true;
 png.enabled = false;
 
+// filePath
+var svgInputDir;
+
 
 //add image preferences
 imagesTab.alignChildren = "left";
@@ -266,6 +269,14 @@ function beginExport(options) {
                 }
             }
         }
+        var svgsFolder = Folder( svgInputDir + '/svgs' );
+        if ( svgsFolder.exists ) {
+            var removeFiles = svgsFolder.getFiles();  
+            for(var a=0;a<removeFiles.length;a++){  
+                removeFiles[a].remove();  
+            }  
+            svgsFolder.remove();  
+        }
         var end = Date.now();
         var diff = (end - start) / 1000.0;
         WriteToFile("\r--------------------- Script ended-- " + GetDate() + " ---------------------\n");
@@ -293,6 +304,7 @@ function exportAndCreatePackage(document, outputFolder, options, tempPreset) {
     var outputFolder = Folder(options.output);
     try {
         var myDoc = app.open(document, false);
+        svgInputDir = myDoc.filePath;
         var myDocumentName = myDoc.name.slice(0, -5);
         // updating indesign file's links
         updateLinks(myDoc);
@@ -373,6 +385,14 @@ function exportAndCreatePackage(document, outputFolder, options, tempPreset) {
             var blocksData = getBlocksData(myDoc, dynamicLayers, layout, options, additionalLayers);
             var jsonData = JSON.stringify(blocksData);
             writeJson(jsonData, layoutFolder, 'data.json');
+            var svgsFolder = Folder( myDoc.filePath + '/svgs' );
+            var linksFolder = Folder( inddFolderExport + '/Links' );
+            if ( svgsFolder ) {
+                if ( !linksFolder.exists ) {
+                    linksFolder.create();
+                }
+                copyFolder( svgsFolder, linksFolder );
+            }
         }
         createPackage(myDoc, inddFolderExport); // create the package
 
@@ -714,16 +734,24 @@ function getDynamicBlocks(myDoc, dynamicLayers, alternateLayout, options) {
                         var transform = 'translate(0,0)';
                         var pathColor = '';
                         var pathStrokeColor = '';
+                        var pathColorCMYK = '';
+                        var pathStrokeColorCMYK = '';
                         if ( typeof backgroundColor !== "undefined" && backgroundColor !== "" ) {
                             if ( typeof backgroundColor.RGB !== "undefined" ) {
                                 var colorRgb = backgroundColor.RGB.split( ' ' );
-                                var pathColor = 'rgb(' + (255 * colorRgb[0]) + ',' + (255 * colorRgb[1]) + ',' + (255 * colorRgb[2]) + ')';
+                                pathColor = 'rgb(' + parseInt(255 * colorRgb[0]) + ',' + parseInt(255 * colorRgb[1]) + ',' + parseInt(255 * colorRgb[2]) + ')';
+                            }
+                            if ( typeof backgroundColor.CMYK !== "undefined" ) {     
+                                pathColorCMYK = 'fill-data-cmyk="(' + backgroundColor.CMYK.replace(/ /g, ',') + ')"';
                             }
                         }
                         if ( typeof borderColor !== "undefined" && borderColor !== "" ) {
                             if ( typeof borderColor.RGB !== "undefined" ) {
                                 var colorBorderRgb = borderColor.RGB.split( ' ' );
-                                var pathStrokeColor = 'rgb(' + (255 * colorBorderRgb[0]) + ',' + (255 * colorBorderRgb[1]) + ',' + (255 * colorBorderRgb[2]) + ')';
+                                pathStrokeColor = 'rgb(' + parseInt(255 * colorBorderRgb[0]) + ',' + parseInt(255 * colorBorderRgb[1]) + ',' + parseInt(255 * colorBorderRgb[2]) + ')';
+                            }
+                            if ( typeof borderColor.CMYK !== "undefined" ) {                                
+                                pathStrokeColorCMYK = 'stroke-data-cmyk="(' + borderColor.CMYK.replace(/ /g, ',') + ')"';
                             }
                         }
                         var strokeWidth = 1;
@@ -734,7 +762,7 @@ function getDynamicBlocks(myDoc, dynamicLayers, alternateLayout, options) {
                         for ( var p = 0; p < paths.count(); p++ ) {
                             var currentPath = paths[p];
                             var pathPoints = currentPath.pathPoints;
-                            svg += '<g tranform="' + transform + '"><path stroke-width="' + strokeWidth + '" fill="' + pathColor + '" stroke="' + pathStrokeColor + '" d="';
+                            svg += '<g tranform="' + transform + '"><path stroke-width="' + strokeWidth + '" fill="' + pathColor + '" ' + pathColorCMYK + ' stroke="' + pathStrokeColor + '"' + ' ' + pathStrokeColorCMYK + ' d="';
                             for ( var pp = 0; pp < pathPoints.count(); pp++ ) {
                                 var currentPoint = pathPoints[pp];
                                 if ( pp == 0 ) {
@@ -763,11 +791,12 @@ function getDynamicBlocks(myDoc, dynamicLayers, alternateLayout, options) {
                             blocks[BlockId]['fillColor'] = null;
                             blocks[BlockId]['backgroundColor'] = null;
                             blocks[BlockId]['borderColor'] = null;
+                            blocks[BlockId]['bgColor'] = null;
                             blocks[BlockId]['borderwidth'] = null;
                             blocks[BlockId]["type"] = "graphics";
                             blocks[BlockId]["subType"] = "graphics";
 
-                            blocks[BlockId]["imagePath"] = 'Links/' + BlockId + '.svg';
+                            blocks[BlockId]["src"] = 'Links/' + BlockId + '.svg';
                             blocks[BlockId]["packageRelative"] = 1;
 
                             // new

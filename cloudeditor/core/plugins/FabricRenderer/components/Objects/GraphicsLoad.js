@@ -2,6 +2,8 @@ const React = require("react");
 const { forEach } = require("ramda");
 const { fabric } = require("../../../../rewrites/fabric/fabric");
 const { Graphics } = require("../../fabric/index");
+const ConfigUtils = require("../../../../../core/utils/ConfigUtils");
+
 class GraphicsLoad extends React.Component {
   constructor(...args) {
     super(...args);
@@ -13,11 +15,14 @@ class GraphicsLoad extends React.Component {
   }
 
   loadShape(src) {
+    const config = ConfigUtils.getDefaults();
     if (!src) {
       throw new Error("Expected svg src instead saw " + typeof src);
     }
+    const fullPath = config.baseUrl + config.assetsRelativePath + src;
+
     fabric.loadSVGFromURL(
-      src,
+      fullPath,
       (objects, options) => {
         let scale = Math.min(
           this.props.width / options.width,
