@@ -8,8 +8,7 @@ const type = "image";
 const GalleryDragLayer = require("./GalleryDragLayer");
 const { getEmptyImage } = require("react-dnd-html5-backend");
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
-const baseUrl =
-  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
+const baseUrl = ConfigUtils.getConfigProp("baseUrl") + "storage";
 
 const PageSource = {
   beginDrag(props) {
@@ -79,7 +78,9 @@ class galleryItem extends React.Component {
           )}
           <span
             className="delete icon printqicon-delete"
-            onClick={() => this.props.deleteAsset(this.props.id)}
+            onClick={() =>
+              this.props.deleteAsset(this.props.id, this.props.uuid)
+            }
           />
         </div>
       </div>

@@ -30,7 +30,7 @@ const assetsLayoutForActivePageSelector = createSelector(
       );
     });
 
-    return layouts;
+    return assetsLayout;
   }
 );
 

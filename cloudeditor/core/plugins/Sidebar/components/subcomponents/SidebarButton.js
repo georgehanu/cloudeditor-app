@@ -9,14 +9,14 @@ const sidebarButton = props => {
 
   const className = defaultClasses.join(" ");
   return (
-    <button
+    <div
       type="button"
       onClick={props.clicked}
       className={className}
       {...props.tooltipData}
     >
       {props.children}
-    </button>
+    </div>
   );
 };
 

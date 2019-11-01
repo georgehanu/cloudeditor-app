@@ -3,8 +3,7 @@ const React = require("react");
 const galleryToolbarPreview = props => {
   const className = "uploadGalleryItem ";
   const ConfigUtils = require("../../../core/utils/ConfigUtils");
-  const baseUrl =
-    ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
+  const baseUrl = ConfigUtils.getConfigProp("baseUrl") + "storage";
 
   return (
     <div
@@ -21,7 +20,7 @@ const galleryToolbarPreview = props => {
 
         <span
           className="delete icon printqicon-delete"
-          onClick={() => props.deleteAsset(props.image.id)}
+          onClick={() => props.deleteAsset(props.image.id, props.image.uuid)}
         />
       </div>
     </div>

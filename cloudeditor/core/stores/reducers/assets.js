@@ -46,7 +46,11 @@ uploadAssetFailed = (state, action) => {
 };
 uploadAssetSuccces = (state, action) => {
   const newUploadedFiles = pathOr([], [action.type, "uploadedFiles"], state);
-  newUploadedFiles.push({ id: uuidv4(), ...action.data });
+  const item = {
+    uuid: action.data[0].uuid,
+    thumbnail_src: action.data[0].thumbnails.thumb
+  };
+  newUploadedFiles.push({ id: uuidv4(), ...item });
   const loadingFiles =
     state[action.type].loadingFiles === 0
       ? 0

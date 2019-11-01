@@ -1,22 +1,27 @@
 #sidebar-wrapper {
-  z-index: 1000;
-  position: fixed;
-  left: 250px;
-  width: 0;
+  width: 100%;
   height: 100%;
-  margin-left: -250px;
-  /*overflow-y: auto; MIKI needed to show pane from sidebar*/
-  background: #000;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  float: left;
+  position: relative;
+  background: transparent;
+  position: absolute;
+  top: 135px;
+  z-index: 501;
+  width: 120px;
 }
 
 #wrapper.toggled #sidebar-wrapper {
   width: 250px;
 }
-
+.dropShadow {
+  box-shadow: 1px 0 33px 0 rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: -4;
+}
 .sidebar-nav {
   position: absolute;
   top: 0;
@@ -67,7 +72,7 @@
   width: 250px;
   position: absolute;
   display: block;
-  background-color: #f0eff0;
+  background-color: #fff;
   height: 100%;
   -webkit-transition: width 0.2s ease;
   -moz-transition: width 0.2s ease;
@@ -83,50 +88,27 @@
   text-align: left;
   margin: 0;
   padding: 0;
-  /* padding: 0; */
   width: 100%;
   height: 100%;
-  background-color: #f0eff0;
-}
-
-#sidebar-wrapper-container ul li.sidebarButtonContainer {
   width: 100%;
-  height: 54px;
+  background: #fff;
 }
-
 #sidebar-wrapper-container .sidebarButton {
   width: 100%;
-  height: 54px;
   cursor: pointer;
-  color: grey;
-  background-color: #f9fafc;
   border: none;
   outline: none;
   padding-right: 0px;
-}
-
-#sidebar-wrapper-container .sidebarButton .icon {
-  float: left;
-  font-size: 24px;
-  text-decoration: none;
-  padding: 18px;
-  height: 54px;
-  -webkit-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
-  -moz-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
-  -ms-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
-  -o-transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
-  transition: background 0.2s ease, color 0.2s ease, left 0.2s ease;
+  height: 100%;
+  text-align: center;
+  padding: 14px 0px;
 }
 
 #sidebar-wrapper-container .sidebarButton .iconTitle {
-  font-size: 14px;
-  font-family: "Roboto";
-  height: auto;
-  line-height: 60px;
-  padding: 0;
-  left: 63px;
-  float: left;
-  height: 60px;
+  font-size: 12px;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
 }
 
 #sidebar-wrapper-container .sidebarButton .more {
@@ -164,8 +146,9 @@
 }
 
 #sidebar-wrapper-container .sidebarButtonSelected,
+#sidebar-wrapper-container .sidebarButtonSelected .icon,
 #sidebar-wrapper-container .sidebarButton:hover {
-  color: #99d122;
+  color: #fff;
 }
 
 .toggleSidebarContainer {
@@ -221,33 +204,6 @@
   display: block;
 }
 
-/*
-.RightTriangle {
-  width: 0px;
-  height: 0px;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-  border-right: 20px solid white;
-  float: right;
-  margin-top: 10px;
-  display: none;
-}
-*/
-
-.rightTriangle {
-}
-#sidebar-wrapper.sidebarMinimized .rightTriangle {
-  position: absolute;
-  right: 0px;
-}
-
-#sidebar-wrapper.sidebarMinimized .rightTriangle {
-  display: none;
-}
-#sidebar-wrapper.SidebarMinimized .sidebarButtonSelected .rightTriangle {
-  display: inline-block;
-}
-
 .icon {
   color: #666666;
 }
@@ -256,32 +212,14 @@
   margin-top: 0px;
 }
 
-#sidebar-wrapper-container .sidebarButton.sidebarButtonSelected .rightTriangle {
-  position: absolute;
-  margin-left: 68px;
-  border-left: 1px solid #cccdce;
-  right: -1px;
-  margin-top: -20px;
-}
-
 #sidebar-wrapper-container {
-  width: 80px;
+  width: 120px;
 }
 
 #sidebar-wrapper-container ul li.sidebarButtonContainer {
-  height: 80px;
-  display: inline;
-}
-
-#sidebar-wrapper-container .sidebarButton .iconTitle {
+  height: 70px;
+  display: block;
   float: left;
-  width: 100%;
-  line-height: 12px;
-  height: 12px;
-}
-
-#sidebar-wrapper-container .sidebarButton .icon {
-  padding: 0px;
   width: 100%;
 }
 
@@ -293,62 +231,34 @@
 
 #sidebar-wrapper-container .sidebarButton .icon {
   /*width: 80px;*/
-  height: 30px;
   display: inline-block;
   background-repeat: no-repeat;
   background-position: center center;
   float: none;
-}
-
-#sidebar-wrapper-container .sidebarButton {
-  padding: 6px 0px;
-  height: 54px;
-}
-
-.rightTriangle:before {
-  content: "";
-  display: block;
-  position: absolute;
-  right: 100%;
-  width: 0;
-  height: 0;
-  border-color: transparent #cccdce transparent transparent;
-  border-style: solid;
-  border-width: 11px;
-}
-
-.rightTriangle:after {
-  content: "";
-  display: block;
-  position: absolute;
-  right: 100%;
-  width: 0;
-  height: 0;
-  border-color: transparent #fff transparent transparent;
-  border-style: solid;
-  border-width: 10px;
-}
-
-#sidebar-wrapper-container ul {
-  background-color: #f9fafc;
-  border-right: 1px solid #dcdee1;
+  padding: 0px;
+  width: 100%;
+  font-size: 23px;
 }
 
 #sidebar-wrapper-container .paneContainer {
-  border-right: 1px solid #dcdee1;
+  border-top: 1px solid rgba(188, 192, 197, 0.5);
+  box-shadow: 1px 0 33px 0 rgba(0, 0, 0, 0.1);
+  border-left: 1px solid rgba(188, 192, 197, 0.5);
 }
 
 #sidebar-wrapper-container .icon,
 #sidebar-wrapper-container .sidebarButton {
-  color: #58595b;
+  color: #5e6a7a;
 }
 
-#sidebar-wrapper .sidebarButtonSelected {
-  background-color: #ebedf0;
+#sidebar-wrapper .sidebarButtonSelected,
+#sidebar-wrapper-container .sidebarButton:hover {
+  background-color: #2b3542;
 }
 #sidebar-wrapper-container .sidebarButton:hover,
+#sidebar-wrapper-container .sidebarButton:hover .icon,
 #sidebar-wrapper-container .sidebarButtonSelected {
-  color: #666666;
+  color: #fff;
 }
 
 #sidebar-wrapper-container .loader {
@@ -382,11 +292,6 @@
   padding-bottom: 104px;
 }
 
-#sidebar-wrapper {
-  top: 0px;
-  padding-top: 104px;
-}
-
 #sidebar-wrapper-container > ul {
   overflow: auto;
 }
@@ -399,4 +304,11 @@
 #sidebar-wrapper-container .sidebarButton .FupaLogo {
   height: 25px;
   margin-top: 5px;
+}
+html,
+#container,
+body {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
 }

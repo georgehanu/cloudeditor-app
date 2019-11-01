@@ -152,9 +152,9 @@ const Text = props => {
       vAlign
     ]
   );
-
   useEffect(() => {
-    if (contentEditable) _checkDim();
+    if (contentEditable)
+      _checkDim();
   }, [
     content,
     value,
@@ -219,8 +219,8 @@ const Text = props => {
       className={"editArea"}
     />
   ) : (
-    <DummyText id={id} content={value} className={"editArea"} />
-  );
+      <DummyText id={id} content={value} className={"editArea"} />
+    );
 
   return (
     <div style={style} className="blockData">
@@ -228,7 +228,6 @@ const Text = props => {
     </div>
   );
 };
-
 function areEqual(prevProps, nextProps) {
   let contentEditable = false;
   if (nextProps.contentEditable | 0) contentEditable = true;
@@ -237,5 +236,4 @@ function areEqual(prevProps, nextProps) {
     return true;
   return false;
 }
-
 module.exports = withNamespaces("translate")(React.memo(Text, areEqual));

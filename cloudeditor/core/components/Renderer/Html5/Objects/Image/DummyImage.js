@@ -1,8 +1,7 @@
 const React = require("react");
 require("./DummyImage.css");
 const ConfigUtils = require("../../../../../../core/utils/ConfigUtils");
-const baseUrl =
-  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
+const baseUrl = ConfigUtils.getConfigProp("baseUrl") + "storage";
 const DummyImage = props => {
   const {
     naturalWidth,

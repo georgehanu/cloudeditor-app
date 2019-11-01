@@ -24,10 +24,10 @@
     "start:client": "webpack-dev-server --mode development --workspace client",
     "dev:client": "webpack --mode development --workspace client",
     "build:client": "webpack --mode production --workspace client",
-    "start:broschure": "webpack-dev-server --mode development --workspace broschure",
-    "hot:broschure": "webpack-dev-server --mode development --hot-only --workspace broschure",
-    "dev:broschure": "webpack --mode development --workspace broschure",
-    "build:broschure": "webpack --mode production --workspace broschure"
+    "start:brochure": "webpack-dev-server --mode development --workspace broschure ",
+    "hot:brochure": "webpack-dev-server --mode development --hot-only --workspace broschure",
+    "dev:brochure": "webpack --mode development --workspace broschure",
+    "build:brochure": "webpack --mode production --workspace broschure"
   },
   "keywords": [],
   "author": "",
@@ -95,6 +95,7 @@
     "@tinymce/tinymce-react": "^2.4.0",
     "axios": "^0.18.0",
     "cors": "^2.8.5",
+    "eslint-auto-fix": "^1.0.0",
     "express": "^4.16.4",
     "fabric": "^2.6.0",
     "fbjs": "^1.0.0",

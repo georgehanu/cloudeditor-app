@@ -19,13 +19,13 @@ require("sweetalert/dist/sweetalert.css");
 const { withNamespaces } = require("react-i18next");
 const BackdropSpinner = require("../../hoc/withSpinner/backdropSpinner");
 const ConfigUtils = require("../../../core/utils/ConfigUtils");
-const baseUrl =
-  ConfigUtils.getConfigProp("baseUrl") + "/media/personalization/";
+const baseUrl = ConfigUtils.getConfigProp("baseUrl") + "storage";
 
 class Gallery extends React.PureComponent {
   state = {
     showAlert: false,
     itemId: null,
+    uuid: null,
     loadingDelete: false
   };
 
@@ -59,13 +59,14 @@ class Gallery extends React.PureComponent {
     this.setState({ showAlert: false });
     this.props.onDeleteAssetHandler({
       id: this.state.itemId,
+      uuid: this.state.uuid,
       type: this.props.type,
-      fromToolbar: this.props.fromToolbar
+      fromToolbar: typeof this.props.fromToolbar != "undefined" ? 1 : 0
     });
   };
 
-  onDeleteHandler = itemId => {
-    this.setState({ showAlert: true, itemId });
+  onDeleteHandler = (itemId, uuid) => {
+    this.setState({ showAlert: true, itemId, uuid });
   };
 
   render() {

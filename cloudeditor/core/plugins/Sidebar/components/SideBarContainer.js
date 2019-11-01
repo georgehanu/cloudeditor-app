@@ -3,7 +3,6 @@ const PaneContainer = require("./subcomponents/PaneContainer");
 const ToggleSidebar = require("./subcomponents/ToggleSidebar");
 const React = require("react");
 const PropTypes = require("prop-types");
-const { rerenderPage } = require("../../../../core/utils/UtilUtils");
 const isEqual = require("react-fast-compare");
 const { withNamespaces } = require("react-i18next");
 
@@ -75,33 +74,33 @@ class SideBarContainer extends React.Component {
               showPane={this.state.showPane}
             />
           ) : (
-            <React.Fragment>
-              <SidebarButton
-                clicked={() => this.showPlugin(i)}
-                selected={i === this.state.pluginIndex ? true : false}
-                tooltip={tool.tooltip}
-              >
-                <div className="iconContainer">
-                  <div className={iconStyle} />
-                </div>
-                <div className="iconTitle">{this.props.t(tool.text)}</div>
-                {tool.showMore && (
-                  <span className="icon more printqicon-lefttriangle" />
-                )}
-                <div className="rightTriangle" />
-              </SidebarButton>
-              <PaneContainer
-                visible={i === this.state.pluginIndex ? true : false}
-                clicked={() => this.showPlugin(i)}
-              >
-                <Tool
-                  cfg={tool.cfg || {}}
-                  items={tool.items || []}
-                  addContainerClasses={this.props.addContainerClasses}
-                />
-              </PaneContainer>
-            </React.Fragment>
-          )}
+              <React.Fragment>
+                <SidebarButton
+                  clicked={() => this.showPlugin(i)}
+                  selected={i === this.state.pluginIndex ? true : false}
+                  tooltip={tool.tooltip}
+                >
+                  <div className="iconContainer">
+                    <div className={iconStyle} />
+                  </div>
+                  <div className="iconTitle">{this.props.t(tool.text)}</div>
+                  {tool.showMore && (
+                    <span className="icon more printqicon-lefttriangle" />
+                  )}
+                </SidebarButton>
+                <PaneContainer
+                  visible={i === this.state.pluginIndex ? true : false}
+                  clicked={() => this.showPlugin(i)}
+                >
+                  <Tool
+                    cfg={tool.cfg || {}}
+                    items={tool.items || []}
+                    addContainerClasses={this.props.addContainerClasses}
+                  />
+                </PaneContainer>
+              </React.Fragment>
+            )
+          }
         </li>
       );
     });
@@ -120,6 +119,7 @@ class SideBarContainer extends React.Component {
             expanded={this.state.expanded}
           />
           <ul>{this.renderTools()}</ul>
+          <div className="dropShadow"></div>
         </div>
       </div>
     );

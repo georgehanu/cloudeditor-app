@@ -44,7 +44,7 @@ const AddImagePlugin = connect(
 module.exports = {
   AddImage: assign(AddImagePlugin, {
     disablePluginIf:
-      "{store().getState().project.title==='Empty Project!!@!!@!@'}",
+      "{!(parseInt(store().getState().ui.permissions.allow_add_blocks) && parseInt(store().getState().ui.permissions.allow_uploaded_photos))}",
     SideBar: {
       position: 3,
       priority: 1,

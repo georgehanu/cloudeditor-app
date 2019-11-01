@@ -6,5 +6,6 @@ const { merge } = require("ramda");
 localConfig = merge(localConfig, projectConfigGlobal);
 console.log(localConfig, "local config");
 require("./i18n");
-require("../../main")(plugins, requires, localConfig);
+require("../../main")(plugins, requires, localConfig
+);
 require("./theme");

@@ -13,9 +13,12 @@ const axios = require("../../axios/project/axios");
 const { Observable } = require("rxjs");
 const { mergeMap } = require("rxjs/operators");
 const { ofType } = require("redux-observable");
+const ConfigUtils = require("../../../core/utils/ConfigUtils");
 
-const URL = "/personalize/index/editorUpload";
-const REMOVE_ASSET_URL = "/personalize/cloudeditor/deleteAsset";
+const URL = "api/media";
+const REMOVE_ASSET_URL = "api/media/delete/";
+const customer = ConfigUtils.getConfigProp("session");
+const source = ConfigUtils.getConfigProp("source");
 
 module.exports = {
   onEpicFile: (action$, state$) =>
@@ -26,7 +29,10 @@ module.exports = {
           let oneFile = 0;
           for (oneFile = 0; oneFile < action$.payload.files.length; oneFile++) {
             let serverData = new FormData();
-            serverData.append("file", action$.payload.files[oneFile]);
+            serverData.append("files[]", action$.payload.files[oneFile]);
+            serverData.append("editor", source);
+            serverData.append("customer", customer);
+            serverData.append("type", action$.payload.type);
             axios
               .post(URL, serverData)
               .then(resp => resp.data)
@@ -70,11 +76,10 @@ module.exports = {
       mergeMap(action$ =>
         Observable.create(obs => {
           let serverData = new FormData();
-          serverData.append("id", action$.payload.id);
-          serverData.append("type", action$.payload.type);
+          serverData.append("customer", customer);
 
           axios
-            .post(REMOVE_ASSET_URL, serverData)
+            .post(REMOVE_ASSET_URL + action$.payload.uuid, serverData)
             .then(resp => resp.data)
             .then(data => {
               if (data.success) {

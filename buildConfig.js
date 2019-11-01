@@ -74,7 +74,7 @@ const build = config => {
                     exclude: [".cloudeditor", "body", "html"].concat(
                       cssPrefix ? [cssPrefix] : []
                     ),
-                    transform: function(prefix, selector, prefixedSelector) {
+                    transform: function (prefix, selector, prefixedSelector) {
                       if (
                         selector.startsWith(".sweet-overlay") ||
                         selector.startsWith(".sweet-alert") ||
@@ -180,6 +180,22 @@ const build = config => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*"
+      },
+      stats: {
+        colors: true,
+        hash: false,
+        version: false,
+        timings: false,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: true,
+        errorDetails: false,
+        warnings: false,
+        publicPath: false
       }
     },
     stats: "none" //https://webpack.js.org/configuration/stats/

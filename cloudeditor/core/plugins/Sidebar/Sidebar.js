@@ -16,25 +16,11 @@ class SideBar extends React.Component {
   };
 
   shouldComponentUpdate(nextProps, nextState) {
-    //console.log("sidebar shouldComponentUpdate");
-    //checkChangedProps(this.props, nextProps);
-
-    // let index = 0;
-    // for (index = 0; index < nextProps.items.length; index++) {
-    //   console.log("items", this.props.items, nextProps.items);
-    //   console.log(
-    //     this.props.items[index]["name"],
-    //     nextProps.items[index]["name"]
-    //   );
-    //   //checkChangedProps(this.props.items[index], nextProps.items[index]);
-    // }
     return true;
   }
 
   render() {
-    //console.log("sidebar");
     const { expanded } = this.props;
-
     return (
       <SideBarContainer
         id={this.props.id}
@@ -71,9 +57,6 @@ SideBar.defaultProps = {
 };
 
 const SideBarPlugin = connect(selector)(withNamespaces("sidebar")(SideBar));
-//const SideBarPlugin = connect(selector)(SideBar);
-
-// let's export the plugin and a set of required reducers
 module.exports = {
   SideBar: SideBarPlugin,
   reducers: {

@@ -13,6 +13,7 @@
       },
       "AddText",
       "AddImage",
+      "AddPdf",
       "Layouts",
       "Zoom",
       "PrintPreview",
