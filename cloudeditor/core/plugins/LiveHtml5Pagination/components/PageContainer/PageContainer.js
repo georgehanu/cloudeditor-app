@@ -348,7 +348,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onChangePage: payload => dispatch(changePage(payload)),
     onDeletePage: payload => dispatch(deletePage(payload)),
-    previewLoadPage: pageNo => dispatch(previewLoadPage(pageNo))
+    previewLoadPage: pageNo => dispatch(previewLoadPagepreviewLoadPage(pageNo))
   };
 };
 module.exports = hot(module)(

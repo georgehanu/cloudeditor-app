@@ -33,7 +33,7 @@ const config = {
     images: "images",
     fonts: "fonts"
   },
-  port: 8081,
+  port: 8082,
   cleanDistDir: !prod,
   cssPrefix: ".cloudeditor",
   copyFrom: []

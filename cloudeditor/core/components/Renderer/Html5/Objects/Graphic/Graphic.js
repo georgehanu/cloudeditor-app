@@ -4,6 +4,7 @@ const { hot } = require("react-hot-loader");
 const { DropTarget } = require("react-dnd");
 const ConfigUtils = require("../../../../../../core/utils/ConfigUtils");
 const baseUrl = ConfigUtils.getConfigProp("baseUrl") + "storage";
+
 require("./Graphic.css");
 const type = ["graphics"];
 const GraphicTarget = {
@@ -24,7 +25,7 @@ const GraphicTarget = {
     }
     return false;
   },
-  hover(props, monitor) { }
+  hover(props, monitor) {}
 };
 
 collectDrop = (connect, monitor) => {

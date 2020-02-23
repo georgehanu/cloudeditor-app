@@ -152,23 +152,28 @@ const Text = props => {
       vAlign
     ]
   );
-  useEffect(() => {
-    if (contentEditable)
-      _checkDim();
-  }, [
-    content,
-    value,
-    fontFamily,
-    fontSize,
-    bold,
-    realWidth,
-    realHeight,
-    lineHeight
-  ]);
-  useEffect(() => {
-    setContent(value);
-    setRenderId(uuidv4());
-  }, [value]);
+  useEffect(
+    () => {
+      if (contentEditable) _checkDim();
+    },
+    [
+      content,
+      value,
+      fontFamily,
+      fontSize,
+      bold,
+      realWidth,
+      realHeight,
+      lineHeight
+    ]
+  );
+  useEffect(
+    () => {
+      setContent(value);
+      setRenderId(uuidv4());
+    },
+    [value]
+  );
 
   const onChangeHandler = result => {
     setContent(result.text);
@@ -219,8 +224,8 @@ const Text = props => {
       className={"editArea"}
     />
   ) : (
-      <DummyText id={id} content={value} className={"editArea"} />
-    );
+    <DummyText id={id} content={value} className={"editArea"} />
+  );
 
   return (
     <div style={style} className="blockData">
